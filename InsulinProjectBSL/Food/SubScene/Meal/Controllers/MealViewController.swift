@@ -23,7 +23,15 @@ class MealViewController: UIViewController, MealDisplayLogic {
   
   
   // TableView Vie Model
-  var sectionViewModelList: [SectionMealViewModel] = []
+  var sectionViewModelList: [SectionMealViewModel] = [] {
+    
+    didSet {
+      if sectionViewModelList.count == 1 {
+        // Если мы хотим просто список то раскрой его сразу
+        sectionViewModelList[0].isExpanded = true
+      }
+    }
+  }
   
   // Это нужно для анимации
   var addViewBottomY: CGFloat!
@@ -110,14 +118,12 @@ class MealViewController: UIViewController, MealDisplayLogic {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    print("view willappear meal")
     interactor?.makeRequest(request: .setRealmObserver)
     setKeyboardNotification()
   }
   
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    print("view dissappear meal")
     
     realmObserverTokken.invalidate()
     NotificationCenter.default.removeObserver(self)
@@ -369,7 +375,7 @@ extension MealViewController {
       didShowMenuProductsListViewControllerClouser!()
       
     } else {
-      //      didUpdateHeaderWorkerInFoodViewController!(headerInSectionWorker!)
+      didUpdateHeaderWorkerInFoodViewController!(headerInSectionWorker)
       navigationController?.popViewController(animated: true)
     }
     
@@ -381,7 +387,8 @@ extension MealViewController {
     
     self.headerInSectionWorker.changeIsDefaultlistByCategory(segment: .meals)
     
-    self.interactor?.makeRequest(request: .showListMealsBySection(isDefaultList: headerInSectionWorker.isDefaultListMeal))
+    let getIsDefaultList = headerInSectionWorker.getIsDefaultListBySegment(segment: .meals)
+    self.interactor?.makeRequest(request: .showListMealsBySection(isDefaultList: getIsDefaultList))
     
 
     self.headerInSectionWorker.fillSectionExpandedArrayBySegment(viewModels: sectionViewModelList, segment: .meals) // Запомнил кол-во секций
@@ -683,7 +690,7 @@ extension MealViewController {
   
   // Height Header In Section
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return Constants.heightForHeaderInSection
+    return Constants.TableView.heightForHeaderInSection
   }
   
 }

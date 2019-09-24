@@ -21,8 +21,9 @@ class HeaderInSectionWorker {
   
   var arraySectionMealsExpanded = [Bool]()
   
-  var isDefaultListMeal: Bool = true
-  
+  var isDefaultListMeal        = true
+  var isDefaultListAllProducts = true
+  var isDefaultListFavorits   = true
   
 //  func updateViewModelByExpandSection(oldViewModel: [HeaderInSectionWorkerProtocol], newViewModel:[HeaderInSectionWorkerProtocol])  -> [HeaderInSectionWorkerProtocol] {
 //
@@ -32,15 +33,30 @@ class HeaderInSectionWorker {
 //    return updateViewModel
 //  }
   
+  func getIsDefaultListBySegment(segment: Segment) -> Bool {
+    
+    
+    switch segment {
+      case .allProducts: return isDefaultListAllProducts
+      case .favorits: return isDefaultListFavorits
+      case .meals: return isDefaultListMeal
+    }
+    
+  }
+  
   func changeIsDefaultlistByCategory(segment: Segment) {
     
     switch segment {
       
+      case .allProducts:
+        self.isDefaultListAllProducts = !isDefaultListAllProducts
+      
+      case .favorits:
+        self.isDefaultListFavorits = !isDefaultListFavorits
+      
       case .meals:
         self.isDefaultListMeal = !isDefaultListMeal
-      
-    default: break
-      
+
     }
   }
   

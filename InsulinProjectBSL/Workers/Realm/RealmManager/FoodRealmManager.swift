@@ -13,16 +13,17 @@ import RealmSwift
 
 class FoodRealmManager {
   
-//  var items: Results<Product>! // Все объекты из схемы
-  
+  var items: Results<ProductRealm>! // Все объекты из схемы
   var productProvider: RealmProvider
+  
   init(productProvider: RealmProvider = RealmProvider.products) {
     self.productProvider = productProvider
+    setItems()
   }
   
   // Set Observer Token
-  var didChangeRealmDB: (() -> Void)?
-  func setObserverToken(items: Results<ProductRealm>) -> NotificationToken {
+  var didChangeRealmDB: ((Results<ProductRealm>) -> Void)?
+  func setObserverToken() -> NotificationToken {
 
     let realmObserverToken = items.observe({ (change) in
 
@@ -30,12 +31,12 @@ class FoodRealmManager {
       case .error(let error):
         print(error)
       case .initial(_):
-        self.didChangeRealmDB!()
+        self.didChangeRealmDB!(self.items)
       case .update(_, deletions: let deletions, insertions: let insertions, modifications: let updates):
         
 //        tableView.applyChanges(deletions: deletions, insertions: insertions, updates: updates) // Это почему то не работает
         
-        self.didChangeRealmDB!()
+        self.didChangeRealmDB!(self.items)
       }
       self.productProvider.realm.refresh() // Обновляю реалм схему
     })
@@ -43,11 +44,53 @@ class FoodRealmManager {
     return realmObserverToken
   }
   
+  func setItems() {
+    items = allProducts()
+  }
   
-  // Get ALL
+  func getItems() -> Results<ProductRealm> {
+    return items
+  }
+  
+  
+}
+
+// MARK: Fetch Data From DB
+
+extension FoodRealmManager {
+  
+  // Fetch All
+  
   func allProducts() -> Results<ProductRealm> {
     let allObjects = productProvider.realm.objects(ProductRealm.self)
     return allObjects.sorted(byKeyPath: ProductRealm.Property.name.rawValue)
+  }
+  
+  // Fetch By Name
+  
+  func fetchProductByName(name: String) -> Results<ProductRealm> {
+    let realm = productProvider.realm
+    return realm.objects(ProductRealm.self).filter("name CONTAINS[cd] %@", name)
+  }
+  
+  // Fetch By Favorits
+  func fetchFavorits() -> Results<ProductRealm> {
+    
+    let realm = productProvider.realm
+    let favoritsItems = realm.objects(ProductRealm.self).filter("isFavorits == %@", true)
+    return favoritsItems.sorted(byKeyPath: ProductRealm.Property.name.rawValue)
+  }
+  
+  // Get product By Id
+  
+  func getProductById(id: String?) -> ProductRealm? {
+    
+    guard let id = id else {return nil}
+    
+    let checkProduct = allProducts().first { (product) -> Bool in
+      return product.id == id
+    }
+    return checkProduct
   }
   
   // Get categoryList
@@ -63,9 +106,15 @@ class FoodRealmManager {
     
     return Array(category).sorted()
   }
+}
+
+// MARK: Cnhage Data in DB
+
+extension FoodRealmManager {
   
-  // MARK: Add New Product
-  func addNewProduct(newProduct: ProductRealm, callBackError: @escaping (Bool) -> Void) {
+  func addNewProduct(viewModel: FoodCellViewModel, callBackError: @escaping (Bool) -> Void) {
+    
+    let newProduct = createNewProduct(viewModel: viewModel)
     
     if isCheckProductByName(name: newProduct.name) {
       // Нет такого имени
@@ -75,6 +124,17 @@ class FoodRealmManager {
       callBackError(false)
     }
     
+  }
+  
+  private func createNewProduct(viewModel: FoodCellViewModel) -> ProductRealm {
+    
+    let name = viewModel.name
+    let category = viewModel.category
+    let carbo = Int(viewModel.carbo)!
+    let isFavorits = viewModel.isFavorit
+    let massa = Int(viewModel.portion)!
+    
+    return ProductRealm.init(name: name, category: category, carbo: carbo, isFavorits: isFavorits, portion:massa)
   }
   
   private func addProduct(product: ProductRealm) {
@@ -88,15 +148,7 @@ class FoodRealmManager {
     }
   }
   
-  func getProductById(id: String?) -> ProductRealm? {
-    
-    guard let id = id else {return nil}
-    
-    let checkProduct = allProducts().first { (product) -> Bool in
-      return product.id == id
-    }
-    return checkProduct
-  }
+  
   
   // Check By Name
   private func isCheckProductByName(name: String) -> Bool  {
@@ -106,8 +158,8 @@ class FoodRealmManager {
   
   // Update Favorits
   func updateProductFavoritField(product: ProductRealm) {
+    
     let realm = productProvider.realm
-
     try! realm.write {
       product.isFavorits = !product.isFavorits
     }
@@ -119,7 +171,7 @@ class FoodRealmManager {
     let realm = productProvider.realm
     
     guard let product = getProductById(id: viewModel.id) else {return}
-
+    
     do {
       try realm.write {
         
@@ -146,19 +198,4 @@ class FoodRealmManager {
       realm.delete(product)
     }
   }
-  
-  // Filter By Name
-  
-//  func fetchProductByName(name: String) -> Results<Product> {
-//    let realm = productProvider.realm
-//    return realm.objects(Product.self).filter("name CONTAINS[cd] %@", name)
-//  }
-  
-  // Filter By Favorits
-  func fetchFavorits() -> Results<ProductRealm> {
-    let realm = productProvider.realm
-    return realm.objects(ProductRealm.self).filter("isFavorits == %@", true)
-  }
-  
-  
 }

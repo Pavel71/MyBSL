@@ -50,7 +50,8 @@ class FoodView: UIView {
   }
   
   @objc private func didTapOnBlur() {
-
+    
+//    newProductView.pickerView.isHidden = true
     pickerView.isHidden = true
     self.endEditing(true)
   }
@@ -67,8 +68,8 @@ class FoodView: UIView {
   private func setUpTableView() {
     
     addSubview(tableView)
-    tableView.anchor(top: customNavBar.bottomAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding: .init(top: Constants.tableViewTopPadding, left: 0, bottom: 0, right: 0))
-//    tableView.layoutMargins.top = Constants.tableViewTopPadding
+    tableView.anchor(top: customNavBar.bottomAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding: .init(top: Constants.TableView.tableViewTopPadding, left: 0, bottom: 0, right: 0))
+
     
     tableView.keyboardDismissMode = .interactive
     tableView.tableHeaderView = headerTableView
@@ -76,9 +77,9 @@ class FoodView: UIView {
   }
   
   private func setUpPickerView() {
-    
+
     addSubview(pickerView)
-    pickerView.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding: .zero,size: .init(width: 0, height: 140))
+    pickerView.anchor(top: newProductView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .zero,size: .init(width: 0, height: 140))
     pickerView.isHidden = true
   }
   

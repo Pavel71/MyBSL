@@ -14,12 +14,7 @@ class BaseTabBarController: UITabBarController {
     
     let mainViewController = createNavController(MainViewController(),name: "Main",imageName: "today")
     
-    //    let productViewModel = ProductViewModel()
-    //    let productController = createNavController(ProductsController(productViewModel: productViewModel),name: "Products", imageName: "diet")
-    
-    //    let productRealmManager = ProductRealmManager()
-    //    let foodViewModel = FoodStuffViewModel(productRealmManager: productRealmManager)
-    //    let foodController = FoodStuffController(foodStuffViewModel: foodViewModel)
+
     
     let productViewController = FoodViewController()
     
@@ -32,8 +27,8 @@ class BaseTabBarController: UITabBarController {
     let settingsController = createNavController(SettingsViewController(), name: "Settings", imageName: "settings")
     
     viewControllers = [
-      productController,
       mainViewController,
+      productController,
       statsController,
       settingsController
     ]

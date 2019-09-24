@@ -13,13 +13,12 @@ import UIKit
 struct Constants {
   
   
+  static let numberValueTextFieldWidth: CGFloat = 50
   
-  static let tableViewTopPadding: CGFloat  = 3
   
   
   static let cellMargin = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
   static let customNavBarHeight: CGFloat = 60
-  static let heightForHeaderInSection: CGFloat = 50
 
   static let textFont = UIFont(name: "DINCondensed-Bold", size: 20)
   
@@ -30,6 +29,7 @@ struct Constants {
   }
   
   struct TableView {
+    static let tableViewTopPadding: CGFloat  = 3
     static let heightForHeaderInSection: CGFloat = 50
     static let tableViewHeaderHeight: CGFloat = 50
   }
@@ -56,6 +56,18 @@ struct Constants {
       
       static let margin = UIEdgeInsets(top: 5, left: 16, bottom: 5, right: 16)
       static let cellHeight: CGFloat = 32
+    }
+  }
+  
+  struct Main {
+    
+    struct Cell {
+      
+      static let mainMiddleCellHeight: CGFloat = 400
+    }
+    
+    struct DinnerCollectionView {
+      static let contentInsert: UIEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
     }
   }
   

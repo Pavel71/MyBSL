@@ -27,7 +27,7 @@ class FoodInteractor: FoodBusinessLogic {
   
   // Realm Objects
 
-  var items: Results<ProductRealm>!
+//  var items: Results<ProductRealm>!
   
   var service: FoodService?
   
@@ -40,87 +40,123 @@ class FoodInteractor: FoodBusinessLogic {
     if realmManager == nil {
       print("Set RealmManager")
       realmManager = FoodRealmManager()
-      // set clouser Update
-      realmManager.didChangeRealmDB = didChangeProductDB
+      // set clouser DB Cnahge
+      realmManager.didChangeRealmDB = {[weak self] items in self?.didChangeProductDB(items:items)}
     }
     
+    workWithTableViewViewModel(request: request)
+    workWithNewFoodViewViewModel(request: request)
+
+    
+  }
+  
+  private func workWithTableViewViewModel(request: Food.Model.Request.RequestType) {
+
+    fetchDataFromDB(request: request)
+    changeDB(request: request)
+    
     switch request {
-      // MARK: Realm
+      // Realm Observer
+      case .setRealmObserverToken:
+        
+        let realmObserverToken = realmManager.setObserverToken()
+        presenter?.presentData(response: .passRealmObserver(productRealmObserver: realmObserverToken))
       
-    case .fetchAllProducts:
-
-      items = realmManager.allProducts()
-      presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
+      // Section Button Push
+      case .showListProductsBySection(let isDefaultList):
+        
+        self.isDefaultList = isDefaultList
+        let items = realmManager.getItems()
+        presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
       
-    case .fetchProductByFavorits:
-      items = realmManager.fetchFavorits()
-      presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
+    default:break
+    }
+    
+  }
+  // MARK: Realm Change DB
+  private func changeDB(request:Food.Model.Request.RequestType) {
+    
+    switch  request {
       
-    case .setRealmObserverToken:
-      
-      let realmObserverToken = realmManager.setObserverToken(items: items)
-      presenter?.presentData(response: .passRealmObserver(productRealmObserver: realmObserverToken))
-      
-    case .filterProductByName(let name):
-      items = items.filter("name CONTAINS[cd] %@", name)
-      // Здесь нужен items  который последний это могут быть как фавориты так и все продукты
-      presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
-
     case .deleteProduct(let productId):
-      guard let product = realmManager.getProductById(id: productId) else {return}
-      realmManager.deleteProduct(product: product)  // didChangeProductDB
-     
-    case .updateFavoritsField(let productId):
-      guard let product = realmManager.getProductById(id: productId) else {return}
-      realmManager.updateProductFavoritField(product: product)  // didChangeProductDB
       
-    // MARK: Realm Add or Update
+      guard let product = realmManager.getProductById(id: productId) else {return}
+      realmManager.deleteProduct(product: product)
+      
+    case .updateFavoritsField(let productId):
+      
+      guard let product = realmManager.getProductById(id: productId) else {return}
+      realmManager.updateProductFavoritField(product: product)
+      
     case .addNewProductInRealm(let viewModel):
       
-      let newProduct = createNewProduct(viewModel: viewModel)
-      
-      realmManager.addNewProduct(newProduct: newProduct) { [weak self] (succes) in
-        self?.presenter?.presentData(response: .succesAddNewProduct(succes: succes)) // didChangeProductDB
+      realmManager.addNewProduct(viewModel: viewModel) { [weak self] (succes) in
+        self?.presenter?.presentData(response: .succesAddNewProduct(succes: succes))
       }
       
     case .updateCurrentProductInRealm(let viewModel):
-
+      
       realmManager.updateAllFields(viewModel: viewModel)
-      // Пока здесь нет ошибки!
-      presenter?.presentData(response: .succesAddNewProduct(succes: true)) // didChangeProductDB
+      presenter?.presentData(response: .succesAddNewProduct(succes: true))
       
-      
-    // MARK: New PrdouctViewModel
-    case .showNewProductView(let productIdString):
-      
-      // здесь будет правильнне поиск по id
-      let allCategoryList = realmManager.getCategoryList()
-      let updateProduct = realmManager.getProductById(id: productIdString) // Если есть такой продукт то верни
-
-      presenter?.presentData(response: .prepareDataToFillNewProductViewModel(categorylist: allCategoryList, updateProduct: updateProduct))
-
-    case .showListProductsBySection(let isDefaultList):
-      self.isDefaultList = isDefaultList
-      presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: self.items, bySections: isDefaultList))
+    default: break
     }
     
   }
-
-  private func didChangeProductDB() {
-    self.presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: self.items, bySections: isDefaultList))
-
-  }
   
-  private func createNewProduct(viewModel: FoodCellViewModel) -> ProductRealm {
-    let name = viewModel.name
-    let category = viewModel.category
-    let carbo = Int(viewModel.carbo)!
-    let isFavorits = viewModel.isFavorit
-    let massa = Int(viewModel.portion)!
+  private func fetchDataFromDB(request:Food.Model.Request.RequestType) {
     
-    return ProductRealm.init(name: name, category: category, carbo: carbo, isFavorits: isFavorits, portion:massa)
+    switch request {
+      
+      // Segment
+      case .fetchAllProducts:
+        
+        let items = realmManager.allProducts()
+        presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
+      
+        // Segment
+      case .fetchProductByFavorits:
+        
+        let items = realmManager.fetchFavorits()
+        presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
+      
+        // Search Bar
+      case .filterProductByName(let name):
+        let items = realmManager.fetchProductByName(name: name)
+        // Здесь нужен items  который последний это могут быть как фавориты так и все продукты
+        presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
+      
+    default:break
+    }
   }
   
+  // MARK: Work With New Food View
+  private func workWithNewFoodViewViewModel(request:Food.Model.Request.RequestType) {
+    
+    switch request {
+      
+      case .showNewProductView(let productIdString):
+        
+        // здесь будет правильнне поиск по id
+        let allCategoryList = realmManager.getCategoryList()
+        let updateProduct = realmManager.getProductById(id: productIdString) // Если есть такой продукт то верни
+        
+        presenter?.presentData(response: .prepareDataToFillNewProductViewModel(categorylist: allCategoryList, updateProduct: updateProduct))
+      
+    default:break
+    }
+    
+  }
+  
+  
+  // Than Change DB
+  private func didChangeProductDB(items: Results<ProductRealm>) {
+    
+    self.presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
+
+  }
+  
+
   
 
   

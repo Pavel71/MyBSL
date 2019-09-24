@@ -19,15 +19,17 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
 
   // MARK: Object lifecycle
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  init() {
+    super.init(nibName: nil, bundle: nil)
     setup()
   }
   
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    setup()
+
+  deinit {
+    print("Deinit Settings Controller")
   }
+  
+
   
   // MARK: Setup
   
@@ -51,10 +53,20 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    view.backgroundColor = .yellow
   }
+  
+  // MARK: Display
   
   func displayData(viewModel: Settings.Model.ViewModel.ViewModelData) {
 
+  }
+  
+  
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
 }

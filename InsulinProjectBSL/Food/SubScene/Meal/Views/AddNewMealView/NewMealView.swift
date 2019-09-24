@@ -56,8 +56,6 @@ class NewMealView: AddNewElementView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-//    categoryWithButtonTextFiled.didTapShowListCategory = handleShowListCategoryButton
-    
     
     nameTextView.delegate = self
     

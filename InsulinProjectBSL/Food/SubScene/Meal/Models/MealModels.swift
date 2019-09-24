@@ -86,7 +86,7 @@ struct SectionMealViewModel: HeaderInSectionWorkerProtocol {
   var sectionName: String  // Тип приемов пищи!
   var meals: [MealViewModelCell]
   
-  init(isExpanded: Bool = true, sectionName: String = "Все обеды" , meals: [MealViewModelCell]) {
+  init(isExpanded: Bool = false, sectionName: String = "Все обеды" , meals: [MealViewModelCell]) {
     self.isExpanded = isExpanded
     self.sectionName = sectionName
     self.meals = meals

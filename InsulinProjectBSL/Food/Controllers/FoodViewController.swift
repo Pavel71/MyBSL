@@ -84,6 +84,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   // MARK: Setup
   
   private func setup() {
+    
     let viewController        = self
     let interactor            = FoodInteractor()
     let presenter             = FoodPresenter()
@@ -110,7 +111,6 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    print("Will Apear Food")
     // При возвращение на этот экран выдели последний активный сегмент!
     foodView.headerTableView.segmentController.selectedSegmentIndex = currentSegment.rawValue
 
@@ -122,8 +122,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    print("Will Dissapear Food")
-
+    
     realmObserverTokken.invalidate()
     NotificationCenter.default.removeObserver(self)
   }
@@ -159,6 +158,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   }
   
   private func configurePickerView() {
+    
     pickerView = foodView.pickerView
     pickerView.dataSource = self
     pickerView.delegate = self
@@ -215,8 +215,9 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   private func didTapChangeSectionViewButton() {
     
     headerInSectionWorker.changeIsDefaultlistByCategory(segment: currentSegment)
-
-    interactor?.makeRequest(request: .showListProductsBySection(isDefaultList: headerInSectionWorker.isDefaultListMeal))
+    
+    let isDefaultBySegment = headerInSectionWorker.getIsDefaultListBySegment(segment: currentSegment)
+    interactor?.makeRequest(request: .showListProductsBySection(isDefaultList: isDefaultBySegment))
     
     headerInSectionWorker.fillSectionExpandedArrayBySegment(viewModels: foodViewModel, segment: currentSegment)
   }
@@ -262,7 +263,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   
   @objc private func didTapShowListCategory() {
     
-    UIView.transition(with: foodView.pickerView, duration: 0.3, options: .transitionFlipFromBottom, animations: {
+    UIView.transition(with: pickerView, duration: 0.3, options: .transitionFlipFromBottom, animations: {
       self.pickerView.isHidden = !self.pickerView.isHidden
     }, completion: nil)
     
@@ -318,6 +319,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   // MARK: Begind Editing NewProduct TextFields
   
   private func didBeginEditingNewProductTextFields() {
+    
     pickerView.isHidden = true
   }
   
@@ -390,14 +392,18 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     }
 
     // Задача здесь простая если какие то секции открыты то после перезагрузки отсавить их!
+    reloadTableView()
+  }
+  
+  private func reloadTableView() {
     UIView.transition(with: tableView, duration: 0.2, options: [.curveEaseOut,.transitionCrossDissolve], animations: {
       self.tableView.reloadData()
     }, completion: nil)
-    
   }
   
   // MARK: Display Methods
   private func saveNewProduct(success: Bool) {
+    
     if success {
       let successString = updateProductId == nil ? "Продукт сохранен!" : "Продукт обновленн!"
       didCancelNewProduct()
@@ -453,7 +459,7 @@ extension FoodViewController {
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return Constants.heightForHeaderInSection
+    return Constants.TableView.heightForHeaderInSection
   }
 }
 

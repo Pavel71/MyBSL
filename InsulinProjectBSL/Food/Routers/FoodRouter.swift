@@ -25,6 +25,7 @@ class FoodRouter: NSObject, FoodRoutingLogic {
   func pushMealController(headerInSectionWorker: HeaderInSectionWorker) {
     
     let mealController = MealViewController(headerInSectionWorker: headerInSectionWorker)
+    
     mealController.didUpdateHeaderWorkerInFoodViewController = viewController?.updateHeaderWorkerInSection
 
     

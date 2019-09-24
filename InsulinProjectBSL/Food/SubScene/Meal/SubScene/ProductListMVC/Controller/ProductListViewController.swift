@@ -38,7 +38,6 @@ class ProductListViewController: UIViewController {
   }
   
   init() {
-    print("Init Product Controller")
     super.init(nibName: nil, bundle: nil)
   }
   

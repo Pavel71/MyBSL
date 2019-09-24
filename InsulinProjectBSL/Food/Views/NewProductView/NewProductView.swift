@@ -79,13 +79,12 @@ class NewProductView: AddNewElementView {
     return sg
   }()
   
+
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
     print("init new Food View ")
-    
-//    categoryWithButtonTextFiled.didTapShowListCategory = showListCategory
     
     carboTextField.keyboardType = .numberPad
     massaTextField.keyboardType = .numberPad
@@ -158,6 +157,8 @@ class NewProductView: AddNewElementView {
     hiddenMassaStackView(isHidden: true)
     
   }
+  
+
   
 
   
@@ -236,15 +237,7 @@ class NewProductView: AddNewElementView {
     }
   }
   
-  // MARK: Some CLousers
-  
-  // Category Button
-  
-  //  var didTapShowListCategory: EmptyClouser?
-  //
-  //  @objc private func showListCategory() {
-  //    didTapShowListCategory!()
-  //  }
+
   
   // Segment Controller
   @objc func didChangeSegment(segment: UISegmentedControl) {
@@ -252,14 +245,6 @@ class NewProductView: AddNewElementView {
     setAnimateSegmentView()
   }
 
-  // CancelButton
-//  var didTapCancelButton: EmptyClouser?
-//
-//  override func handleCancelButton() {
-//    didTapCancelButton!()
-//  }
-  
-  
   // Add Button
   var didTapSaveButton: ((String?,FoodCellViewModel) -> Void)?
   override func handleSaveButton() {
