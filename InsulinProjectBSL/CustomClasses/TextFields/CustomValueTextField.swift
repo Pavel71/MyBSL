@@ -16,6 +16,7 @@ class CustomValueTextField: UITextField {
   override init(frame: CGRect) {
     super.init(frame: frame)
     backgroundColor = .white
+    addDoneButtonOnKeyboard()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -24,6 +25,9 @@ class CustomValueTextField: UITextField {
   
   override func draw(_ rect: CGRect) {
     super.draw(rect)
+    
+    layer.borderWidth = 1
+    layer.borderColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1).cgColor
     
     clipsToBounds = true
     layer.cornerRadius = 10
@@ -39,5 +43,26 @@ class CustomValueTextField: UITextField {
   
   override var intrinsicContentSize: CGSize {
     return .init(width: 0, height: 40)
+  }
+  
+  func addDoneButtonOnKeyboard(){
+    
+    let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: Constants.KeyBoard.doneToolBarHeight))
+    doneToolbar.barStyle = .default
+    
+    let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    let done: UIBarButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(self.doneButtonAction))
+    
+    let items = [flexSpace, done]
+    doneToolbar.items = items
+    doneToolbar.sizeToFit()
+    
+    self.inputAccessoryView = doneToolbar
+  }
+  
+  @objc func doneButtonAction(){
+    self.resignFirstResponder()
+    // Сработает делегат и все будет норм!
+    print("Tap Done Button")
   }
 }

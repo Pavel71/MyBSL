@@ -27,33 +27,35 @@ class Calculator {
   
   static func calculateMealCellHeight(isExpanded: Bool,countRow: Int, mealName: String) -> CGFloat {
     
-    let labelStackViewHeight = getMealNameLabelHeight(mealName: mealName)
+    let labelStackViewHeight = calculateMealNameLabelHeight(mealName: mealName)
+    let tableViewHeight = calculateProductListViewheight(countRow: countRow)
     
-    if isExpanded {
-      
-      let cellPading = Constants.Meal.ProductCell.margin.bottom * 2
-      let footerHeight = ProductsTableViewInMealCellFooterView.footerHeight
-      let headerInSection = ProductListHeaderInSection.height
-      let headerTableViewHeight = ProductListTableHeaderView.height
-      
-      var tableVIewHeight: CGFloat
-      
-      if countRow == 0 {
-        tableVIewHeight = footerHeight + headerInSection + cellPading + headerTableViewHeight + labelStackViewHeight
-        
-      } else {
-      
-        tableVIewHeight = (Constants.Meal.ProductCell.cellHeight * CGFloat(countRow))  + footerHeight + cellPading + headerInSection + labelStackViewHeight
-      }
-      
-      return tableVIewHeight
-    } else {
-      
-      return labelStackViewHeight
-    }
+    return isExpanded ? tableViewHeight + labelStackViewHeight : labelStackViewHeight
+    
+
   }
   
-  private static func getMealNameLabelHeight(mealName: String) -> CGFloat {
+  static func calculateProductListViewheight(countRow: Int) -> CGFloat {
+    
+    let cellPading = Constants.ProductList.margin.bottom * 2
+    let footerHeight = ProductsTableViewInMealCellFooterView.footerHeight
+    let headerInSection = ProductListHeaderInSection.height
+    let headerTableViewHeight = ProductListTableHeaderView.height
+    
+    var tableVIewHeight: CGFloat
+    
+    if countRow == 0 {
+      tableVIewHeight = footerHeight + headerInSection + cellPading + headerTableViewHeight
+      
+    } else {
+      
+      tableVIewHeight = (Constants.ProductList.cellHeight * CGFloat(countRow))  + footerHeight + cellPading + headerInSection
+    }
+    
+    return tableVIewHeight
+  }
+  
+  private static func calculateMealNameLabelHeight(mealName: String) -> CGFloat {
     
     let paddings = (Constants.Meal.Cell.margin.left * 2)
     let rightStackViewWidth: CGFloat = Constants.Meal.Cell.expandButtonWidth

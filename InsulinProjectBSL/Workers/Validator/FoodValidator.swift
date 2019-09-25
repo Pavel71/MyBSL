@@ -9,17 +9,6 @@
 import UIKit
 
 
-protocol Validateble {
-  
-  var isValidCallBack: ((Bool) -> Void)? {get set}
-  var isValidate: Bool! {get set}
-  func checkForm()
-  func setDefault()
-  
-  
-}
-
-
 class FoodValidator: Validateble {
 
   var name: String? { didSet {checkForm()} }

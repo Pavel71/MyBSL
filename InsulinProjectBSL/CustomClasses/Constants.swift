@@ -22,6 +22,10 @@ struct Constants {
 
   static let textFont = UIFont(name: "DINCondensed-Bold", size: 20)
   
+  struct KeyBoard {
+    static let doneToolBarHeight:CGFloat =  50
+  }
+  
   struct HeaderInSection {
     
     static let heightForHeaderInSection: CGFloat = 50
@@ -52,11 +56,14 @@ struct Constants {
       
     }
     
-    struct ProductCell {
-      
-      static let margin = UIEdgeInsets(top: 5, left: 16, bottom: 5, right: 16)
-      static let cellHeight: CGFloat = 32
-    }
+    
+  }
+  
+  struct ProductList {
+    
+    static let labelValueWidth: CGFloat = 60
+    static let margin = UIEdgeInsets(top: 5, left: 16, bottom: 5, right: 16)
+    static let cellHeight: CGFloat = 32
   }
   
   struct Main {

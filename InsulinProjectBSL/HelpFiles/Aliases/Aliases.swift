@@ -6,6 +6,10 @@
 //  Copyright © 2019 PavelM. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 typealias EmptyClouser = (() -> Void)
+
+typealias TextFieldPassClouser = ((UITextField) -> Void)
+
+
