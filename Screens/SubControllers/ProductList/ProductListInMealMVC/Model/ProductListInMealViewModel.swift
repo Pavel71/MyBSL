@@ -12,7 +12,7 @@ import Foundation
 protocol ProductListInMealViewModelable {
   
   var mealId: String? {get set}
-  var productsData:[ProductViewModel] {get set}
+  var productsData:[ProductListViewModel] {get set}
 }
 
 
@@ -20,6 +20,6 @@ struct ProductListInMealViewModel: ProductListInMealViewModelable {
   
   var mealId: String?
   
-  var productsData: [ProductViewModel]
+  var productsData: [ProductListViewModel]
   
 }

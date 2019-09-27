@@ -103,14 +103,14 @@ struct MealViewModel: MealViewModelCell {
   var isExpanded: Bool
   
   // protocol prop
-  var products: [ProductViewModel] // То что пойдет в дополнительный лист
+  var products: [ProductListViewModel] // То что пойдет в дополнительный лист
   
   // Что показываем в самой ячейки
   var name: String
   var typeMeal: String  // Заголовок секции
 
   
-  init(isExpand: Bool, name: String,typeMeal: String, products: [ProductViewModel],mealId: String?) {
+  init(isExpand: Bool, name: String,typeMeal: String, products: [ProductListViewModel],mealId: String?) {
     
     self.isExpanded = isExpand
     self.name = name
@@ -123,7 +123,9 @@ struct MealViewModel: MealViewModelCell {
   
 }
 
-struct ProductViewModel: ProductViewModelCell {
+struct ProductListViewModel: ProductListViewModelCell {
+  
+  var insulinValue: String?
   
   var carboIn100Grm: Int
   

@@ -39,7 +39,7 @@ class ProductsTableViewInMealCellFooterView: UIView {
 
     
     addSubview(addNewProductInMealButton)
-    addNewProductInMealButton.fillSuperview(padding: Constants.ProductList.margin)
+    addNewProductInMealButton.fillSuperview(padding: Constants.ProductList.marginCell)
     
   }
   

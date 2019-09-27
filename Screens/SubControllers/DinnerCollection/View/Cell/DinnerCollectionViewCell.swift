@@ -9,11 +9,11 @@
 import UIKit
 
 
-protocol DinnerViewModelCell {
+protocol DinnerViewModelCellable {
   
-  var shugar: String {get}
-  var products: [ProductViewModel] {get}
-  var insulin: String {get}
+  var isPreviosDinner: Bool {get}
+  var shugarBeforeEat: String {get}
+  var productListViewModel: [ProductListViewModel] {get}
   var shugarAfterMeal: String? {get}
 }
 
@@ -21,6 +21,15 @@ protocol DinnerViewModelCell {
 class DinnerCollectionViewCell: UICollectionViewCell {
   
   static let cellId = "DinnerCollectionViewCellId"
+  
+  // Нужно разделение Этой ячейки на предыдущий обед и текущий
+  
+  // Previos Dinner
+  
+  // 1. Сахар до еды - label
+  // 2. Кнопка добавить  продукт - Должна быть скрыта
+  // 3. Добавить label Сахар после обеда- который засетится с новыми данными
+  // 4.
   
   // Теперь у меня задача сделать функционал мне нужно принимать данные
   
@@ -38,12 +47,13 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   
   // Получается что здесь должен лежать контроллер со своим функционалом
   
+//  var isPreviosDinner = false
 
   
-  let shugarSetView = ShugarSetView(frame: .init(x: 0, y: 0, width: 0, height: ShugarSetView.height))
+  let shugarSetView = ShugarSetView(frame: .init(x: 0, y: 0, width: 0, height: Constants.Main.DinnerCollectionView.shugarViewInCellHeight))
+  
   let productListViewController = ProductListInDinnerViewController()
-  
-  
+  let touchesPassView = TouchesPassView()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -53,36 +63,64 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     setUpShuagarView()
     setUpProductView()
     
-    
-    
   }
+  
   
   // Set Up Shugar View
   private func setUpShuagarView() {
     
     addSubview(shugarSetView)
-    shugarSetView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: 10, left: 8, bottom: 0, right: 8))
+    shugarSetView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.DinnerCollectionView.ShugarViewTopMargin, left: 8, bottom: 0, right: 8))
   }
   // Set Up ProductView
   
   private func setUpProductView() {
-    addSubview(productListViewController.view)
-    productListViewController.view.anchor(top: shugarSetView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding:.init(top: 5, left: 8, bottom: 0, right: 8))
-    productListViewController.view.constrainHeight(constant: 200)
+
+    
+    addSubview(touchesPassView)
+    touchesPassView.fillSuperview()
+    
+    touchesPassView.addSubview(productListViewController.view)
+    productListViewController.view.anchor(top: shugarSetView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding:.init(top: 5, left: 8, bottom: Constants.DinnerCollectionView.ProductListViewBottomMargin, right: 8))
+    
+
     
   }
   
   
   
-  func setViewModel(viewModel: DinnerViewModelCell) {
+  func setViewModel(viewModel: DinnerViewModel) {
     
-    let productListViewModel = ProductListInMealViewModel(mealId: "Some Id", productsData: viewModel.products)
+    productListViewController.setViewModel(viewModel: viewModel.productListViewModel,isPreviosDinner: viewModel.isPreviosDinner)
     
-    // Здесь MealId не нужен! Поэтому это нужно упростить или продумать по дргуому чтобы можно было использовать контроллер в разных местах!
+    setProductListViewHeight(isPreviosDinner: viewModel.isPreviosDinner)
+    
+    confirmIfPreviosDinner(shugarBeforeEat: viewModel.shugarBeforeEat, isPreviosDinner: viewModel.isPreviosDinner)
     
     
-    productListViewController.setViewModel(viewModel: productListViewModel)
+  }
+  
+  private func confirmIfPreviosDinner(shugarBeforeEat: String, isPreviosDinner: Bool) {
     
+    shugarSetView.setShugarValueAndEnableTextField(shugarValue: shugarBeforeEat,isPreviosDinner: isPreviosDinner)
+    isHiddenAddButton(isPreviosDinner: isPreviosDinner)
+    
+    
+  }
+  
+  private func isHiddenAddButton(isPreviosDinner: Bool) {
+    
+    productListViewController.footerView.isHidden = isPreviosDinner
+    
+  }
+  
+  // Height Product List
+  
+  private func setProductListViewHeight(isPreviosDinner: Bool) {
+    
+    let heightProductListView = Calculator.calculateProductListViewheight(countRow: productListViewController.tableViewData.count,isPreviosDinner: isPreviosDinner)
+    
+    productListViewController.view.constrainHeight(constant: heightProductListView)
   }
   
   
@@ -101,3 +139,5 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
 }
+
+

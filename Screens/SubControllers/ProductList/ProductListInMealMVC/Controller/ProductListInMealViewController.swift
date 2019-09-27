@@ -39,7 +39,7 @@ class ProductListInMealViewController: UIViewController {
   
   var mealId: String = ""
   
-  var tableViewData: [ProductViewModel] = [] {
+  var tableViewData: [ProductListViewModel] = [] {
     didSet {
       tableView.reloadData()
     }

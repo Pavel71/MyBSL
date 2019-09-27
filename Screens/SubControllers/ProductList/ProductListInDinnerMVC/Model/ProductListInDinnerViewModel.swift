@@ -8,11 +8,26 @@
 
 import UIKit
 
-protocol ProductListInDinnerViewModelable {
+protocol ProductListInDinnerViewModelCell {
   
+  var nameProduct: String {get}
+  var portionValue: String {get}
+  var carboInPortionLabel: String {get}
+  var insulinValue: String {get}
   
 }
 
-struct ProductListInDinnerViewModel:ProductListInDinnerViewModelable {
+struct ProductListInDinnerViewModel {
+  
+  var productsData:[ProductListInDinnerViewModelCell]
+  
+//  var nameProduct: String
+//
+//  var portionValue: String
+//
+//  var carboInPortionLabel: String
+//
+//  var insulinValue: String
+  
   
 }

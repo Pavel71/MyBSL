@@ -29,3 +29,26 @@ enum Main {
   }
   
 }
+
+
+struct MainViewModel {
+  
+  var headerViewModelCell: MainTableViewHeaderCellable
+  
+  var dinnerCollectionViewModel: [DinnerViewModel]
+  
+  
+}
+
+struct MainHeaderViewModel: MainTableViewHeaderCellable {
+  
+  var lastInjectionValue: String
+  
+  var lastTimeInjectionValue: String
+  
+  var lastShugarValueLabel: String
+  
+  var insulinSupplyInPanValue: String
+  
+  
+}

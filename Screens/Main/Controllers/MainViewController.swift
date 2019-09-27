@@ -12,6 +12,11 @@ protocol MainDisplayLogic: class {
   func displayData(viewModel: Main.Model.ViewModel.ViewModelData)
 }
 
+
+
+
+
+
 class MainViewController: UIViewController, MainDisplayLogic {
   
   var interactor: MainBusinessLogic?
@@ -23,6 +28,18 @@ class MainViewController: UIViewController, MainDisplayLogic {
   
   // Место где выбран TextField
   var textFieldSelectedPoint: CGPoint!
+  
+  
+  // Здесь должна быть VIewModel которая содержит в себе данные для первой ячейки так и для второй ячейки
+  
+  
+  var mainViewModel: MainViewModel! {
+    
+    didSet {
+      tableView.reloadData()
+    }
+  }
+  
   
   // MARK: Object lifecycle
   
@@ -37,6 +54,7 @@ class MainViewController: UIViewController, MainDisplayLogic {
   // MARK: Setup
   
   private func setup() {
+    
     let viewController        = self
     let interactor            = MainInteractor()
     let presenter             = MainPresenter()
@@ -53,8 +71,27 @@ class MainViewController: UIViewController, MainDisplayLogic {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    print("View Did Load")
     setUpMainView()
+    
+    
+    // Set DummyViewModel
+    
+    let headerViewModel = MainHeaderViewModel.init(lastInjectionValue: "1.5", lastTimeInjectionValue: "13:30", lastShugarValueLabel: "7.5", insulinSupplyInPanValue: "156")
+    
+    let product1 = ProductListViewModel(insulinValue: "", carboIn100Grm: 5, carboInPortion: "12", name: "Макароны", portion: "200")
+    let product2 = ProductListViewModel(insulinValue: nil, carboIn100Grm: 13, carboInPortion: "25", name: "Абрикосы", portion: "156")
+    
+    let dinner1 = DinnerViewModel(isPreviosDinner: false, productListViewModel: [product1,product2,product2,product2,product1], shugarBeforeEat: "12", shugarAfterMeal: "12")
+    
+    let dinner2 = DinnerViewModel(isPreviosDinner: true, productListViewModel: [product1,product2], shugarBeforeEat: "12", shugarAfterMeal: "12")
+    
+    let dinner3 = DinnerViewModel(isPreviosDinner: true, productListViewModel: [product1,product2,product1], shugarBeforeEat: "12", shugarAfterMeal: "12")
+    
+    let dinnerViewModels = [
+      dinner1,dinner2,dinner3
+    ]
+    mainViewModel = MainViewModel.init(headerViewModelCell: headerViewModel, dinnerCollectionViewModel: dinnerViewModels)
     
   }
   override func viewWillAppear(_ animated: Bool) {
@@ -76,6 +113,11 @@ class MainViewController: UIViewController, MainDisplayLogic {
   
   func displayData(viewModel: Main.Model.ViewModel.ViewModelData) {
     
+  }
+  
+  
+  private func setViewModel(viewModel: MainViewModel) {
+    mainViewModel = viewModel
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -150,6 +192,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewHeaderCell.cellId) as! MainTableViewHeaderCell
     
+    cell.setViewModel(viewModel: mainViewModel.headerViewModelCell)
     return cell
     
     
@@ -158,6 +201,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
   private func configureMiddleCell() -> MainTableViewMiddleCell {
     
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewMiddleCell.cellId) as! MainTableViewMiddleCell
+    
+    
+    cell.setViewModel(viewModel: mainViewModel.dinnerCollectionViewModel)
     
     cell.dinnerCollectionViewController.didSelectTextField = {[weak self] textField in
       self?.didSelectTextField(textField: textField)
@@ -182,7 +228,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
       
     case 1:
       
-      return Constants.Main.Cell.mainMiddleCellHeight
+      let heightCell = Calculator.calculateMaxHeightDinnerCollectionView(dinnerData: mainViewModel.dinnerCollectionViewModel)
+
+      return heightCell + 50 // Pad
       
     case 2:
       return 200

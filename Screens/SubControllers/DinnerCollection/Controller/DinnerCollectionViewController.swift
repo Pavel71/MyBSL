@@ -24,11 +24,21 @@ class DinnerCollectionViewController: UIViewController {
     collectionView.showsHorizontalScrollIndicator = false
     collectionView.decelerationRate = .fast
     collectionView.backgroundColor = .white
+    collectionView.allowsSelection = false // Убераем выбор ячейка
     
     return collectionView
     
   }()
   
+  // Здесь не простая ProductView Model а с инмулином!
+  
+  var dinnerViewModel: [DinnerViewModel] = [] {
+    didSet {
+      collectionView.reloadData()
+    }
+  }
+  
+
   // Clousers Pass to MainController
   
   var didSelectTextField: TextFieldPassClouser?
@@ -53,6 +63,15 @@ class DinnerCollectionViewController: UIViewController {
     collectionView.register(DinnerCollectionViewCell.self, forCellWithReuseIdentifier: DinnerCollectionViewCell.cellId)
   }
   
+  func setViewModel(viewModel: [DinnerViewModel]) {
+    print("Set Dinner View Model")
+    
+    
+    dinnerViewModel = viewModel
+    print(dinnerViewModel)
+   
+  }
+  
 
   
 }
@@ -66,44 +85,65 @@ class DinnerCollectionViewController: UIViewController {
 extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UICollectionViewDelegate, UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 5
+    return dinnerViewModel.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
     let item = collectionView.dequeueReusableCell(withReuseIdentifier: DinnerCollectionViewCell.cellId, for: indexPath) as! DinnerCollectionViewCell
-    
-    let products = [ProductViewModel.init(carboIn100Grm: 10, carboInPortion: "5", name: "Пельмени", portion: "200")]
-    
-    let dummyViewModel = DinnerViewModel(shugar: "12", products: products, insulin: "1.5", shugarAfterMeal: nil)
-    
-    item.setViewModel(viewModel: dummyViewModel)
+
+    item.setViewModel(viewModel: dinnerViewModel[indexPath.row])
     setCellClousers(cell: item)
     return item
+    
   }
   
   // в этом методе я расставлю  clouser чтобы только этот контроллер отвечал за все действия происходящие на его территории!
   private func setCellClousers(cell: DinnerCollectionViewCell) {
     
     // TextFiedl
-    cell.shugarSetView.shugarValueTextField.delegate = self
+    cell.shugarSetView.shugarBeforeValueTextField.delegate = self
+    cell.shugarSetView.shugarAfterValueTextField.delegate = self
     
     cell.productListViewController.didSelectTextFieldCellClouser = {[weak self] textField in
       self?.textFieldDidBeginEditing(textField)
     }
     
-//    cell.productListViewController
+    cell.touchesPassView.didHitTestProductListViewControllerClouser = {[weak self] isItScrollProductList in
+      self?.scrollingProductListView(isItScrollProductList: isItScrollProductList)
+    }
+    
     
   }
   
+  private func scrollingProductListView(isItScrollProductList: Bool) {
+    collectionView.isScrollEnabled = isItScrollProductList
+  }
+  
+  private func getMaxCountProductInProductList() -> Int {
+    var maxCount: Int = 0
+    dinnerViewModel.forEach { (dinner) in
+      maxCount = max(dinner.productListViewModel.count,maxCount)
+    }
+    return maxCount
+  }
+  
+  // MARK: Height Items
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     
-    return .init(width: UIScreen.main.bounds.width - 40, height: Constants.Main.Cell.mainMiddleCellHeight - 20)
+    
+    let heightCell = Calculator.calculateMaxHeightDinnerCollectionView(dinnerData: dinnerViewModel )
+    
+    return .init(width: UIScreen.main.bounds.width - 40, height: heightCell + 40)
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
     return Constants.Main.DinnerCollectionView.contentInsert
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    collectionView.deselectItem(at: indexPath, animated: true)
   }
   
 

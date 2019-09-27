@@ -26,7 +26,7 @@ class MenuProductsListViewController: UIViewController {
   let foodRealmManager = FoodRealmManager()
   
   // Back Data!
-  var addProductsData: [ProductViewModel] = []
+  var addProductsData: [ProductListViewModel] = []
   
   
   let searchBar: UISearchBar = {

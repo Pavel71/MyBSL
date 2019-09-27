@@ -63,7 +63,7 @@ class ProductListHeaderInSection: UIView {
     stackView.distribution = .fill
     stackView.spacing = 5
     addSubview(stackView)
-    stackView.fillSuperview(padding: Constants.ProductList.margin)
+    stackView.fillSuperview(padding: Constants.ProductList.marginCell)
   }
   
   required init?(coder aDecoder: NSCoder) {

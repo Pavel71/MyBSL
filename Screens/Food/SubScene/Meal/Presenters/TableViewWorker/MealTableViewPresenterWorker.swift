@@ -48,7 +48,7 @@ class MealTableViewPresenterWorker {
 
         let carboInPortionInt = Calculator.calculateCarboInPortion(carboIn100grm: product.carbo, portionSize: product.portion)
     
-        let product = ProductViewModel.init(carboIn100Grm: product.carbo, carboInPortion: String(carboInPortionInt), name: product.name, portion: portionString)
+        let product = ProductListViewModel.init(insulinValue: nil, carboIn100Grm: product.carbo, carboInPortion: String(carboInPortionInt), name: product.name, portion: portionString)
         
         meals.products.append(product)
       }

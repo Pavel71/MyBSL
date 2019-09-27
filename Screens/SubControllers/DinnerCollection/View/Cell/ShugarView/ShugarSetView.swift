@@ -10,27 +10,56 @@ import UIKit
 
 class ShugarSetView: UIView {
   
-  static let height: CGFloat = 60
+
   
-  let shugarTitleLabel = CustomLabels(font: .systemFont(ofSize: 18), text: "Введите ваш текущий сахар в крови")
+  let shugarBeforeTitleLabel = CustomLabels(font: .systemFont(ofSize: 18), text: "Сахар до еды")
   
-  let shugarValueTextField = CustomValueTextField(placeholder: "7.2", cornerRadius: 10)
+  let shugarBeforeValueTextField = CustomValueTextField(placeholder: "7.2", cornerRadius: 10)
+  
+  let shugarAfterTitleLabel = CustomLabels(font: .systemFont(ofSize: 18), text: "Сахар после еды")
+  
+  let shugarAfterValueTextField = CustomValueTextField(placeholder: "7.2", cornerRadius: 10)
+  
+  
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    shugarValueTextField.keyboardType = .decimalPad
+    shugarBeforeValueTextField.keyboardType = .decimalPad
     
+    
+    let stackViewBefore = UIStackView(arrangedSubviews: [
+      shugarBeforeTitleLabel,shugarBeforeValueTextField
+      ])
+    stackViewBefore.distribution = .fill
+    shugarBeforeValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
+    
+    let stackViewAfter = UIStackView(arrangedSubviews: [
+      shugarAfterTitleLabel,shugarAfterValueTextField
+      ])
+    shugarAfterValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
+    stackViewAfter.distribution = .fill
     
     let stackView = UIStackView(arrangedSubviews: [
-      shugarTitleLabel,shugarValueTextField
+      stackViewBefore,stackViewAfter
       ])
-    shugarValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
-    stackView.distribution = .fill
+    stackView.distribution = .fillEqually
+    stackView.spacing = 10
     
+
     addSubview(stackView)
     stackView.fillSuperview()
     
 
+  }
+  
+  func setShugarValueAndEnableTextField(shugarValue: String,isPreviosDinner: Bool) {
+    
+    if isPreviosDinner {
+      shugarBeforeValueTextField.text = shugarValue
+      shugarBeforeValueTextField.isEnabled = !isPreviosDinner
+    }
+    
+    
   }
   
 

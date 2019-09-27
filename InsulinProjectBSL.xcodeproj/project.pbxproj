@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		053BAB52233B56D60080359B /* Validatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053BAB51233B56D60080359B /* Validatable.swift */; };
 		053BAB54233B5ACA0080359B /* DinnerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053BAB53233B5ACA0080359B /* DinnerViewModel.swift */; };
-		05952A4C233B7CC100EE996E /* InsulinSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A4B233B7CC100EE996E /* InsulinSetView.swift */; };
 		05952A4F233BB0FD00EE996E /* BaseProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A4E233BB0FD00EE996E /* BaseProductList.swift */; };
 		05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A51233BB22B00EE996E /* ProductListProtocol.swift */; };
 		05952A58233BB51600EE996E /* ProductListInDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */; };
 		05952A5A233BB7A900EE996E /* ProductListInDinnerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A59233BB7A900EE996E /* ProductListInDinnerViewModel.swift */; };
 		05952A5D233BC6AE00EE996E /* ChangeCarboInLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A5C233BC6AE00EE996E /* ChangeCarboInLabel.swift */; };
+		05952A5F233E873E00EE996E /* TouchesPassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A5E233E873E00EE996E /* TouchesPassView.swift */; };
 		05A4F1942338B82B00DFE4D7 /* NewFoodViewWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1932338B82B00DFE4D7 /* NewFoodViewWorker.swift */; };
 		05A4F1962338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1952338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift */; };
 		05A4F19F2339EF6A00DFE4D7 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F19E2339EF6A00DFE4D7 /* MainView.swift */; };
@@ -119,12 +119,12 @@
 /* Begin PBXFileReference section */
 		053BAB51233B56D60080359B /* Validatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validatable.swift; sourceTree = "<group>"; };
 		053BAB53233B5ACA0080359B /* DinnerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerViewModel.swift; sourceTree = "<group>"; };
-		05952A4B233B7CC100EE996E /* InsulinSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsulinSetView.swift; sourceTree = "<group>"; };
 		05952A4E233BB0FD00EE996E /* BaseProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductList.swift; sourceTree = "<group>"; };
 		05952A51233BB22B00EE996E /* ProductListProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListProtocol.swift; sourceTree = "<group>"; };
 		05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInDinnerViewController.swift; sourceTree = "<group>"; };
 		05952A59233BB7A900EE996E /* ProductListInDinnerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInDinnerViewModel.swift; sourceTree = "<group>"; };
 		05952A5C233BC6AE00EE996E /* ChangeCarboInLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCarboInLabel.swift; sourceTree = "<group>"; };
+		05952A5E233E873E00EE996E /* TouchesPassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchesPassView.swift; sourceTree = "<group>"; };
 		05A4F1932338B82B00DFE4D7 /* NewFoodViewWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFoodViewWorker.swift; sourceTree = "<group>"; };
 		05A4F1952338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTableViewPresenterWorker.swift; sourceTree = "<group>"; };
 		05A4F19E2339EF6A00DFE4D7 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -287,14 +287,6 @@
 				05A4F1C3233A3E8000DFE4D7 /* ShugarSetView.swift */,
 			);
 			path = ShugarView;
-			sourceTree = "<group>";
-		};
-		05952A4A233B7C8A00EE996E /* InsulinSetView */ = {
-			isa = PBXGroup;
-			children = (
-				05952A4B233B7CC100EE996E /* InsulinSetView.swift */,
-			);
-			path = InsulinSetView;
 			sourceTree = "<group>";
 		};
 		05952A4D233BB0E300EE996E /* ProductList */ = {
@@ -529,8 +521,8 @@
 		05A4F1BE233A36E100DFE4D7 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				05952A5E233E873E00EE996E /* TouchesPassView.swift */,
 				05A4F1BF233A371500DFE4D7 /* DinnerCollectionViewCell.swift */,
-				05952A4A233B7C8A00EE996E /* InsulinSetView */,
 				05952A49233B783500EE996E /* ShugarView */,
 			);
 			path = Cell;
@@ -1353,6 +1345,7 @@
 				F1E78D1C230D683A00592AB8 /* Path.swift in Sources */,
 				F112845723278CDF00416AF4 /* AddNewElementView.swift in Sources */,
 				F1E78CFF230D544C00592AB8 /* CustomLabels.swift in Sources */,
+				05952A5F233E873E00EE996E /* TouchesPassView.swift in Sources */,
 				F1E78C9C230D31E600592AB8 /* AppDelegate.swift in Sources */,
 				F1103B63232A735D009A338A /* NewMealViewWorker.swift in Sources */,
 				F1E78CB8230D334B00592AB8 /* FoodPresenter.swift in Sources */,
@@ -1371,7 +1364,6 @@
 				F11132B4232BABF2000E6994 /* ProductListHeaderInSection.swift in Sources */,
 				F1E78CE8230D33AE00592AB8 /* StatsModels.swift in Sources */,
 				05A4F1AC2339FB3600DFE4D7 /* MainTableViewFooterCell.swift in Sources */,
-				05952A4C233B7CC100EE996E /* InsulinSetView.swift in Sources */,
 				05A4F1A82339FB1C00DFE4D7 /* MainTableViewHeaderCell.swift in Sources */,
 				05A4F1AA2339FB2900DFE4D7 /* MainTableViewMiddleCell.swift in Sources */,
 				05A4F1942338B82B00DFE4D7 /* NewFoodViewWorker.swift in Sources */,

@@ -9,10 +9,12 @@
 import UIKit
 
 
-protocol ProductViewModelCell {
+protocol ProductListViewModelCell {
+  
   var name: String {get}
   var portion: String {get}
   var carboInPortion: String {get}
+  var insulinValue: String? {get}
 }
 
 class ProductListCell: UITableViewCell {
@@ -66,6 +68,7 @@ class ProductListCell: UITableViewCell {
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
     portionTextField.keyboardType = .numberPad
     insulinTextField.keyboardType = .decimalPad
     
@@ -83,19 +86,23 @@ class ProductListCell: UITableViewCell {
     stackView.distribution = .fill
     stackView.spacing = 5
     addSubview(stackView)
-    stackView.fillSuperview(padding: Constants.ProductList.margin)
+    stackView.fillSuperview(padding: Constants.ProductList.marginCell)
     
     
   }
   
+  
+  // По сути здесь нужно узнавать если с инсулином то засеть еще и инсулин
 
-  func setViewModel(viewModel: ProductViewModelCell,withInsulinTextFields: Bool) {
+  func setViewModel(viewModel: ProductListViewModelCell,withInsulinTextFields: Bool, isPreviosDinner: Bool = false) {
     
     nameLabel.text = viewModel.name
     portionTextField.text = viewModel.portion
     carboInPortionLabel.text = viewModel.carboInPortion
     
     insulinTextField.isHidden = !withInsulinTextFields
+    portionTextField.isUserInteractionEnabled = !isPreviosDinner
+    portionTextField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
 
   }
 

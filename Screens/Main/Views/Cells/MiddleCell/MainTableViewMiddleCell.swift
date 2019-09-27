@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol MainTableViewMiddleCellable {
+  
+  var dinnerCollectionViewData: [DinnerViewModel] {get}
+}
+
 
 class MainTableViewMiddleCell: UITableViewCell {
   
@@ -21,6 +26,11 @@ class MainTableViewMiddleCell: UITableViewCell {
     
     addSubview(dinnerCollectionViewController.view)
     dinnerCollectionViewController.view.fillSuperview()
+  }
+  
+  func setViewModel(viewModel: [DinnerViewModel]) {
+    
+    dinnerCollectionViewController.setViewModel(viewModel: viewModel)
   }
   
   required init?(coder aDecoder: NSCoder) {

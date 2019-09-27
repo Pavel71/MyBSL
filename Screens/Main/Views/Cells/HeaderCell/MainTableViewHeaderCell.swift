@@ -9,6 +9,15 @@
 import UIKit
 
 
+protocol MainTableViewHeaderCellable {
+  
+  var lastInjectionValue: String {get}
+  var lastTimeInjectionValue: String {get}
+  var lastShugarValueLabel: String {get}
+  var insulinSupplyInPanValue: String {get}
+}
+
+
 class MainTableViewHeaderCell: UITableViewCell {
   
   static let cellId = "MainTableViewHeaderCellId"
@@ -94,6 +103,14 @@ class MainTableViewHeaderCell: UITableViewCell {
     addSubview(overAllStackView)
     overAllStackView.fillSuperview(padding: .init(top: 5, left: 8, bottom: 5, right: 8))
 
+  }
+  
+  func setViewModel(viewModel:MainTableViewHeaderCellable) {
+    
+    lastInjectionValueLabel.text = viewModel.lastInjectionValue
+    lastTimeInjectionValueLabel.text = viewModel.lastTimeInjectionValue
+    insulinSupplyInPanValueLabel.text = viewModel.insulinSupplyInPanValue
+    lastShugarValueLabel.text = viewModel.lastShugarValueLabel
   }
   
   

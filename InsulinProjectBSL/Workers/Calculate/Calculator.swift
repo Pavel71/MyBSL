@@ -35,10 +35,29 @@ class Calculator {
 
   }
   
-  static func calculateProductListViewheight(countRow: Int) -> CGFloat {
+  static func calculateMaxHeightDinnerCollectionView(dinnerData: [DinnerViewModel]) -> CGFloat {
     
-    let cellPading = Constants.ProductList.margin.bottom * 2
-    let footerHeight = ProductsTableViewInMealCellFooterView.footerHeight
+    
+    var maxCount: Int = 0
+    dinnerData.forEach { (dinner) in
+      maxCount = max(dinner.productListViewModel.count,maxCount)
+    }
+    
+    let maxHeightCollectionView = Calculator.calculateProductListViewheight(countRow:maxCount)
+    
+    let margins = Constants.DinnerCollectionView.ShugarViewTopMargin + Constants.DinnerCollectionView.ProductListViewBottomMargin
+    
+    let heightCell = maxHeightCollectionView + Constants.Main.DinnerCollectionView.shugarViewInCellHeight + margins
+    
+    return heightCell
+  }
+  
+  static func calculateProductListViewheight(countRow: Int, isPreviosDinner: Bool = false) -> CGFloat {
+    
+    let cellPading = Constants.ProductList.marginCell.bottom * 2
+    
+    let footerHeight = isPreviosDinner ? 0 : ProductsTableViewInMealCellFooterView.footerHeight
+    
     let headerInSection = ProductListHeaderInSection.height
     let headerTableViewHeight = ProductListTableHeaderView.height
     

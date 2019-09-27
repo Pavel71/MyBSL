@@ -12,11 +12,15 @@ import UIKit
 class ProductListInDinnerViewController: BaseProductList {
   
   
-  var tableViewData: [ProductViewModel] = [] {
+  
+  var isPreviosDinner: Bool = false
+  
+  var tableViewData: [ProductListViewModel] = [] {
     didSet {
       tableView.reloadData()
     }
   }
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -27,22 +31,24 @@ class ProductListInDinnerViewController: BaseProductList {
   override func setUpTableView() {
     super.setUpTableView()
     
+    
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(ProductListCell.self, forCellReuseIdentifier: ProductListCell.cellID)
+    tableView.keyboardDismissMode = .interactive
     
     footerView.addNewProductInMealButton.addTarget(self, action: #selector(handleAddProductInMeal), for: .touchUpInside)
   }
   
-  func setViewModel(viewModel: ProductListInMealViewModel) {
+  func setViewModel(viewModel: [ProductListViewModel], isPreviosDinner: Bool) {
     
-    tableViewData = viewModel.productsData
-    
+    // Ну
+    self.isPreviosDinner = isPreviosDinner
+    tableViewData = viewModel
     tableView.tableHeaderView = tableViewData.count == 0 ? headerView : nil
+    
   }
-  
 
-  
   
 }
 
@@ -53,6 +59,7 @@ extension ProductListInDinnerViewController {
   @objc private func handleAddProductInMeal() {
     print("Add New Product")
   }
+  
 }
 
 extension ProductListInDinnerViewController: UITableViewDataSource {
@@ -63,15 +70,17 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
   
   // Здесь вот уже мне понадобится Custom ячейка с name и зщкешщт
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
     let cell = tableView.dequeueReusableCell(withIdentifier: ProductListCell.cellID, for: indexPath) as! ProductListCell
     
-    cell.setViewModel(viewModel: tableViewData[indexPath.row], withInsulinTextFields: true)
-    setClousers(cell: cell)
+    cell.setViewModel(viewModel: tableViewData[indexPath.row], withInsulinTextFields: true, isPreviosDinner: isPreviosDinner)
+    
+    setCellClousers(cell: cell)
     
     return cell
   }
   
-  private func setClousers(cell:ProductListCell) {
+  private func setCellClousers(cell:ProductListCell) {
     
     cell.didBeginEditingTextField = {[weak self] textField in
       self?.textFieldDidBeginEditing(textField) // SuperClass
@@ -86,6 +95,10 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     
     cell.didInsulinTextFieldEditing = {[weak self] textField in
       self?.handleInsulinTextFiedlEndEditing(textField: textField)}
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
   }
   
 }
@@ -107,6 +120,8 @@ extension ProductListInDinnerViewController {
     ChangeCarboInlabel.changeCarboInlabel(tableView: tableView, carboOn100Grm: carboIn100GrmPoroduct, portion: portion, indexPath: indexPath)
   }
   
+  
+  // Эти методы особо не нужны
   private func handlePortionTextFieldEndEditing(textField: UITextField) {
     print("Portion End Editing")
   }
@@ -114,6 +129,7 @@ extension ProductListInDinnerViewController {
   private func handleInsulinTextFiedlEndEditing(textField: UITextField) {
     print("Insulin End Editing")
   }
+  
   
 }
 
@@ -131,7 +147,32 @@ extension ProductListInDinnerViewController {
     
     return header
   }
+  
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return ProductListHeaderInSection.height
   }
+  
+}
+
+// MARK: Swipe write to Delete
+
+extension ProductListInDinnerViewController {
+
+  // Delete Row
+  func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    
+    let deleteAction = UIContextualAction(style: .destructive, title: "Удалить продукт") { (action, view, succsess) in
+      
+//      let productRow = indexPath.row
+//
+//      self.didDeleteProductFromMealClouser!(productRow, self.mealId)
+      print("удалить продукт")
+      
+      succsess(true)
+    }
+    // Удаляет сам по индексу и не андо парится!
+    return UISwipeActionsConfiguration(actions: [deleteAction])
+  }
+  
+  
 }

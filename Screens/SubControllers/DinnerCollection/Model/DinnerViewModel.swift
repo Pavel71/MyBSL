@@ -9,13 +9,13 @@
 import Foundation
 
 
-struct DinnerViewModel: DinnerViewModelCell {
+struct DinnerViewModel: DinnerViewModelCellable {
   
-  var shugar: String
+  var isPreviosDinner: Bool = false
   
-  var products: [ProductViewModel]
+  var productListViewModel: [ProductListViewModel]
   
-  var insulin: String
+  var shugarBeforeEat: String
   
   var shugarAfterMeal: String?
   

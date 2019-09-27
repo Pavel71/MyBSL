@@ -24,7 +24,7 @@ protocol MealViewModelCell {
   var name: String {get set}
   var typeMeal: String {get set}
   
-  var products: [ProductViewModel] {get set}
+  var products: [ProductListViewModel] {get set}
 }
 
 
