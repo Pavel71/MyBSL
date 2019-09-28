@@ -3,10 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0509FD00233F9DBC00B04B30 /* ConfirmProductListResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0509FCFF233F9DBC00B04B30 /* ConfirmProductListResultViewModel.swift */; };
+		0509FD04233FB11A00B04B30 /* ProductListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0509FD03233FB11A00B04B30 /* ProductListModel.swift */; };
+		0509FD06233FCA9700B04B30 /* DinnerRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0509FD05233FCA9700B04B30 /* DinnerRealm.swift */; };
 		053BAB52233B56D60080359B /* Validatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053BAB51233B56D60080359B /* Validatable.swift */; };
 		053BAB54233B5ACA0080359B /* DinnerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053BAB53233B5ACA0080359B /* DinnerViewModel.swift */; };
 		05952A4F233BB0FD00EE996E /* BaseProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A4E233BB0FD00EE996E /* BaseProductList.swift */; };
@@ -27,6 +30,8 @@
 		05A4F1C0233A371500DFE4D7 /* DinnerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1BF233A371500DFE4D7 /* DinnerCollectionViewCell.swift */; };
 		05A4F1C2233A3D1500DFE4D7 /* CustomValueTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1C1233A3D1500DFE4D7 /* CustomValueTextField.swift */; };
 		05A4F1C4233A3E8000DFE4D7 /* ShugarSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1C3233A3E8000DFE4D7 /* ShugarSetView.swift */; };
+		05C16D61233F23A800486CAE /* ProductListResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D60233F23A800486CAE /* ProductListResultView.swift */; };
+		05C16D66233F4E6100486CAE /* RobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D65233F4E6100486CAE /* RobotView.swift */; };
 		EBAC44563616B6E965B0E898 /* Pods_InsulinProjectBSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E76FB4114CAD25CECEF0EE0 /* Pods_InsulinProjectBSL.framework */; };
 		F1103B59232A34EF009A338A /* ProductsTableViewInMealCellFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1103B58232A34EF009A338A /* ProductsTableViewInMealCellFooterView.swift */; };
 		F1103B5D232A5DFF009A338A /* MealValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1103B5C232A5DFF009A338A /* MealValidator.swift */; };
@@ -117,6 +122,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0509FCFF233F9DBC00B04B30 /* ConfirmProductListResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmProductListResultViewModel.swift; sourceTree = "<group>"; };
+		0509FD03233FB11A00B04B30 /* ProductListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListModel.swift; sourceTree = "<group>"; };
+		0509FD05233FCA9700B04B30 /* DinnerRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerRealm.swift; sourceTree = "<group>"; };
 		053BAB51233B56D60080359B /* Validatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validatable.swift; sourceTree = "<group>"; };
 		053BAB53233B5ACA0080359B /* DinnerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerViewModel.swift; sourceTree = "<group>"; };
 		05952A4E233BB0FD00EE996E /* BaseProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductList.swift; sourceTree = "<group>"; };
@@ -137,6 +145,8 @@
 		05A4F1BF233A371500DFE4D7 /* DinnerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerCollectionViewCell.swift; sourceTree = "<group>"; };
 		05A4F1C1233A3D1500DFE4D7 /* CustomValueTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomValueTextField.swift; sourceTree = "<group>"; };
 		05A4F1C3233A3E8000DFE4D7 /* ShugarSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShugarSetView.swift; sourceTree = "<group>"; };
+		05C16D60233F23A800486CAE /* ProductListResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListResultView.swift; sourceTree = "<group>"; };
+		05C16D65233F4E6100486CAE /* RobotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotView.swift; sourceTree = "<group>"; };
 		3E76FB4114CAD25CECEF0EE0 /* Pods_InsulinProjectBSL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InsulinProjectBSL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A0FC66BAC35F6B18007EC60 /* Pods-InsulinProjectBSL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsulinProjectBSL.debug.xcconfig"; path = "Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL.debug.xcconfig"; sourceTree = "<group>"; };
 		909A81B346C959FAD75545BC /* Pods-InsulinProjectBSL.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsulinProjectBSL.release.xcconfig"; path = "Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL.release.xcconfig"; sourceTree = "<group>"; };
@@ -242,6 +252,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0509FD01233FB08500B04B30 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0509FD03233FB11A00B04B30 /* ProductListModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0509FD02233FB0F000B04B30 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				05952A4E233BB0FD00EE996E /* BaseProductList.swift */,
+				05952A53233BB4E900EE996E /* ProductListInDinnerMVC */,
+				F1CC2D66232FB3BE00EF7D18 /* ProductListInMealMVC */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		053BAB50233B56C10080359B /* Validatable */ = {
 			isa = PBXGroup;
 			children = (
@@ -292,11 +320,10 @@
 		05952A4D233BB0E300EE996E /* ProductList */ = {
 			isa = PBXGroup;
 			children = (
-				05952A5B233BC69600EE996E /* Worker */,
+				0509FD02233FB0F000B04B30 /* Controllers */,
 				F1CC2D68232FB3D800EF7D18 /* View */,
-				05952A53233BB4E900EE996E /* ProductListInDinnerMVC */,
-				F1CC2D66232FB3BE00EF7D18 /* ProductListInMealMVC */,
-				05952A4E233BB0FD00EE996E /* BaseProductList.swift */,
+				05952A5B233BC69600EE996E /* Worker */,
+				0509FD01233FB08500B04B30 /* Model */,
 			);
 			path = ProductList;
 			sourceTree = "<group>";
@@ -346,6 +373,7 @@
 			isa = PBXGroup;
 			children = (
 				05952A5C233BC6AE00EE996E /* ChangeCarboInLabel.swift */,
+				0509FCFF233F9DBC00B04B30 /* ConfirmProductListResultViewModel.swift */,
 			);
 			path = Worker;
 			sourceTree = "<group>";
@@ -445,6 +473,7 @@
 		05A4F1A62339FAA600DFE4D7 /* FooterCell */ = {
 			isa = PBXGroup;
 			children = (
+				05C16D64233F4E4B00486CAE /* RobotView */,
 				05A4F1AB2339FB3600DFE4D7 /* MainTableViewFooterCell.swift */,
 			);
 			path = FooterCell;
@@ -521,11 +550,43 @@
 		05A4F1BE233A36E100DFE4D7 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				05952A5E233E873E00EE996E /* TouchesPassView.swift */,
 				05A4F1BF233A371500DFE4D7 /* DinnerCollectionViewCell.swift */,
 				05952A49233B783500EE996E /* ShugarView */,
+				05C16D63233F349A00486CAE /* TouchsView */,
+				05C16D5F233F233C00486CAE /* ResultsView */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		05C16D5F233F233C00486CAE /* ResultsView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ResultsView;
+			sourceTree = "<group>";
+		};
+		05C16D62233F323A00486CAE /* ResultsView */ = {
+			isa = PBXGroup;
+			children = (
+				05C16D60233F23A800486CAE /* ProductListResultView.swift */,
+			);
+			path = ResultsView;
+			sourceTree = "<group>";
+		};
+		05C16D63233F349A00486CAE /* TouchsView */ = {
+			isa = PBXGroup;
+			children = (
+				05952A5E233E873E00EE996E /* TouchesPassView.swift */,
+			);
+			path = TouchsView;
+			sourceTree = "<group>";
+		};
+		05C16D64233F4E4B00486CAE /* RobotView */ = {
+			isa = PBXGroup;
+			children = (
+				05C16D65233F4E6100486CAE /* RobotView.swift */,
+			);
+			path = RobotView;
 			sourceTree = "<group>";
 		};
 		4A80211A4DAEF2A23ED80AC7 /* Pods */ = {
@@ -549,6 +610,7 @@
 			isa = PBXGroup;
 			children = (
 				F1103B58232A34EF009A338A /* ProductsTableViewInMealCellFooterView.swift */,
+				05C16D62233F323A00486CAE /* ResultsView */,
 			);
 			path = TableViewFooter;
 			sourceTree = "<group>";
@@ -815,10 +877,10 @@
 		F150DBE82317DCCA00380AE0 /* Meal */ = {
 			isa = PBXGroup;
 			children = (
+				F13B352523192C510020AD26 /* Views */,
 				F112845D2327D93100416AF4 /* Controllers */,
 				F112845F2327D94700416AF4 /* Presenters */,
 				F112845E2327D93B00416AF4 /* Interactors */,
-				F13B352523192C510020AD26 /* Views */,
 				F11284622327D96300416AF4 /* Routers */,
 				F11284612327D95800416AF4 /* Workers */,
 				F11284602327D94F00416AF4 /* Models */,
@@ -1010,6 +1072,7 @@
 				F1E78D1F230D68DC00592AB8 /* ProductRealm.swift */,
 				F13B351E2318D8170020AD26 /* MealRealm.swift */,
 				F1116324231D3478000C79FA /* SectionMealTypeRealm.swift */,
+				0509FD05233FCA9700B04B30 /* DinnerRealm.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -1272,20 +1335,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ProgressHUD/ProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
-				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1301,6 +1355,8 @@
 			files = (
 				F1E78CD7230D338A00592AB8 /* SettingsWorker.swift in Sources */,
 				F1932B42231FB009003DC351 /* UITableView + Extension.swift in Sources */,
+				0509FD00233F9DBC00B04B30 /* ConfirmProductListResultViewModel.swift in Sources */,
+				05C16D61233F23A800486CAE /* ProductListResultView.swift in Sources */,
 				F1E78D1A230D67FF00592AB8 /* RealmProvider.swift in Sources */,
 				F1116325231D3478000C79FA /* SectionMealTypeRealm.swift in Sources */,
 				F1E78CB9230D334B00592AB8 /* FoodWorker.swift in Sources */,
@@ -1330,6 +1386,7 @@
 				F1E78CC7230D336B00592AB8 /* MainPresenter.swift in Sources */,
 				F1E78CCB230D336B00592AB8 /* MainViewController.swift in Sources */,
 				F13B35212318DED40020AD26 /* MealRealmManager.swift in Sources */,
+				0509FD06233FCA9700B04B30 /* DinnerRealm.swift in Sources */,
 				F150DBF22317DD2300380AE0 /* MealRouter.swift in Sources */,
 				F1E78D09230D54F500592AB8 /* Aliases.swift in Sources */,
 				F111632B231E8F71000C79FA /* CustomHeaderInSectionView.swift in Sources */,
@@ -1372,6 +1429,7 @@
 				F1E78D0C230D55C400592AB8 /* CustomNavBar.swift in Sources */,
 				05A4F1962338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift in Sources */,
 				F1E78CB0230D325600592AB8 /* BaseTabBarController.swift in Sources */,
+				05C16D66233F4E6100486CAE /* RobotView.swift in Sources */,
 				F1E78D3E231425E600592AB8 /* FoodValidator.swift in Sources */,
 				F1CC2D6D232FB6D200EF7D18 /* ProductListInMealViewModel.swift in Sources */,
 				F1E78CDB230D338A00592AB8 /* SettingsInteractor.swift in Sources */,
@@ -1390,6 +1448,7 @@
 				F1E78CC8230D336B00592AB8 /* MainWorker.swift in Sources */,
 				F150DBE523163E8000380AE0 /* CustomCategoryTextField.swift in Sources */,
 				F1E78D18230D58AE00592AB8 /* FoodView.swift in Sources */,
+				0509FD04233FB11A00B04B30 /* ProductListModel.swift in Sources */,
 				F1EC85A8233251AD00E14D33 /* UiImageView + Extension.swift in Sources */,
 				F1E78CCA230D336B00592AB8 /* MainModels.swift in Sources */,
 				F1116329231D555F000C79FA /* ProductListCell.swift in Sources */,
@@ -1541,14 +1600,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CYVRG4B3R9;
+				DEVELOPMENT_TEAM = 3LH58YF246;
 				INFOPLIST_FILE = "$(SRCROOT)/InsulinProjectBSL/SupportFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Pavel.M.InsulinProjectBSL;
+				PRODUCT_BUNDLE_IDENTIFIER = Pavel.M.InsulinProjectBSLMackBook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1561,14 +1620,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CYVRG4B3R9;
+				DEVELOPMENT_TEAM = 3LH58YF246;
 				INFOPLIST_FILE = "$(SRCROOT)/InsulinProjectBSL/SupportFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Pavel.M.InsulinProjectBSL;
+				PRODUCT_BUNDLE_IDENTIFIER = Pavel.M.InsulinProjectBSLMackBook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

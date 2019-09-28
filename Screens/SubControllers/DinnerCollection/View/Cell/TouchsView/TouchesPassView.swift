@@ -18,15 +18,17 @@ class TouchesPassView: UIView {
   override func hitTest(_ point: CGPoint,with event: UIEvent?) -> UIView? {
     
     let view = super.hitTest(point, with: event)
-    
 
+    print("Hit Test")
     if view === self {
-      
+
       didHitTestProductListViewControllerClouser!(true)
       return nil
     }
-    
+
     didHitTestProductListViewControllerClouser!(false)
     return view
+    
+    
   }
 }

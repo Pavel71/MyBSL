@@ -40,6 +40,8 @@ struct MainViewModel {
   
 }
 
+// Header
+
 struct MainHeaderViewModel: MainTableViewHeaderCellable {
   
   var lastInjectionValue: String
@@ -49,6 +51,11 @@ struct MainHeaderViewModel: MainTableViewHeaderCellable {
   var lastShugarValueLabel: String
   
   var insulinSupplyInPanValue: String
+  
+  
+}
+
+struct MainDinnerViewModel {
   
   
 }

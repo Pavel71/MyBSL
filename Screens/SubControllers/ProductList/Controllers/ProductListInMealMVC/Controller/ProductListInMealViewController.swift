@@ -22,12 +22,9 @@ import ProgressHUD
 
 
 
-
-
-
 class ProductListInMealViewController: UIViewController {
   
-  var footerView = ProductsTableViewInMealCellFooterView(frame: .init(x: 0, y: 0, width: 0, height: ProductsTableViewInMealCellFooterView.footerHeight))
+  var footerView = ProductsTableViewInMealCellFooterView(frame: .init(x: 0, y: 0, width: 0, height: Constants.ProductList.TableFooterView.footerHeight))
   
   var tableView = UITableView(frame: .zero, style: .plain)
   var headerView = ProductListTableHeaderView(frame: .init(x: 0, y: 0, width: 0, height: ProductListTableHeaderView.height))
@@ -39,11 +36,7 @@ class ProductListInMealViewController: UIViewController {
   
   var mealId: String = ""
   
-  var tableViewData: [ProductListViewModel] = [] {
-    didSet {
-      tableView.reloadData()
-    }
-  }
+  var tableViewData: [ProductListViewModel] = []
   
   
   
@@ -92,12 +85,18 @@ class ProductListInMealViewController: UIViewController {
   
   func setViewModel(viewModel: ProductListInMealViewModel) {
     
+    
     if let mealId = viewModel.mealId  {
       self.mealId = mealId
     }
     tableViewData = viewModel.productsData
+    
+    let productListResultViewModel = ConfirmProductListResultViewModel.calculateProductListResultViewModel(data: tableViewData)
+    
+    footerView.resultsView.setViewModel(viewModel: productListResultViewModel,withInsulin: false)
 
     tableView.tableHeaderView = tableViewData.count == 0 ? headerView : nil
+    tableView.reloadData()
   }
   
   // MARK: Add Product In Meal TableViewFooter
@@ -105,10 +104,7 @@ class ProductListInMealViewController: UIViewController {
   @objc private func handleAddProductInMeal() {
     didAddProductInMealClouser!(mealId)
   }
-  
-  
-  
-  
+
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -160,7 +156,7 @@ extension ProductListInMealViewController: UITableViewDataSource, UITableViewDel
     
     let cell = tableView.cellForRow(at: indexPath) as! ProductListCell
     cell.portionTextField.becomeFirstResponder()
-    print("cell in meal")
+    
   }
   
   
@@ -197,6 +193,38 @@ extension ProductListInMealViewController: UITextFieldDelegate {
     let carboInPortion: Int = Calculator.calculateCarboInPortion(carboIn100grm: carboIn100GrmPoroduct, portionSize: portion)
     
     cell.carboInPortionLabel.text = String(carboInPortion)
+    
+    let sumPortion = calculateSumPortion(portion: portion, indexPath: indexPath)
+    let sumCarbo = calculateSumCarbo(carboInPortion: String(carboInPortion), indexPath: indexPath)
+    
+    footerView.resultsView.carboResultLabel.text = String(sumCarbo)
+    footerView.resultsView.portionResultLabel.text = String(sumPortion)
+  }
+  
+  // Обязательно собрать это в 1 класс
+  
+  private func calculateSumCarbo(carboInPortion: String,indexPath: IndexPath) -> Int {
+    
+    tableViewData[indexPath.row].carboInPortion = carboInPortion
+    let arrayCarbo = tableViewData.map { (product) -> Int  in
+      
+      let carboInt = Int(product.carboInPortion)
+      return carboInt!
+    }
+    let sum = arrayCarbo.reduce(0,+)
+    return sum
+  }
+  
+  private func calculateSumPortion(portion: Int,indexPath: IndexPath) -> Int {
+    
+    tableViewData[indexPath.row].portion = String(portion)
+    let arrayPortion = tableViewData.map { (product) -> Int  in
+      
+      let portionInt = Int(product.portion)
+      return portionInt!
+    }
+    let sumPortion = arrayPortion.reduce(0,+)
+    return sumPortion
   }
   
   private func getIndexPathIntableViewForTextFiedl(textField: UITextField) -> IndexPath? {
@@ -227,9 +255,6 @@ extension ProductListInMealViewController: UITextFieldDelegate {
     }
     
   }
-  
-  
-  
 
   
   private func getRowProductThanChangePortion(textField: UITextField) -> Int? {
@@ -246,6 +271,7 @@ extension ProductListInMealViewController {
   
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    
     let header = ProductListHeaderInSection(frame: .zero, withInsulinLabel: false)
     // Если продуктов нет то скрой хеадер
     header.isHidden = tableViewData.isEmpty

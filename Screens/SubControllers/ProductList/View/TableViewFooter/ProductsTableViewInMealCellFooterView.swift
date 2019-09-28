@@ -11,17 +11,11 @@ import UIKit
 
 class ProductsTableViewInMealCellFooterView: UIView {
   
-  static let footerHeight:CGFloat = 50
+  static let footerHeight: CGFloat = 50
   
 //   Add New Product
   
-
-//  let addNewProductLabel: UILabel = {
-//    let label = UILabel()
-//    label.text = "Добавить продукты:"
-//    label.font = UIFont.systemFont(ofSize: 16)
-//    return label
-//  }()
+  let resultsView = ProductListResultView()
   
     let addNewProductInMealButton: UIButton = {
       let button = UIButton(type: .system)
@@ -36,10 +30,29 @@ class ProductsTableViewInMealCellFooterView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-
+    let stackView = UIStackView(arrangedSubviews: [
+      resultsView,
+      addNewProductInMealButton
+      ])
+    stackView.axis = .vertical
+    stackView.distribution = .fill
+    stackView.spacing = 5
     
-    addSubview(addNewProductInMealButton)
-    addNewProductInMealButton.fillSuperview(padding: Constants.ProductList.marginCell)
+    resultsView.constrainHeight(constant: Constants.ProductList.TableFooterView.resultsViewHeight)
+    addNewProductInMealButton.constrainHeight(constant: Constants.ProductList.TableFooterView.addButtonHeight)
+    
+    addSubview(stackView)
+    stackView.fillSuperview(padding: Constants.ProductList.marginCell)
+        
+  }
+  
+  func changeHeightIsPreviosDinner(isPreviosDinner: Bool) {
+    
+//    addNewProductInMealButton.isHidden = isPreviosDinner
+//
+//    let height = isPreviosDinner ? Constants.ProductList.TableFooterView.resultsViewHeight : Constants.ProductList.TableFooterView.footerHeight
+//
+//    self.constrainHeight(constant: height)
     
   }
   

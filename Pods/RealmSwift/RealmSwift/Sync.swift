@@ -418,6 +418,7 @@ public struct SyncCredentials {
     }
 
     /// Initialize new credentials using a nickname.
+    @available(*, deprecated, message: "Use usernamePassword instead.")
     public static func nickname(_ nickname: String, isAdmin: Bool = false) -> SyncCredentials {
         return SyncCredentials(RLMSyncCredentials(nickname: nickname, isAdmin: isAdmin))
     }
@@ -730,7 +731,7 @@ public extension SyncSession {
             return transferredBytes >= transferrableBytes
         }
 
-        fileprivate init(transferred: UInt, transferrable: UInt) {
+        internal init(transferred: UInt, transferrable: UInt) {
             transferredBytes = Int(transferred)
             transferrableBytes = Int(transferrable)
         }

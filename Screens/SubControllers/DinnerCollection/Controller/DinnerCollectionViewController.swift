@@ -64,12 +64,8 @@ class DinnerCollectionViewController: UIViewController {
   }
   
   func setViewModel(viewModel: [DinnerViewModel]) {
-    print("Set Dinner View Model")
-    
-    
+
     dinnerViewModel = viewModel
-    print(dinnerViewModel)
-   
   }
   
 
@@ -123,7 +119,8 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
   private func getMaxCountProductInProductList() -> Int {
     var maxCount: Int = 0
     dinnerViewModel.forEach { (dinner) in
-      maxCount = max(dinner.productListViewModel.count,maxCount)
+      
+      maxCount = max(dinner.productListInDinnerViewModel.productsData.count,maxCount)
     }
     return maxCount
   }
@@ -131,11 +128,10 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
   // MARK: Height Items
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+    let heightCell = Calculator.calculateMaxHeightDinnerCollectionView(dinnerData: dinnerViewModel)
     
-    
-    let heightCell = Calculator.calculateMaxHeightDinnerCollectionView(dinnerData: dinnerViewModel )
-    
-    return .init(width: UIScreen.main.bounds.width - 40, height: heightCell + 40)
+    return .init(width: UIScreen.main.bounds.width - 40, height: heightCell + 20)
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -153,7 +149,7 @@ extension DinnerCollectionViewController: UITextFieldDelegate {
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
     didSelectTextField!(textField)
-    print("Begin Editing Dinner Cell TextField")
+    
   }
   
   

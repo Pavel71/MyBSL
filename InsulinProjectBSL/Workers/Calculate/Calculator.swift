@@ -11,6 +11,7 @@ import UIKit
 
 class Calculator {
   
+  // Carbo in Portion
   
   static func calculateCarboInPortion(carboIn100grm: Int, portionSize: Int) -> Int {
     let carbo100grm = Float(carboIn100grm)
@@ -18,6 +19,7 @@ class Calculator {
     return Int(carbo100grm * (portion / 100))
   }
   
+  // calculate and get resultProductViewModel
   
   
   
@@ -35,28 +37,34 @@ class Calculator {
 
   }
   
+  // Dinner Collection View Height
+  
+  
   static func calculateMaxHeightDinnerCollectionView(dinnerData: [DinnerViewModel]) -> CGFloat {
     
     
     var maxCount: Int = 0
     dinnerData.forEach { (dinner) in
-      maxCount = max(dinner.productListViewModel.count,maxCount)
+      let count = dinner.productListInDinnerViewModel.productsData.count
+      maxCount = max(count,maxCount)
     }
     
-    let maxHeightCollectionView = Calculator.calculateProductListViewheight(countRow:maxCount)
+    let productListViewHeight = Calculator.calculateProductListViewheight(countRow:maxCount)
     
-    let margins = Constants.DinnerCollectionView.ShugarViewTopMargin + Constants.DinnerCollectionView.ProductListViewBottomMargin
+    let margins = Constants.Main.DinnerCollectionView.shugarViewTopMargin + Constants.Main.DinnerCollectionView.productListViewBottomMargin
     
-    let heightCell = maxHeightCollectionView + Constants.Main.DinnerCollectionView.shugarViewInCellHeight + margins
+    let heightCell = productListViewHeight + Constants.Main.DinnerCollectionView.shugarViewInCellHeight + margins
     
     return heightCell
   }
+  
+  // Product list Height
   
   static func calculateProductListViewheight(countRow: Int, isPreviosDinner: Bool = false) -> CGFloat {
     
     let cellPading = Constants.ProductList.marginCell.bottom * 2
     
-    let footerHeight = isPreviosDinner ? 0 : ProductsTableViewInMealCellFooterView.footerHeight
+    let footerHeight = isPreviosDinner ? Constants.ProductList.TableFooterView.resultsViewHeight : Constants.ProductList.TableFooterView.footerHeight
     
     let headerInSection = ProductListHeaderInSection.height
     let headerTableViewHeight = ProductListTableHeaderView.height
@@ -69,6 +77,7 @@ class Calculator {
     } else {
       
       tableVIewHeight = (Constants.ProductList.cellHeight * CGFloat(countRow))  + footerHeight + cellPading + headerInSection
+      
     }
     
     return tableVIewHeight

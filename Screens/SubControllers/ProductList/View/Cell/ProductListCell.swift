@@ -36,13 +36,14 @@ class ProductListCell: UITableViewCell {
     textField.font = UIFont(name: "DINCondensed-Bold", size: 18)
     textField.textColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
     textField.textAlignment = .center
+    textField.layer.borderColor = UIColor.lightGray.cgColor
     
     
     return textField
   }()
   
   let insulinTextField: UITextField = {
-    let textField = CustomValueTextField(placeholder: "2.5", cornerRadius: 10)
+    let textField = CustomValueTextField(placeholder: "", cornerRadius: 10)
     textField.font = UIFont(name: "DINCondensed-Bold", size: 18)
     textField.textColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
     textField.textAlignment = .center
@@ -96,6 +97,7 @@ class ProductListCell: UITableViewCell {
 
   func setViewModel(viewModel: ProductListViewModelCell,withInsulinTextFields: Bool, isPreviosDinner: Bool = false) {
     
+    
     nameLabel.text = viewModel.name
     portionTextField.text = viewModel.portion
     carboInPortionLabel.text = viewModel.carboInPortion
@@ -103,11 +105,9 @@ class ProductListCell: UITableViewCell {
     insulinTextField.isHidden = !withInsulinTextFields
     portionTextField.isUserInteractionEnabled = !isPreviosDinner
     portionTextField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+    
 
   }
-
-
-  
 
   
   required init?(coder aDecoder: NSCoder) {
@@ -119,17 +119,17 @@ extension ProductListCell: UITextFieldDelegate {
   
   func textFieldDidEndEditing(_ textField: UITextField) {
     
-    switch textField {
-    case insulinTextField:
-      
-      didInsulinTextFieldEditing!(textField)
-      
-    case portionTextField:
-      didPortionTextFieldEditing!(textField)
-      
-    default: break
-      
-    }
+//    switch textField {
+//    case insulinTextField:
+//
+//      didInsulinTextFieldEditing!(textField)
+//
+//    case portionTextField:
+//      didPortionTextFieldEditing!(textField)
+//
+//    default: break
+//
+//    }
   }
   
   func textFieldDidBeginEditing(_ textField: UITextField) {

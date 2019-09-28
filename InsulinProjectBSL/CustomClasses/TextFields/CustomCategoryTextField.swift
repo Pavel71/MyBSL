@@ -14,7 +14,7 @@ class CustomCategoryTextField: CustomTextField {
   let listButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "list"), for: .normal)
-//    button.addTarget(self, action: #selector(handleShowListButton), for: .touchUpInside)
+
     return button
   }()
   

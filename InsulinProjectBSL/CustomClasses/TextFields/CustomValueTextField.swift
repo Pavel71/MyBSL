@@ -29,7 +29,7 @@ class CustomValueTextField: UITextField {
     super.draw(rect)
     
     layer.borderWidth = 1
-    layer.borderColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1).cgColor
+    layer.borderColor = UIColor.lightGray.cgColor
     
     clipsToBounds = true
     layer.cornerRadius = 10

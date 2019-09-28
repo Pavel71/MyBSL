@@ -59,18 +59,27 @@ struct Constants {
     
   }
   
-  struct DinnerCollectionView {
-    
-    static let ShugarViewTopMargin: CGFloat = 10
-    static let ProductListViewBottomMargin: CGFloat = 10
-    
-  }
+//  struct DinnerCollectionView {
+//    
+//    static let ShugarViewTopMargin: CGFloat = 10
+//    static let ProductListViewBottomMargin: CGFloat = 10
+//    
+//  }
   
   struct ProductList {
     
     static let labelValueWidth: CGFloat = 60
     static let marginCell = UIEdgeInsets(top: 5, left: 16, bottom: 5, right: 16)
     static let cellHeight: CGFloat = 32
+    
+    struct TableFooterView {
+      static let addButtonHeight: CGFloat = 50
+      static let resultsViewHeight: CGFloat = 30
+      
+      static var footerHeight: CGFloat {
+        return addButtonHeight + resultsViewHeight
+      }
+    }
     
   }
   
@@ -82,8 +91,9 @@ struct Constants {
     }
     
     struct DinnerCollectionView {
+      
       static let contentInsert: UIEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
-      static let shugarViewInCellHeight: CGFloat = 60
+      static let shugarViewInCellHeight: CGFloat = 70
       
       static let shugarViewTopMargin: CGFloat = 10
       static let productListViewBottomMargin: CGFloat = 10

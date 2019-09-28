@@ -82,11 +82,24 @@ class MainViewController: UIViewController, MainDisplayLogic {
     let product1 = ProductListViewModel(insulinValue: "", carboIn100Grm: 5, carboInPortion: "12", name: "Макароны", portion: "200")
     let product2 = ProductListViewModel(insulinValue: nil, carboIn100Grm: 13, carboInPortion: "25", name: "Абрикосы", portion: "156")
     
-    let dinner1 = DinnerViewModel(isPreviosDinner: false, productListViewModel: [product1,product2,product2,product2,product1], shugarBeforeEat: "12", shugarAfterMeal: "12")
+    let shugarViewModel1 = ShugarTopViewModel(isPreviosDinner: false, shugarBeforeValue: "5.5", shugarAfterValue: "4", timeBefore: "11/09/19 12:30", timeAfter: "11/09/19 13:30")
+    let shugarViewModel2 = ShugarTopViewModel(isPreviosDinner: true, shugarBeforeValue: "12.5", shugarAfterValue: "13", timeBefore: "11/09/19 12:30", timeAfter: "11/09/19 13:30")
+    let shugarViewModel3 = ShugarTopViewModel(isPreviosDinner: true, shugarBeforeValue: "7.5", shugarAfterValue: "6", timeBefore: "11/09/19 12:30", timeAfter: "11/09/19 13:30")
     
-    let dinner2 = DinnerViewModel(isPreviosDinner: true, productListViewModel: [product1,product2], shugarBeforeEat: "12", shugarAfterMeal: "12")
+    let result = ProductListResultsViewModel(sumCarboValue: "12", sumPortionValue: "25", sumInsulinValue: "33")
     
-    let dinner3 = DinnerViewModel(isPreviosDinner: true, productListViewModel: [product1,product2,product1], shugarBeforeEat: "12", shugarAfterMeal: "12")
+    let productListViewController1 = ProductListInDinnerViewModel(productsData: [product1,product2], dinnerItemResultsViewModel: result, isPreviosDinner: false)
+    
+    let productListViewController2 = ProductListInDinnerViewModel(productsData: [product2,product1,product2], dinnerItemResultsViewModel: result, isPreviosDinner: true)
+    
+    let productListViewController3 = ProductListInDinnerViewModel(productsData: [product1,product2,product1], dinnerItemResultsViewModel: result, isPreviosDinner: true)
+    
+    
+    let dinner1 = DinnerViewModel(shugarTopViewModel: shugarViewModel1, resultBottomViewModel: result, productListInDinnerViewModel: productListViewController1)
+    let dinner2 = DinnerViewModel(shugarTopViewModel: shugarViewModel2, resultBottomViewModel: result, productListInDinnerViewModel: productListViewController2)
+    let dinner3 = DinnerViewModel(shugarTopViewModel: shugarViewModel3, resultBottomViewModel: result, productListInDinnerViewModel: productListViewController3)
+    
+
     
     let dinnerViewModels = [
       dinner1,dinner2,dinner3
@@ -125,6 +138,8 @@ class MainViewController: UIViewController, MainDisplayLogic {
     fatalError("init(coder:) has not been implemented")
   }
   
+
+  
 }
 
 // MARK: Configure Main View
@@ -150,11 +165,14 @@ extension MainViewController {
     
     tableView.showsVerticalScrollIndicator = false
     tableView.keyboardDismissMode = .interactive
+    tableView.allowsSelection = false
     
     tableView.register(MainTableViewHeaderCell.self, forCellReuseIdentifier: MainTableViewHeaderCell.cellId)
     tableView.register(MainTableViewMiddleCell.self, forCellReuseIdentifier: MainTableViewMiddleCell.cellId)
     tableView.register(MainTableViewFooterCell.self, forCellReuseIdentifier: MainTableViewFooterCell.cellId)
   }
+  
+  
 }
 
 
@@ -219,6 +237,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   
+  
+  
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
     switch indexPath.row {
@@ -230,7 +250,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
       
       let heightCell = Calculator.calculateMaxHeightDinnerCollectionView(dinnerData: mainViewModel.dinnerCollectionViewModel)
 
-      return heightCell + 50 // Pad
+      return heightCell + 30 // Pad
       
     case 2:
       return 200
@@ -258,7 +278,7 @@ extension MainViewController {
 
     let point = mainView.convert(textField.center, from: textField.superview!)
     textFieldSelectedPoint = point
-    
+    print("Select TextField")
   }
 }
 
@@ -285,7 +305,7 @@ extension MainViewController {
   }
   // Will Hide
   @objc private func handleKeyboardDismiss(notification: Notification) {
-
+    
     guard let keyBoardFrame = getKeyboardFrame(notification: notification) else {return}
     
     animateMealViewThanSelectTextField(isMove: false, keyBoardFrame: keyBoardFrame)
@@ -313,13 +333,7 @@ extension MainViewController {
       self.mainView.transform = isMove ? CGAffineTransform(translationX: 0, y: -diff) : .identity
     }
     
-    
-//    if textFieldPointY > keyBoardFrame.height {
-//
-//      let diff = textFieldPointY - keyBoardFrame.height  // где его нижняя граница!
-//
-//
-//    }
+
 
   }
   

@@ -8,16 +8,28 @@
 
 import Foundation
 
-
+// DinnerViewModelCellable
 struct DinnerViewModel: DinnerViewModelCellable {
   
-  var isPreviosDinner: Bool = false
+  var shugarTopViewModel: ShugarTopViewModelable
+  var resultBottomViewModel: ProductListResultsViewModel
+  var productListInDinnerViewModel: ProductListInDinnerViewModel
+
+}
+
+struct ShugarTopViewModel: ShugarTopViewModelable {
   
-  var productListViewModel: [ProductListViewModel]
+  var isPreviosDinner: Bool
   
-  var shugarBeforeEat: String
+  var shugarBeforeValue: String
   
-  var shugarAfterMeal: String?
+  var shugarAfterValue: String
+  
+  var timeBefore: String
+  
+  var timeAfter: String
   
   
 }
+
+

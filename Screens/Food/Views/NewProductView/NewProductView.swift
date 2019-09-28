@@ -124,8 +124,8 @@ class NewProductView: AddNewElementView {
     // Buttons
     
     let buttonsStackView = UIStackView(arrangedSubviews: [
-      okButton,
-      cancelButton
+      cancelButton,
+      okButton
       ])
     buttonsStackView.distribution = .fillEqually
     buttonsStackView.spacing = 2
