@@ -54,7 +54,9 @@ class ProductListInDinnerViewController: BaseProductList {
     tableView.register(ProductListCell.self, forCellReuseIdentifier: ProductListCell.cellID)
     tableView.keyboardDismissMode = .interactive
     
-    footerView.addNewProductInMealButton.addTarget(self, action: #selector(handleAddProductInMeal), for: .touchUpInside)
+    
+    
+//    footerView.addNewProductInMealButton.addTarget(self, action: #selector(handleAddProductInMeal), for: .touchUpInside)
   }
   
   func setViewModel(viewModel: ProductListInDinnerViewModel) {
@@ -78,13 +80,13 @@ class ProductListInDinnerViewController: BaseProductList {
 
 
 // MARK: TAP SOME BUTTONS
-extension ProductListInDinnerViewController {
-  
-  @objc private func handleAddProductInMeal() {
-    print("Add New Product")
-  }
-  
-}
+//extension ProductListInDinnerViewController {
+//
+//  @objc private func handleAddProductInMeal() {
+//    print("Add New Product")
+//  }
+//
+//}
 
 extension ProductListInDinnerViewController: UITableViewDataSource {
   
@@ -116,6 +118,8 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     cell.portionTextField.addTarget(self, action: #selector(didChangePortionTextField), for: .editingChanged)
     
     cell.insulinTextField.addTarget(self, action: #selector(didChangeInsulinTextField), for: .editingChanged)
+    
+    
 //    cell.didPortionTextFieldEditing = {[weak self] textField in
 //      self?.handlePortionTextFieldEndEditing(textField: textField)
 //    }

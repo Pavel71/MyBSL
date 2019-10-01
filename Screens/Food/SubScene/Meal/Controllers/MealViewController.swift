@@ -91,6 +91,7 @@ class MealViewController: UIViewController, MealDisplayLogic {
   // MARK: Setup
   
   private func setup() {
+    
     let viewController        = self
     let interactor            = MealInteractor()
     let presenter             = MealPresenter()
@@ -131,7 +132,9 @@ class MealViewController: UIViewController, MealDisplayLogic {
   
   private func setUpView() {
     
-    view.backgroundColor = .white
+//    view.backgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
+    
+    
     mealView = MealView(frame: view.frame)
     view.addSubview(mealView)
     
@@ -208,6 +211,7 @@ class MealViewController: UIViewController, MealDisplayLogic {
     tableView.tableFooterView = UIView()
     
     tableView.separatorStyle = .none
+    
   }
   
   //  MARK: Display Data
@@ -479,12 +483,13 @@ extension MealViewController {
   
   // ADD new product
   private func addNewproductInMeal(mealId: String) {
-    
+    print("Add")
     //    isShowSlideMenuProductsList = true
     mealIdByAddPorduct = mealId
     didShowMenuProductsListViewControllerClouser!()
     
   }
+  
   
 }
 
@@ -635,9 +640,12 @@ extension MealViewController: UITableViewDelegate, UITableViewDataSource {
   
     cell.productListViewController.didDeleteProductFromMealClouser = {[weak self] rowProduct, mealId in self?.deleteProductFromMeal(rowProduct: rowProduct, mealId: mealId) }
     
-    cell.productListViewController.didAddProductInMealClouser = {[weak self] mealId in self?.addNewproductInMeal(mealId: mealId) }
+    cell.didAddNewProductInmeal = {[weak self] mealId in self?.addNewproductInMeal(mealId: mealId) }
+    
+
     
   }
+  
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     

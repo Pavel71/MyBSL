@@ -55,7 +55,8 @@ class ProductListResultView: UIView {
     insulinResultLabel.constrainWidth(constant: Constants.ProductList.labelValueWidth)
     
     addSubview(stackView)
-    stackView.fillSuperview()
+    stackView.fillSuperview(padding: Constants.ProductList.marginCell)
+    stackView.alignment = .top
     stackView.distribution = .fill
     stackView.spacing = 5
   }

@@ -18,7 +18,7 @@ class MainTableViewFooterCell: UITableViewCell {
     let b = UIButton(type: .system)
     b.setTitle("Сохранить", for: .normal)
     b.layer.cornerRadius = Constants.HeaderInSection.cornerRadius
- 
+    
     b.tintColor = UIColor.white
     b.backgroundColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
     return b
@@ -28,9 +28,9 @@ class MainTableViewFooterCell: UITableViewCell {
     let b = UIButton(type: .system)
     b.setTitle("Получить расчет", for: .normal)
     b.layer.cornerRadius = Constants.HeaderInSection.cornerRadius
-    
+    b.isEnabled = true
     b.tintColor = UIColor.white
-    b.backgroundColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+    b.backgroundColor = .lightGray
     
     return b
   }()
@@ -39,6 +39,16 @@ class MainTableViewFooterCell: UITableViewCell {
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
+    saveButton.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
+    
+    robotView.didChangeRobotImage = {[weak self] in
+      self?.changeEnablePredictaButton()
+    }
+    
+    self.didTapSaveButtonClouser = {[weak robotView] in
+      robotView?.handleTap()
+    }
     
     let buttonStackView = UIStackView(arrangedSubviews: [
       saveButton,
@@ -67,6 +77,17 @@ class MainTableViewFooterCell: UITableViewCell {
     overAllStackView.fillSuperview()
     
     
+  }
+  
+  var didTapSaveButtonClouser: (() -> Void)?
+  @objc private func didTapSaveButton() {
+    print("Did Tap Save Button")
+    didTapSaveButtonClouser!()
+  }
+  
+  private func changeEnablePredictaButton() {
+    predicateinsulinButton.isEnabled = true
+    predicateinsulinButton.backgroundColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
   }
   
 

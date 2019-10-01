@@ -57,25 +57,39 @@ class RobotView: UIView {
     
     addSubview(robotImageView)
     robotImageView.fillSuperview(padding: .init(top: 25, left: 25, bottom: 25, right: 25))
-    self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+//    self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
   }
   
   var robotProgress: CGFloat = 0.1
   
-  @objc private func handleTap() {
+  var didChangeRobotImage: (() -> Void)?
+  
+  
+  func handleTap() {
     print("Attempting to animate stroke")
     
     let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
     
-
     shapeLayer.strokeEnd += robotProgress
+    print(shapeLayer.strokeEnd)
+    if shapeLayer.strokeEnd > 0.95 {
+      changeImageView()
+    }
     
     basicAnimation.duration = 0.5
-    
     basicAnimation.fillMode = .forwards
     basicAnimation.isRemovedOnCompletion = false
     
     shapeLayer.add(basicAnimation, forKey: "urSoBasic")
+  }
+  
+  private func changeImageView() {
+    UIView.animate(withDuration: 0.5) {
+      self.robotImageView.image = #imageLiteral(resourceName: "robot2")
+      self.shapeLayer.strokeEnd = 0
+    }
+    
+    didChangeRobotImage!()
   }
   
   

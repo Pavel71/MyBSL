@@ -40,7 +40,7 @@ class MealHeaderinSectionView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    backgroundColor = .white
+//    backgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
     
     let stackView = UIStackView(arrangedSubviews: [
       sectionName,

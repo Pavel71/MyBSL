@@ -73,11 +73,11 @@ struct Constants {
     static let cellHeight: CGFloat = 32
     
     struct TableFooterView {
-      static let addButtonHeight: CGFloat = 50
-      static let resultsViewHeight: CGFloat = 30
+      static let addButtonHeight: CGFloat = 45
+      static let resultsViewHeight: CGFloat = 40
       
       static var footerHeight: CGFloat {
-        return addButtonHeight + resultsViewHeight
+        return resultsViewHeight  // addButtonHeight +
       }
     }
     

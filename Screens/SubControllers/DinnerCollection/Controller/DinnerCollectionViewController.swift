@@ -109,7 +109,16 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
       self?.scrollingProductListView(isItScrollProductList: isItScrollProductList)
     }
     
+    cell.didTapAddNewProductInDinnerClouser = {[weak self] in
+      self?.addNewProductInDinner()
+    }
     
+    
+  }
+  
+  private func addNewProductInDinner() {
+    
+    print("add New product in Dinner")
   }
   
   private func scrollingProductListView(isItScrollProductList: Bool) {

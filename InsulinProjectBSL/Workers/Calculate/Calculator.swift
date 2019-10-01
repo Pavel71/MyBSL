@@ -64,7 +64,8 @@ class Calculator {
     
     let cellPading = Constants.ProductList.marginCell.bottom * 2
     
-    let footerHeight = isPreviosDinner ? Constants.ProductList.TableFooterView.resultsViewHeight : Constants.ProductList.TableFooterView.footerHeight
+//    let footerHeight = isPreviosDinner ? Constants.ProductList.TableFooterView.resultsViewHeight : Constants.ProductList.TableFooterView.footerHeight
+    let footerHeight = isPreviosDinner ? Constants.ProductList.TableFooterView.footerHeight - 10 : Constants.ProductList.TableFooterView.footerHeight
     
     let headerInSection = ProductListHeaderInSection.height
     let headerTableViewHeight = ProductListTableHeaderView.height

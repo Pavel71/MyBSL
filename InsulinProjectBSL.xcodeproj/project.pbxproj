@@ -12,6 +12,7 @@
 		0509FD06233FCA9700B04B30 /* DinnerRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0509FD05233FCA9700B04B30 /* DinnerRealm.swift */; };
 		053BAB52233B56D60080359B /* Validatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053BAB51233B56D60080359B /* Validatable.swift */; };
 		053BAB54233B5ACA0080359B /* DinnerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053BAB53233B5ACA0080359B /* DinnerViewModel.swift */; };
+		055BE0CD2340A69C0029D298 /* ContainerDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */; };
 		05952A4F233BB0FD00EE996E /* BaseProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A4E233BB0FD00EE996E /* BaseProductList.swift */; };
 		05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A51233BB22B00EE996E /* ProductListProtocol.swift */; };
 		05952A58233BB51600EE996E /* ProductListInDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */; };
@@ -127,6 +128,7 @@
 		0509FD05233FCA9700B04B30 /* DinnerRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerRealm.swift; sourceTree = "<group>"; };
 		053BAB51233B56D60080359B /* Validatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validatable.swift; sourceTree = "<group>"; };
 		053BAB53233B5ACA0080359B /* DinnerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerViewModel.swift; sourceTree = "<group>"; };
+		055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerDinnerViewController.swift; sourceTree = "<group>"; };
 		05952A4E233BB0FD00EE996E /* BaseProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductList.swift; sourceTree = "<group>"; };
 		05952A51233BB22B00EE996E /* ProductListProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListProtocol.swift; sourceTree = "<group>"; };
 		05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInDinnerViewController.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 			isa = PBXGroup;
 			children = (
 				F1E78CC4230D336B00592AB8 /* MainViewController.swift */,
+				055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1379,6 +1382,7 @@
 				F1E78CE9230D33AE00592AB8 /* StatsViewController.swift in Sources */,
 				F1E78CE6230D33AE00592AB8 /* StatsWorker.swift in Sources */,
 				F13B352923193E480020AD26 /* MealHeaderInSectionView.swift in Sources */,
+				055BE0CD2340A69C0029D298 /* ContainerDinnerViewController.swift in Sources */,
 				F1E78CFA230D355F00592AB8 /* UITextField+Extension.swift in Sources */,
 				F1116323231CF858000C79FA /* StatsTableViewCell.swift in Sources */,
 				F1E78CC9230D336B00592AB8 /* MainRouter.swift in Sources */,

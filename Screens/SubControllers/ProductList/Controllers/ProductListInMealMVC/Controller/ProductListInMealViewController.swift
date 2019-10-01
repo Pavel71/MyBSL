@@ -70,11 +70,12 @@ class ProductListInMealViewController: UIViewController {
     view.addSubview(tableView)
     tableView.fillSuperview()
     
+    tableView.backgroundColor = .white
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(ProductListCell.self, forCellReuseIdentifier: ProductListCell.cellID)
     
-    footerView.addNewProductInMealButton.addTarget(self, action: #selector(handleAddProductInMeal), for: .touchUpInside)
+//    footerView.addNewProductInMealButton.addTarget(self, action: #selector(handleAddProductInMeal), for: .touchUpInside)
     tableView.tableFooterView = footerView // footerView
     
 
@@ -142,6 +143,8 @@ extension ProductListInMealViewController: UITableViewDataSource, UITableViewDel
     cell.didPortionTextFieldEditing = {[weak self] textField in
       self?.handlePortionTextFieldEndEditing(textField: textField)
     }
+    // AddNewProductInMeal
+    
 
 
     

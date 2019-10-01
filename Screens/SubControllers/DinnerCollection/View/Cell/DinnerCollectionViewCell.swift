@@ -30,6 +30,16 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   let productListViewController = ProductListInDinnerViewController()
   let touchesPassView = TouchesPassView()
   
+  let addNewProductInMealButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.layer.cornerRadius = Constants.HeaderInSection.cornerRadius
+    button.setImage(#imageLiteral(resourceName: "plus").withRenderingMode(.alwaysTemplate), for: .normal)
+    button.tintColor = UIColor.white
+    button.backgroundColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+
+    return button
+  }()
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
@@ -37,7 +47,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     
     setUpShuagarView()
     setUpProductView()
-    
+    setUpAddButton()
   }
   
   
@@ -51,7 +61,6 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   
   private func setUpProductView() {
 
-    
     addSubview(touchesPassView)
     touchesPassView.fillSuperview()
     
@@ -59,6 +68,31 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     productListViewController.view.anchor(top: shugarSetView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding:.init(top: 5, left: 8, bottom: Constants.Main.DinnerCollectionView.productListViewBottomMargin, right: 8))
     
   }
+  
+  private func setUpAddButton() {
+    
+    addNewProductInMealButton.addTarget(self, action: #selector(handleAddNewProduct), for: .touchUpInside)
+    
+    addNewProductInMealButton.clipsToBounds = true
+    addNewProductInMealButton.layer.cornerRadius = Constants.ProductList.TableFooterView.addButtonHeight / 2
+    
+    addSubview(addNewProductInMealButton)
+    addNewProductInMealButton.anchor(top: productListViewController.view.bottomAnchor, leading: nil, bottom: nil, trailing: nil,padding: .init(top: -25, left: 0, bottom: 0, right: 0))
+    addNewProductInMealButton.centerXAnchor.constraint(equalTo: productListViewController.view.centerXAnchor).isActive = true
+    
+    
+    addNewProductInMealButton.constrainHeight(constant: Constants.ProductList.TableFooterView.addButtonHeight)
+    addNewProductInMealButton.constrainWidth(constant: Constants.ProductList.TableFooterView.addButtonHeight)
+  }
+  
+  
+  var didTapAddNewProductInDinnerClouser: EmptyClouser?
+  @objc private func handleAddNewProduct() {
+    
+    didTapAddNewProductInDinnerClouser!()
+  }
+  
+  
   
   
   
@@ -98,11 +132,8 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     
     productListViewController.view.constrainHeight(constant: heightProductListView)
     
-    // Не знаю почему но Здесь подходит только такой размер
-    let height = isPreviosDinner ? 30 : Constants.ProductList.TableFooterView.footerHeight
-    
-    productListViewController.footerView.frame = .init(x: 0, y: 0, width: 0, height: height)
-    productListViewController.footerView.addNewProductInMealButton.isHidden = isPreviosDinner
+    addNewProductInMealButton.isHidden = isPreviosDinner
+
   }
   
   

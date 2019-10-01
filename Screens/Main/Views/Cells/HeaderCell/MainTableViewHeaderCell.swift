@@ -65,6 +65,8 @@ class MainTableViewHeaderCell: UITableViewCell {
     
     backgroundColor = .white
     
+    insulinSupplyInPanValueLabel.textColor = .red
+    
     let labelsStackView = UIStackView(arrangedSubviews: [
       lastInjectionLabel,
       lastTimeInjectionLabel,

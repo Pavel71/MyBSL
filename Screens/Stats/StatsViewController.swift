@@ -107,19 +107,20 @@ class StatsViewController: UIViewController, StatsDisplayLogic {
   override func viewDidLoad() {
     super.viewDidLoad()
  
+//
+//    view.addSubview(tableView)
+//    tableView.fillSuperview()
+//
+//    tableView.delegate = self
+//    tableView.dataSource = self
+//    tableView.register(StatsTableViewCell.self, forCellReuseIdentifier: StatsTableViewCell.cellID)
+//
+//    tableView.estimatedRowHeight = 200
+//    tableView.rowHeight = UITableView.automaticDimension
+//
+//    tableView.tableFooterView = UIView()
+//    tableView.separatorStyle = .none
     
-    view.addSubview(tableView)
-    tableView.fillSuperview()
-    
-    tableView.delegate = self
-    tableView.dataSource = self
-    tableView.register(StatsTableViewCell.self, forCellReuseIdentifier: StatsTableViewCell.cellID)
-    
-    tableView.estimatedRowHeight = 200
-    tableView.rowHeight = UITableView.automaticDimension
-    
-    tableView.tableFooterView = UIView()
-    tableView.separatorStyle = .none
   }
   
   func displayData(viewModel: Stats.Model.ViewModel.ViewModelData) {
