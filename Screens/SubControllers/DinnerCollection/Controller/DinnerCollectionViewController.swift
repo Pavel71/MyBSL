@@ -68,7 +68,8 @@ class DinnerCollectionViewController: UIViewController {
     dinnerViewModel = viewModel
   }
   
-
+  var didAddNewProductInDinner: EmptyClouser?
+  var didShowChoosepalceIncjectionView: EmptyClouser?
   
 }
 
@@ -101,6 +102,7 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     cell.shugarSetView.shugarBeforeValueTextField.delegate = self
     cell.shugarSetView.shugarAfterValueTextField.delegate = self
     
+    // Select TextField
     cell.productListViewController.didSelectTextFieldCellClouser = {[weak self] textField in
       self?.textFieldDidBeginEditing(textField)
     }
@@ -109,16 +111,30 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
       self?.scrollingProductListView(isItScrollProductList: isItScrollProductList)
     }
     
+    // Add New Product
     cell.didTapAddNewProductInDinnerClouser = {[weak self] in
       self?.addNewProductInDinner()
+    }
+    
+    // ChoosePlaceInjections
+    cell.chooseRowView.didTapChoosePlaceInjections = {[weak self] in
+      self?.choosePlaceInjections()
     }
     
     
   }
   
+  // По идеии эти сигналы нужно прокинуть на mainController
+  
   private func addNewProductInDinner() {
     
     print("add New product in Dinner")
+    didAddNewProductInDinner!()
+  }
+  
+  private func choosePlaceInjections() {
+    print("Choose place")
+    didShowChoosepalceIncjectionView!()
   }
   
   private func scrollingProductListView(isItScrollProductList: Bool) {
@@ -138,7 +154,7 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-    let heightCell = Calculator.calculateMaxHeightDinnerCollectionView(dinnerData: dinnerViewModel)
+    let heightCell = CalculateHeightView.calculateMaxHeightDinnerCollectionView(dinnerData: dinnerViewModel)
     
     return .init(width: UIScreen.main.bounds.width - 40, height: heightCell + 20)
   }

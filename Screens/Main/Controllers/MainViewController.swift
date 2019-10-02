@@ -95,9 +95,9 @@ class MainViewController: UIViewController, MainDisplayLogic {
     let productListViewController3 = ProductListInDinnerViewModel(productsData: [product1,product2,product1], dinnerItemResultsViewModel: result, isPreviosDinner: true)
     
     
-    let dinner1 = DinnerViewModel(shugarTopViewModel: shugarViewModel1, resultBottomViewModel: result, productListInDinnerViewModel: productListViewController1)
-    let dinner2 = DinnerViewModel(shugarTopViewModel: shugarViewModel2, resultBottomViewModel: result, productListInDinnerViewModel: productListViewController2)
-    let dinner3 = DinnerViewModel(shugarTopViewModel: shugarViewModel3, resultBottomViewModel: result, productListInDinnerViewModel: productListViewController3)
+    let dinner1 = DinnerViewModel(shugarTopViewModel: shugarViewModel1, productListInDinnerViewModel: productListViewController1)
+    let dinner2 = DinnerViewModel(shugarTopViewModel: shugarViewModel2, productListInDinnerViewModel: productListViewController2)
+    let dinner3 = DinnerViewModel(shugarTopViewModel: shugarViewModel3, productListInDinnerViewModel: productListViewController3)
     
 
     
@@ -118,6 +118,8 @@ class MainViewController: UIViewController, MainDisplayLogic {
     
     NotificationCenter.default.removeObserver(self)
   }
+  
+
   
   
   
@@ -155,6 +157,8 @@ extension MainViewController {
     
     configureTableView()
     
+    setMainViewClousers()
+    
   }
   
   private func configureTableView() {
@@ -171,6 +175,18 @@ extension MainViewController {
     tableView.register(MainTableViewMiddleCell.self, forCellReuseIdentifier: MainTableViewMiddleCell.cellId)
     tableView.register(MainTableViewFooterCell.self, forCellReuseIdentifier: MainTableViewFooterCell.cellId)
   }
+  
+  private func setMainViewClousers() {
+    mainView.choosePlaceInjectionsView.didTapCloseButton = {[weak self] in
+      self?.didTapClouseChoosePlaceInjectionView()
+    }
+    
+    mainView.choosePlaceInjectionsView.didChooseInjectionsPlace = {[weak self] title in
+      self?.didChooseNewPlaceInjections(namePlace: title)
+    }
+  }
+  
+  
   
   
 }
@@ -223,11 +239,61 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     cell.setViewModel(viewModel: mainViewModel.dinnerCollectionViewModel)
     
+    setMiddleCellClouser(cell: cell)
+    
+    
+    
+    return cell
+  }
+  
+  private func setMiddleCellClouser(cell: MainTableViewMiddleCell) {
+    
+    // TextFiedl Begin Editing
     cell.dinnerCollectionViewController.didSelectTextField = {[weak self] textField in
       self?.didSelectTextField(textField: textField)
     }
     
-    return cell
+    cell.dinnerCollectionViewController.didAddNewProductInDinner = {[weak self] in
+      self?.addNewProductInDinner()
+    }
+    
+    cell.dinnerCollectionViewController.didShowChoosepalceIncjectionView = {[weak self] in
+      self?.choosePlaceInjections()
+    }
+  }
+  
+  private func addNewProductInDinner() {
+    print("Add New product Main")
+  }
+  
+  // Stack Func Choose Place Injections
+  
+  private func didTapClouseChoosePlaceInjectionView() {
+    print("Заркываем Choose View")
+    ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: false)
+  }
+  
+  private func didChooseNewPlaceInjections(namePlace: String) {
+    
+    // Вот такая цепь событий
+    let  cell = tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as! MainTableViewMiddleCell
+    
+    let dinnerItem = cell.dinnerCollectionViewController.collectionView.cellForItem(at:  IndexPath(item: 0, section: 0))  as! DinnerCollectionViewCell
+    
+    dinnerItem.chooseRowView.chooseButton.setTitle(namePlace, for: .normal)
+    // Теперь задача состоит в том что нужно транспортировать строку в row
+    
+    // Закрываем
+    didTapClouseChoosePlaceInjectionView()
+    
+  }
+  
+  private func choosePlaceInjections() {
+    // Так же нам понадобится анимация
+    
+    ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: true)
+
+    print("Choose Place Injections Main")
   }
   
   private func configureFooterCell() -> MainTableViewFooterCell {
@@ -248,7 +314,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
       
     case 1:
       
-      let heightCell = Calculator.calculateMaxHeightDinnerCollectionView(dinnerData: mainViewModel.dinnerCollectionViewModel)
+      let heightCell = CalculateHeightView.calculateMaxHeightDinnerCollectionView(dinnerData: mainViewModel.dinnerCollectionViewModel)
 
       return heightCell + 30 // Pad
       

@@ -21,9 +21,11 @@ import RealmSwift
   dynamic var carbo: Int = 0
   dynamic var portion: Int = 100
   
+  dynamic var insulin: Float = 0
+  
   dynamic var isFavorits: Bool = false
   
-  convenience init(name: String, category: String, carbo: Int, isFavorits: Bool, portion: Int = 100) {
+  convenience init(name: String, category: String, carbo: Int, isFavorits: Bool, portion: Int = 100,insulin: Float = 0) {
     self.init()
     
     self.name = name
@@ -31,6 +33,7 @@ import RealmSwift
     self.carbo = carbo
     self.portion = portion
     self.isFavorits = isFavorits
+    self.insulin = insulin
     
   }
   

@@ -12,10 +12,12 @@ import Foundation
 struct DinnerViewModel: DinnerViewModelCellable {
   
   var shugarTopViewModel: ShugarTopViewModelable
-  var resultBottomViewModel: ProductListResultsViewModel
   var productListInDinnerViewModel: ProductListInDinnerViewModel
 
 }
+
+
+
 
 struct ShugarTopViewModel: ShugarTopViewModelable {
   

@@ -9,18 +9,7 @@
 import UIKit
 
 
-class Calculator {
-  
-  // Carbo in Portion
-  
-  static func calculateCarboInPortion(carboIn100grm: Int, portionSize: Int) -> Int {
-    let carbo100grm = Float(carboIn100grm)
-    let portion = Float(portionSize)
-    return Int(carbo100grm * (portion / 100))
-  }
-  
-  // calculate and get resultProductViewModel
-  
+class CalculateHeightView {
   
   
   
@@ -49,11 +38,15 @@ class Calculator {
       maxCount = max(count,maxCount)
     }
     
-    let productListViewHeight = Calculator.calculateProductListViewheight(countRow:maxCount)
+    let shugarRowHeight = Constants.Main.DinnerCollectionView.shugarViewInCellHeight
+    let choosePlaceInjectionsRowHeight = Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight
+    let willActiveHeight = Constants.Main.DinnerCollectionView.willActiveRowHeight
     
-    let margins = Constants.Main.DinnerCollectionView.shugarViewTopMargin + Constants.Main.DinnerCollectionView.productListViewBottomMargin
+    let productListViewHeight = CalculateHeightView.calculateProductListViewheight(countRow:maxCount)
     
-    let heightCell = productListViewHeight + Constants.Main.DinnerCollectionView.shugarViewInCellHeight + margins
+    let margins = Constants.Main.DinnerCollectionView.topMarginBetweenView * 2
+    
+    let heightCell = shugarRowHeight + productListViewHeight  + margins + choosePlaceInjectionsRowHeight + willActiveHeight
     
     return heightCell
   }

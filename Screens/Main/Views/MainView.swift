@@ -15,6 +15,16 @@ class MainView: UIView {
   var customNavBar: MainCustomNavBar!
   var tableView = UITableView(frame: .zero, style: .plain)
   
+  var blurView: UIVisualEffectView = {
+    let blurEffect = UIBlurEffect(style: .light)
+    let blurView = UIVisualEffectView(effect: blurEffect)
+    blurView.alpha = 0
+    return blurView
+  }()
+  
+  let choosePlaceInjectionsView = ChoosePlaceInjectionView(frame: .init(x: 0, y: 0, width: 200, height: 350))
+  
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
@@ -22,6 +32,9 @@ class MainView: UIView {
     
     setUpMainCustomNavBar()
     setUpTableView()
+    setUpBlurView()
+    setUpChoosePlaceInjectionsView()
+    
   }
   
   
@@ -54,6 +67,17 @@ extension MainView {
     
     tableView.tableHeaderView = UIView()
     tableView.tableFooterView = UIView()
+    
+  }
+  
+  private func setUpBlurView() {
+    addSubview(blurView)
+    blurView.fillSuperview()
+  }
+  private func setUpChoosePlaceInjectionsView() {
+    
+    choosePlaceInjectionsView.center = self.center
+    addSubview(choosePlaceInjectionsView)
     
   }
   

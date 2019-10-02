@@ -193,42 +193,18 @@ extension ProductListInMealViewController: UITextFieldDelegate {
     
     let portion: Int = (textField.text! as NSString).integerValue
     
-    let carboInPortion: Int = Calculator.calculateCarboInPortion(carboIn100grm: carboIn100GrmPoroduct, portionSize: portion)
+    let carboInPortion: Int = CalculateValueTextField.calculateCarboInPortion(carboIn100grm: carboIn100GrmPoroduct, portionSize: portion)
     
     cell.carboInPortionLabel.text = String(carboInPortion)
     
-    let sumPortion = calculateSumPortion(portion: portion, indexPath: indexPath)
-    let sumCarbo = calculateSumCarbo(carboInPortion: String(carboInPortion), indexPath: indexPath)
+    let sumPortion = CalculateValueTextField.calculateSumPortion(portion: portion, indexPath: indexPath, tableViewData: &tableViewData)
+    let sumCarbo = CalculateValueTextField.calculateSumCarbo(carboInPortion: String(carboInPortion), indexPath: indexPath, tableViewData: &tableViewData)
     
     footerView.resultsView.carboResultLabel.text = String(sumCarbo)
     footerView.resultsView.portionResultLabel.text = String(sumPortion)
   }
   
-  // Обязательно собрать это в 1 класс
-  
-  private func calculateSumCarbo(carboInPortion: String,indexPath: IndexPath) -> Int {
-    
-    tableViewData[indexPath.row].carboInPortion = carboInPortion
-    let arrayCarbo = tableViewData.map { (product) -> Int  in
-      
-      let carboInt = Int(product.carboInPortion)
-      return carboInt!
-    }
-    let sum = arrayCarbo.reduce(0,+)
-    return sum
-  }
-  
-  private func calculateSumPortion(portion: Int,indexPath: IndexPath) -> Int {
-    
-    tableViewData[indexPath.row].portion = String(portion)
-    let arrayPortion = tableViewData.map { (product) -> Int  in
-      
-      let portionInt = Int(product.portion)
-      return portionInt!
-    }
-    let sumPortion = arrayPortion.reduce(0,+)
-    return sumPortion
-  }
+
   
   private func getIndexPathIntableViewForTextFiedl(textField: UITextField) -> IndexPath? {
     
@@ -237,9 +213,7 @@ extension ProductListInMealViewController: UITextFieldDelegate {
     
     return indexPath
   }
-  
-  
-  // Короче мне нужно проработать конец работы при insulinTextField и клонец работы при insulin textField
+
   
   func handlePortionTextFieldEndEditing(textField: UITextField) {
     
@@ -251,9 +225,7 @@ extension ProductListInMealViewController: UITextFieldDelegate {
     } else {
       guard let row = getRowProductThanChangePortion(textField: textField) else {return}
       let portionInt = Int(text)!
-      
-      // Вообщем проблема в том что в этом контроллере у меня написанно обновить порцию
-      // а в product Liste в маин мне обновлять не надо! так как я еще не создал никакой реалм сущности!
+
       didChangePortionTextFieldClouser!(portionInt,row,mealId)
     }
     

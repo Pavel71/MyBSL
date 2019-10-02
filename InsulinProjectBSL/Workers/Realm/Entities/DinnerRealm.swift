@@ -21,27 +21,39 @@ import RealmSwift
   //
   
   dynamic var id: String = UUID().uuidString
-  dynamic var name: String = ""
-  dynamic var category: String  = ""
-  dynamic var carbo: Int = 0
-  dynamic var portion: Int = 100
-  
-  dynamic var isFavorits: Bool = false
-  
-  convenience init(name: String, category: String, carbo: Int, isFavorits: Bool, portion: Int = 100) {
-    self.init()
-    
-    self.name = name
-    self.category = category
-    self.carbo = carbo
-    self.portion = portion
-    self.isFavorits = isFavorits
-    
-  }
   
   
-  override static func primaryKey() -> String? {
-    return ProductRealm.Property.id.rawValue
-  }
+  
+  // Top
+//  dynamic var shugarBefore: Float = 0
+//  dynamic var shugarAfter: Float = 0
+//
+//  dynamic var timeShugarBefore: Date
+//  dynamic var timeShugarAfter: Date
+  
+  // Product
+  
+//  let listProduct = List<ProductRealm>()
+  
+  // Place Injections
+  
+  // Здесь должен быть функционал обеспечивающий выбор места иньъекции
+  
+  // Activity
+  // указать планируется ли тренировка!
+  
+  
+  
+  
+//  convenience required init() {
+//    self.init()
+//
+//
+//  }
+//
+//
+//  override static func primaryKey() -> String? {
+//    return ProductRealm.Property.id.rawValue
+//  }
   
 }

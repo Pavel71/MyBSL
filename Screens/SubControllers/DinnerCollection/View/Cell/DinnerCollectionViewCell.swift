@@ -11,10 +11,8 @@ import UIKit
 
 protocol DinnerViewModelCellable {
 
-  var productListInDinnerViewModel: ProductListInDinnerViewModel {get set}
   var shugarTopViewModel: ShugarTopViewModelable {get set}
-  var resultBottomViewModel: ProductListResultsViewModel {get set}
-  
+  var productListInDinnerViewModel: ProductListInDinnerViewModel {get set}
 
 }
 
@@ -23,22 +21,33 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   
   static let cellId = "DinnerCollectionViewCellId"
   
- 
   
+  // Shugar View
   let shugarSetView = ShugarSetView(frame: .init(x: 0, y: 0, width: 0, height: Constants.Main.DinnerCollectionView.shugarViewInCellHeight))
   
+  // ProductController
   let productListViewController = ProductListInDinnerViewController()
   let touchesPassView = TouchesPassView()
   
+  // Add New Product Button
+  
   let addNewProductInMealButton: UIButton = {
     let button = UIButton(type: .system)
-    button.layer.cornerRadius = Constants.HeaderInSection.cornerRadius
+    
     button.setImage(#imageLiteral(resourceName: "plus").withRenderingMode(.alwaysTemplate), for: .normal)
     button.tintColor = UIColor.white
     button.backgroundColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
-
+    
     return button
   }()
+  
+  // Choose InjectionsPlace
+  
+  let chooseRowView = ChoosePlaceInjectionsRowView()
+  
+  //  Will be Activity
+  let wiilActiveRow = WillActiveView()
+  
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -48,6 +57,8 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     setUpShuagarView()
     setUpProductView()
     setUpAddButton()
+    setUpChoosePlaceInjectionsRowView()
+    setUpWillActiveRow()
   }
   
   
@@ -55,7 +66,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   private func setUpShuagarView() {
     
     addSubview(shugarSetView)
-    shugarSetView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.shugarViewTopMargin, left: 8, bottom: 0, right: 8))
+    shugarSetView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom: 0, right: 8))
   }
   // Set Up ProductView
   
@@ -65,7 +76,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     touchesPassView.fillSuperview()
     
     touchesPassView.addSubview(productListViewController.view)
-    productListViewController.view.anchor(top: shugarSetView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding:.init(top: 5, left: 8, bottom: Constants.Main.DinnerCollectionView.productListViewBottomMargin, right: 8))
+    productListViewController.view.anchor(top: shugarSetView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding:.init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
     
   }
   
@@ -90,6 +101,22 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   @objc private func handleAddNewProduct() {
     
     didTapAddNewProductInDinnerClouser!()
+  }
+  
+  
+  private func setUpChoosePlaceInjectionsRowView() {
+    
+    addSubview(chooseRowView)
+    chooseRowView.anchor(top: addNewProductInMealButton.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
+    chooseRowView.constrainHeight(constant: Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight)
+    
+  }
+  
+  private func setUpWillActiveRow() {
+    
+    addSubview(wiilActiveRow)
+    wiilActiveRow.anchor(top: chooseRowView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
+    wiilActiveRow.constrainHeight(constant: Constants.Main.DinnerCollectionView.willActiveRowHeight)
   }
   
   
@@ -128,7 +155,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   
   private func setProductListViewHeight(isPreviosDinner: Bool) {
     
-    let heightProductListView = Calculator.calculateProductListViewheight(countRow: productListViewController.tableViewData.count,isPreviosDinner: isPreviosDinner)
+    let heightProductListView = CalculateHeightView.calculateProductListViewheight(countRow: productListViewController.tableViewData.count,isPreviosDinner: isPreviosDinner)
     
     productListViewController.view.constrainHeight(constant: heightProductListView)
     

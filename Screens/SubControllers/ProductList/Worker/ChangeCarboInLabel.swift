@@ -13,7 +13,7 @@ class ComputedValueThanChangeOne {
   static func changeCarboInlabel(tableView: UITableView, carboOn100Grm: Int,portion: Int,indexPath:IndexPath) -> String {
     
 
-    let carboInPortion: Int = Calculator.calculateCarboInPortion(carboIn100grm: carboOn100Grm, portionSize: portion)
+    let carboInPortion: Int = CalculateValueTextField.calculateCarboInPortion(carboIn100grm: carboOn100Grm, portionSize: portion)
     
     let carbo = changeCarboInCell(indexPath: indexPath, carboInPortion: carboInPortion, tableView: tableView)
     return carbo

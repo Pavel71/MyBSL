@@ -47,7 +47,7 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
   
   // MARK: Routing
   
-
+  var choosePlaceInjection = ChoosePlaceInjectionView(frame: .init(x: 0, y: 0, width: 280, height: 350))
   
   // MARK: View lifecycle
   
@@ -55,6 +55,29 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
     super.viewDidLoad()
     
     view.backgroundColor = .yellow
+    
+    
+    choosePlaceInjection.center = view.center
+    view.addSubview(choosePlaceInjection)
+    
+    
+//    setUpForceRecogniser()
+    
+
+  }
+  
+  
+  
+  private func setUpForceRecogniser() {
+      let forceGesture = ForceGestureRecognizer(forceThreshold: 20)
+      forceGesture.addTarget(self, action: #selector(forceTap))
+      view.addGestureRecognizer(forceGesture)
+  }
+  
+  @objc private func forceTap(gesture: ForceGestureRecognizer) {
+    print("Force Tap")
+    
+    print(gesture.force)
   }
   
   // MARK: Display

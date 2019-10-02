@@ -20,10 +20,7 @@ import UIKit
 struct ProductListInDinnerViewModel:ProductListInDinnerViewModalable {
   
   var productsData: [ProductListViewModel]
-  
   var dinnerItemResultsViewModel: ProductListResultsViewModel
-  
-  
   var isPreviosDinner: Bool
   
   

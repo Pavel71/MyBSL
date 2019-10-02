@@ -12,6 +12,15 @@ import UIKit
 
 struct Constants {
   
+  static let cornerRadiusForButtonAndTextField: CGFloat = 10
+  
+  struct Color {
+    
+    static let darKBlueBackgroundColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+    static let lightBlueBackgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
+    static let lightGrayBackgroundColor = UIColor(white: 0.6, alpha: 1)
+  }
+  
   
   static let numberValueTextFieldWidth: CGFloat = 50
   
@@ -59,12 +68,6 @@ struct Constants {
     
   }
   
-//  struct DinnerCollectionView {
-//    
-//    static let ShugarViewTopMargin: CGFloat = 10
-//    static let ProductListViewBottomMargin: CGFloat = 10
-//    
-//  }
   
   struct ProductList {
     
@@ -95,8 +98,12 @@ struct Constants {
       static let contentInsert: UIEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
       static let shugarViewInCellHeight: CGFloat = 70
       
-      static let shugarViewTopMargin: CGFloat = 10
-      static let productListViewBottomMargin: CGFloat = 10
+      static let choosePlaceInjectionsRowHeight: CGFloat = 50
+      static let willActiveRowHeight: CGFloat = 50
+      
+      static let topMarginBetweenView: CGFloat = 10
+      
+
     }
   }
   

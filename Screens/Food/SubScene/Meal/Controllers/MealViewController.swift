@@ -667,7 +667,7 @@ extension MealViewController: UITableViewDelegate, UITableViewDataSource {
     let countProductInMeal = sectionViewModelList[indexPath.section].meals[indexPath.row].products.count
     let mealName = sectionViewModelList[indexPath.section].meals[indexPath.row].name
     
-    let cellHeight = Calculator.calculateMealCellHeight(isExpanded: isExpanded, countRow: countProductInMeal, mealName: mealName)
+    let cellHeight = CalculateHeightView.calculateMealCellHeight(isExpanded: isExpanded, countRow: countProductInMeal, mealName: mealName)
     
     return cellHeight
     

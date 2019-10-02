@@ -151,12 +151,10 @@ extension ProductListInDinnerViewController {
     // Изменит значение лейбла в зависимости от порции котрую мы вводим
     let carboInPortion = ComputedValueThanChangeOne.changeCarboInlabel(tableView: tableView, carboOn100Grm: carboIn100GrmPoroduct, portion: portion, indexPath: indexPath)
     
-    // Написать Api которая будет в режиме онлайн менять показания
     
     // Подумать как приукрасит
-    let sumPortion = calculateSumPortion(portion: portion,indexPath:indexPath)
-    let sumCarbo = calculateSumCarbo(carboInPortion:carboInPortion, indexPath: indexPath)
-    
+    let sumPortion = CalculateValueTextField.calculateSumPortion(portion: portion,indexPath:indexPath, tableViewData: &tableViewData)
+    let sumCarbo = CalculateValueTextField.calculateSumCarbo(carboInPortion:carboInPortion, indexPath: indexPath, tableViewData: &tableViewData)
     
     footerView.resultsView.portionResultLabel.text = String(sumPortion)
     footerView.resultsView.carboResultLabel.text = String(sumCarbo)
@@ -168,56 +166,13 @@ extension ProductListInDinnerViewController {
     guard let indexPath = ComputedValueThanChangeOne.getIndexPathIntableViewForTextFiedl(textField: textField, tableView: tableView) else {return}
     
     
-    let sum = calculateSumInsulin(insulin: textField.text ?? "", indexPath: indexPath)
+    let sum = CalculateValueTextField.calculateSumInsulin(insulin: textField.text ?? "", indexPath: indexPath, tableViewData: &tableViewData)
     footerView.resultsView.insulinResultLabel.text = String(sum)
   }
   
-  // MARK: TO DO Refactoring
-  
-  private func calculateSumInsulin(insulin: String,indexPath: IndexPath) -> Float {
-    
-    tableViewData[indexPath.row].insulinValue = insulin
-    let arrayInsulin = tableViewData.map { (product) -> Float  in
-      if let insulin = product.insulinValue {
-        print(insulin)
-        let insulinFloat = (insulin as NSString).floatValue
-        return insulinFloat
-      }
-      return 0
-    }
-    let sum = arrayInsulin.reduce(0, +)
-    return sum
-  }
-  
-  
-  private func calculateSumCarbo(carboInPortion: String,indexPath: IndexPath) -> Int {
-    
-    tableViewData[indexPath.row].carboInPortion = carboInPortion
-    let arrayCarbo = tableViewData.map { (product) -> Int  in
-      
-      let carboInt = Int(product.carboInPortion)
-      return carboInt!
-    }
-    let sum = arrayCarbo.reduce(0,+)
-    return sum
-  }
-  
-  private func calculateSumPortion(portion: Int,indexPath: IndexPath) -> Int {
-    
-    tableViewData[indexPath.row].portion = String(portion)
-    let arrayPortion = tableViewData.map { (product) -> Int  in
-      
-      let portionInt = Int(product.portion)
-      return portionInt!
-    }
-    let sumPortion = arrayPortion.reduce(0,+)
-    return sumPortion
-  }
-  
- 
-  
   
   // здесь мне нужно ловаить данные приходящие с текстфилдов и сохранять их оперативке как минимум!
+  
   private func handlePortionTextFieldEndEditing(textField: UITextField) {
     print("Portion End Editing")
     

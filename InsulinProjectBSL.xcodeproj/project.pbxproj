@@ -13,6 +13,12 @@
 		053BAB52233B56D60080359B /* Validatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053BAB51233B56D60080359B /* Validatable.swift */; };
 		053BAB54233B5ACA0080359B /* DinnerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053BAB53233B5ACA0080359B /* DinnerViewModel.swift */; };
 		055BE0CD2340A69C0029D298 /* ContainerDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */; };
+		055BE0CF23434AEE0029D298 /* CalculateValueTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0CE23434AEE0029D298 /* CalculateValueTextField.swift */; };
+		055BE0D2234359680029D298 /* ForceGestureRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D1234359680029D298 /* ForceGestureRecogniser.swift */; };
+		055BE0D5234363760029D298 /* ChoosePlaceInjectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D4234363760029D298 /* ChoosePlaceInjectionView.swift */; };
+		055BE0D723448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D623448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift */; };
+		055BE0DA2344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */; };
+		055BE0DD2344DB290029D298 /* WillActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0DC2344DB290029D298 /* WillActiveView.swift */; };
 		05952A4F233BB0FD00EE996E /* BaseProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A4E233BB0FD00EE996E /* BaseProductList.swift */; };
 		05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A51233BB22B00EE996E /* ProductListProtocol.swift */; };
 		05952A58233BB51600EE996E /* ProductListInDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */; };
@@ -117,7 +123,7 @@
 		F1EC859D233101BF00E14D33 /* MenuFoodListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EC859C233101BF00E14D33 /* MenuFoodListCell.swift */; };
 		F1EC85A0233104EB00E14D33 /* MenuProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EC859F233104EB00E14D33 /* MenuProductListViewModel.swift */; };
 		F1EC85A323320FE400E14D33 /* MenuFoodListheaderInSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EC85A223320FE400E14D33 /* MenuFoodListheaderInSectionView.swift */; };
-		F1EC85A623321CC500E14D33 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EC85A523321CC500E14D33 /* Calculator.swift */; };
+		F1EC85A623321CC500E14D33 /* CalculateHeightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EC85A523321CC500E14D33 /* CalculateHeightView.swift */; };
 		F1EC85A8233251AD00E14D33 /* UiImageView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EC85A7233251AD00E14D33 /* UiImageView + Extension.swift */; };
 		F1F358BA2321261B00E48369 /* HeaderInSectionWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F358B92321261B00E48369 /* HeaderInSectionWorker.swift */; };
 /* End PBXBuildFile section */
@@ -129,6 +135,12 @@
 		053BAB51233B56D60080359B /* Validatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validatable.swift; sourceTree = "<group>"; };
 		053BAB53233B5ACA0080359B /* DinnerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerViewModel.swift; sourceTree = "<group>"; };
 		055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerDinnerViewController.swift; sourceTree = "<group>"; };
+		055BE0CE23434AEE0029D298 /* CalculateValueTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateValueTextField.swift; sourceTree = "<group>"; };
+		055BE0D1234359680029D298 /* ForceGestureRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceGestureRecogniser.swift; sourceTree = "<group>"; };
+		055BE0D4234363760029D298 /* ChoosePlaceInjectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePlaceInjectionView.swift; sourceTree = "<group>"; };
+		055BE0D623448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePlaceInjectionsRowView.swift; sourceTree = "<group>"; };
+		055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePlaceInjectionsViewAnimated.swift; sourceTree = "<group>"; };
+		055BE0DC2344DB290029D298 /* WillActiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillActiveView.swift; sourceTree = "<group>"; };
 		05952A4E233BB0FD00EE996E /* BaseProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductList.swift; sourceTree = "<group>"; };
 		05952A51233BB22B00EE996E /* ProductListProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListProtocol.swift; sourceTree = "<group>"; };
 		05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInDinnerViewController.swift; sourceTree = "<group>"; };
@@ -237,7 +249,7 @@
 		F1EC859C233101BF00E14D33 /* MenuFoodListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuFoodListCell.swift; sourceTree = "<group>"; };
 		F1EC859F233104EB00E14D33 /* MenuProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuProductListViewModel.swift; sourceTree = "<group>"; };
 		F1EC85A223320FE400E14D33 /* MenuFoodListheaderInSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuFoodListheaderInSectionView.swift; sourceTree = "<group>"; };
-		F1EC85A523321CC500E14D33 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
+		F1EC85A523321CC500E14D33 /* CalculateHeightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateHeightView.swift; sourceTree = "<group>"; };
 		F1EC85A7233251AD00E14D33 /* UiImageView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UiImageView + Extension.swift"; sourceTree = "<group>"; };
 		F1F358B92321261B00E48369 /* HeaderInSectionWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderInSectionWorker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -288,6 +300,39 @@
 			path = HeaderinSectionWorker;
 			sourceTree = "<group>";
 		};
+		055BE0D0234359520029D298 /* UIRecogniser */ = {
+			isa = PBXGroup;
+			children = (
+				055BE0D1234359680029D298 /* ForceGestureRecogniser.swift */,
+			);
+			path = UIRecogniser;
+			sourceTree = "<group>";
+		};
+		055BE0D32343635A0029D298 /* ChoosePlaceView */ = {
+			isa = PBXGroup;
+			children = (
+				055BE0D4234363760029D298 /* ChoosePlaceInjectionView.swift */,
+				055BE0D623448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift */,
+			);
+			path = ChoosePlaceView;
+			sourceTree = "<group>";
+		};
+		055BE0D82344AC220029D298 /* ChoosePlaceInjectionsAnimator */ = {
+			isa = PBXGroup;
+			children = (
+				055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */,
+			);
+			path = ChoosePlaceInjectionsAnimator;
+			sourceTree = "<group>";
+		};
+		055BE0DB2344DB0E0029D298 /* WillActivy */ = {
+			isa = PBXGroup;
+			children = (
+				055BE0DC2344DB290029D298 /* WillActiveView.swift */,
+			);
+			path = WillActivy;
+			sourceTree = "<group>";
+		};
 		05952A47233B766A00EE996E /* Screens */ = {
 			isa = PBXGroup;
 			children = (
@@ -322,8 +367,8 @@
 		05952A4D233BB0E300EE996E /* ProductList */ = {
 			isa = PBXGroup;
 			children = (
-				0509FD02233FB0F000B04B30 /* Controllers */,
 				F1CC2D68232FB3D800EF7D18 /* View */,
+				0509FD02233FB0F000B04B30 /* Controllers */,
 				05952A5B233BC69600EE996E /* Worker */,
 				0509FD01233FB08500B04B30 /* Model */,
 			);
@@ -476,8 +521,8 @@
 		05A4F1A62339FAA600DFE4D7 /* FooterCell */ = {
 			isa = PBXGroup;
 			children = (
-				05C16D64233F4E4B00486CAE /* RobotView */,
 				05A4F1AB2339FB3600DFE4D7 /* MainTableViewFooterCell.swift */,
+				05C16D64233F4E4B00486CAE /* RobotView */,
 			);
 			path = FooterCell;
 			sourceTree = "<group>";
@@ -554,18 +599,12 @@
 			isa = PBXGroup;
 			children = (
 				05A4F1BF233A371500DFE4D7 /* DinnerCollectionViewCell.swift */,
+				055BE0DB2344DB0E0029D298 /* WillActivy */,
+				055BE0D32343635A0029D298 /* ChoosePlaceView */,
 				05952A49233B783500EE996E /* ShugarView */,
 				05C16D63233F349A00486CAE /* TouchsView */,
-				05C16D5F233F233C00486CAE /* ResultsView */,
 			);
 			path = Cell;
-			sourceTree = "<group>";
-		};
-		05C16D5F233F233C00486CAE /* ResultsView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ResultsView;
 			sourceTree = "<group>";
 		};
 		05C16D62233F323A00486CAE /* ResultsView */ = {
@@ -1107,6 +1146,7 @@
 			isa = PBXGroup;
 			children = (
 				F1E78D0F230D568100592AB8 /* Constants.swift */,
+				055BE0D0234359520029D298 /* UIRecogniser */,
 				05A4F1BB233A0D0E00DFE4D7 /* NavBar */,
 				05A4F1BA233A0D0600DFE4D7 /* TextFields */,
 				05A4F1B9233A0CFD00DFE4D7 /* Labels */,
@@ -1133,6 +1173,7 @@
 		F1E78D01230D547100592AB8 /* Animator */ = {
 			isa = PBXGroup;
 			children = (
+				055BE0D82344AC220029D298 /* ChoosePlaceInjectionsAnimator */,
 				F13C3476233366A0003A618B /* SlideMenuAnimated */,
 				F1E78D02230D549E00592AB8 /* FoodAnimator.swift */,
 			);
@@ -1228,7 +1269,8 @@
 		F1EC85A423321CA700E14D33 /* Calculate */ = {
 			isa = PBXGroup;
 			children = (
-				F1EC85A523321CC500E14D33 /* Calculator.swift */,
+				F1EC85A523321CC500E14D33 /* CalculateHeightView.swift */,
+				055BE0CE23434AEE0029D298 /* CalculateValueTextField.swift */,
 			);
 			path = Calculate;
 			sourceTree = "<group>";
@@ -1367,7 +1409,9 @@
 				F1F358BA2321261B00E48369 /* HeaderInSectionWorker.swift in Sources */,
 				F1E78CDA230D338A00592AB8 /* SettingsViewController.swift in Sources */,
 				F13B351F2318D8170020AD26 /* MealRealm.swift in Sources */,
+				055BE0DD2344DB290029D298 /* WillActiveView.swift in Sources */,
 				F1E78CD8230D338A00592AB8 /* SettingsRouter.swift in Sources */,
+				055BE0CF23434AEE0029D298 /* CalculateValueTextField.swift in Sources */,
 				F1E78D20230D68DC00592AB8 /* ProductRealm.swift in Sources */,
 				05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */,
 				F1E78D16230D57FA00592AB8 /* FoodCell.swift in Sources */,
@@ -1405,6 +1449,7 @@
 				F1EC85A0233104EB00E14D33 /* MenuProductListViewModel.swift in Sources */,
 				F1E78D1C230D683A00592AB8 /* Path.swift in Sources */,
 				F112845723278CDF00416AF4 /* AddNewElementView.swift in Sources */,
+				055BE0D723448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift in Sources */,
 				F1E78CFF230D544C00592AB8 /* CustomLabels.swift in Sources */,
 				05952A5F233E873E00EE996E /* TouchesPassView.swift in Sources */,
 				F1E78C9C230D31E600592AB8 /* AppDelegate.swift in Sources */,
@@ -1414,12 +1459,13 @@
 				F1E78CEA230D33AE00592AB8 /* StatsInteractor.swift in Sources */,
 				F1495358232918790027E655 /* ContainerViewController.swift in Sources */,
 				F1E78CD6230D338A00592AB8 /* SettingsPresenter.swift in Sources */,
-				F1EC85A623321CC500E14D33 /* Calculator.swift in Sources */,
+				F1EC85A623321CC500E14D33 /* CalculateHeightView.swift in Sources */,
 				F1E78D1E230D688900592AB8 /* FoodRealmManager.swift in Sources */,
 				F13C34782333676B003A618B /* SlideMenuAnimated.swift in Sources */,
 				05A4F1B8233A0CDE00DFE4D7 /* BetterSnapingLayout.swift in Sources */,
 				F150DBF32317DD2300380AE0 /* MealModels.swift in Sources */,
 				05A4F1C2233A3D1500DFE4D7 /* CustomValueTextField.swift in Sources */,
+				055BE0D2234359680029D298 /* ForceGestureRecogniser.swift in Sources */,
 				F150DBF82317DE5100380AE0 /* MealView.swift in Sources */,
 				F1CC2D6B232FB41F00EF7D18 /* ProductListInMealViewController.swift in Sources */,
 				F11132B4232BABF2000E6994 /* ProductListHeaderInSection.swift in Sources */,
@@ -1451,6 +1497,7 @@
 				F1EC859D233101BF00E14D33 /* MenuFoodListCell.swift in Sources */,
 				F1E78CC8230D336B00592AB8 /* MainWorker.swift in Sources */,
 				F150DBE523163E8000380AE0 /* CustomCategoryTextField.swift in Sources */,
+				055BE0D5234363760029D298 /* ChoosePlaceInjectionView.swift in Sources */,
 				F1E78D18230D58AE00592AB8 /* FoodView.swift in Sources */,
 				0509FD04233FB11A00B04B30 /* ProductListModel.swift in Sources */,
 				F1EC85A8233251AD00E14D33 /* UiImageView + Extension.swift in Sources */,
@@ -1460,6 +1507,7 @@
 				05A4F19F2339EF6A00DFE4D7 /* MainView.swift in Sources */,
 				F1E78CBD230D334B00592AB8 /* FoodInteractor.swift in Sources */,
 				05A4F1A22339F2AC00DFE4D7 /* MainCustomNavBar.swift in Sources */,
+				055BE0DA2344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift in Sources */,
 				F1CC2D64232F77F100EF7D18 /* TableHeaderView.swift in Sources */,
 				F1EC85A323320FE400E14D33 /* MenuFoodListheaderInSectionView.swift in Sources */,
 				05952A5D233BC6AE00EE996E /* ChangeCarboInLabel.swift in Sources */,
