@@ -12,6 +12,7 @@
 		0509FD06233FCA9700B04B30 /* DinnerRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0509FD05233FCA9700B04B30 /* DinnerRealm.swift */; };
 		053BAB52233B56D60080359B /* Validatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053BAB51233B56D60080359B /* Validatable.swift */; };
 		053BAB54233B5ACA0080359B /* DinnerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053BAB53233B5ACA0080359B /* DinnerViewModel.swift */; };
+		0550B801234636E500D88732 /* ListTrainsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0550B800234636E500D88732 /* ListTrainsViewController.swift */; };
 		055BE0CD2340A69C0029D298 /* ContainerDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */; };
 		055BE0CF23434AEE0029D298 /* CalculateValueTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0CE23434AEE0029D298 /* CalculateValueTextField.swift */; };
 		055BE0D2234359680029D298 /* ForceGestureRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D1234359680029D298 /* ForceGestureRecogniser.swift */; };
@@ -134,6 +135,7 @@
 		0509FD05233FCA9700B04B30 /* DinnerRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerRealm.swift; sourceTree = "<group>"; };
 		053BAB51233B56D60080359B /* Validatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validatable.swift; sourceTree = "<group>"; };
 		053BAB53233B5ACA0080359B /* DinnerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerViewModel.swift; sourceTree = "<group>"; };
+		0550B800234636E500D88732 /* ListTrainsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTrainsViewController.swift; sourceTree = "<group>"; };
 		055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerDinnerViewController.swift; sourceTree = "<group>"; };
 		055BE0CE23434AEE0029D298 /* CalculateValueTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateValueTextField.swift; sourceTree = "<group>"; };
 		055BE0D1234359680029D298 /* ForceGestureRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceGestureRecogniser.swift; sourceTree = "<group>"; };
@@ -300,6 +302,14 @@
 			path = HeaderinSectionWorker;
 			sourceTree = "<group>";
 		};
+		0550B7FF234636C600D88732 /* ListTrainsView */ = {
+			isa = PBXGroup;
+			children = (
+				0550B800234636E500D88732 /* ListTrainsViewController.swift */,
+			);
+			path = ListTrainsView;
+			sourceTree = "<group>";
+		};
 		055BE0D0234359520029D298 /* UIRecogniser */ = {
 			isa = PBXGroup;
 			children = (
@@ -437,6 +447,7 @@
 		05A4F1982339EE5100DFE4D7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0550B7FF234636C600D88732 /* ListTrainsView */,
 				05A4F19E2339EF6A00DFE4D7 /* MainView.swift */,
 				05A4F1A32339FA8700DFE4D7 /* Cells */,
 				05A4F1A02339F29100DFE4D7 /* CustomNavBar */,
@@ -1401,6 +1412,7 @@
 				F1E78CD7230D338A00592AB8 /* SettingsWorker.swift in Sources */,
 				F1932B42231FB009003DC351 /* UITableView + Extension.swift in Sources */,
 				0509FD00233F9DBC00B04B30 /* ConfirmProductListResultViewModel.swift in Sources */,
+				0550B801234636E500D88732 /* ListTrainsViewController.swift in Sources */,
 				05C16D61233F23A800486CAE /* ProductListResultView.swift in Sources */,
 				F1E78D1A230D67FF00592AB8 /* RealmProvider.swift in Sources */,
 				F1116325231D3478000C79FA /* SectionMealTypeRealm.swift in Sources */,

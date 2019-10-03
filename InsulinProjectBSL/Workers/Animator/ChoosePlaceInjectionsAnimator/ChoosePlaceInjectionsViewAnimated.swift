@@ -15,7 +15,7 @@ class ChoosePlaceInjectionsAnimated {
   
   static func showView(blurView: UIView, choosePlaceInjectionView: UIView, isShow: Bool) {
     
-    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
       blurView.alpha = isShow ? 1 : 0
       choosePlaceInjectionView.alpha = isShow ? 1 : 0
     }, completion: nil)

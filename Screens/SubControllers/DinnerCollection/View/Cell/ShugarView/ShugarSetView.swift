@@ -25,7 +25,7 @@ class ShugarSetView: UIView {
   
   // Shugar Before
   
-  let shugarBeforeTitleLabel = CustomLabels(font: .systemFont(ofSize: 18), text: "Сахар до еды")
+  let shugarBeforeTitleLabel = CustomLabels(font: .systemFont(ofSize: 18), text: "До еды")
   
   let shugarBeforeValueTextField = CustomValueTextField(placeholder: "7.2", cornerRadius: 10)
   
@@ -53,11 +53,14 @@ class ShugarSetView: UIView {
     
   }()
   
+//  var titleView = CustomLabels(font: UIFont.systemFont(ofSize: 18), text: "Сахар")
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
     shugarBeforeValueTextField.keyboardType = .decimalPad
     shugarAfterValueTextField.keyboardType = .decimalPad
+    
     
     let stackViewBefore = UIStackView(arrangedSubviews: [
       shugarBeforeTitleLabel,
@@ -95,7 +98,18 @@ class ShugarSetView: UIView {
     stackView.distribution = .fillEqually
     stackView.spacing = 10
     
-
+//    let overAllStackView = UIStackView(arrangedSubviews: [
+//      titleView,
+//      stackView
+//      ])
+//    overAllStackView.axis = .vertical
+//    overAllStackView.spacing = 2
+//    overAllStackView.distribution = .fill
+//
+//
+//    addSubview(overAllStackView)
+//    overAllStackView.fillSuperview()
+    
     addSubview(stackView)
     stackView.fillSuperview()
     

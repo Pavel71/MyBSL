@@ -19,36 +19,40 @@ class WillActiveView: UIView {
     return iv
   }()
   
-  let activityTitle = CustomLabels(font: UIFont.systemFont(ofSize: 17), text: "Физическая нагрузка:")
+  let activityTitle = CustomLabels(font: UIFont.systemFont(ofSize: 18), text: "Тренировка:")
   
   let activeOn: UISwitch = {
     let st = UISwitch()
     st.tintColor = Constants.Color.lightBlueBackgroundColor
     st.onTintColor = Constants.Color.darKBlueBackgroundColor
+    st.addTarget(self, action: #selector(handleSwitchActive), for: .valueChanged)
     return st
   }()
+  
+  let selectTrainTextField = CustomCategoryTextField(padding: 5, placeholder: "Бассейн", cornerRaduis: 10)
+  
+  
+  
+  
+  // Добавить сюда этот список
   
   override init(frame: CGRect) {
     super.init(frame: frame)
   
     activityTitle.numberOfLines = 0
+    selectTrainTextField.isHidden = true
+    selectTrainTextField.alpha = 0
     
-    let vStackView = UIStackView(arrangedSubviews: [
-      activityTitle,activityImageView
-  
-      ])
-    
-//    activityImageView.constrainHeight(constant: 30)
-//    activityImageView.constrainWidth(constant: 30)
-    
+
     
     
     let containerView = UIView()
     containerView.addSubview(activeOn)
     activeOn.centerInSuperview()
+    
 
     let overStackView = UIStackView(arrangedSubviews: [
-      activityTitle,activityImageView,containerView
+      activityTitle,activityImageView,containerView,selectTrainTextField
       ])
 
     overStackView.distribution = .fillEqually
@@ -57,6 +61,29 @@ class WillActiveView: UIView {
     addSubview(overStackView)
     overStackView.fillSuperview()
     
+  }
+  
+  private func setUPListTrainsView() {
+    
+    
+  }
+  
+  
+  // Switch On
+  
+  @objc private func handleSwitchActive(switchOn: UISwitch) {
+    
+    
+    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+      
+      self.selectTrainTextField.isHidden = !switchOn.isOn
+      self.selectTrainTextField.alpha = switchOn.isOn ? 1 : 0
+      
+      self.activityImageView.isHidden = switchOn.isOn
+      self.activityImageView.alpha = !switchOn.isOn ? 1 : 0
+      
+    }, completion: nil)
+  
   }
   
   required init?(coder aDecoder: NSCoder) {

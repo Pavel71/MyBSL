@@ -20,7 +20,7 @@ class DinnerCollectionViewController: UIViewController {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     
     collectionView.semanticContentAttribute = .forceRightToLeft
-    collectionView.contentInset = Constants.Main.DinnerCollectionView.contentInsert
+//    collectionView.contentInset = Constants.Main.DinnerCollectionView.contentInsert
     collectionView.showsHorizontalScrollIndicator = false
     collectionView.decelerationRate = .fast
     collectionView.backgroundColor = .white
@@ -29,6 +29,8 @@ class DinnerCollectionViewController: UIViewController {
     return collectionView
     
   }()
+  
+  let listTrainsViewController = ListTrainsViewController(style: .plain)
   
   // Здесь не простая ProductView Model а с инмулином!
   
@@ -70,6 +72,7 @@ class DinnerCollectionViewController: UIViewController {
   
   var didAddNewProductInDinner: EmptyClouser?
   var didShowChoosepalceIncjectionView: EmptyClouser?
+  var didTapListButtonInActiveTextField: ((UIButton) -> Void)?
   
 }
 
@@ -121,19 +124,74 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
       self?.choosePlaceInjections()
     }
     
+    // ActivityTecxtField
+    
+    cell.willActiveRow.selectTrainTextField.delegate = self
+    cell.willActiveRow.selectTrainTextField.listButton.addTarget(self, action: #selector(handleTapListButtonInWillActiveTextField), for: .touchUpInside)
+    
     
   }
   
   // По идеии эти сигналы нужно прокинуть на mainController
   
-  private func addNewProductInDinner() {
+  @objc private func handleTapListButtonInWillActiveTextField(button: UIButton) {
+
+    let textField = button.superview!
     
-    print("add New product in Dinner")
+    
+    
+    
+    let point  = view.convert(textField.center, to: textField.superview)
+    print(point)
+    
+    let rect = CGRect(x: point.x + 25, y: -point.y + 55, width: textField.frame.width, height: 150)
+    
+    if view.subviews.contains(listTrainsViewController.view) {
+      removeListTableView()
+      collectionView.isScrollEnabled = true
+    } else {
+      setUpListTrainsView(rect: rect)
+      collectionView.isScrollEnabled = false
+    }
+    
+    
+    
+//    didTapListButtonInActiveTextField!(button)
+  }
+  
+  
+  // Тестим Здесь пока что
+  
+  private func setUpListTrainsView(rect: CGRect) {
+    listTrainsViewController.view.frame = rect
+    view.addSubview(listTrainsViewController.view)
+    listTrainsViewController.view.alpha = 0
+    
+    UIView.animate(withDuration: 0.9, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+      self.listTrainsViewController.view.alpha = 1
+    }, completion: nil)
+    
+    //    mainView.addSubview(listTrainsViewController.view)
+  }
+  
+  private func removeListTableView() {
+    
+    
+    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+      self.listTrainsViewController.view.alpha = 0
+    }) { (succes) in
+      self.listTrainsViewController.view.removeFromSuperview()
+    }
+    
+  }
+  
+  
+  
+  private func addNewProductInDinner() {
     didAddNewProductInDinner!()
   }
   
   private func choosePlaceInjections() {
-    print("Choose place")
     didShowChoosepalceIncjectionView!()
   }
   

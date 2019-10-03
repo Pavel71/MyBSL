@@ -23,7 +23,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   
   
   // Shugar View
-  let shugarSetView = ShugarSetView(frame: .init(x: 0, y: 0, width: 0, height: Constants.Main.DinnerCollectionView.shugarViewInCellHeight))
+  let shugarSetView = ShugarSetView()
   
   // ProductController
   let productListViewController = ProductListInDinnerViewController()
@@ -46,7 +46,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   let chooseRowView = ChoosePlaceInjectionsRowView()
   
   //  Will be Activity
-  let wiilActiveRow = WillActiveView()
+  let willActiveRow = WillActiveView()
   
   
   override init(frame: CGRect) {
@@ -67,6 +67,8 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     
     addSubview(shugarSetView)
     shugarSetView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom: 0, right: 8))
+    
+    shugarSetView.constrainHeight(constant: Constants.Main.DinnerCollectionView.shugarViewInCellHeight)
   }
   // Set Up ProductView
   
@@ -114,9 +116,9 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   
   private func setUpWillActiveRow() {
     
-    addSubview(wiilActiveRow)
-    wiilActiveRow.anchor(top: chooseRowView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
-    wiilActiveRow.constrainHeight(constant: Constants.Main.DinnerCollectionView.willActiveRowHeight)
+    addSubview(willActiveRow)
+    willActiveRow.anchor(top: chooseRowView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
+    willActiveRow.constrainHeight(constant: Constants.Main.DinnerCollectionView.willActiveRowHeight)
   }
   
   

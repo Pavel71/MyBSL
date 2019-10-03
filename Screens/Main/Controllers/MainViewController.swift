@@ -25,6 +25,7 @@ class MainViewController: UIViewController, MainDisplayLogic {
   
   var mainView: MainView!
   var tableView: UITableView!
+  var listTrainsViewController = ListTrainsViewController(style: .plain)
   
   // Место где выбран TextField
   var textFieldSelectedPoint: CGPoint!
@@ -260,41 +261,13 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     cell.dinnerCollectionViewController.didShowChoosepalceIncjectionView = {[weak self] in
       self?.choosePlaceInjections()
     }
-  }
-  
-  private func addNewProductInDinner() {
-    print("Add New product Main")
-  }
-  
-  // Stack Func Choose Place Injections
-  
-  private func didTapClouseChoosePlaceInjectionView() {
-    print("Заркываем Choose View")
-    ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: false)
-  }
-  
-  private func didChooseNewPlaceInjections(namePlace: String) {
     
-    // Вот такая цепь событий
-    let  cell = tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as! MainTableViewMiddleCell
-    
-    let dinnerItem = cell.dinnerCollectionViewController.collectionView.cellForItem(at:  IndexPath(item: 0, section: 0))  as! DinnerCollectionViewCell
-    
-    dinnerItem.chooseRowView.chooseButton.setTitle(namePlace, for: .normal)
-    // Теперь задача состоит в том что нужно транспортировать строку в row
-    
-    // Закрываем
-    didTapClouseChoosePlaceInjectionView()
+    cell.dinnerCollectionViewController.didTapListButtonInActiveTextField = {[weak self] button in
+      self?.didTapListButtonInActiveTextField(button: button)
+    }
     
   }
-  
-  private func choosePlaceInjections() {
-    // Так же нам понадобится анимация
-    
-    ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: true)
 
-    print("Choose Place Injections Main")
-  }
   
   private func configureFooterCell() -> MainTableViewFooterCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewFooterCell.cellId) as! MainTableViewFooterCell
@@ -310,7 +283,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     switch indexPath.row {
       
     case 0:
-      return 200
+      return 150
       
     case 1:
       
@@ -338,14 +311,106 @@ extension MainViewController {
   
   private func didSelectTextField(textField: UITextField) {
     setTextFiedlPoint(textField: textField)
+    
   }
   
   private func setTextFiedlPoint(textField: UITextField) {
 
     let point = mainView.convert(textField.center, from: textField.superview!)
     textFieldSelectedPoint = point
-    print("Select TextField")
+    
   }
+  
+  
+  // Cell View CLousers
+  
+  // Tap List Trains
+  
+  private func didTapListButtonInActiveTextField(button: UIButton) {
+    print("Show List Trains")
+    
+//    let textField = button.superview!
+//    
+//    
+//    
+//    let point  = mainView.convert(textField.center, to: textField.superview)
+//    print(point)
+//    
+//    let rect = CGRect(x: point.x + 20, y: -point.y + 55, width: textField.frame.width, height: 150)
+//    
+//    if mainView.subviews.contains(listTrainsViewController.view) {
+//      removeListTableView()
+//    } else {
+//      setUpListTrainsView(rect: rect)
+//    }
+    
+  }
+  
+  // Нет эта идея никуда не годится нужно привязывать к ячейке!
+  
+//  private func setUpListTrainsView(rect: CGRect) {
+//    listTrainsViewController.view.frame = rect
+//    mainView.addSubview(listTrainsViewController.view)
+//    listTrainsViewController.view.alpha = 0
+//    
+//    UIView.animate(withDuration: 0.9, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+//      self.listTrainsViewController.view.alpha = 1
+//    }, completion: nil)
+//    
+////    mainView.addSubview(listTrainsViewController.view)
+//  }
+//  
+//  private func removeListTableView() {
+//    
+//    
+//    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+//      self.listTrainsViewController.view.alpha = 0
+//    }) { (succes) in
+//        self.listTrainsViewController.view.removeFromSuperview()
+//    }
+//    
+//  }
+  
+  // Add NEw Product in PorductListViewController
+  private func addNewProductInDinner() {
+    print("Add New product Main")
+  }
+  
+  // Stack Func Choose Place Injections
+  
+  // Показываем Человечка
+  private func choosePlaceInjections() {
+    // Так же нам понадобится анимация
+    
+    ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: true)
+    
+    print("Choose Place Injections Main")
+  }
+  
+  private func didChooseNewPlaceInjections(namePlace: String) {
+    
+    // Вот такая цепь событий
+    let  cell = tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as! MainTableViewMiddleCell
+    
+    let dinnerItem = cell.dinnerCollectionViewController.collectionView.cellForItem(at:  IndexPath(item: 0, section: 0))  as! DinnerCollectionViewCell
+    
+    dinnerItem.chooseRowView.chooseButton.setTitle(namePlace, for: .normal)
+    // Теперь задача состоит в том что нужно транспортировать строку в row
+    
+    // Закрываем
+    didTapClouseChoosePlaceInjectionView()
+    
+  }
+  
+  // Нажали закрыть View
+  private func didTapClouseChoosePlaceInjectionView() {
+    print("Заркываем Choose View")
+    ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: false)
+  }
+  
+
+  
+  
 }
 
 
