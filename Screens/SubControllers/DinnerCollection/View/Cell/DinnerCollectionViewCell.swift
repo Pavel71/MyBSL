@@ -47,6 +47,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   
   //  Will be Activity
   let willActiveRow = WillActiveView()
+  let listTrainsViewController = ListTrainsViewController(style: .plain)
   
   
   override init(frame: CGRect) {
@@ -108,23 +109,32 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   
   private func setUpChoosePlaceInjectionsRowView() {
     
+    // выводим врехний constraint  и регулируем его в зависимости от ситуацыии
+    topChooseViewConstrint = chooseRowView.topAnchor.constraint(equalTo: productListViewController.view.bottomAnchor, constant: Constants.Main.DinnerCollectionView.topMarginBetweenView)
+    
     addSubview(chooseRowView)
-    chooseRowView.anchor(top: addNewProductInMealButton.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
+    chooseRowView.anchor(top: nil, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: 0, left: 8, bottom:0, right: 8))
+    
+    topChooseViewConstrint.isActive = true
+    
     chooseRowView.constrainHeight(constant: Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight)
     
   }
+  
+  var topChooseViewConstrint: NSLayoutConstraint!
+  
   
   private func setUpWillActiveRow() {
     
     addSubview(willActiveRow)
     willActiveRow.anchor(top: chooseRowView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
     willActiveRow.constrainHeight(constant: Constants.Main.DinnerCollectionView.willActiveRowHeight)
+    
+    
+
   }
   
-  
-  
-  
-  
+
   func setViewModel(viewModel: DinnerViewModel) {
 
     setShugarViewModel(shugarTopViewModel: viewModel.shugarTopViewModel)
@@ -151,7 +161,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
 
   }
   
-
+  
   
   // Height Product List
   
@@ -162,7 +172,10 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     productListViewController.view.constrainHeight(constant: heightProductListView)
     
     addNewProductInMealButton.isHidden = isPreviosDinner
+    
+    topChooseViewConstrint.constant = isPreviosDinner ? Constants.Main.DinnerCollectionView.topMarginBetweenView : 30
 
+//    self.layoutIfNeeded()
   }
   
   

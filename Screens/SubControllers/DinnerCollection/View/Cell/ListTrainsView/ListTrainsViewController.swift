@@ -23,6 +23,12 @@ class ListTrainsViewController: UITableViewController {
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
   }
   
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    view.alpha = 0
+  }
+  
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)

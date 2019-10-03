@@ -262,8 +262,16 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
       self?.choosePlaceInjections()
     }
     
-    cell.dinnerCollectionViewController.didTapListButtonInActiveTextField = {[weak self] button in
-      self?.didTapListButtonInActiveTextField(button: button)
+    cell.dinnerCollectionViewController.didTapListButtonInActiveTextField = {[weak self] textField in
+      self?.didTapListButtonInActiveTextField(textField: textField)
+    }
+    
+    cell.dinnerCollectionViewController.didScrollDinnerCollectionView = {[weak self] in
+      self?.didScrollDinnerCollectionView()
+    }
+    
+    cell.dinnerCollectionViewController.didSwitchActiveViewToMainView = {[weak self] in
+      self?.removeListTableView() // если листа нет то ниче не произойдет если есть то уберет
     }
     
   }
@@ -309,6 +317,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MainViewController {
   
+  // Begin Editing TextField
   private func didSelectTextField(textField: UITextField) {
     setTextFiedlPoint(textField: textField)
     
@@ -324,52 +333,47 @@ extension MainViewController {
   
   // Cell View CLousers
   
+  private func didScrollDinnerCollectionView() {
+    removeListTableView()
+  }
+  
   // Tap List Trains
   
-  private func didTapListButtonInActiveTextField(button: UIButton) {
-    print("Show List Trains")
+  private func didTapListButtonInActiveTextField(textField: UITextField) {
     
-//    let textField = button.superview!
-//    
-//    
-//    
-//    let point  = mainView.convert(textField.center, to: textField.superview)
-//    print(point)
-//    
-//    let rect = CGRect(x: point.x + 20, y: -point.y + 55, width: textField.frame.width, height: 150)
-//    
-//    if mainView.subviews.contains(listTrainsViewController.view) {
-//      removeListTableView()
-//    } else {
-//      setUpListTrainsView(rect: rect)
-//    }
+
+    if mainView.subviews.contains(listTrainsViewController.view) {
+      removeListTableView()
+    } else {
+      setUpListTrainsView(textField: textField)
+    }
     
   }
   
-  // Нет эта идея никуда не годится нужно привязывать к ячейке!
+  // Сейчас все работает только осталось подстраховать некоторые нюансы!
   
-//  private func setUpListTrainsView(rect: CGRect) {
-//    listTrainsViewController.view.frame = rect
-//    mainView.addSubview(listTrainsViewController.view)
-//    listTrainsViewController.view.alpha = 0
-//    
-//    UIView.animate(withDuration: 0.9, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
-//      self.listTrainsViewController.view.alpha = 1
-//    }, completion: nil)
-//    
-////    mainView.addSubview(listTrainsViewController.view)
-//  }
-//  
-//  private func removeListTableView() {
-//    
-//    
-//    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
-//      self.listTrainsViewController.view.alpha = 0
-//    }) { (succes) in
-//        self.listTrainsViewController.view.removeFromSuperview()
-//    }
-//    
-//  }
+  private func setUpListTrainsView(textField: UITextField) {
+    //     Жесткое дерьмо но работает останется только прокинуть в mainView
+    mainView.addSubview(listTrainsViewController.view)
+    listTrainsViewController.view.anchor(top: textField.bottomAnchor, leading: textField.leadingAnchor, bottom: nil, trailing: textField.trailingAnchor)
+    listTrainsViewController.view.constrainHeight(constant: 200)
+    
+    UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+      self.listTrainsViewController.view.alpha = 1
+    }, completion: nil)
+    
+  }
+  
+  private func removeListTableView() {
+    
+    
+    UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+      self.listTrainsViewController.view.alpha = 0
+    }) { (succes) in
+        self.listTrainsViewController.view.removeFromSuperview()
+    }
+    
+  }
   
   // Add NEw Product in PorductListViewController
   private func addNewProductInDinner() {
@@ -384,7 +388,7 @@ extension MainViewController {
     
     ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: true)
     
-    print("Choose Place Injections Main")
+    
   }
   
   private func didChooseNewPlaceInjections(namePlace: String) {
@@ -404,7 +408,7 @@ extension MainViewController {
   
   // Нажали закрыть View
   private func didTapClouseChoosePlaceInjectionView() {
-    print("Заркываем Choose View")
+    
     ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: false)
   }
   

@@ -20,7 +20,7 @@ class DinnerCollectionViewController: UIViewController {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     
     collectionView.semanticContentAttribute = .forceRightToLeft
-//    collectionView.contentInset = Constants.Main.DinnerCollectionView.contentInsert
+    collectionView.contentInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
     collectionView.showsHorizontalScrollIndicator = false
     collectionView.decelerationRate = .fast
     collectionView.backgroundColor = .white
@@ -30,7 +30,6 @@ class DinnerCollectionViewController: UIViewController {
     
   }()
   
-  let listTrainsViewController = ListTrainsViewController(style: .plain)
   
   // Здесь не простая ProductView Model а с инмулином!
   
@@ -72,7 +71,10 @@ class DinnerCollectionViewController: UIViewController {
   
   var didAddNewProductInDinner: EmptyClouser?
   var didShowChoosepalceIncjectionView: EmptyClouser?
-  var didTapListButtonInActiveTextField: ((UIButton) -> Void)?
+  var didTapListButtonInActiveTextField: ((UITextField) -> Void)?
+  var didScrollDinnerCollectionView: EmptyClouser?
+  var didSwitchActiveViewToMainView: EmptyClouser?
+  
   
 }
 
@@ -93,13 +95,13 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     let item = collectionView.dequeueReusableCell(withReuseIdentifier: DinnerCollectionViewCell.cellId, for: indexPath) as! DinnerCollectionViewCell
 
     item.setViewModel(viewModel: dinnerViewModel[indexPath.row])
-    setCellClousers(cell: item)
+    setCellClousers(cell: item,indexPath: indexPath)
     return item
     
   }
   
   // в этом методе я расставлю  clouser чтобы только этот контроллер отвечал за все действия происходящие на его территории!
-  private func setCellClousers(cell: DinnerCollectionViewCell) {
+  private func setCellClousers(cell: DinnerCollectionViewCell,indexPath: IndexPath) {
     
     // TextFiedl
     cell.shugarSetView.shugarBeforeValueTextField.delegate = self
@@ -128,6 +130,10 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     
     cell.willActiveRow.selectTrainTextField.delegate = self
     cell.willActiveRow.selectTrainTextField.listButton.addTarget(self, action: #selector(handleTapListButtonInWillActiveTextField), for: .touchUpInside)
+    cell.willActiveRow.didSwitchActiveView = {[weak self] in
+      self?.didSwitchActiveView()
+    }
+
     
     
   }
@@ -136,61 +142,21 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
   
   @objc private func handleTapListButtonInWillActiveTextField(button: UIButton) {
 
-    let textField = button.superview!
-    
-    
-    
-    
-    let point  = view.convert(textField.center, to: textField.superview)
-    print(point)
-    
-    let rect = CGRect(x: point.x + 25, y: -point.y + 55, width: textField.frame.width, height: 150)
-    
-    if view.subviews.contains(listTrainsViewController.view) {
-      removeListTableView()
-      collectionView.isScrollEnabled = true
-    } else {
-      setUpListTrainsView(rect: rect)
-      collectionView.isScrollEnabled = false
-    }
-    
-    
-    
-//    didTapListButtonInActiveTextField!(button)
+    guard let textField = button.superview  else {return}
+    didTapListButtonInActiveTextField!(textField as! UITextField)
+
   }
   
-  
-  // Тестим Здесь пока что
-  
-  private func setUpListTrainsView(rect: CGRect) {
-    listTrainsViewController.view.frame = rect
-    view.addSubview(listTrainsViewController.view)
-    listTrainsViewController.view.alpha = 0
-    
-    UIView.animate(withDuration: 0.9, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
-      self.listTrainsViewController.view.alpha = 1
-    }, completion: nil)
-    
-    //    mainView.addSubview(listTrainsViewController.view)
+  // Switch Active View
+  private func didSwitchActiveView() {
+    didSwitchActiveViewToMainView!()
   }
-  
-  private func removeListTableView() {
-    
-    
-    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
-      self.listTrainsViewController.view.alpha = 0
-    }) { (succes) in
-      self.listTrainsViewController.view.removeFromSuperview()
-    }
-    
-  }
-  
-  
-  
+
+  // Add New Product
   private func addNewProductInDinner() {
     didAddNewProductInDinner!()
   }
-  
+  // CHoosePlace Injections
   private func choosePlaceInjections() {
     didShowChoosepalceIncjectionView!()
   }
@@ -234,6 +200,14 @@ extension DinnerCollectionViewController: UITextFieldDelegate {
     didSelectTextField!(textField)
     
   }
+
+}
+
+extension DinnerCollectionViewController: UIScrollViewDelegate {
   
   
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    didScrollDinnerCollectionView!()
+    
+  }
 }

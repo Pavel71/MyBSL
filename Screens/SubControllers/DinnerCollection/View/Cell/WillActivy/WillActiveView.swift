@@ -31,6 +31,7 @@ class WillActiveView: UIView {
   
   let selectTrainTextField = CustomCategoryTextField(padding: 5, placeholder: "Бассейн", cornerRaduis: 10)
   
+  var didSwitchActiveView: EmptyClouser?
   
   
   
@@ -63,10 +64,6 @@ class WillActiveView: UIView {
     
   }
   
-  private func setUPListTrainsView() {
-    
-    
-  }
   
   
   // Switch On
@@ -83,6 +80,8 @@ class WillActiveView: UIView {
       self.activityImageView.alpha = !switchOn.isOn ? 1 : 0
       
     }, completion: nil)
+    
+    didSwitchActiveView!()
   
   }
   

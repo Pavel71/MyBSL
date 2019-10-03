@@ -96,7 +96,7 @@ struct Constants {
     struct DinnerCollectionView {
       
       static let contentInsert: UIEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
-      static let shugarViewInCellHeight: CGFloat = 50
+      static let shugarViewInCellHeight: CGFloat = 40
       
       static let choosePlaceInjectionsRowHeight: CGFloat = 40
       static let willActiveRowHeight: CGFloat = 40

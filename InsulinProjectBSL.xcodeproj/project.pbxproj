@@ -447,7 +447,6 @@
 		05A4F1982339EE5100DFE4D7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0550B7FF234636C600D88732 /* ListTrainsView */,
 				05A4F19E2339EF6A00DFE4D7 /* MainView.swift */,
 				05A4F1A32339FA8700DFE4D7 /* Cells */,
 				05A4F1A02339F29100DFE4D7 /* CustomNavBar */,
@@ -610,6 +609,7 @@
 			isa = PBXGroup;
 			children = (
 				05A4F1BF233A371500DFE4D7 /* DinnerCollectionViewCell.swift */,
+				0550B7FF234636C600D88732 /* ListTrainsView */,
 				055BE0DB2344DB0E0029D298 /* WillActivy */,
 				055BE0D32343635A0029D298 /* ChoosePlaceView */,
 				05952A49233B783500EE996E /* ShugarView */,
