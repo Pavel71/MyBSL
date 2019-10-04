@@ -117,15 +117,19 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     
     cell.portionTextField.addTarget(self, action: #selector(didChangePortionTextField), for: .editingChanged)
     
-    cell.insulinTextField.addTarget(self, action: #selector(didChangeInsulinTextField), for: .editingChanged)
+    cell.didChangeInsulinFromPickerView = {[weak self] textField in
+      self?.didChangeInsulinTextField(textField: textField)
+    }
+    
+//    cell.insulinTextField.addTarget(self, action: #selector(didChangeInsulinTextField), for: .editingChanged)
     
     
-//    cell.didPortionTextFieldEditing = {[weak self] textField in
-//      self?.handlePortionTextFieldEndEditing(textField: textField)
-//    }
-//
-//    cell.didInsulinTextFieldEditing = {[weak self] textField in
-//      self?.handleInsulinTextFiedlEndEditing(textField: textField)}
+    cell.didPortionTextFieldEditing = {[weak self] textField in
+      self?.handlePortionTextFieldEndEditing(textField: textField)
+    }
+
+    cell.didInsulinTextFieldEditing = {[weak self] textField in
+      self?.handleInsulinTextFiedlEndEditing(textField: textField)}
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -140,7 +144,10 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
 extension ProductListInDinnerViewController {
   
   
+  // Обрабатываем изменения Порции в режиме ввода
   @objc private func didChangePortionTextField(textField: UITextField) {
+    
+    
     
     guard let indexPath = ComputedValueThanChangeOne.getIndexPathIntableViewForTextFiedl(textField: textField, tableView: tableView) else {return}
     
@@ -171,37 +178,32 @@ extension ProductListInDinnerViewController {
   }
   
   
-  // здесь мне нужно ловаить данные приходящие с текстфилдов и сохранять их оперативке как минимум!
+  // Эти методы нужны когда будем слать запросы в реалм
   
   private func handlePortionTextFieldEndEditing(textField: UITextField) {
     print("Portion End Editing")
-    
-    // Это все довольно катсыльно! Потомучто будет идти работа с реалмом!
-    
-    guard let indexPath = getIndexPathIntableViewForTextFiedl(textField: textField) else {return}
-    tableViewData[indexPath.row].portion = textField.text ?? "0"
-    setResultViewModel()
-    
+
+
+
   }
-  
+
   private func handleInsulinTextFiedlEndEditing(textField: UITextField) {
     print("Insulin End Editing")
-    
-    guard let indexPath = getIndexPathIntableViewForTextFiedl(textField: textField) else {return}
-    tableViewData[indexPath.row].insulinValue = textField.text
-    setResultViewModel()
-    
+
+//    guard let indexPath = getIndexPathIntableViewForTextFiedl(textField: textField) else {return}
+
+
 
   }
   
-  private func getIndexPathIntableViewForTextFiedl(textField: UITextField) -> IndexPath? {
-    
-    let point = tableView.convert(textField.center, from: textField.superview)
-    guard let indexPath = tableView.indexPathForRow(at: point) else {return nil}
-    
-    return indexPath
-    
-  }
+//  private func getIndexPathIntableViewForTextFiedl(textField: UITextField) -> IndexPath? {
+//
+//    let point = tableView.convert(textField.center, from: textField.superview)
+//    guard let indexPath = tableView.indexPathForRow(at: point) else {return nil}
+//
+//    return indexPath
+//
+//  }
   
   
 }
@@ -222,7 +224,7 @@ extension ProductListInDinnerViewController {
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return ProductListHeaderInSection.height
+    return Constants.ProductList.headerInSectionHeight
   }
   
 }

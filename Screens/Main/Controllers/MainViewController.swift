@@ -158,7 +158,7 @@ extension MainViewController {
     
     configureTableView()
     
-    setMainViewClousers()
+    setSomeViewClousers()
     
   }
   
@@ -177,6 +177,11 @@ extension MainViewController {
     tableView.register(MainTableViewFooterCell.self, forCellReuseIdentifier: MainTableViewFooterCell.cellId)
   }
   
+  private func setSomeViewClousers() {
+    setMainViewClousers()
+    setListTrainsViewControllerClouser()
+  }
+  
   private func setMainViewClousers() {
     mainView.choosePlaceInjectionsView.didTapCloseButton = {[weak self] in
       self?.didTapClouseChoosePlaceInjectionView()
@@ -184,6 +189,13 @@ extension MainViewController {
     
     mainView.choosePlaceInjectionsView.didChooseInjectionsPlace = {[weak self] title in
       self?.didChooseNewPlaceInjections(namePlace: title)
+    }
+  }
+  
+  private func setListTrainsViewControllerClouser() {
+    
+    listTrainsViewController.didSelectCell = {[weak self] nameTrain in
+      self?.didSelectListTrainViewControllerCell(name: nameTrain)
     }
   }
   
@@ -258,9 +270,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
       self?.addNewProductInDinner()
     }
     
+    // Choose Place Incjections In Cell
     cell.dinnerCollectionViewController.didShowChoosepalceIncjectionView = {[weak self] in
       self?.choosePlaceInjections()
     }
+    
+    // Will Active Row in Cell
     
     cell.dinnerCollectionViewController.didTapListButtonInActiveTextField = {[weak self] textField in
       self?.didTapListButtonInActiveTextField(textField: textField)
@@ -274,17 +289,16 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
       self?.removeListTableView() // если листа нет то ниче не произойдет если есть то уберет
     }
     
+    cell.dinnerCollectionViewController.didEndEditingWillActiveTextField = {[weak self] textField in
+      self?.didEndEditingTrainTextField(textField: textField)
+    }
+    
   }
-
-  
   private func configureFooterCell() -> MainTableViewFooterCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewFooterCell.cellId) as! MainTableViewFooterCell
     
     return cell
   }
-  
-  
-  
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
@@ -317,10 +331,14 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MainViewController {
   
+
+  
   // Begin Editing TextField
   private func didSelectTextField(textField: UITextField) {
     setTextFiedlPoint(textField: textField)
     
+    // Можно тут вслепую просто запилить
+    removeListTableView()
   }
   
   private func setTextFiedlPoint(textField: UITextField) {
@@ -331,7 +349,7 @@ extension MainViewController {
   }
   
   
-  // Cell View CLousers
+  // Dinner Cell View CLousers
   
   private func didScrollDinnerCollectionView() {
     removeListTableView()
@@ -339,12 +357,56 @@ extension MainViewController {
   
   // Tap List Trains
   
+  
+  
+  // Add NEw Product in PorductListViewController
+  private func addNewProductInDinner() {
+    print("Add New product Main")
+  }
+  
+  
+  
+  private func getFirstDinnerCell() -> DinnerCollectionViewCell {
+    
+    let  cell = tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as! MainTableViewMiddleCell
+    
+    let dinnerItem = cell.dinnerCollectionViewController.collectionView.cellForItem(at:  IndexPath(item: 0, section: 0))  as! DinnerCollectionViewCell
+    
+    return dinnerItem
+  }
+  
+
+  
+  
+}
+
+// MARK: Work With Train ListView Controller
+extension MainViewController {
+  
+  private func didEndEditingTrainTextField(textField: UITextField) {
+    print("train textfield end editing")
+    
+    guard let train = textField.text else {return}
+    // Или сдесь сделать запись в realm
+    listTrainsViewController.addNewTrain(train: train)
+    
+  }
+  
+  // LIST Trains Closuer
+  
+  private func didSelectListTrainViewControllerCell(name: String) {
+    
+    let dinnerCell =  getFirstDinnerCell()
+    dinnerCell.willActiveRow.trainTextField.text = name
+    
+  }
+  
   private func didTapListButtonInActiveTextField(textField: UITextField) {
     
-
     if mainView.subviews.contains(listTrainsViewController.view) {
       removeListTableView()
     } else {
+      textField.resignFirstResponder()
       setUpListTrainsView(textField: textField)
     }
     
@@ -355,8 +417,9 @@ extension MainViewController {
   private func setUpListTrainsView(textField: UITextField) {
     //     Жесткое дерьмо но работает останется только прокинуть в mainView
     mainView.addSubview(listTrainsViewController.view)
+    
     listTrainsViewController.view.anchor(top: textField.bottomAnchor, leading: textField.leadingAnchor, bottom: nil, trailing: textField.trailingAnchor)
-    listTrainsViewController.view.constrainHeight(constant: 200)
+    listTrainsViewController.view.constrainHeight(constant: 150)
     
     UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
       self.listTrainsViewController.view.alpha = 1
@@ -370,17 +433,18 @@ extension MainViewController {
     UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
       self.listTrainsViewController.view.alpha = 0
     }) { (succes) in
-        self.listTrainsViewController.view.removeFromSuperview()
+      self.listTrainsViewController.view.removeFromSuperview()
     }
     
   }
   
-  // Add NEw Product in PorductListViewController
-  private func addNewProductInDinner() {
-    print("Add New product Main")
-  }
+}
+
+
+// MARK: Work With ChoosePlaceInjectionView
+
+extension MainViewController {
   
-  // Stack Func Choose Place Injections
   
   // Показываем Человечка
   private func choosePlaceInjections() {
@@ -393,10 +457,8 @@ extension MainViewController {
   
   private func didChooseNewPlaceInjections(namePlace: String) {
     
-    // Вот такая цепь событий
-    let  cell = tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as! MainTableViewMiddleCell
     
-    let dinnerItem = cell.dinnerCollectionViewController.collectionView.cellForItem(at:  IndexPath(item: 0, section: 0))  as! DinnerCollectionViewCell
+    let dinnerItem = getFirstDinnerCell()
     
     dinnerItem.chooseRowView.chooseButton.setTitle(namePlace, for: .normal)
     // Теперь задача состоит в том что нужно транспортировать строку в row
@@ -411,9 +473,6 @@ extension MainViewController {
     
     ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: false)
   }
-  
-
-  
   
 }
 

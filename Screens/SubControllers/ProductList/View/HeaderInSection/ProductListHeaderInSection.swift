@@ -11,12 +11,12 @@ import UIKit
 
 class ProductListHeaderInSection: UIView {
   
-  static let height: CGFloat = 35
+//  static let height: CGFloat = 35
   
   
   private let  carboInPortionLabel: UILabel = {
     let label = UILabel()
-    label.text = "Углеводов в порции:"
+    label.text = "Углеводы"
     label.font = UIFont.systemFont(ofSize: 10)
     label.numberOfLines = 0
     label.textAlignment = .center
@@ -27,7 +27,7 @@ class ProductListHeaderInSection: UIView {
   
   private let  portionLabel: UILabel = {
     let label = UILabel()
-    label.text = "Порция гр."
+    label.text = "Порция"
     label.font = UIFont.systemFont(ofSize: 10)
     label.numberOfLines = 0
     label.textAlignment = .center
@@ -38,7 +38,7 @@ class ProductListHeaderInSection: UIView {
   private let insulinLabel: UILabel = {
     
     let label = UILabel()
-    label.text = "Инсулин ед."
+    label.text = "Инсулин"
     label.font = UIFont.systemFont(ofSize: 10)
     label.numberOfLines = 0
     label.textAlignment = .center

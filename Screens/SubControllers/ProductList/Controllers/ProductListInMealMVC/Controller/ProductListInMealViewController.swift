@@ -216,16 +216,18 @@ extension ProductListInMealViewController: UITextFieldDelegate {
 
   
   func handlePortionTextFieldEndEditing(textField: UITextField) {
-    
+
     guard let text = textField.text else {return}
     
     if text.isEmpty {
+      textField.text = "0"
       ProgressHUD.showError("Продукт не будет учтен при расчете так как вы оставили поле пустым!")
-      
+
     } else {
       guard let row = getRowProductThanChangePortion(textField: textField) else {return}
       let portionInt = Int(text)!
-
+      
+      // Отправляем результат на MealController и в Реалм
       didChangePortionTextFieldClouser!(portionInt,row,mealId)
     }
     
@@ -253,8 +255,9 @@ extension ProductListInMealViewController {
     
     return header
   }
+  // Sections
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return ProductListHeaderInSection.height
+    return Constants.ProductList.headerInSectionHeight
   }
 }
 

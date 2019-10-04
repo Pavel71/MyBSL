@@ -969,10 +969,10 @@
 		F1CC2D68232FB3D800EF7D18 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F1116326231D552F000C79FA /* Cell */,
 				F11132B2232BABC8000E6994 /* HeaderInSection */,
 				F1CC2D62232F77CB00EF7D18 /* TableHeaderView */,
 				F1103B5A232A35F9009A338A /* TableViewFooter */,
-				F1116326231D552F000C79FA /* Cell */,
 			);
 			path = View;
 			sourceTree = "<group>";

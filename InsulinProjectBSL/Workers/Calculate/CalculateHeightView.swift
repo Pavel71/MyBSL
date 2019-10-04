@@ -60,7 +60,8 @@ class CalculateHeightView {
 //    let footerHeight = isPreviosDinner ? Constants.ProductList.TableFooterView.resultsViewHeight : Constants.ProductList.TableFooterView.footerHeight
     let footerHeight = isPreviosDinner ? Constants.ProductList.TableFooterView.footerHeight - 10 : Constants.ProductList.TableFooterView.footerHeight
     
-    let headerInSection = ProductListHeaderInSection.height
+//    let headerInSection = ProductListHeaderInSection.height
+    let headerInSection = Constants.ProductList.headerInSectionHeight
     let headerTableViewHeight = ProductListTableHeaderView.height
     
     var tableVIewHeight: CGFloat

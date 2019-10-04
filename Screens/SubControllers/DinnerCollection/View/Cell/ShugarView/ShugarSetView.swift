@@ -39,9 +39,9 @@ class ShugarSetView: UIView {
   
   // Time before
   
-  let timeBeforeLabel = CustomLabels(font: .systemFont(ofSize: 14), text: "28/09/19 00:41")
+  let timeBeforeLabel = CustomLabels(font: .systemFont(ofSize: 14), text: "")
   // Time After
-  let timeAfterLabel = CustomLabels(font: .systemFont(ofSize: 14), text: "28/09/19 01:41")
+  let timeAfterLabel = CustomLabels(font: .systemFont(ofSize: 14), text: "")
   
   var stackViewShugarAfter: UIStackView!
   
@@ -53,13 +53,25 @@ class ShugarSetView: UIView {
     
   }()
   
-//  var titleView = CustomLabels(font: UIFont.systemFont(ofSize: 18), text: "Сахар")
+  let dateFormatter: DateFormatter = {
+    
+    let dateF = DateFormatter()
+    dateF.dateFormat = "dd-MM-yy HH:mm"
+    return dateF
+  }()
+  
+  
+  
+  // CLousers
+  var didBeginEditingShugarBeforeTextField: TextFieldPassClouser?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
     shugarBeforeValueTextField.keyboardType = .decimalPad
     shugarAfterValueTextField.keyboardType = .decimalPad
+    
+    shugarBeforeValueTextField.delegate = self
     
     
     let stackViewBefore = UIStackView(arrangedSubviews: [
@@ -97,19 +109,7 @@ class ShugarSetView: UIView {
     
     stackView.distribution = .fillEqually
     stackView.spacing = 10
-    
-//    let overAllStackView = UIStackView(arrangedSubviews: [
-//      titleView,
-//      stackView
-//      ])
-//    overAllStackView.axis = .vertical
-//    overAllStackView.spacing = 2
-//    overAllStackView.distribution = .fill
-//
-//
-//    addSubview(overAllStackView)
-//    overAllStackView.fillSuperview()
-    
+        
     addSubview(stackView)
     stackView.fillSuperview()
     
@@ -119,8 +119,8 @@ class ShugarSetView: UIView {
   
   func setViewModel(viewModel:ShugarTopViewModelable) {
     
-    timeBeforeLabel.text = viewModel.timeBefore
-    timeAfterLabel.text = viewModel.timeAfter
+    
+    
     
     // Hidden right shugar StackView And S
     stackViewShugarAfter.isHidden = !viewModel.isPreviosDinner
@@ -130,13 +130,49 @@ class ShugarSetView: UIView {
       
       shugarBeforeValueTextField.text = viewModel.shugarBeforeValue
       shugarBeforeValueTextField.isEnabled = !viewModel.isPreviosDinner
+      
+      timeBeforeLabel.text = viewModel.timeBefore
+      timeAfterLabel.text = viewModel.timeAfter
     }
   }
   
-
+  
+  private func setTimeBeforTime() {
+    
+    let timeNow = Date()
+    let timeString = dateFormatter.string(from: timeNow)
+    timeBeforeLabel.text = timeString
+    timeBeforeLabel.alpha = 0
+    
+    UIView.animate(withDuration: 0.5) {
+      self.timeBeforeLabel.alpha = 1
+    }
+    
+  }
+  
+  
+ 
   
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  
+}
+
+
+extension ShugarSetView: UITextFieldDelegate {
+  
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    
+    didBeginEditingShugarBeforeTextField!(textField)
+  }
+  
+  func textFieldDidEndEditing(_ textField: UITextField) {
+
+    setTimeBeforTime()
+    
+    // Возможно здесь мне нужно будет прокидывать clouser
   }
 }

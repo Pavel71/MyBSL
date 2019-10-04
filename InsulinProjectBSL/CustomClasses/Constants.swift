@@ -71,9 +71,11 @@ struct Constants {
   
   struct ProductList {
     
-    static let labelValueWidth: CGFloat = 60
+    static let labelValueWidth: CGFloat = 50
     static let marginCell = UIEdgeInsets(top: 5, left: 16, bottom: 5, right: 16)
     static let cellHeight: CGFloat = 32
+    
+    static let headerInSectionHeight: CGFloat = 30
     
     struct TableFooterView {
       static let addButtonHeight: CGFloat = 45
@@ -103,8 +105,9 @@ struct Constants {
       
       static let topMarginBetweenView: CGFloat = 10
       
-
     }
+    
+    
   }
   
   struct Animate {

@@ -41,8 +41,18 @@ class DinnerCollectionViewController: UIViewController {
   
 
   // Clousers Pass to MainController
-  
+  // TextField
   var didSelectTextField: TextFieldPassClouser?
+  // WillActiveTextField
+  var didEndEditingWillActiveTextField: TextFieldPassClouser?
+  
+  // Button
+  var didAddNewProductInDinner: EmptyClouser?
+  var didShowChoosepalceIncjectionView: EmptyClouser?
+  var didTapListButtonInActiveTextField: TextFieldPassClouser?
+  var didScrollDinnerCollectionView: EmptyClouser?
+  var didSwitchActiveViewToMainView: EmptyClouser?
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -54,6 +64,7 @@ class DinnerCollectionViewController: UIViewController {
     view.addSubview(collectionView)
     collectionView.fillSuperview()
     registerCell()
+    
   }
   
   private func registerCell() {
@@ -69,11 +80,7 @@ class DinnerCollectionViewController: UIViewController {
     dinnerViewModel = viewModel
   }
   
-  var didAddNewProductInDinner: EmptyClouser?
-  var didShowChoosepalceIncjectionView: EmptyClouser?
-  var didTapListButtonInActiveTextField: ((UITextField) -> Void)?
-  var didScrollDinnerCollectionView: EmptyClouser?
-  var didSwitchActiveViewToMainView: EmptyClouser?
+  
   
   
 }
@@ -104,13 +111,26 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
   private func setCellClousers(cell: DinnerCollectionViewCell,indexPath: IndexPath) {
     
     // TextFiedl
-    cell.shugarSetView.shugarBeforeValueTextField.delegate = self
+//    cell.shugarSetView.shugarBeforeValueTextField.delegate = self
+    
     cell.shugarSetView.shugarAfterValueTextField.delegate = self
+//    cell.willActiveRow.trainTextField.delegate = self
     
     // Select TextField
+    
+    cell.shugarSetView.didBeginEditingShugarBeforeTextField = {[weak self] textField in
+      self?.textFieldDidBeginEditing(textField)
+    }
+    
     cell.productListViewController.didSelectTextFieldCellClouser = {[weak self] textField in
       self?.textFieldDidBeginEditing(textField)
     }
+    
+    
+    
+    
+    
+    // Touches Pass View
     
     cell.touchesPassView.didHitTestProductListViewControllerClouser = {[weak self] isItScrollProductList in
       self?.scrollingProductListView(isItScrollProductList: isItScrollProductList)
@@ -128,10 +148,21 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     
     // ActivityTecxtField
     
-    cell.willActiveRow.selectTrainTextField.delegate = self
-    cell.willActiveRow.selectTrainTextField.listButton.addTarget(self, action: #selector(handleTapListButtonInWillActiveTextField), for: .touchUpInside)
+    // Суть в чем все эти методы разбросанны по контроллерам с текстфилдами Мне бы их собрать в одном месте чтобы проще было управлять будет 1 контроллер который управляет этими делегатми
+    // или прокидывать все важные методы клоузерами все остальные общие через делеагата
+    
+    
+    
+    cell.willActiveRow.trainTextField.listButton.addTarget(self, action: #selector(handleTapListButtonInWillActiveTextField), for: .touchUpInside)
     cell.willActiveRow.didSwitchActiveView = {[weak self] in
       self?.didSwitchActiveView()
+    }
+    cell.willActiveRow.didBeginEditingTrainTextField = {[weak self] textField in
+      self?.textFieldDidBeginEditing(textField)
+    }
+    // Здесь еще нужен о конце редактирвоания
+    cell.willActiveRow.didEndEditingTrainTextField = {[weak self] textField in
+      self?.didEndEditingWillActiveTextField!(textField)
     }
 
     
@@ -164,20 +195,15 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
   private func scrollingProductListView(isItScrollProductList: Bool) {
     collectionView.isScrollEnabled = isItScrollProductList
   }
-  
-  private func getMaxCountProductInProductList() -> Int {
-    var maxCount: Int = 0
-    dinnerViewModel.forEach { (dinner) in
-      
-      maxCount = max(dinner.productListInDinnerViewModel.productsData.count,maxCount)
-    }
-    return maxCount
-  }
-  
-  // MARK: Height Items
+
+}
+
+// MARK: Height Dinner Cell
+
+extension DinnerCollectionViewController {
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
+    
     let heightCell = CalculateHeightView.calculateMaxHeightDinnerCollectionView(dinnerData: dinnerViewModel)
     
     return .init(width: UIScreen.main.bounds.width - 40, height: heightCell + 20)
@@ -187,19 +213,14 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     return Constants.Main.DinnerCollectionView.contentInsert
   }
   
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    collectionView.deselectItem(at: indexPath, animated: true)
-  }
-  
-
 }
 
 extension DinnerCollectionViewController: UITextFieldDelegate {
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
     didSelectTextField!(textField)
-    
   }
+  
 
 }
 
@@ -208,6 +229,6 @@ extension DinnerCollectionViewController: UIScrollViewDelegate {
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     didScrollDinnerCollectionView!()
-    
   }
+  
 }

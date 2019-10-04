@@ -18,7 +18,7 @@ class CustomValueTextField: UITextField {
     
     textAlignment = .center
     backgroundColor = .white
-    addDoneButtonOnKeyboard()
+    self.addDoneButtonOnKeyboard()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -47,24 +47,5 @@ class CustomValueTextField: UITextField {
     return .init(width: 0, height: 40)
   }
   
-  func addDoneButtonOnKeyboard(){
-    
-    let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: Constants.KeyBoard.doneToolBarHeight))
-    doneToolbar.barStyle = .default
-    
-    let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-    let done: UIBarButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(self.doneButtonAction))
-    
-    let items = [flexSpace, done]
-    doneToolbar.items = items
-    doneToolbar.sizeToFit()
-    
-    self.inputAccessoryView = doneToolbar
-  }
-  
-  @objc func doneButtonAction(){
-    self.resignFirstResponder()
-    // Сработает делегат и все будет норм!
-    print("Tap Done Button")
-  }
+
 }

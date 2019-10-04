@@ -139,6 +139,8 @@ class DinnerCollectionViewCell: UICollectionViewCell {
 
     setShugarViewModel(shugarTopViewModel: viewModel.shugarTopViewModel)
     setProductListViewModel(viewModel: viewModel)
+    
+    // Здесь мне нужно будет учесть что если обед переходит в разряд прошлых то мы блокиреум ввод всего кроме скорректированного инсулина
 
   }
   
@@ -175,7 +177,6 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     
     topChooseViewConstrint.constant = isPreviosDinner ? Constants.Main.DinnerCollectionView.topMarginBetweenView : 30
 
-//    self.layoutIfNeeded()
   }
   
   

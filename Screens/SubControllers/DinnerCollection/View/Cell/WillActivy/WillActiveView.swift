@@ -29,8 +29,10 @@ class WillActiveView: UIView {
     return st
   }()
   
-  let selectTrainTextField = CustomCategoryTextField(padding: 5, placeholder: "Бассейн", cornerRaduis: 10)
+  let trainTextField = CustomCategoryTextField(padding: 5, placeholder: "Бассейн", cornerRaduis: 10)
   
+  
+  // Clousers
   var didSwitchActiveView: EmptyClouser?
   
   
@@ -41,8 +43,12 @@ class WillActiveView: UIView {
     super.init(frame: frame)
   
     activityTitle.numberOfLines = 0
-    selectTrainTextField.isHidden = true
-    selectTrainTextField.alpha = 0
+    trainTextField.isHidden = true
+    trainTextField.alpha = 0
+    trainTextField.delegate = self
+    
+    
+    trainTextField.addDoneButtonOnKeyboard()
     
 
     
@@ -53,7 +59,7 @@ class WillActiveView: UIView {
     
 
     let overStackView = UIStackView(arrangedSubviews: [
-      activityTitle,activityImageView,containerView,selectTrainTextField
+      activityTitle,activityImageView,containerView,trainTextField
       ])
 
     overStackView.distribution = .fillEqually
@@ -66,6 +72,8 @@ class WillActiveView: UIView {
   
   
   
+  
+  
   // Switch On
   
   @objc private func handleSwitchActive(switchOn: UISwitch) {
@@ -73,8 +81,8 @@ class WillActiveView: UIView {
     
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
       
-      self.selectTrainTextField.isHidden = !switchOn.isOn
-      self.selectTrainTextField.alpha = switchOn.isOn ? 1 : 0
+      self.trainTextField.isHidden = !switchOn.isOn
+      self.trainTextField.alpha = switchOn.isOn ? 1 : 0
       
       self.activityImageView.isHidden = switchOn.isOn
       self.activityImageView.alpha = !switchOn.isOn ? 1 : 0
@@ -90,4 +98,19 @@ class WillActiveView: UIView {
   }
   
   
+  var didBeginEditingTrainTextField: TextFieldPassClouser?
+  var didEndEditingTrainTextField: TextFieldPassClouser?
+  
+}
+
+extension WillActiveView: UITextFieldDelegate {
+  
+  // Начал пользоватся
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    didBeginEditingTrainTextField!(textField)
+  }
+  // Закончил пользоватся
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    didEndEditingTrainTextField!(textField)
+  }
 }
