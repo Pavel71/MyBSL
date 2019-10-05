@@ -15,6 +15,8 @@ protocol MainTableViewHeaderCellable {
   var lastTimeInjectionValue: String {get}
   var lastShugarValueLabel: String {get}
   var insulinSupplyInPanValue: String {get}
+  
+  var isMenuViewControoler: Bool {get set}
 }
 
 
@@ -58,6 +60,11 @@ class MainTableViewHeaderCell: UITableViewCell {
     label.text = "100"
     return label
   }
+  
+  
+  // Menu View Controller
+  
+  let menuViewController = MenuDinnerViewController()
   
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -109,13 +116,32 @@ class MainTableViewHeaderCell: UITableViewCell {
   
   func setViewModel(viewModel:MainTableViewHeaderCellable) {
     
-    lastInjectionValueLabel.text = viewModel.lastInjectionValue
-    lastTimeInjectionValueLabel.text = viewModel.lastTimeInjectionValue
-    insulinSupplyInPanValueLabel.text = viewModel.insulinSupplyInPanValue
-    lastShugarValueLabel.text = viewModel.lastShugarValueLabel
+    if viewModel.isMenuViewControoler {
+      setUpMenuViewController()
+      
+    } else {
+      removeMenuViewController()
+      lastInjectionValueLabel.text = viewModel.lastInjectionValue
+      lastTimeInjectionValueLabel.text = viewModel.lastTimeInjectionValue
+      insulinSupplyInPanValueLabel.text = viewModel.insulinSupplyInPanValue
+      lastShugarValueLabel.text = viewModel.lastShugarValueLabel
+    }
+    
+    
   }
   
   
+  // Короче надо засетить сюда флаг что мы меняем ячейку и пускай включается контроолер сверху
+  func setUpMenuViewController() {
+    
+    addSubview(menuViewController.view)
+    menuViewController.view.fillSuperview()
+    
+  }
+  
+  func removeMenuViewController() {
+    menuViewController.view.removeFromSuperview()
+  }
   
   
   

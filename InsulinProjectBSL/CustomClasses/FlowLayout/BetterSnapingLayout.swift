@@ -11,7 +11,7 @@ import UIKit
 
 class BetterSnapingLayout: UICollectionViewFlowLayout {
   
-  let cellHeight = Constants.Main.Cell.mainMiddleCellHeight
+  let cellHeight = Constants.Main.Cell.middleCellHeight
   
   
   override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {

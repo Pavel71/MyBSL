@@ -40,6 +40,7 @@
 		05A4F1C4233A3E8000DFE4D7 /* ShugarSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1C3233A3E8000DFE4D7 /* ShugarSetView.swift */; };
 		05C16D61233F23A800486CAE /* ProductListResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D60233F23A800486CAE /* ProductListResultView.swift */; };
 		05C16D66233F4E6100486CAE /* RobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D65233F4E6100486CAE /* RobotView.swift */; };
+		05D806142348C9CF00C19764 /* MenuDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D806132348C9CF00C19764 /* MenuDinnerViewController.swift */; };
 		EBAC44563616B6E965B0E898 /* Pods_InsulinProjectBSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E76FB4114CAD25CECEF0EE0 /* Pods_InsulinProjectBSL.framework */; };
 		F1103B59232A34EF009A338A /* ProductsTableViewInMealCellFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1103B58232A34EF009A338A /* ProductsTableViewInMealCellFooterView.swift */; };
 		F1103B5D232A5DFF009A338A /* MealValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1103B5C232A5DFF009A338A /* MealValidator.swift */; };
@@ -163,6 +164,7 @@
 		05A4F1C3233A3E8000DFE4D7 /* ShugarSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShugarSetView.swift; sourceTree = "<group>"; };
 		05C16D60233F23A800486CAE /* ProductListResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListResultView.swift; sourceTree = "<group>"; };
 		05C16D65233F4E6100486CAE /* RobotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotView.swift; sourceTree = "<group>"; };
+		05D806132348C9CF00C19764 /* MenuDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuDinnerViewController.swift; sourceTree = "<group>"; };
 		3E76FB4114CAD25CECEF0EE0 /* Pods_InsulinProjectBSL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InsulinProjectBSL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A0FC66BAC35F6B18007EC60 /* Pods-InsulinProjectBSL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsulinProjectBSL.debug.xcconfig"; path = "Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL.debug.xcconfig"; sourceTree = "<group>"; };
 		909A81B346C959FAD75545BC /* Pods-InsulinProjectBSL.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsulinProjectBSL.release.xcconfig"; path = "Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL.release.xcconfig"; sourceTree = "<group>"; };
@@ -438,8 +440,10 @@
 		05A4F1972339EE4600DFE4D7 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F1E78CC4230D336B00592AB8 /* MainViewController.swift */,
 				055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */,
+				05D806122348C99100C19764 /* MenuForDinnerController */,
+				F1E78CC4230D336B00592AB8 /* MainViewController.swift */,
+				05D806132348C9CF00C19764 /* MenuDinnerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -640,6 +644,13 @@
 				05C16D65233F4E6100486CAE /* RobotView.swift */,
 			);
 			path = RobotView;
+			sourceTree = "<group>";
+		};
+		05D806122348C99100C19764 /* MenuForDinnerController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = MenuForDinnerController;
 			sourceTree = "<group>";
 		};
 		4A80211A4DAEF2A23ED80AC7 /* Pods */ = {
@@ -1482,6 +1493,7 @@
 				F1CC2D6B232FB41F00EF7D18 /* ProductListInMealViewController.swift in Sources */,
 				F11132B4232BABF2000E6994 /* ProductListHeaderInSection.swift in Sources */,
 				F1E78CE8230D33AE00592AB8 /* StatsModels.swift in Sources */,
+				05D806142348C9CF00C19764 /* MenuDinnerViewController.swift in Sources */,
 				05A4F1AC2339FB3600DFE4D7 /* MainTableViewFooterCell.swift in Sources */,
 				05A4F1A82339FB1C00DFE4D7 /* MainTableViewHeaderCell.swift in Sources */,
 				05A4F1AA2339FB2900DFE4D7 /* MainTableViewMiddleCell.swift in Sources */,

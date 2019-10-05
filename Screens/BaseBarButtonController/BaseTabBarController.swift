@@ -12,7 +12,7 @@ class BaseTabBarController: UITabBarController {
   
   override func viewDidLoad() {
     
-    let mainViewController = createNavController(MainViewController(),name: "Main",imageName: "today")
+    let mainViewController = createNavController(ContainerDinnerViewController(mainController: MainViewController()),name: "Main",imageName: "today")
     
 
     

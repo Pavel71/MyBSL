@@ -92,7 +92,9 @@ struct Constants {
     
     struct Cell {
       
-      static let mainMiddleCellHeight: CGFloat = 400
+      static let headerCellHeight:CGFloat = 150
+      static let middleCellHeight: CGFloat = 400
+      static let footerCellheight: CGFloat = 200
     }
     
     struct DinnerCollectionView {

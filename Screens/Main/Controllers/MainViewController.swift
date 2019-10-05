@@ -33,13 +33,12 @@ class MainViewController: UIViewController, MainDisplayLogic {
   
   // Здесь должна быть VIewModel которая содержит в себе данные для первой ячейки так и для второй ячейки
   
+  // CLousers
   
-  var mainViewModel: MainViewModel! {
-    
-    didSet {
-      tableView.reloadData()
-    }
-  }
+  var didShowMenuProductsListViewControllerClouser: EmptyClouser?
+  
+  
+  var mainViewModel: MainViewModel!
   
   
   // MARK: Object lifecycle
@@ -106,6 +105,8 @@ class MainViewController: UIViewController, MainDisplayLogic {
       dinner1,dinner2,dinner3
     ]
     mainViewModel = MainViewModel.init(headerViewModelCell: headerViewModel, dinnerCollectionViewModel: dinnerViewModels)
+    // После установки обновим всю таблицу
+    tableView.reloadData()
     
   }
   override func viewWillAppear(_ animated: Bool) {
@@ -141,7 +142,8 @@ class MainViewController: UIViewController, MainDisplayLogic {
     fatalError("init(coder:) has not been implemented")
   }
   
-
+  
+  var headerCell: MainTableViewHeaderCell!
   
 }
 
@@ -240,9 +242,18 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewHeaderCell.cellId) as! MainTableViewHeaderCell
     
     cell.setViewModel(viewModel: mainViewModel.headerViewModelCell)
+    
+    setHeaderCellClouser(cell: cell)
     return cell
     
     
+  }
+  
+  private func setHeaderCellClouser(cell: MainTableViewHeaderCell) {
+    cell.menuViewController.didTapSwipeMenuBackButton = {[weak self] in
+      //  закрываем меню
+      self?.showMenuViewController()
+    }
   }
   
   private func configureMiddleCell() -> MainTableViewMiddleCell {
@@ -295,6 +306,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
   }
   private func configureFooterCell() -> MainTableViewFooterCell {
+    
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewFooterCell.cellId) as! MainTableViewFooterCell
     
     return cell
@@ -305,7 +317,15 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     switch indexPath.row {
       
     case 0:
-      return 150
+      
+      let headerCellHeight: CGFloat
+      
+      if mainViewModel.headerViewModelCell.isMenuViewControoler {
+        headerCellHeight =  UIScreen.main.bounds.height / 2
+      } else {
+        headerCellHeight = Constants.Main.Cell.headerCellHeight
+      }
+      return headerCellHeight
       
     case 1:
       
@@ -314,6 +334,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
       return heightCell + 30 // Pad
       
     case 2:
+      
       return 200
       
     default:break
@@ -337,7 +358,7 @@ extension MainViewController {
   private func didSelectTextField(textField: UITextField) {
     setTextFiedlPoint(textField: textField)
     
-    // Можно тут вслепую просто запилить
+    // Можно тут вслепую просто запилить что если вбираешь текст филд то убери
     removeListTableView()
   }
   
@@ -362,6 +383,28 @@ extension MainViewController {
   // Add NEw Product in PorductListViewController
   private func addNewProductInDinner() {
     print("Add New product Main")
+
+    
+   showMenuViewController()
+    
+    // Dont use ContainerView Controller
+//    didShowMenuProductsListViewControllerClouser!()
+  }
+  
+  func showMenuViewController() {
+    
+    mainViewModel.headerViewModelCell.isMenuViewControoler = !mainViewModel.headerViewModelCell.isMenuViewControoler
+    
+    let cell = tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as! MainTableViewMiddleCell
+    // Отключаем взаимодейстиве всех таблиц и коллекций с пользователем
+    cell.dinnerCollectionViewController.collectionView.isUserInteractionEnabled = !mainViewModel.headerViewModelCell.isMenuViewControoler
+    let topCellindexPath = IndexPath(item: 0, section: 0)
+    // Это нам нужно чтобы изменить размер ячейки
+    tableView.reloadRows(at: [topCellindexPath], with: .fade)
+    // Также нам нужно пролистать до топа
+    tableView.scrollToRow(at: topCellindexPath, at: .top, animated: true)
+    tableView.isScrollEnabled = !mainViewModel.headerViewModelCell.isMenuViewControoler
+    
   }
   
   
@@ -398,6 +441,7 @@ extension MainViewController {
     
     let dinnerCell =  getFirstDinnerCell()
     dinnerCell.willActiveRow.trainTextField.text = name
+    removeListTableView()
     
   }
   
@@ -533,3 +577,5 @@ extension MainViewController {
   
   
 }
+
+

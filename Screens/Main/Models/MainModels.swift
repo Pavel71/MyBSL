@@ -44,6 +44,8 @@ struct MainViewModel {
 
 struct MainHeaderViewModel: MainTableViewHeaderCellable {
   
+  var isMenuViewControoler: Bool
+  
   var lastInjectionValue: String
   
   var lastTimeInjectionValue: String
@@ -51,6 +53,15 @@ struct MainHeaderViewModel: MainTableViewHeaderCellable {
   var lastShugarValueLabel: String
   
   var insulinSupplyInPanValue: String
+  
+  init(lastInjectionValue: String,lastTimeInjectionValue: String,lastShugarValueLabel: String,insulinSupplyInPanValue: String,isMenuViewControoler: Bool = false) {
+    
+    self.lastInjectionValue = lastInjectionValue
+    self.lastTimeInjectionValue = lastTimeInjectionValue
+    self.lastShugarValueLabel = lastShugarValueLabel
+    self.insulinSupplyInPanValue = insulinSupplyInPanValue
+    self.isMenuViewControoler = isMenuViewControoler
+  }
   
   
 }

@@ -14,14 +14,15 @@ class ContainerDinnerViewController: UIViewController {
   var controller: UIViewController!
   
   var mainViewController: MainViewController
-  var menuProductsListViewController: MenuProductsListViewController!
+  var menuProductsListViewController: MenuDinnerViewController!
   
   
   private lazy var animator: UIViewPropertyAnimator = {
     return UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut)
   }()
   
-  let menuScreenWidth = MenuProductsListViewController.screenWidth
+  // Тут нужно подумать на сколько должна эта шторка выезжать!
+  let menuScreenHeight:CGFloat = 300
   
   private var currentState: State = .closed
   
@@ -46,7 +47,7 @@ class ContainerDinnerViewController: UIViewController {
   func configureMainViewController() {
  
     
-//    mainViewController.didShowMenuProductsListViewControllerClouser = {[weak self] in  self?.configureProductListViewController() }
+    mainViewController.didShowMenuProductsListViewControllerClouser = {[weak self] in  self?.configureProductListViewController() }
     
     controller = mainViewController
     
@@ -55,30 +56,31 @@ class ContainerDinnerViewController: UIViewController {
     
   }
   
-  var passProductID: ((String) -> Void)?
   
   func configureProductListViewController() {
     
     if menuProductsListViewController == nil {
-      menuProductsListViewController = MenuProductsListViewController()
+      
+      menuProductsListViewController = MenuDinnerViewController()
       view.insertSubview(menuProductsListViewController.view, at: 0)
       addChild(menuProductsListViewController)
     }
     
     
-//    switch currentState {
-//      
-//    case .open:
-//      // Анимация
-////      closeMenu()
-//      
-//    case .closed:
-//      
-////      prepareMenuViewController()
-//      // Анимация
-////      openMenu()
-//      
-//    }
+    switch currentState {
+      
+    case .open:
+      print("Open")
+      // Анимация
+      closeMenu()
+      
+    case .closed:
+      print("Closed")
+//      prepareMenuViewController()
+      // Анимация
+      openMenu()
+      
+    }
     
     
   }
@@ -123,23 +125,23 @@ class ContainerDinnerViewController: UIViewController {
 
 // MARK: Animated Show Menu View COntroller
 
-//extension ContainerDinnerViewController {
-//
-//
-//  func toogleMenu() {
-//
-//    switch currentState {
-//    case .closed:
-//      openMenu()
-//    case .open:
-//      closeMenu()
-//
-//    }
-//  }
-//
-//
-//  // Pan Gesture Recogniser!
-//
+extension ContainerDinnerViewController {
+
+
+  func toogleMenu() {
+
+    switch currentState {
+    case .closed:
+      openMenu()
+    case .open:
+      closeMenu()
+
+    }
+  }
+
+
+  // Pan Gesture Recogniser!
+
 //  @objc private func handleSwipeMenu(gesture: UIPanGestureRecognizer) {
 //
 //    let translationX = -gesture.translation(in: view).x
@@ -169,51 +171,54 @@ class ContainerDinnerViewController: UIViewController {
 //    }
 //
 //  }
-//
-//  // Такие анимациилучше писать раскрыто пусть буде т больше кода зато читаеме
-//
-//  func closeMenu() {
-//
-//    animator.addAnimations {
-//      self.controller.view.frame.origin.x = 0
-//    }
-//
-//    // Это кгода Continue Animation
-//    animator.addCompletion { position in
-//      // История анимации заканчивается здесь! Все изменения после того когда анимация додйет до финиша в этом блоке!
-//      switch position {
-//      case .end:
+
+  // Такие анимациилучше писать раскрыто пусть буде т больше кода зато читаеме
+
+  func closeMenu() {
+
+    animator.addAnimations {
+      self.controller.view.frame.origin.y = 0
+    }
+
+    // Это кгода Continue Animation
+    animator.addCompletion { position in
+      // История анимации заканчивается здесь! Все изменения после того когда анимация додйет до финиша в этом блоке!
+      switch position {
+      case .end:
+        
+        // Этот блок исполнится когда анимация закончится
+        
 //        self.removeGestureRecogniser() // Убрать гестер
 //        self.mealViewController.tableView.isUserInteractionEnabled = true
 //        self.mealViewController.mealView.customNavBar.searchBar.isUserInteractionEnabled = true
 //
-//        self.currentState = self.currentState.opposite
+        self.currentState = self.currentState.opposite
 //        self.mealViewController.menuState = self.currentState
-//        self.view.endEditing(true)
-//      default: break
-//      }
-//
-//    }
-//    animator.startAnimation()
-//  }
-//
-//
-//  func openMenu() {
-//
-//    animator.addAnimations {
-//      self.controller.view.frame.origin.x = self.menuScreenWidth
-//    }
-//
-//    // Это кгода Continue Animation
-//    animator.addCompletion { position in
+        self.view.endEditing(true)
+      default: break
+      }
+
+    }
+    animator.startAnimation()
+  }
+
+
+  func openMenu() {
+
+    animator.addAnimations {
+      self.controller.view.frame.origin.y = self.menuScreenHeight
+    }
+
+    // Это кгода Continue Animation
+    animator.addCompletion { position in
 //      self.setUppanGestureRecogniser()  // Повесим recogniser
 //      self.mealViewController.tableView.isUserInteractionEnabled = false // Отключаем основную табле вью Чтобы не нажимались ячейки тд
 //      self.mealViewController.mealView.customNavBar.searchBar.isUserInteractionEnabled = false
-//
-//      self.currentState = self.currentState.opposite
+
+      self.currentState = self.currentState.opposite
 //      self.mealViewController.menuState = self.currentState
-//    }
-//
-//    animator.startAnimation()
-//  }
-//}
+    }
+
+    animator.startAnimation()
+  }
+}
