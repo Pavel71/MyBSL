@@ -9,6 +9,23 @@
 import Foundation
 
 
+struct ProductListViewModel: ProductListViewModelCell {
+  
+  var insulinValue: Float?
+  
+  var carboIn100Grm: Int
+  
+  // ProductViewModelCell
+  
+  var name: String
+  var portion: Int
+  
+  // Computed Property
+  var carboInPortion: Int {
+    return Int(Float(carboIn100Grm) * Float(portion) / 100)
+  }
+  
+}
 
 
 

@@ -11,10 +11,10 @@ import UIKit
 
 protocol ProductListViewModelCell {
   
-  var name: String {get}
-  var portion: String {get}
-  var carboInPortion: String {get}
-  var insulinValue: String? {get}
+  var name: String {get set}
+  var portion: Int {get set }
+  var carboInPortion: Int {get}
+  var insulinValue: Float? {get set}
 }
 
 class ProductListCell: UITableViewCell {
@@ -71,8 +71,8 @@ class ProductListCell: UITableViewCell {
   
   let pickerData = [
     ["0.0","10.0","20.0","30.0","40.0","50.0","60.0","70.0","80.0","90.0","100.0"],
-    ["0","1.0","2.0","3.0","4.0","5.0","6.0","7.0","8.0","9.0",],
-    ["0.0","0.5"]
+    ["0.0","1.0","1.5","2.0","2.5","3.0","3.5","4.0","4.5","5.0","5.5","6.0","6.5","7.0","7.5","8.0","8.5","9.0","9.5"],
+    ["0.0","0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9"]
   ]
   
   
@@ -118,14 +118,18 @@ class ProductListCell: UITableViewCell {
 
   func setViewModel(viewModel: ProductListViewModelCell,withInsulinTextFields: Bool, isPreviosDinner: Bool = false) {
     
+    let portionString = String(viewModel.portion)
+    let carboInPortion = String(viewModel.carboInPortion)
     
     nameLabel.text = viewModel.name
-    portionTextField.text = viewModel.portion
-    carboInPortionLabel.text = viewModel.carboInPortion
+    portionTextField.text = portionString
+    carboInPortionLabel.text = carboInPortion
     
     insulinTextField.isHidden = !withInsulinTextFields
     portionTextField.isUserInteractionEnabled = !isPreviosDinner
     portionTextField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+    
+    // Здесь нужна логика установки Insulina!
     
 
   }
@@ -180,10 +184,10 @@ extension ProductListCell: UIPickerViewDelegate, UIPickerViewDataSource {
   func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
     switch component {
     case 1:
-      return 150
+      return UIScreen.main.bounds.width / 2
     default:break
     }
-    return 70
+    return UIScreen.main.bounds.width / 4
   }
   
   

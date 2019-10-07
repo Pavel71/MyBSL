@@ -10,11 +10,6 @@ import UIKit
 import RealmSwift
 import ProgressHUD
 
-//enum Segment: Int {
-//  case allProducts
-//  case favorits
-//  case meals
-//}
 
 protocol FoodDisplayLogic: class {
   func displayData(viewModel: Food.Model.ViewModel.ViewModelData)
@@ -105,19 +100,24 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     super.viewDidLoad()
 
     setUpView()
-    fetchProductBySegment(segment: currentSegment)
+//    fetchProductBySegment(segment: currentSegment)
 
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     // При возвращение на этот экран выдели последний активный сегмент!
-    foodView.headerTableView.segmentController.selectedSegmentIndex = currentSegment.rawValue
-
+    
+    
     navigationController?.navigationBar.isHidden = true
     setKeyboardNotification()
-    // Нужно засетить Обсервир на реалм
+    
     interactor?.makeRequest(request: .setRealmObserverToken)
+
+    // Пока вот так коряво но это работает
+    foodView.headerTableView.setsegmentIndex = currentSegment.rawValue
+
+    
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -127,239 +127,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     NotificationCenter.default.removeObserver(self)
   }
   
-  
-  
-  // MARK: Set Up View
-  
-  private func setUpView() {
-    print("Set Up View")
-    foodView = FoodView(frame: view.frame)
-    view.addSubview(foodView)
-    
-    blurView = foodView.blurView
-    
 
-    configureNewPoriductView()
-
-    configureCustomNavBar()
-    
-    configureSegmentController()
-    
-    confugureTableView()
-    configurePickerView()
-    
-  }
-  
-  private func configureSegmentController() {
-    foodView.headerTableView.didSegmentValueChange = {[weak self] segmentController in
-      self?.didChangeSemenTableView(segmentController: segmentController)
-      
-    }
-  }
-  
-  private func configurePickerView() {
-    
-    pickerView = foodView.pickerView
-    pickerView.dataSource = self
-    pickerView.delegate = self
-  }
-  
-  private func configureCustomNavBar() {
-    
-    customNavBar = foodView.customNavBar
-    
-    customNavBar.addButton.addTarget(self, action: #selector(didTapAddNewProduct), for: .touchUpInside)
-    
-
-    customNavBar.didTapChangeSectionViewButton = {[weak self] in self?.didTapChangeSectionViewButton()}
-    
-    customNavBar.searchBar.delegate = self
-  }
-  
-  private func confugureTableView() {
-    
-    tableView = foodView.tableView
-    
-    tableView.delegate = self
-    tableView.dataSource = self
-    tableView.register(FoodCell.self, forCellReuseIdentifier: FoodCell.cellID)
-    
-    tableView.tableFooterView = UIView()
-  }
-  
-  private func configureNewPoriductView() {
-    
-    newProductView = foodView.newProductView
-    
-    newProductView.cancelButton.addTarget(self, action: #selector(didCancelNewProduct), for: .touchUpInside)
-    
-    newProductView.categoryWithButtonTextFiled.listButton.addTarget(self, action: #selector(didTapShowListCategory), for: .touchUpInside)
-    
-    newProductView.didTapSaveButton = {[weak self] alertString, newFoodViewModel in self?.didSaveNewProduct(alertString: alertString, newProductViewModel: newFoodViewModel) }
-
-    newProductView.foodValidator.isValidCallBack = {[weak self] isCanSave in self?.textFiledsValidateCanSave(isCanSave: isCanSave) }
-    
-    newProductView.newProductViewTextFieldBegintEditing = {[weak self] in self?.didBeginEditingNewProductTextFields() }
-  }
-  
-  
-  // MARK: Nav bar Buttons Handle
-  
-  // Add NewProduct Button
-  @objc private func didTapAddNewProduct() {
-    
-    interactor?.makeRequest(request: .showNewProductView(productIdString: nil))
-  }
-  
-
-  private func didTapChangeSectionViewButton() {
-    
-    headerInSectionWorker.changeIsDefaultlistByCategory(segment: currentSegment)
-    
-    let isDefaultBySegment = headerInSectionWorker.getIsDefaultListBySegment(segment: currentSegment)
-    interactor?.makeRequest(request: .showListProductsBySection(isDefaultList: isDefaultBySegment))
-    
-    headerInSectionWorker.fillSectionExpandedArrayBySegment(viewModels: foodViewModel, segment: currentSegment)
-  }
-  
-  
-  
-  // MARK: New Product Button Handle
-  
-  // Save Button
-  private func didSaveNewProduct(alertString: String?, newProductViewModel: FoodCellViewModel) {
-    
-    if let alertString = alertString {
-      // Ошибка в данных!
-      ProgressHUD.showError(alertString)
-    } else {
-      // Если мы выбрали индекс и хотим обновить продукт то нужно обновить! Если нет индекса то создать новый!
-      if let productId = updateProductId {
-        var viewModel = newProductViewModel
-        viewModel.id = productId
-        interactor?.makeRequest(request: .updateCurrentProductInRealm(viewModel: viewModel))
-      } else {
-        // Создаем новый продукт!
-        interactor?.makeRequest(request: .addNewProductInRealm(viewModel: newProductViewModel))
-      }
-
-    }
-    
-  }
-  
-  
-  // Cancel Button
-  @objc private func didCancelNewProduct() {
-    
-    AddNewElementViewAnimated.showOrDismissNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: false)
-    
-    newProductView.clearAllFieldsInView()
-
-    pickerView.isHidden = true
-    updateProductId = nil
-    
-    view.endEditing(true)
-  }
-  
-  @objc private func didTapShowListCategory() {
-    
-    UIView.transition(with: pickerView, duration: 0.3, options: .transitionFlipFromBottom, animations: {
-      self.pickerView.isHidden = !self.pickerView.isHidden
-    }, completion: nil)
-    
-    view.endEditing(true)
-  }
-  
-  // MARK: HeaderInSectionButtonTap
-  
-  func didTapButtonHeaderInSection(button: UIButton, currentExpand: Expand) {
-    
-    let section = button.tag
-    let indexPaths = getIndexPaths(section: section)
-    
-    
-    let isExpand = currentExpand == .expanded
-    foodViewModel[section].isExpanded = !isExpand
-    
-    headerInSectionWorker.updateOneSection(section: section, currentSegment: currentSegment)
-    
-    if isExpand {
-      tableView.deleteRows(at: indexPaths, with: .fade)
-    } else {
-      tableView.insertRows(at: indexPaths, with: .fade)
-    }
-    
-  }
-  
-  private func getIndexPaths(section: Int) -> [IndexPath] {
-    var indexPaths = [IndexPath]()
-
-    for item in foodViewModel[section].items.indices {
-      indexPaths.append(IndexPath(item: item, section: section))
-    }
-    return indexPaths
-  }
-  
-  
-  // MARK: Validate TextField
-  private func textFiledsValidateCanSave(isCanSave: Bool) {
-
-    let okButton = newProductView.okButton
-    okButton.isEnabled = isCanSave
-
-    if isCanSave {
-      okButton.backgroundColor =  #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
-      okButton.setTitleColor(.white, for: .normal)
-    } else {
-      okButton.backgroundColor =  .lightGray
-      okButton.setTitleColor(.black, for: .disabled)
-    }
-  }
-  
-  // MARK: Begind Editing NewProduct TextFields
-  
-  private func didBeginEditingNewProductTextFields() {
-    
-    pickerView.isHidden = true
-  }
-  
-  // MARK: Cnahge SegmentController
-  @objc private func didChangeSemenTableView(segmentController: UISegmentedControl) {
-    
-    guard let segment = Segment(rawValue: segmentController.selectedSegmentIndex) else {return}
-
-    fetchProductBySegment(segment: segment)
-    
-  }
-  
-  // MARK: Go TO Meals
-  
-  private func fetchProductBySegment(segment: Segment) {
-    
-    switch segment {
-      
-      case .allProducts:
-        // поидеии нужно заполнять массивы здесь! а дальше только по ним долбить когда приходит модель
-        
-        currentSegment = .allProducts
-        interactor?.makeRequest(request: .fetchAllProducts)
-        
-        headerInSectionWorker.fillSectionExpandedArrayBySegment(viewModels: foodViewModel, segment: currentSegment)
-      
-      case .favorits:
-
-        currentSegment = .favorits
-        interactor?.makeRequest(request: .fetchProductByFavorits)
-        
-        headerInSectionWorker.fillSectionExpandedArrayBySegment(viewModels: foodViewModel, segment: currentSegment)
-      
-      case .meals:
-        router?.pushMealController(headerInSectionWorker: headerInSectionWorker)
-      
-    }
-    
-    
-  }
   
 
   
@@ -420,6 +188,246 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   
 }
 
+// MARK: Set Up And Configure Views
+
+extension FoodViewController {
+  
+  // MARK: Set Up View
+  
+  private func setUpView() {
+    foodView = FoodView(frame: view.frame)
+    view.addSubview(foodView)
+    
+    blurView = foodView.blurView
+    
+    
+    configureNewPoriductView()
+    
+    configureCustomNavBar()
+    
+    configureSegmentController()
+    
+    confugureTableView()
+    configurePickerView()
+    
+  }
+  
+  private func configureSegmentController() {
+    foodView.headerTableView.didSegmentValueChange = {[weak self] segmentController in
+      self?.didChangeSemenTableView(segmentController: segmentController)
+      
+    }
+  }
+  
+  private func configurePickerView() {
+    
+    pickerView = foodView.pickerView
+    pickerView.dataSource = self
+    pickerView.delegate = self
+  }
+  
+  private func configureCustomNavBar() {
+    
+    customNavBar = foodView.customNavBar
+    
+    customNavBar.addButton.addTarget(self, action: #selector(didTapAddNewProduct), for: .touchUpInside)
+    
+    
+    customNavBar.didTapChangeSectionViewButton = {[weak self] in self?.didTapChangeSectionViewButton()}
+    
+    customNavBar.searchBar.delegate = self
+  }
+  
+  private func confugureTableView() {
+    
+    tableView = foodView.tableView
+    
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.register(FoodCell.self, forCellReuseIdentifier: FoodCell.cellID)
+    
+    tableView.tableFooterView = UIView()
+  }
+  
+  private func configureNewPoriductView() {
+    
+    newProductView = foodView.newProductView
+    
+    newProductView.cancelButton.addTarget(self, action: #selector(didCancelNewProduct), for: .touchUpInside)
+    
+    newProductView.categoryWithButtonTextFiled.listButton.addTarget(self, action: #selector(didTapShowListCategory), for: .touchUpInside)
+    
+    newProductView.didTapSaveButton = {[weak self] alertString, newFoodViewModel in self?.didSaveNewProduct(alertString: alertString, newProductViewModel: newFoodViewModel) }
+    
+    newProductView.foodValidator.isValidCallBack = {[weak self] isCanSave in self?.textFiledsValidateCanSave(isCanSave: isCanSave) }
+    
+    newProductView.newProductViewTextFieldBegintEditing = {[weak self] in self?.didBeginEditingNewProductTextFields() }
+  }
+  
+}
+
+// MARK: Set Clousers and Button Methods
+
+extension FoodViewController {
+  // Add NewProduct Button
+  @objc private func didTapAddNewProduct() {
+    
+    interactor?.makeRequest(request: .showNewProductView(productIdString: nil))
+  }
+  
+  
+  private func didTapChangeSectionViewButton() {
+    
+    headerInSectionWorker.changeIsDefaultlistByCategory(segment: currentSegment)
+    
+    let isDefaultBySegment = headerInSectionWorker.getIsDefaultListBySegment(segment: currentSegment)
+    interactor?.makeRequest(request: .showListProductsBySection(isDefaultList: isDefaultBySegment))
+    
+    headerInSectionWorker.fillSectionExpandedArrayBySegment(viewModels: foodViewModel, segment: currentSegment)
+  }
+  
+  
+  
+  // MARK: New Product Button Handle
+  
+  // Save Button
+  private func didSaveNewProduct(alertString: String?, newProductViewModel: FoodCellViewModel) {
+    
+    if let alertString = alertString {
+      // Ошибка в данных!
+      ProgressHUD.showError(alertString)
+    } else {
+      // Если мы выбрали индекс и хотим обновить продукт то нужно обновить! Если нет индекса то создать новый!
+      if let productId = updateProductId {
+        var viewModel = newProductViewModel
+        viewModel.id = productId
+        interactor?.makeRequest(request: .updateCurrentProductInRealm(viewModel: viewModel))
+      } else {
+        // Создаем новый продукт!
+        interactor?.makeRequest(request: .addNewProductInRealm(viewModel: newProductViewModel))
+      }
+      
+    }
+    
+  }
+  
+  
+  // Cancel Button
+  @objc private func didCancelNewProduct() {
+    
+    AddNewElementViewAnimated.showOrDismissNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: false)
+    
+    newProductView.clearAllFieldsInView()
+    
+    pickerView.isHidden = true
+    updateProductId = nil
+    
+    view.endEditing(true)
+  }
+  
+  @objc private func didTapShowListCategory() {
+    
+    UIView.transition(with: pickerView, duration: 0.3, options: .transitionFlipFromBottom, animations: {
+      self.pickerView.isHidden = !self.pickerView.isHidden
+    }, completion: nil)
+    
+    view.endEditing(true)
+  }
+  
+  // MARK: HeaderInSectionButtonTap
+  
+  func didTapButtonHeaderInSection(button: UIButton, currentExpand: Expand) {
+    
+    let section = button.tag
+    let indexPaths = getIndexPaths(section: section)
+    
+    
+    let isExpand = currentExpand == .expanded
+    foodViewModel[section].isExpanded = !isExpand
+    
+    headerInSectionWorker.updateOneSection(section: section, currentSegment: currentSegment)
+    
+    if isExpand {
+      tableView.deleteRows(at: indexPaths, with: .fade)
+    } else {
+      tableView.insertRows(at: indexPaths, with: .fade)
+    }
+    
+  }
+  
+  private func getIndexPaths(section: Int) -> [IndexPath] {
+    var indexPaths = [IndexPath]()
+    
+    for item in foodViewModel[section].items.indices {
+      indexPaths.append(IndexPath(item: item, section: section))
+    }
+    return indexPaths
+  }
+  
+  
+  // MARK: Validate TextField
+  private func textFiledsValidateCanSave(isCanSave: Bool) {
+    
+    let okButton = newProductView.okButton
+    okButton.isEnabled = isCanSave
+    
+    if isCanSave {
+      okButton.backgroundColor =  #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+      okButton.setTitleColor(.white, for: .normal)
+    } else {
+      okButton.backgroundColor =  .lightGray
+      okButton.setTitleColor(.black, for: .disabled)
+    }
+  }
+  
+  // MARK: Begind Editing NewProduct TextFields
+  
+  private func didBeginEditingNewProductTextFields() {
+    
+    pickerView.isHidden = true
+  }
+  
+  // MARK: Cnahge SegmentController
+  @objc private func didChangeSemenTableView(segmentController: UISegmentedControl) {
+    
+    guard let segment = Segment(rawValue: segmentController.selectedSegmentIndex) else {return}
+    
+    fetchProductBySegment(segment: segment)
+    
+  }
+  
+  // MARK: Go TO Meals
+  
+  private func fetchProductBySegment(segment: Segment) {
+    
+    switch segment {
+      
+    case .allProducts:
+      // поидеии нужно заполнять массивы здесь! а дальше только по ним долбить когда приходит модель
+      
+      currentSegment = .allProducts
+      interactor?.makeRequest(request: .fetchAllProducts)
+      
+      headerInSectionWorker.fillSectionExpandedArrayBySegment(viewModels: foodViewModel, segment: currentSegment)
+      
+    case .favorits:
+      
+      currentSegment = .favorits
+      interactor?.makeRequest(request: .fetchProductByFavorits)
+      
+      headerInSectionWorker.fillSectionExpandedArrayBySegment(viewModels: foodViewModel, segment: currentSegment)
+      
+    case .meals:
+      router?.pushMealController(headerInSectionWorker: headerInSectionWorker)
+      
+    }
+    
+    
+  }
+}
+
+
+// MARK: Search Bar Delegate
 extension FoodViewController: UISearchBarDelegate {
   
   // Сделаю фильтрацию по имени!
@@ -504,6 +512,59 @@ extension FoodViewController: UITableViewDelegate, UITableViewDataSource {
   
   
 }
+// MARK: Swipes Row In TableView
+
+extension FoodViewController {
+  
+  func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    
+    //  В Избранном нет кнопки удалить продукт!
+    switch  currentSegment {
+      
+    case .allProducts:
+      
+      let deleteAction = UIContextualAction(style: .destructive, title:  "Удалить", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+        // Здесь нам нужно удалять по id и в избранное тоже по id
+        let cell = tableView.cellForRow(at: indexPath) as! FoodCell
+        let productID = cell.getProductID()
+        self.interactor?.makeRequest(request: .deleteProduct(productId: productID))
+        success(true)
+      })
+      return UISwipeActionsConfiguration(actions: [deleteAction])
+    case .favorits:
+      return UISwipeActionsConfiguration(actions: [])
+    case .meals:
+      return UISwipeActionsConfiguration(actions: [])
+    }
+    
+  }
+  
+  // Вообщем тут нужно прописать условия Удаления ячейки из избранного!
+  
+  // To Favorits
+  func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    
+    let cell = tableView.cellForRow(at: indexPath) as! FoodCell
+    let favor = cell.isFavorit
+    let title = favor ? "Убрать из избранного" : "В избранное"
+    
+    // Если мы во вкладке Избранное
+    let addToFavorits = UIContextualAction(style: .normal, title:  title, handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+      
+      let cell = tableView.cellForRow(at: indexPath) as! FoodCell
+      let productID = cell.getProductID()
+      
+      self.currentSection = indexPath.section
+      
+      self.interactor?.makeRequest(request: .updateFavoritsField(productId: productID))
+      
+      success(true)
+    })
+    addToFavorits.backgroundColor = #colorLiteral(red: 0.001269559842, green: 0.5905742049, blue: 1, alpha: 1)
+    return UISwipeActionsConfiguration(actions: [addToFavorits])
+  }
+  
+}
 
 // MARK: Set Up Keyboard Notification
 extension FoodViewController {
@@ -547,59 +608,7 @@ extension FoodViewController {
   }
 }
 
-// MARK: Swipes Row In TableView
 
-extension FoodViewController {
-  
-  func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    
-    //  В Избранном нет кнопки удалить продукт!
-    switch  currentSegment {
-      
-    case .allProducts:
-      
-      let deleteAction = UIContextualAction(style: .destructive, title:  "Удалить", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-        // Здесь нам нужно удалять по id и в избранное тоже по id
-        let cell = tableView.cellForRow(at: indexPath) as! FoodCell
-        let productID = cell.getProductID()
-        self.interactor?.makeRequest(request: .deleteProduct(productId: productID))
-        success(true)
-      })
-      return UISwipeActionsConfiguration(actions: [deleteAction])
-    case .favorits:
-      return UISwipeActionsConfiguration(actions: [])
-    case .meals:
-      return UISwipeActionsConfiguration(actions: [])
-    }
-
-  }
-  
-  // Вообщем тут нужно прописать условия Удаления ячейки из избранного!
-  
-  // To Favorits
-  func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    
-    let cell = tableView.cellForRow(at: indexPath) as! FoodCell
-    let favor = cell.isFavorit
-    let title = favor ? "Убрать из избранного" : "В избранное"
-    
-    // Если мы во вкладке Избранное
-    let addToFavorits = UIContextualAction(style: .normal, title:  title, handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-      
-      let cell = tableView.cellForRow(at: indexPath) as! FoodCell
-      let productID = cell.getProductID()
-      
-      self.currentSection = indexPath.section
-      
-      self.interactor?.makeRequest(request: .updateFavoritsField(productId: productID))
-      
-      success(true)
-    })
-    addToFavorits.backgroundColor = #colorLiteral(red: 0.001269559842, green: 0.5905742049, blue: 1, alpha: 1)
-    return UISwipeActionsConfiguration(actions: [addToFavorits])
-  }
-  
-}
 
 // MARK: Category Picker View
 

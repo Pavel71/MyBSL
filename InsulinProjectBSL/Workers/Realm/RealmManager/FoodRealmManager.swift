@@ -18,11 +18,13 @@ class FoodRealmManager {
   
   init(productProvider: RealmProvider = RealmProvider.products) {
     self.productProvider = productProvider
+
     setItems()
   }
   
   // Set Observer Token
   var didChangeRealmDB: ((Results<ProductRealm>) -> Void)?
+  
   func setObserverToken() -> NotificationToken {
 
     let realmObserverToken = items.observe({ (change) in
@@ -31,8 +33,10 @@ class FoodRealmManager {
       case .error(let error):
         print(error)
       case .initial(_):
+        
         self.didChangeRealmDB!(self.items)
       case .update(_, deletions: let deletions, insertions: let insertions, modifications: let updates):
+        print("change Food Db")
         
 //        tableView.applyChanges(deletions: deletions, insertions: insertions, updates: updates) // Это почему то не работает
         
@@ -62,8 +66,9 @@ extension FoodRealmManager {
   // Fetch All
   
   func allProducts() -> Results<ProductRealm> {
-    let allObjects = productProvider.realm.objects(ProductRealm.self)
-    return allObjects.sorted(byKeyPath: ProductRealm.Property.name.rawValue)
+
+    items = productProvider.realm.objects(ProductRealm.self).sorted(byKeyPath: ProductRealm.Property.name.rawValue)
+    return items
   }
   
   // Fetch By Name
@@ -71,14 +76,14 @@ extension FoodRealmManager {
   func fetchProductByName(name: String) -> Results<ProductRealm> {
     let realm = productProvider.realm
     return realm.objects(ProductRealm.self).filter("name CONTAINS[cd] %@", name)
+ 
   }
   
   // Fetch By Favorits
   func fetchFavorits() -> Results<ProductRealm> {
     
-    let realm = productProvider.realm
-    let favoritsItems = realm.objects(ProductRealm.self).filter("isFavorits == %@", true)
-    return favoritsItems.sorted(byKeyPath: ProductRealm.Property.name.rawValue)
+    items = items.filter("isFavorits == %@", true).sorted(byKeyPath: ProductRealm.Property.name.rawValue)
+    return items
   }
   
   // Get product By Id

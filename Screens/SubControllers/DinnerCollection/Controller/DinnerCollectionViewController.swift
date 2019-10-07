@@ -111,10 +111,9 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
   private func setCellClousers(cell: DinnerCollectionViewCell,indexPath: IndexPath) {
     
     // TextFiedl
-//    cell.shugarSetView.shugarBeforeValueTextField.delegate = self
     
     cell.shugarSetView.shugarAfterValueTextField.delegate = self
-//    cell.willActiveRow.trainTextField.delegate = self
+
     
     // Select TextField
     
@@ -125,11 +124,7 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     cell.productListViewController.didSelectTextFieldCellClouser = {[weak self] textField in
       self?.textFieldDidBeginEditing(textField)
     }
-    
-    
-    
-    
-    
+
     // Touches Pass View
     
     cell.touchesPassView.didHitTestProductListViewControllerClouser = {[weak self] isItScrollProductList in
@@ -147,10 +142,6 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     }
     
     // ActivityTecxtField
-    
-    // Суть в чем все эти методы разбросанны по контроллерам с текстфилдами Мне бы их собрать в одном месте чтобы проще было управлять будет 1 контроллер который управляет этими делегатми
-    // или прокидывать все важные методы клоузерами все остальные общие через делеагата
-    
     
     
     cell.willActiveRow.trainTextField.listButton.addTarget(self, action: #selector(handleTapListButtonInWillActiveTextField), for: .touchUpInside)

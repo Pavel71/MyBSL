@@ -112,6 +112,12 @@ struct Constants {
     
   }
   
+  struct MenudDinner {
+    
+    static let swipeViewHeight: CGFloat = 30
+    
+  }
+  
   struct Animate {
     
     static let transformAddNewElementView: CGAffineTransform = CGAffineTransform(translationX: UIScreen.main.bounds.maxX, y: -UIScreen.main.bounds.maxY).concatenating(CGAffineTransform(scaleX: 0.3, y: 0.3))

@@ -62,18 +62,15 @@ class NewMealView: AddNewElementView {
     let firstStack = UIStackView(arrangedSubviews: [
       nameLabel, nameTextView
       ])
-    nameLabel.constrainWidth(constant: 120)
+
     nameTextView.constrainHeight(constant: 80)
-    firstStack.distribution = .fill
+    firstStack.distribution = .fillEqually
     
     let secondStackView = UIStackView(arrangedSubviews: [
       typeMealLabel,categoryWithButtonTextFiled
       ])
-    secondStackView.distribution = .fill
-    typeMealLabel.constrainWidth(constant: 120)
-    
+    secondStackView.distribution = .fillEqually
 
-    
     
     let buttonsStackView = UIStackView(arrangedSubviews: [
       cancelButton,

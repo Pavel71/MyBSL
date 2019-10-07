@@ -73,6 +73,19 @@ class ProductListInDinnerViewController: BaseProductList {
     
     tableView.reloadData()
   }
+  
+  func addNewProduct(products: [ProductRealm]) {
+    
+    products.forEach { (product) in
+      let productListViewModel = ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
+      
+      print(productListViewModel)
+      tableViewData.append(productListViewModel)
+    }
+    // Короче нужно пересчитывать размер ячейки до какого то кол-ва
+    tableView.reloadData()
+    
+  }
 
 
   
@@ -87,6 +100,8 @@ class ProductListInDinnerViewController: BaseProductList {
 //  }
 //
 //}
+
+// MARK: TableView Delegate Datasource
 
 extension ProductListInDinnerViewController: UITableViewDataSource {
   
@@ -146,9 +161,7 @@ extension ProductListInDinnerViewController {
   
   // Обрабатываем изменения Порции в режиме ввода
   @objc private func didChangePortionTextField(textField: UITextField) {
-    
-    
-    
+
     guard let indexPath = ComputedValueThanChangeOne.getIndexPathIntableViewForTextFiedl(textField: textField, tableView: tableView) else {return}
     
     let portion: Int = (textField.text! as NSString).integerValue
@@ -156,12 +169,14 @@ extension ProductListInDinnerViewController {
     let carboIn100GrmPoroduct = tableViewData[indexPath.row].carboIn100Grm
     
     // Изменит значение лейбла в зависимости от порции котрую мы вводим
-    let carboInPortion = ComputedValueThanChangeOne.changeCarboInlabel(tableView: tableView, carboOn100Grm: carboIn100GrmPoroduct, portion: portion, indexPath: indexPath)
+//    let carboInPortion = ComputedValueThanChangeOne.changeCarboInlabel(tableView: tableView, carboOn100Grm: carboIn100GrmPoroduct, portion: portion, indexPath: indexPath)
     
     
     // Подумать как приукрасит
     let sumPortion = CalculateValueTextField.calculateSumPortion(portion: portion,indexPath:indexPath, tableViewData: &tableViewData)
-    let sumCarbo = CalculateValueTextField.calculateSumCarbo(carboInPortion:carboInPortion, indexPath: indexPath, tableViewData: &tableViewData)
+    
+    //
+    let sumCarbo = CalculateValueTextField.calculateSumCarbo(indexPath: indexPath, tableViewData: &tableViewData)
     
     footerView.resultsView.portionResultLabel.text = String(sumPortion)
     footerView.resultsView.carboResultLabel.text = String(sumCarbo)
@@ -172,8 +187,9 @@ extension ProductListInDinnerViewController {
   @objc private func didChangeInsulinTextField(textField: UITextField) {
     guard let indexPath = ComputedValueThanChangeOne.getIndexPathIntableViewForTextFiedl(textField: textField, tableView: tableView) else {return}
     
+    let insulin = (textField.text! as NSString).floatValue
     
-    let sum = CalculateValueTextField.calculateSumInsulin(insulin: textField.text ?? "", indexPath: indexPath, tableViewData: &tableViewData)
+    let sum = CalculateValueTextField.calculateSumInsulin(insulin: insulin, indexPath: indexPath, tableViewData: &tableViewData)
     footerView.resultsView.insulinResultLabel.text = String(sum)
   }
   

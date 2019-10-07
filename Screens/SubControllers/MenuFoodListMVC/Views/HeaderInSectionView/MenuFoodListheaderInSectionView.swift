@@ -14,7 +14,7 @@ class MenuFoodListheaderInSectionView: UIView {
   
   let sectionNameLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont(name: "DINCondensed-Bold", size: 16)
+    label.font = UIFont(name: "DINCondensed-Bold", size: 18)
     label.textColor = UIColor.lightGray
     label.text = "Наименование:"
     return label
@@ -24,7 +24,7 @@ class MenuFoodListheaderInSectionView: UIView {
     let label = UILabel()
 
 
-    label.font = UIFont(name: "DINCondensed-Bold", size: 14)
+    label.font = UIFont(name: "DINCondensed-Bold", size: 16)
     label.text = "Углеводы на 100гр."
     label.textColor = UIColor.lightGray
 

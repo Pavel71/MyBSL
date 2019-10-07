@@ -198,7 +198,7 @@ extension ProductListInMealViewController: UITextFieldDelegate {
     cell.carboInPortionLabel.text = String(carboInPortion)
     
     let sumPortion = CalculateValueTextField.calculateSumPortion(portion: portion, indexPath: indexPath, tableViewData: &tableViewData)
-    let sumCarbo = CalculateValueTextField.calculateSumCarbo(carboInPortion: String(carboInPortion), indexPath: indexPath, tableViewData: &tableViewData)
+    let sumCarbo = CalculateValueTextField.calculateSumCarbo(indexPath: indexPath, tableViewData: &tableViewData)
     
     footerView.resultsView.carboResultLabel.text = String(sumCarbo)
     footerView.resultsView.portionResultLabel.text = String(sumPortion)

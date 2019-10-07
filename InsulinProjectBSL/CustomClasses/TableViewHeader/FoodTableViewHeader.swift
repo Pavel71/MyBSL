@@ -37,11 +37,21 @@ class FoodTableViewHeader: UIView {
     return sg
   }()
   
+  var setsegmentIndex: Int! {
+    didSet {
+      segmentController.selectedSegmentIndex = setsegmentIndex
+      setBarView(segmentIndex: setsegmentIndex)
+    }
+  }
+  
 
   
   let barStackView = UIStackView(arrangedSubviews: [])
   let deSelectedBarColor = UIColor(white: 0, alpha: 0.0)
   let selectedBarColor = #colorLiteral(red: 0.0592937693, green: 0.4987372756, blue: 0.822627306, alpha: 1)
+  
+  
+  
   
   init(frame: CGRect, setSegments: [String]) {
     self.items = setSegments
@@ -81,20 +91,19 @@ class FoodTableViewHeader: UIView {
   var didSegmentValueChange: ((UISegmentedControl) -> Void)?
   @objc private func handleSegmentChange(segmentController: UISegmentedControl) {
     
-//    barStackView.arrangedSubviews.forEach { $0.backgroundColor = deSelectedBarColor }
+    let segmentIndex = segmentController.selectedSegmentIndex
     
-    guard let segment = Segment(rawValue: segmentController.selectedSegmentIndex) else {return}
-    
-    if segment != .meals {
-      UIView.animate(withDuration: 0.2) {
-        self.barStackView.arrangedSubviews.forEach { $0.backgroundColor = self.deSelectedBarColor }
-        self.barStackView.arrangedSubviews[segmentController.selectedSegmentIndex].backgroundColor = self.selectedBarColor
-      }
-    }
-    
+    setBarView(segmentIndex: segmentIndex)
     didSegmentValueChange!(segmentController)
     
    
+  }
+  
+  func setBarView(segmentIndex: Int) {
+    UIView.animate(withDuration: 0.2) {
+      self.barStackView.arrangedSubviews.forEach { $0.backgroundColor = self.deSelectedBarColor }
+      self.barStackView.arrangedSubviews[segmentIndex].backgroundColor = self.selectedBarColor
+    }
   }
   
  

@@ -152,6 +152,7 @@ class FoodInteractor: FoodBusinessLogic {
   // Than Change DB
   private func didChangeProductDB(items: Results<ProductRealm>) {
     
+    
     self.presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
 
   }

@@ -68,32 +68,7 @@ class MenuProductsListViewController: UIViewController {
      tableView.reloadData()
   }
   
-  // View Layer
   
-  private func setUpSearchBar() {
-    view.addSubview(searchBar)
-    searchBar.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor,padding: .zero,size: .init(width: 0, height: 60))
-    searchBar.delegate = self
-  }
-  
-  private func setUpTableView() {
-    
-    view.addSubview(tableView)
-    tableView.anchor(top: searchBar.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
-    
-//    tableView.estimatedRowHeight = 200
-//    tableView.rowHeight = UITableView.automaticDimension
-//
-    tableView.delegate = self
-    tableView.dataSource = self
-    
-    tableView.keyboardDismissMode = .interactive
-    
-    tableView.register(MenuFoodListCell.self, forCellReuseIdentifier: MenuFoodListCell.cellId)
-    tableView.tableHeaderView = tableHeaderView
-    
-    tableHeaderView.didSegmentValueChange = {[weak self] segmentControll in self?.didSegmentChange(segmentControll: segmentControll)}
-  }
   
   func setDefaultChooseProduct() {
     
@@ -112,8 +87,40 @@ class MenuProductsListViewController: UIViewController {
 
 }
 
+
+
+extension MenuProductsListViewController {
+  // View Layer
+  
+  private func setUpSearchBar() {
+    view.addSubview(searchBar)
+    searchBar.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor,padding: .zero,size: .init(width: 0, height: 60))
+    searchBar.delegate = self
+  }
+  
+  private func setUpTableView() {
+    
+    view.addSubview(tableView)
+    tableView.anchor(top: searchBar.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
+    
+    //    tableView.estimatedRowHeight = 200
+    //    tableView.rowHeight = UITableView.automaticDimension
+    //
+    tableView.delegate = self
+    tableView.dataSource = self
+    
+    tableView.keyboardDismissMode = .interactive
+    
+    tableView.register(MenuFoodListCell.self, forCellReuseIdentifier: MenuFoodListCell.cellId)
+    tableView.tableHeaderView = tableHeaderView
+    
+    tableHeaderView.didSegmentValueChange = {[weak self] segmentControll in self?.didSegmentChange(segmentControll: segmentControll)}
+  }
+}
+
 // MARK: SearchBar Delegate
 extension MenuProductsListViewController: UISearchBarDelegate {
+  
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     
     

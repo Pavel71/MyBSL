@@ -100,7 +100,7 @@ class NewProductView: AddNewElementView {
       isFavoritLabel,
       massaLabel
       ])
-    nameLabel.constrainWidth(constant: 120)
+
     labelsStackView.distribution = .fillEqually
     labelsStackView.axis = .vertical
     labelsStackView.spacing = 2
@@ -134,7 +134,7 @@ class NewProductView: AddNewElementView {
     let horizontalStackView =  UIStackView(arrangedSubviews: [
       labelsStackView, textFieldsStackView
       ])
-    horizontalStackView.distribution = .fill
+    horizontalStackView.distribution = .fillEqually
     horizontalStackView.spacing = 5
     
     let verticalStackView = UIStackView(arrangedSubviews: [

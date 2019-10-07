@@ -70,15 +70,14 @@ class MenuFoodListCell: UITableViewCell {
     
     addSubview(stackView)
     stackView.fillSuperview(padding: Constants.cellMargin)
+
+    containerView.constrainWidth(constant: 30)
+    carboLabel.constrainWidth(constant: 30)
     
-    carboLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1 / 6).isActive = true
-    containerView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1 / 6).isActive = true
     
 
 
   }
-  
-  
   
   
   func setViewModel(viewModel:MenuFoodListCellViewModelable) {

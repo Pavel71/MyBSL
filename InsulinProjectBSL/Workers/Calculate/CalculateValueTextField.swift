@@ -18,29 +18,24 @@ class CalculateValueTextField {
     return Int(carbo100grm * (portion / 100))
   }
   
-  static func calculateSumInsulin(insulin: String,indexPath: IndexPath, tableViewData: inout [ProductListViewModel]) -> Float {
+  static func calculateSumInsulin(insulin: Float,indexPath: IndexPath, tableViewData: inout [ProductListViewModel]) -> Float {
     
     tableViewData[indexPath.row].insulinValue = insulin
     let arrayInsulin = tableViewData.map { (product) -> Float  in
-      if let insulin = product.insulinValue {
-        print(insulin)
-        let insulinFloat = (insulin as NSString).floatValue
-        return insulinFloat
-      }
-      return 0
+      return product.insulinValue ?? 0
+
     }
     let sum = arrayInsulin.reduce(0, +)
     return sum
   }
   
   
-  static func calculateSumCarbo(carboInPortion: String,indexPath: IndexPath, tableViewData: inout [ProductListViewModel]) -> Int {
-    
-    tableViewData[indexPath.row].carboInPortion = carboInPortion
+  static func calculateSumCarbo(indexPath: IndexPath, tableViewData: inout [ProductListViewModel]) -> Int {
+//    tableViewData[indexPath.row].carboInPortion = carboInPortion
+//    tableViewData[indexPath.row].carboInPortion = carboInPortion
     let arrayCarbo = tableViewData.map { (product) -> Int  in
       
-      let carboInt = Int(product.carboInPortion)
-      return carboInt!
+      return product.carboInPortion
     }
     let sum = arrayCarbo.reduce(0,+)
     return sum
@@ -48,11 +43,9 @@ class CalculateValueTextField {
   
   static func calculateSumPortion(portion: Int,indexPath: IndexPath, tableViewData: inout [ProductListViewModel]) -> Int {
     
-    tableViewData[indexPath.row].portion = String(portion)
+    tableViewData[indexPath.row].portion = portion
     let arrayPortion = tableViewData.map { (product) -> Int  in
-      
-      let portionInt = Int(product.portion)
-      return portionInt!
+      return product.portion
     }
     let sumPortion = arrayPortion.reduce(0,+)
     return sumPortion

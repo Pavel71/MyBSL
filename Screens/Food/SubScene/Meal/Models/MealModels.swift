@@ -123,18 +123,7 @@ struct MealViewModel: MealViewModelCell {
   
 }
 
-struct ProductListViewModel: ProductListViewModelCell {
-  
-  var insulinValue: String?
-  
-  var carboIn100Grm: Int
-  
-  // ProductViewModelCell
-  var carboInPortion: String
-  var name: String
-  var portion: String
-  
-}
+
 
 struct NewMealViewModel: NewMealViewModelable {
   

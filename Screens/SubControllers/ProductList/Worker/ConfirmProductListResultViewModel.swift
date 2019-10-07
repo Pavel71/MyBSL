@@ -16,29 +16,29 @@ class ConfirmProductListResultViewModel {
     print("Расчет")
     // Carbo
     let arrayCarbo = data.map { (productViewModel) -> Int  in
-      let carboInt = Int(productViewModel.carboInPortion)
-      return carboInt!
+      return productViewModel.carboInPortion
     }
     let sumCarbo = arrayCarbo.reduce(0,+)
     
     // Portion
     let arrayPortion = data.map { (productViewModel) -> Int  in
-      let portionInt = Int(productViewModel.portion)
-      return portionInt!
+      return productViewModel.portion
+      
     }
     let sumPortion = arrayPortion.reduce(0,+)
     
     // Insulin
     let arrayInsulin = data.map { (productViewModel) -> Float  in
       
-      print(productViewModel.insulinValue)
-      
-      if let insulin = productViewModel.insulinValue {
-        print(insulin)
-        let insulinFloat = (insulin as NSString).floatValue
-        return insulinFloat
-      }
-      return 0
+      return productViewModel.insulinValue ?? 0
+//      print(productViewModel.insulinValue)
+//
+//      if let insulin = productViewModel.insulinValue {
+//        print(insulin)
+//        let insulinFloat = (insulin as NSString).floatValue
+//        return insulinFloat
+//      }
+//      return 0
     }
     
     let sumInsulin = arrayInsulin.reduce(0,+)

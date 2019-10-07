@@ -65,6 +65,8 @@ extension MainView {
     addSubview(tableView)
     tableView.anchor(top: customNavBar.bottomAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding: .init(top: topPadding, left: 0, bottom: 0, right: 0))
     
+    
+    
     tableView.tableHeaderView = UIView()
     tableView.tableFooterView = UIView()
     

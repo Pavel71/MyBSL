@@ -133,9 +133,10 @@ class MainTableViewHeaderCell: UITableViewCell {
   
   // Короче надо засетить сюда флаг что мы меняем ячейку и пускай включается контроолер сверху
   func setUpMenuViewController() {
-    
+
     addSubview(menuViewController.view)
     menuViewController.view.fillSuperview()
+    menuViewController.setDefaultChooseProduct()
     
   }
   

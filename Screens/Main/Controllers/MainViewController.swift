@@ -74,36 +74,9 @@ class MainViewController: UIViewController, MainDisplayLogic {
     print("View Did Load")
     setUpMainView()
     
-    
-    // Set DummyViewModel
-    
     let headerViewModel = MainHeaderViewModel.init(lastInjectionValue: "1.5", lastTimeInjectionValue: "13:30", lastShugarValueLabel: "7.5", insulinSupplyInPanValue: "156")
+    let dinnerViewModels = DinnerData.getData()
     
-    let product1 = ProductListViewModel(insulinValue: "", carboIn100Grm: 5, carboInPortion: "12", name: "Макароны", portion: "200")
-    let product2 = ProductListViewModel(insulinValue: nil, carboIn100Grm: 13, carboInPortion: "25", name: "Абрикосы", portion: "156")
-    
-    let shugarViewModel1 = ShugarTopViewModel(isPreviosDinner: false, shugarBeforeValue: "5.5", shugarAfterValue: "4", timeBefore: "11/09/19 12:30", timeAfter: "11/09/19 13:30")
-    let shugarViewModel2 = ShugarTopViewModel(isPreviosDinner: true, shugarBeforeValue: "12.5", shugarAfterValue: "13", timeBefore: "11/09/19 12:30", timeAfter: "11/09/19 13:30")
-    let shugarViewModel3 = ShugarTopViewModel(isPreviosDinner: true, shugarBeforeValue: "7.5", shugarAfterValue: "6", timeBefore: "11/09/19 12:30", timeAfter: "11/09/19 13:30")
-    
-    let result = ProductListResultsViewModel(sumCarboValue: "12", sumPortionValue: "25", sumInsulinValue: "33")
-    
-    let productListViewController1 = ProductListInDinnerViewModel(productsData: [product1,product2], dinnerItemResultsViewModel: result, isPreviosDinner: false)
-    
-    let productListViewController2 = ProductListInDinnerViewModel(productsData: [product2,product1,product2], dinnerItemResultsViewModel: result, isPreviosDinner: true)
-    
-    let productListViewController3 = ProductListInDinnerViewModel(productsData: [product1,product2,product1], dinnerItemResultsViewModel: result, isPreviosDinner: true)
-    
-    
-    let dinner1 = DinnerViewModel(shugarTopViewModel: shugarViewModel1, productListInDinnerViewModel: productListViewController1)
-    let dinner2 = DinnerViewModel(shugarTopViewModel: shugarViewModel2, productListInDinnerViewModel: productListViewController2)
-    let dinner3 = DinnerViewModel(shugarTopViewModel: shugarViewModel3, productListInDinnerViewModel: productListViewController3)
-    
-
-    
-    let dinnerViewModels = [
-      dinner1,dinner2,dinner3
-    ]
     mainViewModel = MainViewModel.init(headerViewModelCell: headerViewModel, dinnerCollectionViewModel: dinnerViewModels)
     // После установки обновим всю таблицу
     tableView.reloadData()
@@ -143,7 +116,7 @@ class MainViewController: UIViewController, MainDisplayLogic {
   }
   
   
-  var headerCell: MainTableViewHeaderCell!
+//  var headerCell: MainTableViewHeaderCell!
   
 }
 
@@ -249,10 +222,20 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
   }
   
+  // MARK: Set MenuDinnerClouser
+  
   private func setHeaderCellClouser(cell: MainTableViewHeaderCell) {
+    setMenuDinnerViewControllerClousers(cell:cell)
+    
+  }
+  private func setMenuDinnerViewControllerClousers(cell: MainTableViewHeaderCell) {
+    
     cell.menuViewController.didTapSwipeMenuBackButton = {[weak self] in
       //  закрываем меню
       self?.showMenuViewController()
+    }
+    cell.menuViewController.didAddProductInDinnerClouser = {[weak self] products in
+      self?.addProductInDinner(products: products)
     }
   }
   
@@ -352,6 +335,19 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MainViewController {
   
+  
+  // MARK: MenuDinnerViewController
+  
+  private func addProductInDinner(products: [ProductRealm]) {
+    
+    
+    // Тут идет запрос к базе данных мы достаем продукт по id и добавляем его в в ячейку в productListCOntroller
+    let dinnerCell = getFirstDinnerCell()
+    // Здесь нужно увеличивать размер ячейки // Вообщем надо будет подумать как это сделать покрасивее и по удобьнее!
+    dinnerCell.productListViewController.addNewProduct(products: products)
+    tableView.reloadRows(at: [IndexPath(item: 1, section: 0)], with: .automatic)
+    
+  }
 
   
   // Begin Editing TextField
@@ -377,9 +373,7 @@ extension MainViewController {
   }
   
   // Tap List Trains
-  
-  
-  
+
   // Add NEw Product in PorductListViewController
   private func addNewProductInDinner() {
     print("Add New product Main")
