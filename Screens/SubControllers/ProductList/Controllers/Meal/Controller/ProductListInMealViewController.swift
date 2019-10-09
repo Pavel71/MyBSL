@@ -6,16 +6,7 @@
 //  Copyright © 2019 PavelM. All rights reserved.
 //
 
-import UIKit
 
-
-//
-//  ProductsTableViewInMealCell.swift
-//  InsulinProjectBSL
-//
-//  Created by PavelM on 12/09/2019.
-//  Copyright © 2019 PavelM. All rights reserved.
-//
 
 import UIKit
 import ProgressHUD
@@ -32,10 +23,8 @@ class ProductListInMealViewController: UIViewController {
   
   // View Model ProductList
   
-
   
   var mealId: String = ""
-  
   var tableViewData: [ProductListViewModel] = []
   
   
@@ -187,17 +176,13 @@ extension ProductListInMealViewController: UITextFieldDelegate {
     
     guard let indexPath = getIndexPathIntableViewForTextFiedl(textField: textField) else {return}
     let cell = tableView.cellForRow(at: indexPath) as! ProductListCell
-    
-    // Этот коэффициент нужно сохранять в ячейке! или модели данных!
-    let carboIn100GrmPoroduct = tableViewData[indexPath.row].carboIn100Grm
-    
+
     let portion: Int = (textField.text! as NSString).integerValue
-    
-    let carboInPortion: Int = CalculateValueTextField.calculateCarboInPortion(carboIn100grm: carboIn100GrmPoroduct, portionSize: portion)
-    
-    cell.carboInPortionLabel.text = String(carboInPortion)
-    
+
     let sumPortion = CalculateValueTextField.calculateSumPortion(portion: portion, indexPath: indexPath, tableViewData: &tableViewData)
+    
+    cell.carboInPortionLabel.text = String(tableViewData[indexPath.row].carboInPortion)
+    
     let sumCarbo = CalculateValueTextField.calculateSumCarbo(indexPath: indexPath, tableViewData: &tableViewData)
     
     footerView.resultsView.carboResultLabel.text = String(sumCarbo)

@@ -44,7 +44,7 @@ class CalculateHeightView {
     
     let productListViewHeight = CalculateHeightView.calculateProductListViewheight(countRow:maxCount)
     
-    let margins = Constants.Main.DinnerCollectionView.topMarginBetweenView * 4
+    let margins = Constants.Main.DinnerCollectionView.topMarginBetweenView * 5
     
     let heightCell = shugarRowHeight + productListViewHeight  + margins + choosePlaceInjectionsRowHeight + willActiveHeight
     

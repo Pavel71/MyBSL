@@ -46,7 +46,7 @@ class MealTableViewPresenterWorker {
         
         
 
-        let carboInPortionInt = CalculateValueTextField.calculateCarboInPortion(carboIn100grm: product.carbo, portionSize: product.portion)
+//        let carboInPortionInt = CalculateValueTextField.calculateCarboInPortion(carboIn100grm: product.carbo, portionSize: product.portion)
     
         let product = ProductListViewModel.init(insulinValue: nil, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
         

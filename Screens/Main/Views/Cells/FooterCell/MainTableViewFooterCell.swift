@@ -41,40 +41,38 @@ class MainTableViewFooterCell: UITableViewCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     saveButton.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
-    
+
     robotView.didChangeRobotImage = {[weak self] in
       self?.changeEnablePredictaButton()
     }
-    
+
     self.didTapSaveButtonClouser = {[weak robotView] in
       robotView?.handleTap()
     }
-    
+
     let buttonStackView = UIStackView(arrangedSubviews: [
       saveButton,
       predicateinsulinButton
       ])
-    
+
 
     buttonStackView.axis = .vertical
     buttonStackView.distribution = .fillEqually
     buttonStackView.spacing = 10
-    
+
     buttonStackView.isLayoutMarginsRelativeArrangement = true
     buttonStackView.layoutMargins = .init(top: 30, left: 10, bottom: 30, right: 10)
-    
-    
+
+
     let overAllStackView = UIStackView(arrangedSubviews: [
       robotView,buttonStackView
-      
+
       ])
-    robotView.constrainWidth(constant: 180)
-    robotView.constrainHeight(constant: 180)
-    
-    overAllStackView.distribution = .fill
-    
+
+    overAllStackView.distribution = .fillEqually
+
     addSubview(overAllStackView)
-    overAllStackView.fillSuperview()
+    overAllStackView.fillSuperview(padding: .init(top: 10, left: 10, bottom: 10, right: 10))
     
     
   }

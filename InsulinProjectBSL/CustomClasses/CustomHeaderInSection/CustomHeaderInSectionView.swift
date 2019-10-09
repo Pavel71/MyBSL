@@ -32,11 +32,11 @@ class CustomHeaderInSectionView: UIView {
       switch currentExpand {
         
       case .closed:
-        rightLabel.alpha = 0
+        carboOn100Label.alpha = 0
         sectionNameLabel.textColor = .white
         
       case .expanded:
-        rightLabel.alpha = 1
+        carboOn100Label.alpha = 1
         sectionNameLabel.textColor = .lightGray
 
       }
@@ -58,17 +58,31 @@ class CustomHeaderInSectionView: UIView {
     return label
   }()
   
-  private let rightLabel: UILabel = {
+  private let carboOn100Label: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.numberOfLines = 0
     
-    label.font = UIFont(name: "DINCondensed-Bold", size: 20)
+    label.font = UIFont(name: "DINCondensed-Bold", size: 18)
 //    label.text = "Углеводы на 100гр."
     label.textColor = UIColor.lightGray
 
     label.alpha = 0
-    label.textAlignment = .right
+    label.textAlignment = .center
+    return label
+  }()
+  
+  private let portionLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 0
+    
+    label.font = UIFont(name: "DINCondensed-Bold", size: 18)
+    label.text = "Порция"
+    label.textColor = UIColor.lightGray
+    
+    label.alpha = 0
+    label.textAlignment = .center
     return label
   }()
   
@@ -84,24 +98,32 @@ class CustomHeaderInSectionView: UIView {
     addSubview(backGroundContanerViwe)
     backGroundContanerViwe.fillSuperview(padding: .init(top: 3, left: 5, bottom: 5, right: 5))
     
+    let rightStackView = UIStackView(arrangedSubviews: [
+      UIView(),
+      portionLabel,
+      carboOn100Label
+      ])
+
+    rightStackView.distribution = .fillEqually
+    rightStackView.spacing = 5
+    
     
     let stackView = UIStackView(arrangedSubviews: [
       sectionNameLabel,
-      rightLabel
+      rightStackView
       ])
-    rightLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100).isActive = true
     
-    
+    sectionNameLabel.constrainWidth(constant: Constants.Food.TableViewHeaderInSection.nameLabelWidth)
     stackView.distribution = .fill
     addSubview(stackView)
-    stackView.fillSuperview(padding: .init(top: 5, left: 10, bottom: 5, right: 10))
+    stackView.fillSuperview(padding: Constants.cellMargin)
     
     addSubview(headerButton)
     headerButton.fillSuperview()
     
   }
   
-  func setData(isExpanded: Bool, isOnlyOneSection: Bool, sectionName: String, rightLabelName: String? = nil, section: Int) {
+  func setData(isExpanded: Bool, isOnlyOneSection: Bool, sectionName: String, rightLabelName: String? = nil, section: Int,isFavoritSegment: Bool = false) {
     
     // Если секция скрыта то только белый шрифт и скрытый лейбел, если нет то
     headerButton.tag = section
@@ -111,7 +133,8 @@ class CustomHeaderInSectionView: UIView {
     
     headerButton.isEnabled = isOnlyOneSection // Отключаю активацию кнопки если мы в режиме лист
     guard let rightLabelName = rightLabelName else {return}
-    rightLabel.text = rightLabelName
+    carboOn100Label.text = rightLabelName
+    portionLabel.alpha = isFavoritSegment ? 1:0
 
   }
   

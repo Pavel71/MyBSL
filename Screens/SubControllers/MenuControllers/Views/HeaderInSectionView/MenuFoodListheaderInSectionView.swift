@@ -10,7 +10,7 @@ import UIKit
 
 class MenuFoodListheaderInSectionView: UIView {
   
-  static let height: CGFloat = 30
+//  static let height: CGFloat = 30
   
   let sectionNameLabel: UILabel = {
     let label = UILabel()
@@ -20,15 +20,29 @@ class MenuFoodListheaderInSectionView: UIView {
     return label
   }()
   
-  private let rightLabel: UILabel = {
+  private let carboLabel: UILabel = {
     let label = UILabel()
 
-
+    label.numberOfLines = 0
     label.font = UIFont(name: "DINCondensed-Bold", size: 16)
     label.text = "Углеводы на 100гр."
     label.textColor = UIColor.lightGray
 
-    label.textAlignment = .right
+    label.textAlignment = .center
+    return label
+  }()
+  
+  private let portionLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 0
+    
+    label.font = UIFont(name: "DINCondensed-Bold", size: 16)
+    label.text = "Порция"
+    label.textColor = UIColor.lightGray
+    
+    label.alpha = 0
+    label.textAlignment = .center
     return label
   }()
   
@@ -45,18 +59,29 @@ class MenuFoodListheaderInSectionView: UIView {
     backGroundContanerViwe.fillSuperview(padding: .init(top: 3, left: 5, bottom: 5, right: 5))
     
     
+    let rightStackView = UIStackView(arrangedSubviews: [
+      portionLabel,
+      carboLabel
+      ])
+    
+    rightStackView.distribution = .fillEqually
+    rightStackView.spacing = 2
+    
     let stackView = UIStackView(arrangedSubviews: [
       sectionNameLabel,
-      rightLabel
+      rightStackView
       ])
-//    rightLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100).isActive = true
-    
+
     
     stackView.distribution = .fillEqually
+    stackView.spacing = 2
     addSubview(stackView)
-    stackView.fillSuperview(padding: .init(top: 5, left: 10, bottom: 5, right: 10))
+    stackView.fillSuperview(padding: Constants.cellMargin)
     
-    
+  }
+  
+  func showPortionLabel(isFavoritsSegment:Bool) {
+    portionLabel.alpha = isFavoritsSegment ? 1:0
   }
   
   required init?(coder aDecoder: NSCoder) {

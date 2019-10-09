@@ -17,7 +17,7 @@ class RobotView: UIView {
   let robotImageView: UIImageView = {
     let iv = UIImageView(image: #imageLiteral(resourceName: "ROBOT"))
     iv.clipsToBounds = true
-    
+    iv.contentMode = .scaleAspectFit
     return iv
   }()
   

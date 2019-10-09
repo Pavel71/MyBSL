@@ -13,6 +13,7 @@ protocol MenuFoodListCellViewModelable {
   
   var name: String {get}
   var carboOn100Grm: String {get}
+  var portion: String {get}
   var isFavorit: Bool {get}
   var isChoosen: Bool {get}
 }
@@ -24,7 +25,7 @@ class MenuFoodListCell: UITableViewCell {
   
   private let nameLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 18)
+    label.font = UIFont.systemFont(ofSize: 16)
     label.numberOfLines = 0
     
     return label
@@ -33,8 +34,22 @@ class MenuFoodListCell: UITableViewCell {
   private let carboLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.font = UIFont.systemFont(ofSize: 16)
-    label.textAlignment = .right
+    
+    label.font = Constants.Font.valueFont
+    label.textColor = Constants.Text.textColorDarkGray
+    label.textAlignment = .center
+    
+    label.numberOfLines = 0
+    return label
+  }()
+  
+  private let portionLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    
+    label.font = Constants.Font.valueFont
+    label.textColor = Constants.Text.textColorDarkGray
+    label.textAlignment = .center
     
     label.numberOfLines = 0
     return label
@@ -58,31 +73,45 @@ class MenuFoodListCell: UITableViewCell {
     let containerView = UIView()
     containerView.addSubview(chooseImageView)
     containerView.contentMode = .center
-    chooseImageView.fillSuperview()
+    chooseImageView.centerInSuperview(size: .init(width: 20, height: 20))
+    
+    let leftStackView = UIStackView(arrangedSubviews: [
+      containerView,nameLabel
+      ])
+    leftStackView.spacing = 2
+    containerView.constrainWidth(constant: 30)
+    
+    let rightStackView = UIStackView(arrangedSubviews: [
+      portionLabel,
+      carboLabel
+      ])
+    rightStackView.spacing = 2
+    rightStackView.distribution = .fillEqually
+    
+//    carboLabel.constrainWidth(constant: 30)
 
     let stackView = UIStackView(arrangedSubviews: [
-      containerView,nameLabel,carboLabel
+      leftStackView,rightStackView
       ])
     
-    stackView.distribution = .fill
+    stackView.distribution = .fillEqually
     stackView.spacing = 2
-    stackView.alignment = .center
+//    stackView.alignment = .center
     
     addSubview(stackView)
     stackView.fillSuperview(padding: Constants.cellMargin)
-
-    containerView.constrainWidth(constant: 30)
-    carboLabel.constrainWidth(constant: 30)
-    
-    
 
 
   }
   
   
-  func setViewModel(viewModel:MenuFoodListCellViewModelable) {
+  func setViewModel(viewModel:MenuFoodListCellViewModelable, isFavoritsSegment: Bool) {
+    
     nameLabel.text = viewModel.name
     carboLabel.text = viewModel.carboOn100Grm
+    
+    portionLabel.text = viewModel.portion
+    portionLabel.alpha = isFavoritsSegment ? 1:0
     
     chooseImageView.image = viewModel.isChoosen ? #imageLiteral(resourceName: "circular-shape-silhouette").withRenderingMode(.alwaysTemplate) : #imageLiteral(resourceName: "circumference").withRenderingMode(.alwaysTemplate)
 

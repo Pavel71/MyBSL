@@ -12,11 +12,11 @@ class CalculateValueTextField {
   
   // Carbo in Portion
   
-  static func calculateCarboInPortion(carboIn100grm: Int, portionSize: Int) -> Int {
-    let carbo100grm = Float(carboIn100grm)
-    let portion = Float(portionSize)
-    return Int(carbo100grm * (portion / 100))
-  }
+//  static func calculateCarboInPortion(carboIn100grm: Int, portionSize: Int) -> Int {
+//    let carbo100grm = Float(carboIn100grm)
+//    let portion = Float(portionSize)
+//    return Int(carbo100grm * (portion / 100))
+//  }
   
   static func calculateSumInsulin(insulin: Float,indexPath: IndexPath, tableViewData: inout [ProductListViewModel]) -> Float {
     
@@ -31,12 +31,11 @@ class CalculateValueTextField {
   
   
   static func calculateSumCarbo(indexPath: IndexPath, tableViewData: inout [ProductListViewModel]) -> Int {
-//    tableViewData[indexPath.row].carboInPortion = carboInPortion
-//    tableViewData[indexPath.row].carboInPortion = carboInPortion
+
     let arrayCarbo = tableViewData.map { (product) -> Int  in
-      
       return product.carboInPortion
     }
+    
     let sum = arrayCarbo.reduce(0,+)
     return sum
   }

@@ -223,7 +223,7 @@ class MealRealmManager {
     // Создаем только кошда нет такого имени в обеде!
     if isProductInMeal(meal: meal, productName: product.name) {
       
-      let newProduct = ProductRealm(name: product.name, category: product.category, carbo: product.carbo, isFavorits: product.isFavorits)
+      let newProduct = ProductRealm(name: product.name, category: product.category, carbo: product.carbo, isFavorits: product.isFavorits,portion: product.portion)
       try! realmMeal.write {
         meal.listProduct.append(newProduct)
       }

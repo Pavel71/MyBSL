@@ -206,6 +206,7 @@ extension DinnerCollectionViewController {
   
 }
 
+// MARK: TextField Delegate
 extension DinnerCollectionViewController: UITextFieldDelegate {
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -215,6 +216,7 @@ extension DinnerCollectionViewController: UITextFieldDelegate {
 
 }
 
+// MARK: ScrollView Delegate
 extension DinnerCollectionViewController: UIScrollViewDelegate {
   
   

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 
 // Задача класса собрать массив продуктов с Определнной моделью и передать его в MealViewController!
@@ -23,7 +24,8 @@ class MenuProductsListViewController: UIViewController {
     print("Deinit Menu Controller")
   }
   
-  let foodRealmManager = FoodRealmManager()
+  let menuRealmWorker = MenuRealmWorker()
+//  let foodRealmManager = FoodRealmManager()
   
   // Back Data!
   var addProductsData: [ProductListViewModel] = []
@@ -64,7 +66,7 @@ class MenuProductsListViewController: UIViewController {
      setUpSearchBar()
      setUpTableView()
     
-     tableViewData =  fetchAllProducts()
+     tableViewData =  menuRealmWorker.fetchAllProducts()
      tableView.reloadData()
   }
   
@@ -88,9 +90,9 @@ class MenuProductsListViewController: UIViewController {
 }
 
 
-
+// MARK: Set UP Views
 extension MenuProductsListViewController {
-  // View Layer
+  
   
   private func setUpSearchBar() {
     view.addSubview(searchBar)
@@ -122,9 +124,7 @@ extension MenuProductsListViewController {
 extension MenuProductsListViewController: UISearchBarDelegate {
   
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    
-    
-    print(searchText)
+
     
     if searchText.isEmpty {
       setTableViewDataToSegment(segment: currentSegment)
@@ -159,37 +159,13 @@ extension MenuProductsListViewController {
     
     switch segment {
       case .allProducts:
-        tableViewData = fetchAllProducts()
+        tableViewData = menuRealmWorker.fetchAllProducts()
       case .favorits:
-        tableViewData = tableViewData.filter({ (viewModel) -> Bool in
-          return viewModel.isFavorit == true
-        })
+        tableViewData = menuRealmWorker.fetchFavorits()
       
     default:break
     }
     currentSegment = segment
-  }
-}
-
-// MARK: Realm Layer
-
-extension MenuProductsListViewController {
-  // Fetch All product
-  private func fetchAllProducts() -> [MenuProductListViewModel] {
-    
-    let realmItems = foodRealmManager.allProducts()
-
-    var dummyArray: [MenuProductListViewModel] = []
-
-    for product in realmItems {
-      let carboString = String(product.carbo)
-//      let portionString = String(product.portion)
-      let productCellViewModel = MenuProductListViewModel(id: product.id, name: product.name, carboOn100Grm: carboString, isFavorit: product.isFavorits)
-
-      dummyArray.append(productCellViewModel)
-    }
-
-    return dummyArray
   }
 }
 
@@ -203,7 +179,7 @@ extension MenuProductsListViewController: UITableViewDelegate, UITableViewDataSo
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: MenuFoodListCell.cellId, for: indexPath) as! MenuFoodListCell
-    cell.setViewModel(viewModel: tableViewData[indexPath.row])
+    cell.setViewModel(viewModel: tableViewData[indexPath.row], isFavoritsSegment: currentSegment == .favorits)
     return cell
   }
   
@@ -224,12 +200,12 @@ extension MenuProductsListViewController: UITableViewDelegate, UITableViewDataSo
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let header = MenuFoodListheaderInSectionView()
-
+    header.showPortionLabel(isFavoritsSegment: currentSegment == .favorits)
     return header
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return MenuFoodListheaderInSectionView.height
+    return Constants.MenuController.TableView.headerInSectionHeight
   }
   
 }

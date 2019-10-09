@@ -22,25 +22,30 @@ class FoodRealmManager {
     setItems()
   }
   
+  // Короче сюда нужно передать какой сегмент у нас потомучто обсервер достает значение которое почему то не изменяется
+  
   // Set Observer Token
-  var didChangeRealmDB: ((Results<ProductRealm>) -> Void)?
+  var didChangeRealmDB: (() -> Void)?
+//  var didChangeSegmentItems: ((Results<ProductRealm>) -> Void)?
   
   func setObserverToken() -> NotificationToken {
-
-    let realmObserverToken = items.observe({ (change) in
+    
+    // Просто этот клоузер почему то завхватывает значения на момент инициализации
+    // Поэтому здеь работать с itesm не лучший вариант
+    let realmObserverToken = items.observe({  (change) in
 
       switch change {
       case .error(let error):
         print(error)
       case .initial(_):
         
-        self.didChangeRealmDB!(self.items)
+        self.didChangeRealmDB!()
       case .update(_, deletions: let deletions, insertions: let insertions, modifications: let updates):
         print("change Food Db")
         
 //        tableView.applyChanges(deletions: deletions, insertions: insertions, updates: updates) // Это почему то не работает
-        
-        self.didChangeRealmDB!(self.items)
+
+        self.didChangeRealmDB!()
       }
       self.productProvider.realm.refresh() // Обновляю реалм схему
     })
@@ -66,14 +71,17 @@ extension FoodRealmManager {
   // Fetch All
   
   func allProducts() -> Results<ProductRealm> {
-
-    items = productProvider.realm.objects(ProductRealm.self).sorted(byKeyPath: ProductRealm.Property.name.rawValue)
+    
+    
+    let items = productProvider.realm.objects(ProductRealm.self).sorted(byKeyPath: ProductRealm.Property.name.rawValue)
+    
     return items
   }
   
   // Fetch By Name
   
   func fetchProductByName(name: String) -> Results<ProductRealm> {
+    
     let realm = productProvider.realm
     return realm.objects(ProductRealm.self).filter("name CONTAINS[cd] %@", name)
  
@@ -82,7 +90,7 @@ extension FoodRealmManager {
   // Fetch By Favorits
   func fetchFavorits() -> Results<ProductRealm> {
     
-    items = items.filter("isFavorits == %@", true).sorted(byKeyPath: ProductRealm.Property.name.rawValue)
+    let items = allProducts().filter("isFavorits == %@", true).sorted(byKeyPath: ProductRealm.Property.name.rawValue)
     return items
   }
   

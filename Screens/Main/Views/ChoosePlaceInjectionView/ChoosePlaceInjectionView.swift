@@ -55,8 +55,7 @@ class ChoosePlaceInjectionView: UIView {
     return button
     
   }
-  
-  
+
   
   let armsSize: CGSize = .init(width: 40, height: 150)
   let legsSize: CGSize = .init(width: 50, height: 150)
@@ -71,34 +70,22 @@ class ChoosePlaceInjectionView: UIView {
     addSubview(closeButton)
     closeButton.anchor(top: topAnchor, leading: nil, bottom: nil, trailing: trailingAnchor,padding: .zero,size: .init(width: 30, height: 30))
     
-    
-    let corpusStackView = UIStackView(arrangedSubviews: [
-      stomAcheButton
-      ])
 
     stomAcheButton.constrainHeight(constant: stomachSize.height)
     stomAcheButton.constrainWidth(constant: stomachSize.width)
 
-    corpusStackView.distribution = .fill
-    corpusStackView.spacing = 5
-    
     
     let legsStackView = UIStackView(arrangedSubviews: [
       rightLegButton,leftLegButton
       ])
-    legsStackView.distribution = .equalCentering
-    legsStackView.spacing = 20
+    legsStackView.distribution = .fillEqually
+    legsStackView.spacing = 10
     
-    leftLegButton.constrainWidth(constant: legsSize.width)
     leftLegButton.constrainHeight(constant: legsSize.height)
-
-    rightLegButton.constrainWidth(constant: legsSize.width)
-    rightLegButton.constrainHeight(constant: legsSize.height)
-    
 
     
     let overAllStackView = UIStackView(arrangedSubviews: [
-      corpusStackView,
+      stomAcheButton,
       legsStackView
       ])
     overAllStackView.axis = .vertical
@@ -111,8 +98,8 @@ class ChoosePlaceInjectionView: UIView {
     
     addSubview(leftArmButton)
     leftArmButton.anchor(top: overAllStackView.topAnchor, leading: overAllStackView.trailingAnchor, bottom: nil, trailing: nil,padding: .init(top: 20, left: 10, bottom: 0, right: 0),size: armsSize)
-    
-    
+
+
     addSubview(rightArmButton)
     rightArmButton.anchor(top: overAllStackView.topAnchor, leading: nil, bottom: nil, trailing: overAllStackView.leadingAnchor,padding: .init(top: 20, left: 0, bottom: 0, right: 10),size: armsSize)
     

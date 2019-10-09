@@ -13,7 +13,7 @@ class ConfirmProductListResultViewModel {
   
   
   static func calculateProductListResultViewModel(data: [ProductListViewModel]) -> ProductListResultViewModelable {
-    print("Расчет")
+    
     // Carbo
     let arrayCarbo = data.map { (productViewModel) -> Int  in
       return productViewModel.carboInPortion
@@ -31,19 +31,10 @@ class ConfirmProductListResultViewModel {
     let arrayInsulin = data.map { (productViewModel) -> Float  in
       
       return productViewModel.insulinValue ?? 0
-//      print(productViewModel.insulinValue)
-//
-//      if let insulin = productViewModel.insulinValue {
-//        print(insulin)
-//        let insulinFloat = (insulin as NSString).floatValue
-//        return insulinFloat
-//      }
-//      return 0
     }
     
     let sumInsulin = arrayInsulin.reduce(0,+)
     
-    print(sumCarbo,sumPortion,sumInsulin)
     
     return ProductListResultsViewModel(sumCarboValue: String(sumCarbo), sumPortionValue: String(sumPortion), sumInsulinValue: String(sumInsulin))
   }

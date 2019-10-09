@@ -52,7 +52,7 @@ class FoodCell: UITableViewCell {
   private let carboLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 18)
-    label.textAlignment = .right
+    label.textAlignment = .center
     
     label.numberOfLines = 0
     return label
@@ -61,8 +61,8 @@ class FoodCell: UITableViewCell {
   let massaLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 18)
-    label.textAlignment = .right
-    label.text = "100"
+    label.textAlignment = .center
+//    label.text = "100"
     label.alpha = 0
     label.numberOfLines = 0
     return label
@@ -82,19 +82,20 @@ class FoodCell: UITableViewCell {
       categoryLabel
       ])
     verticalStackView.axis = .vertical
-    
+
     
     let carboStackView = UIStackView(arrangedSubviews: [imageStarFavorit,massaLabel,carboLabel])
+
     carboStackView.alignment = .center
     carboStackView.distribution = .fillEqually
     
-    
+
     let horizontalStackView = UIStackView(arrangedSubviews: [
       verticalStackView,
       carboStackView
       ])
     
-    verticalStackView.constrainWidth(constant: 150)
+    verticalStackView.constrainWidth(constant: Constants.Food.TableViewHeaderInSection.nameLabelWidth)
     
     addSubview(horizontalStackView)
     
@@ -107,13 +108,16 @@ class FoodCell: UITableViewCell {
     
   }
   
-  func set(viewModel: FoodCellViewModel) {
+  func set(viewModel: FoodCellViewModel, isFavoritsSegment: Bool) {
     nameLabel.text = viewModel.name
     categoryLabel.text = viewModel.category
     carboLabel.text = viewModel.carbo
     isFavorit = viewModel.isFavorit
     productId = viewModel.id
     
+    massaLabel.text = viewModel.portion
+    massaLabel.alpha = isFavoritsSegment ? 1:0
+
   }
   
   func getProductID() -> String {

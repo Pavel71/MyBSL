@@ -33,15 +33,18 @@ class FoodInteractor: FoodBusinessLogic {
   
   var isDefaultList: Bool = true
   
-  var tableView: UITableView!
+  var currentSegment: Segment = .allProducts
+  
+  var items: Results<ProductRealm>!
   
   func makeRequest(request: Food.Model.Request.RequestType) {
     
     if realmManager == nil {
-      print("Set RealmManager")
+      
       realmManager = FoodRealmManager()
       // set clouser DB Cnahge
-      realmManager.didChangeRealmDB = {[weak self] items in self?.didChangeProductDB(items:items)}
+      realmManager.didChangeRealmDB = {[weak self] in self?.didChangeProductDB()}
+//      items = realmManager.getItems()
     }
     
     workWithTableViewViewModel(request: request)
@@ -111,11 +114,15 @@ class FoodInteractor: FoodBusinessLogic {
       // Segment
       case .fetchAllProducts:
         
+        currentSegment = .allProducts
+        
         let items = realmManager.allProducts()
         presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
       
         // Segment
       case .fetchProductByFavorits:
+        
+        currentSegment = .favorits
         
         let items = realmManager.fetchFavorits()
         presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
@@ -150,8 +157,16 @@ class FoodInteractor: FoodBusinessLogic {
   
   
   // Than Change DB
-  private func didChangeProductDB(items: Results<ProductRealm>) {
+  private func didChangeProductDB() {
     
+    // Суть в чем после измененей получи свежые данные в своем сегменте
+    switch currentSegment {
+    case .allProducts:
+      items = realmManager.allProducts()
+    case .favorits:
+      items = realmManager.fetchFavorits()
+    default:break
+    }
     
     self.presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
 

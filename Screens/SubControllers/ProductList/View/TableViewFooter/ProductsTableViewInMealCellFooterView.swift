@@ -26,8 +26,7 @@ class ProductsTableViewInMealCellFooterView: UIView {
   private func setUpResultView() {
     
     addSubview(resultsView)
-    resultsView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor)
-    resultsView.constrainHeight(constant: Constants.ProductList.TableFooterView.resultsViewHeight)
+    resultsView.fillSuperview()
   }
 
   

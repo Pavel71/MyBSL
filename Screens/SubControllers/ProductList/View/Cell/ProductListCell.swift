@@ -25,15 +25,15 @@ class ProductListCell: UITableViewCell {
   
   private let nameLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont(name: "DINCondensed-Bold", size: 20)
-    label.textColor = .lightGray
+    label.font = Constants.Font.textFont
+    label.textColor = Constants.Text.textColorDarkGray
     label.numberOfLines = 0
     return label
   }()
   
   let portionTextField: UITextField = {
     let textField = CustomValueTextField()
-    textField.font = UIFont(name: "DINCondensed-Bold", size: 18)
+    textField.font = Constants.Font.valueFont
     textField.textColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
     textField.textAlignment = .center
     textField.layer.borderColor = UIColor.lightGray.cgColor
@@ -44,7 +44,7 @@ class ProductListCell: UITableViewCell {
   
   let insulinTextField: UITextField = {
     let textField = CustomValueTextField(placeholder: "", cornerRadius: 10)
-    textField.font = UIFont(name: "DINCondensed-Bold", size: 18)
+    textField.font = Constants.Font.valueFont
     textField.textColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
     textField.textAlignment = .center
     
@@ -54,8 +54,8 @@ class ProductListCell: UITableViewCell {
 
   let carboInPortionLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont(name: "DINCondensed-Bold", size: 18)
-    label.textColor = .lightGray
+    label.font = Constants.Font.valueFont
+    label.textColor = Constants.Text.textColorDarkGray
     label.textAlignment = .center
     return label
   }()
@@ -147,6 +147,7 @@ class ProductListCell: UITableViewCell {
 
 
 extension ProductListCell: UIPickerViewDelegate, UIPickerViewDataSource {
+  
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
     return pickerData.count
   }

@@ -39,7 +39,7 @@ class DinnerData {
     
     
     let dinnerViewModels = [
-      dinner1,dinner2,dinner3
+      dinner1
     ]
     return dinnerViewModels
   }

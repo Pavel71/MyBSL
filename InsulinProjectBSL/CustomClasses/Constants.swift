@@ -24,12 +24,20 @@ struct Constants {
   
   static let numberValueTextFieldWidth: CGFloat = 50
   
+  struct Text {
+    
+    static let textColorDarkGray = UIColor.darkGray
+  }
   
+  struct Font {
+    static let textFont = UIFont(name: "DINCondensed-Bold", size: 20)
+    static let valueFont = UIFont(name: "DINCondensed-Bold", size: 18)
+  }
   
   static let cellMargin = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
   static let customNavBarHeight: CGFloat = 60
 
-  static let textFont = UIFont(name: "DINCondensed-Bold", size: 20)
+  
   
   struct KeyBoard {
     static let doneToolBarHeight:CGFloat =  50
@@ -51,6 +59,11 @@ struct Constants {
 
     static let foodMarginsInsets = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
     static let tableViewHeaderHeight: CGFloat = 50
+    
+    struct TableViewHeaderInSection {
+      static let carbloLabelWidth: CGFloat = 100
+      static let nameLabelWidth: CGFloat = 150
+    }
     
   }
   
@@ -110,6 +123,13 @@ struct Constants {
     }
     
     
+  }
+  
+  struct MenuController {
+    
+    struct TableView {
+      static let headerInSectionHeight: CGFloat = 50
+    }
   }
   
   struct MenudDinner {

@@ -164,9 +164,10 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   }
   
   private func reloadTableView() {
-    UIView.transition(with: tableView, duration: 0.2, options: [.curveEaseOut,.transitionCrossDissolve], animations: {
-      self.tableView.reloadData()
-    }, completion: nil)
+    self.tableView.reloadData()
+//    UIView.transition(with: tableView, duration: 0.2, options: [.curveEaseOut,.transitionCrossDissolve], animations: {
+//      self.tableView.reloadData()
+//    }, completion: nil)
   }
   
   // MARK: Display Methods
@@ -269,6 +270,7 @@ extension FoodViewController {
 // MARK: Set Clousers and Button Methods
 
 extension FoodViewController {
+  
   // Add NewProduct Button
   @objc private func didTapAddNewProduct() {
     
@@ -458,7 +460,7 @@ extension FoodViewController {
     let category = foodViewModel[section].sectionCategory
     headerInSection = CustomHeaderInSectionView()
     
-    headerInSection.setData(isExpanded: isExpand, isOnlyOneSection: isOnlyOneSection, sectionName:category,rightLabelName: "Углеводы на 100гр.", section: section)
+    headerInSection.setData(isExpanded: isExpand, isOnlyOneSection: isOnlyOneSection, sectionName:category,rightLabelName: "Углеводы на 100гр.", section: section, isFavoritSegment: currentSegment == .favorits)
     headerInSection.didTapHeaderSectionButton = didTapButtonHeaderInSection
     
     
@@ -487,7 +489,10 @@ extension FoodViewController: UITableViewDelegate, UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: FoodCell.cellID, for: indexPath) as! FoodCell
     
     let foodViewModleInSection = foodViewModel[indexPath.section].items[indexPath.row]
-    cell.set(viewModel: foodViewModleInSection)
+    
+    // Простым решением будет передать здесь сегмент избранное и тогда щелкнуть в ячейке показывать еще и порцию но также потребуется изменить и хеадер
+    
+    cell.set(viewModel: foodViewModleInSection, isFavoritsSegment: currentSegment == .favorits)
     
     return cell
   }
@@ -512,6 +517,9 @@ extension FoodViewController: UITableViewDelegate, UITableViewDataSource {
   
   
 }
+
+
+
 // MARK: Swipes Row In TableView
 
 extension FoodViewController {

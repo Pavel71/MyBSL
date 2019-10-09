@@ -74,12 +74,13 @@ class ProductListInDinnerViewController: BaseProductList {
     tableView.reloadData()
   }
   
+  // MARK: AddNewProduct
+  
   func addNewProduct(products: [ProductRealm]) {
     
     products.forEach { (product) in
       let productListViewModel = ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
       
-      print(productListViewModel)
       tableViewData.append(productListViewModel)
     }
     // Короче нужно пересчитывать размер ячейки до какого то кол-ва
@@ -164,18 +165,33 @@ extension ProductListInDinnerViewController {
 
     guard let indexPath = ComputedValueThanChangeOne.getIndexPathIntableViewForTextFiedl(textField: textField, tableView: tableView) else {return}
     
+    let cell = tableView.cellForRow(at: indexPath) as! ProductListCell
+    
     let portion: Int = (textField.text! as NSString).integerValue
     
-    let carboIn100GrmPoroduct = tableViewData[indexPath.row].carboIn100Grm
+//    let carboIn100GrmPoroduct = tableViewData[indexPath.row].carboIn100Grm
     
     // Изменит значение лейбла в зависимости от порции котрую мы вводим
 //    let carboInPortion = ComputedValueThanChangeOne.changeCarboInlabel(tableView: tableView, carboOn100Grm: carboIn100GrmPoroduct, portion: portion, indexPath: indexPath)
     
+    // Этот коэффициент нужно сохранять в ячейке! или модели данных!
+//    let carboIn100GrmPoroduct = tableViewData[indexPath.row].carboIn100Grm
+//
+//    let carboInPortion: Int = CalculateValueTextField.calculateCarboInPortion(carboIn100grm: carboIn100GrmPoroduct, portionSize: portion)
+//
+//
+//
+//
+//
     
     // Подумать как приукрасит
     let sumPortion = CalculateValueTextField.calculateSumPortion(portion: portion,indexPath:indexPath, tableViewData: &tableViewData)
     
-    //
+    // Это Computed Property  и оно высчитывается после сета  Portion
+    cell.carboInPortionLabel.text = String(tableViewData[indexPath.row].carboInPortion)
+    
+    
+    
     let sumCarbo = CalculateValueTextField.calculateSumCarbo(indexPath: indexPath, tableViewData: &tableViewData)
     
     footerView.resultsView.portionResultLabel.text = String(sumPortion)

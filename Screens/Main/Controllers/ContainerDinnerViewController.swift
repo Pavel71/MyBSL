@@ -18,11 +18,11 @@ class ContainerDinnerViewController: UIViewController {
   
   
   private lazy var animator: UIViewPropertyAnimator = {
-    return UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut)
+    return UIViewPropertyAnimator(duration: 0.5, curve: .easeOut)
   }()
   
   // Тут нужно подумать на сколько должна эта шторка выезжать!
-  let menuScreenHeight:CGFloat = 300
+  let menuScreenHeight:CGFloat = UIScreen.main.bounds.height / 2
   
   private var currentState: State = .closed
   
@@ -42,6 +42,16 @@ class ContainerDinnerViewController: UIViewController {
     super.viewDidLoad()
     view.backgroundColor = .white
     configureMainViewController()
+    setUpMenuView()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    print("Will Appear Meni 1 ")
+    // Убераем контроллер за границу
+    menuProductsListViewController.view.center.y -= UIScreen.main.bounds.height
+    
   }
   
   func configureMainViewController() {
@@ -56,15 +66,46 @@ class ContainerDinnerViewController: UIViewController {
     
   }
   
-  
-  func configureProductListViewController() {
+  func setUpMenuView() {
     
     if menuProductsListViewController == nil {
       
       menuProductsListViewController = MenuDinnerViewController()
-      view.insertSubview(menuProductsListViewController.view, at: 0)
+      menuProductsListViewController.didTapSwipeMenuBackButton = {[weak self] in
+        self?.configureProductListViewController()
+      }
+      
+      //      view.insertSubview(menuProductsListViewController.view, at: 0)
+      
+      view.addSubview(menuProductsListViewController.view)
+//      menuProductsListViewController.view.constrainHeight(constant: 300)
       addChild(menuProductsListViewController)
     }
+    
+  }
+  
+  
+  func configureProductListViewController() {
+    
+//    if menuProductsListViewController == nil {
+//
+//      menuProductsListViewController = MenuDinnerViewController()
+//
+//      // здесь я могу добавить сверху! Закинуть за границу сразуже а потом уже анимировать
+//
+//      // Короче истина гдето здесь! Все это Можно решить!
+//      // Вот здесь контроллер надо добавить но спрятать его за верхней границе экрана
+//      menuProductsListViewController.view.center.y -= view.frame.height
+//
+////      view.insertSubview(menuProductsListViewController.view, at: 0)
+//
+//      view.addSubview(menuProductsListViewController.view)
+//      menuProductsListViewController.view.constrainHeight(constant: self.menuScreenHeight)
+//
+////      menuProductsListViewController.view.frame = -UIScreen.main.bounds.height
+//
+//      addChild(menuProductsListViewController)
+//    }
     
     
     switch currentState {
@@ -177,7 +218,10 @@ extension ContainerDinnerViewController {
   func closeMenu() {
 
     animator.addAnimations {
+      
+//      self.menuProductsListViewController.view
       self.controller.view.frame.origin.y = 0
+      self.menuProductsListViewController.view.center.y -= self.menuScreenHeight + UIApplication.shared.statusBarFrame.height
     }
 
     // Это кгода Continue Animation
@@ -206,8 +250,14 @@ extension ContainerDinnerViewController {
   func openMenu() {
 
     animator.addAnimations {
-      self.controller.view.frame.origin.y = self.menuScreenHeight
+      // Опускаем VIew на половниу
+      self.menuProductsListViewController.view.center.y += self.menuScreenHeight + UIApplication.shared.statusBarFrame.height
+      
+      
     }
+    animator.addAnimations({
+      self.controller.view.frame.origin.y = self.menuScreenHeight - Constants.Main.Cell.headerCellHeight - Constants.customNavBarHeight +  20
+    }, delayFactor: 0.4)
 
     // Это кгода Continue Animation
     animator.addCompletion { position in

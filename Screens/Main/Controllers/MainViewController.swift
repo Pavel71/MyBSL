@@ -230,13 +230,14 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
   }
   private func setMenuDinnerViewControllerClousers(cell: MainTableViewHeaderCell) {
     
-    cell.menuViewController.didTapSwipeMenuBackButton = {[weak self] in
-      //  закрываем меню
-      self?.showMenuViewController()
-    }
-    cell.menuViewController.didAddProductInDinnerClouser = {[weak self] products in
-      self?.addProductInDinner(products: products)
-    }
+//    cell.menuViewController.didTapSwipeMenuBackButton = {[weak self] in
+//      //  закрываем меню
+//      self?.showMenuViewController()
+//      self?.didShowMenuProductsListViewControllerClouser!()
+//    }
+//    cell.menuViewController.didAddProductInDinnerClouser = {[weak self] products in
+//      self?.addProductInDinner(products: products)
+//    }
   }
   
   private func configureMiddleCell() -> MainTableViewMiddleCell {
@@ -244,6 +245,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewMiddleCell.cellId) as! MainTableViewMiddleCell
     
     
+    print(mainViewModel.dinnerCollectionViewModel)
     cell.setViewModel(viewModel: mainViewModel.dinnerCollectionViewModel)
     
     setMiddleCellClouser(cell: cell)
@@ -340,14 +342,22 @@ extension MainViewController {
   
   private func addProductInDinner(products: [ProductRealm]) {
     
+    // Тут нужна проыерка на то есть ли такие продукты в базе это проще будет на реалме сделать потомучто возможно мы будем просто по id работать и все!
     
-    // Тут идет запрос к базе данных мы достаем продукт по id и добавляем его в в ячейку в productListCOntroller
-    let dinnerCell = getFirstDinnerCell()
-    // Здесь нужно увеличивать размер ячейки // Вообщем надо будет подумать как это сделать покрасивее и по удобьнее!
-    dinnerCell.productListViewController.addNewProduct(products: products)
+    products.forEach { (product) in
+      let productListViewModel = ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
+      
+      mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.append(productListViewModel)
+    }
+    
+    
+    
+//    dinnerCell.productListViewController.addNewProduct(products: products)
     tableView.reloadRows(at: [IndexPath(item: 1, section: 0)], with: .automatic)
     
   }
+  
+  
 
   
   // Begin Editing TextField
@@ -379,10 +389,10 @@ extension MainViewController {
     print("Add New product Main")
 
     
-   showMenuViewController()
+//   showMenuViewController()
     
-    // Dont use ContainerView Controller
-//    didShowMenuProductsListViewControllerClouser!()
+    // Use COntainer COntroller
+    didShowMenuProductsListViewControllerClouser!()
   }
   
   func showMenuViewController() {

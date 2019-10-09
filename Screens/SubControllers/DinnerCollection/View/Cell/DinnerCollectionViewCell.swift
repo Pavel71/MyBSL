@@ -49,6 +49,9 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   let willActiveRow = WillActiveView()
   let listTrainsViewController = ListTrainsViewController(style: .plain)
   
+  // Constraint Property
+  var choosePlaceInjectionViewTopConstraint: NSLayoutConstraint!
+  var heightProductListConstraint: NSLayoutConstraint!
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -63,41 +66,9 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   }
   
   
-  // Set Up Shugar View
-  private func setUpShuagarView() {
-    
-    addSubview(shugarSetView)
-    shugarSetView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom: 0, right: 8))
-    
-    shugarSetView.constrainHeight(constant: Constants.Main.DinnerCollectionView.shugarViewInCellHeight)
-  }
-  // Set Up ProductView
-  
-  private func setUpProductView() {
 
-    addSubview(touchesPassView)
-    touchesPassView.fillSuperview()
-    
-    touchesPassView.addSubview(productListViewController.view)
-    productListViewController.view.anchor(top: shugarSetView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding:.init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
-    
-  }
   
-  private func setUpAddButton() {
-    
-    addNewProductInMealButton.addTarget(self, action: #selector(handleAddNewProduct), for: .touchUpInside)
-    
-    addNewProductInMealButton.clipsToBounds = true
-    addNewProductInMealButton.layer.cornerRadius = Constants.ProductList.TableFooterView.addButtonHeight / 2
-    
-    addSubview(addNewProductInMealButton)
-    addNewProductInMealButton.anchor(top: productListViewController.view.bottomAnchor, leading: nil, bottom: nil, trailing: nil,padding: .init(top: -25, left: 0, bottom: 0, right: 0))
-    addNewProductInMealButton.centerXAnchor.constraint(equalTo: productListViewController.view.centerXAnchor).isActive = true
-    
-    
-    addNewProductInMealButton.constrainHeight(constant: Constants.ProductList.TableFooterView.addButtonHeight)
-    addNewProductInMealButton.constrainWidth(constant: Constants.ProductList.TableFooterView.addButtonHeight)
-  }
+  // MARK: SOme Functions
   
   
   var didTapAddNewProductInDinnerClouser: EmptyClouser?
@@ -106,76 +77,21 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     didTapAddNewProductInDinnerClouser!()
   }
   
-  
-  private func setUpChoosePlaceInjectionsRowView() {
-    
-    // выводим врехний constraint  и регулируем его в зависимости от ситуацыии
-    topChooseViewConstrint = chooseRowView.topAnchor.constraint(equalTo: productListViewController.view.bottomAnchor, constant: Constants.Main.DinnerCollectionView.topMarginBetweenView)
-    
-    addSubview(chooseRowView)
-    chooseRowView.anchor(top: nil, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: 0, left: 8, bottom:0, right: 8))
-    
-    topChooseViewConstrint.isActive = true
-    
-    chooseRowView.constrainHeight(constant: Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight)
-    
-  }
-  
-  var topChooseViewConstrint: NSLayoutConstraint!
-  
-  
-  private func setUpWillActiveRow() {
-    
-    addSubview(willActiveRow)
-    willActiveRow.anchor(top: chooseRowView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
-    willActiveRow.constrainHeight(constant: Constants.Main.DinnerCollectionView.willActiveRowHeight)
-    
-    
 
-  }
-  
-
-  func setViewModel(viewModel: DinnerViewModel) {
-
-    setShugarViewModel(shugarTopViewModel: viewModel.shugarTopViewModel)
-    setProductListViewModel(viewModel: viewModel)
-    
-    // Здесь мне нужно будет учесть что если обед переходит в разряд прошлых то мы блокиреум ввод всего кроме скорректированного инсулина
-
-  }
-  
-  private func setShugarViewModel(shugarTopViewModel: ShugarTopViewModelable) {
-    
-    shugarSetView.setViewModel(viewModel: shugarTopViewModel)
-    
- 
-  }
-  
-  private func setProductListViewModel(viewModel: DinnerViewModel) {
-    
-    
-    productListViewController.setViewModel(viewModel: viewModel.productListInDinnerViewModel)
-    
-
-    let isPreviosDinner = viewModel.productListInDinnerViewModel.isPreviosDinner
-    
-    setProductListViewHeight(isPreviosDinner: isPreviosDinner)
-
-  }
-  
-  
-  
   // Height Product List
   
-  private func setProductListViewHeight(isPreviosDinner: Bool) {
+  private func setProductListViewHeight(countProducts: Int,isPreviosDinner: Bool) {
     
-    let heightProductListView = CalculateHeightView.calculateProductListViewheight(countRow: productListViewController.tableViewData.count,isPreviosDinner: isPreviosDinner)
     
-    productListViewController.view.constrainHeight(constant: heightProductListView)
-    
+    let heightProductListView = CalculateHeightView.calculateProductListViewheight(countRow: countProducts,isPreviosDinner: isPreviosDinner)
+
+    heightProductListConstraint.constant = heightProductListView
+ 
     addNewProductInMealButton.isHidden = isPreviosDinner
     
-    topChooseViewConstrint.constant = isPreviosDinner ? Constants.Main.DinnerCollectionView.topMarginBetweenView : 30
+    choosePlaceInjectionViewTopConstraint.constant = isPreviosDinner ? Constants.Main.DinnerCollectionView.topMarginBetweenView : 30
+    
+    
 
   }
   
@@ -196,4 +112,110 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   }
 }
 
+// MARK: Set UP Views
+
+extension DinnerCollectionViewCell {
+  
+  
+  // Set Up Shugar View
+  private func setUpShuagarView() {
+    
+    addSubview(shugarSetView)
+    shugarSetView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom: 0, right: 8))
+    
+    shugarSetView.constrainHeight(constant: Constants.Main.DinnerCollectionView.shugarViewInCellHeight)
+  }
+  // Set Up ProductView
+  
+  private func setUpProductView() {
+    
+    addSubview(touchesPassView)
+    touchesPassView.fillSuperview()
+    
+    touchesPassView.addSubview(productListViewController.view)
+    productListViewController.view.anchor(top: shugarSetView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding:.init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
+    
+    heightProductListConstraint = productListViewController.view.heightAnchor.constraint(equalToConstant: 0)
+    heightProductListConstraint.isActive = true
+  }
+  
+  private func setUpAddButton() {
+    
+    addNewProductInMealButton.addTarget(self, action: #selector(handleAddNewProduct), for: .touchUpInside)
+    
+    addNewProductInMealButton.clipsToBounds = true
+    addNewProductInMealButton.layer.cornerRadius = Constants.ProductList.TableFooterView.addButtonHeight / 2
+    
+    addSubview(addNewProductInMealButton)
+    addNewProductInMealButton.anchor(top: productListViewController.view.bottomAnchor, leading: nil, bottom: nil, trailing: nil,padding: .init(top: -25, left: 0, bottom: 0, right: 0))
+    addNewProductInMealButton.centerXAnchor.constraint(equalTo: productListViewController.view.centerXAnchor).isActive = true
+    
+    
+    addNewProductInMealButton.constrainHeight(constant: Constants.ProductList.TableFooterView.addButtonHeight)
+    addNewProductInMealButton.constrainWidth(constant: Constants.ProductList.TableFooterView.addButtonHeight)
+  }
+  
+  
+  
+  private func setUpChoosePlaceInjectionsRowView() {
+    
+    // выводим врехний constraint  и регулируем его в зависимости от ситуацыии
+    choosePlaceInjectionViewTopConstraint = chooseRowView.topAnchor.constraint(equalTo: productListViewController.view.bottomAnchor, constant: Constants.Main.DinnerCollectionView.topMarginBetweenView)
+    
+    addSubview(chooseRowView)
+    chooseRowView.anchor(top: nil, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: 0, left: 8, bottom:0, right: 8))
+    
+    choosePlaceInjectionViewTopConstraint.isActive = true
+    
+    chooseRowView.constrainHeight(constant: Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight)
+    
+  }
+  
+  
+  private func setUpWillActiveRow() {
+    
+    addSubview(willActiveRow)
+    willActiveRow.anchor(top: chooseRowView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
+    willActiveRow.constrainHeight(constant: Constants.Main.DinnerCollectionView.willActiveRowHeight)
+    
+    
+    
+  }
+  
+
+}
+
+// MARK: Set View Models
+
+extension DinnerCollectionViewCell {
+  
+
+  func setViewModel(viewModel: DinnerViewModel) {
+    
+    setShugarViewModel(shugarTopViewModel: viewModel.shugarTopViewModel)
+    setProductListViewModel(viewModel: viewModel)
+    
+    // Здесь мне нужно будет учесть что если обед переходит в разряд прошлых то мы блокиреум ввод всего кроме скорректированного инсулина
+    
+  }
+  
+  private func setShugarViewModel(shugarTopViewModel: ShugarTopViewModelable) {
+    
+    shugarSetView.setViewModel(viewModel: shugarTopViewModel)
+    
+    
+  }
+  
+  private func setProductListViewModel(viewModel: DinnerViewModel) {
+    
+    
+    productListViewController.setViewModel(viewModel: viewModel.productListInDinnerViewModel)
+    
+    
+    let isPreviosDinner = viewModel.productListInDinnerViewModel.isPreviosDinner
+    
+    setProductListViewHeight(countProducts: viewModel.productListInDinnerViewModel.productsData.count, isPreviosDinner: isPreviosDinner)
+    
+  }
+}
 

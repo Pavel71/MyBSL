@@ -29,19 +29,31 @@ class MenuDinnerViewController: UIViewController {
   
   // Properties
   var currentSegment: Segment = .allProducts
-  let foodRealmManager = FoodRealmManager()
+  let menuRealmWorker = MenuRealmWorker()
+//  let foodRealmManager = FoodRealmManager()
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    print("View Did Load")
     
     view.backgroundColor = .white
     setUpMenuDinnerView()
     
-    tableViewProductsData = fetchAllProducts()
+    tableViewProductsData = menuRealmWorker.fetchAllProducts()
     tableView.reloadData()
     
   }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    
+    print("Vie Did Appear")
+    
+  }
+  
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
@@ -50,9 +62,12 @@ class MenuDinnerViewController: UIViewController {
   
   func setDefaultChooseProduct() {
     
+    //  Эту функцию нужно будет исправить обязательно
+    
     for row  in tableViewProductsData.indices {
       tableViewProductsData[row].isChoosen = false
     }
+    tableViewProductsData = menuRealmWorker.fetchAllProducts()
     tableView.reloadData()
     
   }
@@ -66,14 +81,26 @@ extension MenuDinnerViewController {
   
   private func setUpMenuDinnerView() {
     
+    // Задача добавить это View но на половину экарана
+    
     view.addSubview(menuDinnerView)
-    menuDinnerView.fillSuperview()
+    
+    // Пока вынужден использовать  view так опустить вниз весь функционал и вызывать опускать вьюшку на половниу экрана
+    
+    menuDinnerView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
+    menuDinnerView.constrainHeight(constant: view.frame.height / 2)
+    
+    
+//    menuDinnerView.fillSuperview()
     
     tableView = menuDinnerView.tableView
     
     tableView.register(MenuFoodListCell.self, forCellReuseIdentifier: MenuFoodListCell.cellId)
     tableView.delegate = self
     tableView.dataSource = self
+    
+    
+    tableView.rowHeight = 50
     
     setClousersMenuView()
 
@@ -108,7 +135,6 @@ extension MenuDinnerViewController {
     
     setTableViewDataToSegment(segment: segment)
     
-    
     tableView.reloadData()
   }
   
@@ -118,11 +144,9 @@ extension MenuDinnerViewController {
     
     switch segment {
     case .allProducts:
-      tableViewProductsData = fetchAllProducts()
+      tableViewProductsData = menuRealmWorker.fetchAllProducts()
     case .favorits:
-      tableViewProductsData = tableViewProductsData.filter({ (viewModel) -> Bool in
-        return viewModel.isFavorit == true
-      })
+      tableViewProductsData = menuRealmWorker.fetchFavorits()
       
     default:break
     }
@@ -130,49 +154,6 @@ extension MenuDinnerViewController {
   }
 }
 
-
-// MARK: Realm Layer
-
-extension MenuDinnerViewController {
-
-    // Fetch All product
-    private func fetchAllProducts() -> [MenuProductListViewModel] {
-      
-      let realmItems = foodRealmManager.allProducts()
-      
-      var dummyArray: [MenuProductListViewModel] = []
-      
-      for product in realmItems {
-        let carboString = String(product.carbo)
-        //      let portionString = String(product.portion)
-        let productCellViewModel = MenuProductListViewModel(id: product.id, name: product.name, carboOn100Grm: carboString, isFavorit: product.isFavorits)
-        
-        dummyArray.append(productCellViewModel)
-      }
-      
-      return dummyArray
-    }
-  
-  private func getProductFromRealm(indexPath: IndexPath) -> ProductRealm? {
-    
-    let choosed = tableViewProductsData[indexPath.row].isChoosen
-    
-    var product: ProductRealm?
-    
-    if !choosed {
-      
-      let producIdToDinner = tableViewProductsData[indexPath.row].id
-      // Или проще здесь его достать добавить в массив и отправить массив в Main
-      // так как нам нужны будут списки продуктов если выбираем обед
-      
-      product = foodRealmManager.getProductById(id: producIdToDinner)
-    }
-    
-    tableViewProductsData[indexPath.row].isChoosen = !choosed
-    return product
-  }
-  
-}
 
 extension MenuDinnerViewController: UITableViewDataSource, UITableViewDelegate {
   
@@ -196,7 +177,7 @@ extension MenuDinnerViewController: UITableViewDataSource, UITableViewDelegate {
       print("Будет совя ячейка!")
     default:
       let cell = tableView.dequeueReusableCell(withIdentifier: MenuFoodListCell.cellId, for: indexPath) as! MenuFoodListCell
-      cell.setViewModel(viewModel: tableViewProductsData[indexPath.row])
+      cell.setViewModel(viewModel: tableViewProductsData[indexPath.row], isFavoritsSegment: currentSegment == .favorits)
       return cell
     }
     return UITableViewCell()
@@ -211,17 +192,20 @@ extension MenuDinnerViewController: UITableViewDataSource, UITableViewDelegate {
     case .meals:
       print("Выбор обедов обрабатывается по своему")
     default:
+      // Во всех остальных случаях
       
-      if let product = getProductFromRealm(indexPath: indexPath) {
+      let choosed = tableViewProductsData[indexPath.row].isChoosen
+      tableViewProductsData[indexPath.row].isChoosen = !choosed
+      
+      if !choosed {
         
-          didAddProductInDinnerClouser!([product])
+        let producIdToDinner = tableViewProductsData[indexPath.row].id
+        guard let product = menuRealmWorker.getProductFromRealm(productId: producIdToDinner) else {return}
+        didAddProductInDinnerClouser!([product])
       }
-     
 
     }
-    
-    
-    
+
     tableView.reloadRows(at: [indexPath], with: .none)
   }
   
@@ -232,16 +216,12 @@ extension MenuDinnerViewController: UITableViewDataSource, UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let header = MenuFoodListheaderInSectionView()
-    
+    header.showPortionLabel(isFavoritsSegment: currentSegment == .favorits)
     return header
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 40
-  }
-  
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 44
+    return Constants.MenuController.TableView.headerInSectionHeight
   }
   
   
