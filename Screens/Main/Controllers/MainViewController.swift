@@ -33,11 +33,16 @@ class MainViewController: UIViewController, MainDisplayLogic {
   
   // Здесь должна быть VIewModel которая содержит в себе данные для первой ячейки так и для второй ячейки
   
+  // PanGesture Recogniser
+  var slideMenuPanGestureRecogniser: UIPanGestureRecognizer!
+  
   // CLousers
   
+  // To ContainerController
   var didShowMenuProductsListViewControllerClouser: EmptyClouser?
+  var didGestureRecognaserValueChange: ((UIPanGestureRecognizer) -> Void)?
   
-  
+  // ViewModel
   var mainViewModel: MainViewModel!
   
   
@@ -108,6 +113,15 @@ class MainViewController: UIViewController, MainDisplayLogic {
   
   private func setViewModel(viewModel: MainViewModel) {
     mainViewModel = viewModel
+  }
+  
+  private func getFirstDinnerCell() -> DinnerCollectionViewCell {
+    
+    let  cell = tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as! MainTableViewMiddleCell
+    
+    let dinnerItem = cell.dinnerCollectionViewController.collectionView.cellForItem(at:  IndexPath(item: 0, section: 0))  as! DinnerCollectionViewCell
+    
+    return dinnerItem
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -215,30 +229,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewHeaderCell.cellId) as! MainTableViewHeaderCell
     
     cell.setViewModel(viewModel: mainViewModel.headerViewModelCell)
-    
-    setHeaderCellClouser(cell: cell)
     return cell
     
     
   }
   
-  // MARK: Set MenuDinnerClouser
-  
-  private func setHeaderCellClouser(cell: MainTableViewHeaderCell) {
-    setMenuDinnerViewControllerClousers(cell:cell)
-    
-  }
-  private func setMenuDinnerViewControllerClousers(cell: MainTableViewHeaderCell) {
-    
-//    cell.menuViewController.didTapSwipeMenuBackButton = {[weak self] in
-//      //  закрываем меню
-//      self?.showMenuViewController()
-//      self?.didShowMenuProductsListViewControllerClouser!()
-//    }
-//    cell.menuViewController.didAddProductInDinnerClouser = {[weak self] products in
-//      self?.addProductInDinner(products: products)
-//    }
-  }
+
   
   private func configureMiddleCell() -> MainTableViewMiddleCell {
     
@@ -282,7 +278,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     cell.dinnerCollectionViewController.didSwitchActiveViewToMainView = {[weak self] in
-      self?.removeListTableView() // если листа нет то ниче не произойдет если есть то уберет
+      self?.removeListTrainTableView() // если листа нет то ниче не произойдет если есть то уберет
     }
     
     cell.dinnerCollectionViewController.didEndEditingWillActiveTextField = {[weak self] textField in
@@ -302,15 +298,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     switch indexPath.row {
       
     case 0:
-      
-      let headerCellHeight: CGFloat
-      
-      if mainViewModel.headerViewModelCell.isMenuViewControoler {
-        headerCellHeight =  UIScreen.main.bounds.height / 2
-      } else {
-        headerCellHeight = Constants.Main.Cell.headerCellHeight
-      }
-      return headerCellHeight
+  
+      return Constants.Main.Cell.headerCellHeight
       
     case 1:
       
@@ -338,9 +327,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 extension MainViewController {
   
   
-  // MARK: MenuDinnerViewController
+  // MARK: MenuDinnerViewController Cath Product
   
-  private func addProductInDinner(products: [ProductRealm]) {
+  func addProductInDinner(products: [ProductRealm]) {
     
     // Тут нужна проыерка на то есть ли такие продукты в базе это проще будет на реалме сделать потомучто возможно мы будем просто по id работать и все!
     
@@ -350,9 +339,6 @@ extension MainViewController {
       mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.append(productListViewModel)
     }
     
-    
-    
-//    dinnerCell.productListViewController.addNewProduct(products: products)
     tableView.reloadRows(at: [IndexPath(item: 1, section: 0)], with: .automatic)
     
   }
@@ -365,7 +351,7 @@ extension MainViewController {
     setTextFiedlPoint(textField: textField)
     
     // Можно тут вслепую просто запилить что если вбираешь текст филд то убери
-    removeListTableView()
+    removeListTrainTableView()
   }
   
   private func setTextFiedlPoint(textField: UITextField) {
@@ -379,50 +365,20 @@ extension MainViewController {
   // Dinner Cell View CLousers
   
   private func didScrollDinnerCollectionView() {
-    removeListTableView()
+    removeListTrainTableView()
   }
   
-  // Tap List Trains
+  
 
   // Add NEw Product in PorductListViewController
   private func addNewProductInDinner() {
     print("Add New product Main")
 
     
-//   showMenuViewController()
-    
     // Use COntainer COntroller
     didShowMenuProductsListViewControllerClouser!()
   }
   
-  func showMenuViewController() {
-    
-    mainViewModel.headerViewModelCell.isMenuViewControoler = !mainViewModel.headerViewModelCell.isMenuViewControoler
-    
-    let cell = tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as! MainTableViewMiddleCell
-    // Отключаем взаимодейстиве всех таблиц и коллекций с пользователем
-    cell.dinnerCollectionViewController.collectionView.isUserInteractionEnabled = !mainViewModel.headerViewModelCell.isMenuViewControoler
-    let topCellindexPath = IndexPath(item: 0, section: 0)
-    // Это нам нужно чтобы изменить размер ячейки
-    tableView.reloadRows(at: [topCellindexPath], with: .fade)
-    // Также нам нужно пролистать до топа
-    tableView.scrollToRow(at: topCellindexPath, at: .top, animated: true)
-    tableView.isScrollEnabled = !mainViewModel.headerViewModelCell.isMenuViewControoler
-    
-  }
-  
-  
-  
-  private func getFirstDinnerCell() -> DinnerCollectionViewCell {
-    
-    let  cell = tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as! MainTableViewMiddleCell
-    
-    let dinnerItem = cell.dinnerCollectionViewController.collectionView.cellForItem(at:  IndexPath(item: 0, section: 0))  as! DinnerCollectionViewCell
-    
-    return dinnerItem
-  }
-  
-
   
   
 }
@@ -431,7 +387,6 @@ extension MainViewController {
 extension MainViewController {
   
   private func didEndEditingTrainTextField(textField: UITextField) {
-    print("train textfield end editing")
     
     guard let train = textField.text else {return}
     // Или сдесь сделать запись в realm
@@ -445,14 +400,14 @@ extension MainViewController {
     
     let dinnerCell =  getFirstDinnerCell()
     dinnerCell.willActiveRow.trainTextField.text = name
-    removeListTableView()
+    removeListTrainTableView()
     
   }
   
   private func didTapListButtonInActiveTextField(textField: UITextField) {
     
     if mainView.subviews.contains(listTrainsViewController.view) {
-      removeListTableView()
+      removeListTrainTableView()
     } else {
       textField.resignFirstResponder()
       setUpListTrainsView(textField: textField)
@@ -475,7 +430,7 @@ extension MainViewController {
     
   }
   
-  private func removeListTableView() {
+  private func removeListTrainTableView() {
     
     
     UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
@@ -580,6 +535,35 @@ extension MainViewController {
   }
   
   
+}
+
+
+// MARK: GestureRecogniserDelegate
+
+extension MainViewController: UIGestureRecognizerDelegate {
+  
+  //  работает! Но если бы я не знад что так можно хз было бы!
+  // Поэтому прохождение курсов очень важная особенность! Нужно постоянно что то мониторить или собирать полезный код
+  
+  func setUppanGestureRecogniser() {
+    slideMenuPanGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(handleSwipeMenu))
+    slideMenuPanGestureRecogniser.delegate = self
+    view.addGestureRecognizer(slideMenuPanGestureRecogniser)
+  }
+  
+  func removeGestureRecogniser() {
+    view.removeGestureRecognizer(slideMenuPanGestureRecogniser)
+  }
+  
+  @objc private func handleSwipeMenu(gesture: UIPanGestureRecognizer) {
+    didGestureRecognaserValueChange!(gesture)
+  }
+  
+  
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    // Вообщем если стоим на месте то отключи горизонтальное прокручивание
+    return abs((slideMenuPanGestureRecogniser.velocity(in: slideMenuPanGestureRecogniser.view)).y) > abs((slideMenuPanGestureRecogniser.velocity(in: slideMenuPanGestureRecogniser.view)).x)
+  }
 }
 
 

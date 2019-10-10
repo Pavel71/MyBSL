@@ -22,7 +22,7 @@ class ContainerDinnerViewController: UIViewController {
   }()
   
   // Тут нужно подумать на сколько должна эта шторка выезжать!
-  let menuScreenHeight:CGFloat = UIScreen.main.bounds.height / 2
+  let menuScreenHeight: CGFloat = UIScreen.main.bounds.height / 2
   
   private var currentState: State = .closed
   
@@ -42,89 +42,22 @@ class ContainerDinnerViewController: UIViewController {
     super.viewDidLoad()
     view.backgroundColor = .white
     configureMainViewController()
-    setUpMenuView()
+    setUpMenuControllerView()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    print("Will Appear Meni 1 ")
+    print("View Will Appear Container")
     // Убераем контроллер за границу
-    menuProductsListViewController.view.center.y -= UIScreen.main.bounds.height
-    
-  }
-  
-  func configureMainViewController() {
- 
-    
-    mainViewController.didShowMenuProductsListViewControllerClouser = {[weak self] in  self?.configureProductListViewController() }
-    
-    controller = mainViewController
-    
-    view.addSubview(controller.view)
-    addChild(controller)
-    
-  }
-  
-  func setUpMenuView() {
-    
-    if menuProductsListViewController == nil {
-      
-      menuProductsListViewController = MenuDinnerViewController()
-      menuProductsListViewController.didTapSwipeMenuBackButton = {[weak self] in
-        self?.configureProductListViewController()
-      }
-      
-      //      view.insertSubview(menuProductsListViewController.view, at: 0)
-      
-      view.addSubview(menuProductsListViewController.view)
-//      menuProductsListViewController.view.constrainHeight(constant: 300)
-      addChild(menuProductsListViewController)
-    }
-    
-  }
-  
-  
-  func configureProductListViewController() {
-    
-//    if menuProductsListViewController == nil {
-//
-//      menuProductsListViewController = MenuDinnerViewController()
-//
-//      // здесь я могу добавить сверху! Закинуть за границу сразуже а потом уже анимировать
-//
-//      // Короче истина гдето здесь! Все это Можно решить!
-//      // Вот здесь контроллер надо добавить но спрятать его за верхней границе экрана
-//      menuProductsListViewController.view.center.y -= view.frame.height
-//
-////      view.insertSubview(menuProductsListViewController.view, at: 0)
-//
-//      view.addSubview(menuProductsListViewController.view)
-//      menuProductsListViewController.view.constrainHeight(constant: self.menuScreenHeight)
-//
-////      menuProductsListViewController.view.frame = -UIScreen.main.bounds.height
-//
-//      addChild(menuProductsListViewController)
-//    }
-    
-    
-    switch currentState {
-      
-    case .open:
-      print("Open")
-      // Анимация
-      closeMenu()
-      
-    case .closed:
-      print("Closed")
-//      prepareMenuViewController()
-      // Анимация
-      openMenu()
-      
-    }
     
     
   }
+  
+
+  
+  
+
   
 //  private func prepareMenuViewController() {
 //
@@ -141,14 +74,15 @@ class ContainerDinnerViewController: UIViewController {
   
   // Set Up Gesture Recogniser
   
-  var slideMenuPanGestureRecogniser: UIPanGestureRecognizer!
-  
+//  var slideMenuPanGestureRecogniser: UIPanGestureRecognizer!
+//
 //  private func setUppanGestureRecogniser() {
 //    slideMenuPanGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(handleSwipeMenu))
-//    mealViewController.view.addGestureRecognizer(slideMenuPanGestureRecogniser)
+//    mainViewController.view.addGestureRecognizer(slideMenuPanGestureRecogniser)
 //  }
+//
 //  private func removeGestureRecogniser() {
-//    mealViewController.view.removeGestureRecognizer(slideMenuPanGestureRecogniser)
+//    mainViewController.view.removeGestureRecognizer(slideMenuPanGestureRecogniser)
 //  }
   
   
@@ -162,6 +96,67 @@ class ContainerDinnerViewController: UIViewController {
   
   
 }
+
+// MARK: SetUP Views
+
+extension ContainerDinnerViewController {
+  
+  private func configureMainViewController() {
+
+    controller = mainViewController
+    
+    view.addSubview(controller.view)
+    addChild(controller)
+    
+    setMenuControllerClousers()
+    
+    
+  }
+  
+  private func setMenuControllerClousers() {
+    // Нажимаем кнопочку добавить продукт
+    mainViewController.didShowMenuProductsListViewControllerClouser = {[weak self] in  self?.toogleMenu() }
+    mainViewController.didGestureRecognaserValueChange = {[weak self] gesture in
+      self?.handleSwipeMenu(gesture: gesture)
+    }
+
+  }
+  
+  private func setUpMenuControllerView() {
+
+    menuProductsListViewController = MenuDinnerViewController()
+    
+    menuProductsListViewController.view.center.y -= UIScreen.main.bounds.height
+    view.addSubview(menuProductsListViewController.view)
+    
+    addChild(menuProductsListViewController)
+    
+    setUpMenuControllerCLousers()
+    
+  }
+  
+  private func setUpMenuControllerCLousers() {
+    // Нажимаем кнопочку свернуть
+    menuProductsListViewController.didTapSwipeMenuBackButton = {[weak self] in
+      self?.toogleMenu()
+    }
+    
+    menuProductsListViewController.didAddProductInDinnerClouser = {[weak mainViewController = mainViewController] productsRealm in
+      mainViewController?.addProductInDinner(products: productsRealm)
+    }
+  }
+  
+}
+
+// MARK: Some Methods Clousers
+
+extension ContainerDinnerViewController {
+  
+  
+
+}
+
+
 
 
 // MARK: Animated Show Menu View COntroller
@@ -183,61 +178,57 @@ extension ContainerDinnerViewController {
 
   // Pan Gesture Recogniser!
 
-//  @objc private func handleSwipeMenu(gesture: UIPanGestureRecognizer) {
-//
-//    let translationX = -gesture.translation(in: view).x
-//
-//    switch gesture.state {
-//
-//    case .began:
-//      toogleMenu()
-//      animator.pauseAnimation()
-//    case .changed:
-//
-//      let translationX = -gesture.translation(in: view).x  // смещаем влевол
-//      let fraction = translationX / menuScreenWidth
-//      animator.fractionComplete = fraction
-//
-//      //        if animator.isReversed { fraction *= -1 }
-//
-//    case .ended:
-//      // Развернем анимацию если не преодолил барьер
-//      if translationX < 50 {
-//        animator.isReversed = !animator.isReversed
-//      }
-//
-//      animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-//
-//    default: break
-//    }
-//
-//  }
+  @objc private func handleSwipeMenu(gesture: UIPanGestureRecognizer) {
 
-  // Такие анимациилучше писать раскрыто пусть буде т больше кода зато читаеме
+    let translationY = -gesture.translation(in: view).y
+    
+    print(translationY)
+
+    switch gesture.state {
+
+    case .began:
+      toogleMenu()
+      animator.pauseAnimation()
+      
+    case .changed:
+
+      let fraction = translationY / menuScreenHeight
+      animator.fractionComplete = fraction
+    case .ended:
+      // Развернем анимацию если не преодолил барьер
+      if translationY < 200 {
+        animator.isReversed = !animator.isReversed
+      }
+
+      animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+
+    default: break
+    }
+
+  }
+
+  
 
   func closeMenu() {
 
+    
     animator.addAnimations {
       
-//      self.menuProductsListViewController.view
-      self.controller.view.frame.origin.y = 0
       self.menuProductsListViewController.view.center.y -= self.menuScreenHeight + UIApplication.shared.statusBarFrame.height
+      self.controller.view.frame.origin.y = 0
+      
     }
 
     // Это кгода Continue Animation
     animator.addCompletion { position in
-      // История анимации заканчивается здесь! Все изменения после того когда анимация додйет до финиша в этом блоке!
+
       switch position {
       case .end:
         
-        // Этот блок исполнится когда анимация закончится
-        
-//        self.removeGestureRecogniser() // Убрать гестер
-//        self.mealViewController.tableView.isUserInteractionEnabled = true
-//        self.mealViewController.mealView.customNavBar.searchBar.isUserInteractionEnabled = true
-//
+        self.mainViewController.removeGestureRecogniser() // Убрать гестер
+        self.mainViewController.tableView.isScrollEnabled = true
         self.currentState = self.currentState.opposite
-//        self.mealViewController.menuState = self.currentState
+
         self.view.endEditing(true)
       default: break
       }
@@ -257,16 +248,15 @@ extension ContainerDinnerViewController {
     }
     animator.addAnimations({
       self.controller.view.frame.origin.y = self.menuScreenHeight - Constants.Main.Cell.headerCellHeight - Constants.customNavBarHeight +  20
-    }, delayFactor: 0.4)
+    }, delayFactor: 0.35)
 
     // Это кгода Continue Animation
     animator.addCompletion { position in
-//      self.setUppanGestureRecogniser()  // Повесим recogniser
-//      self.mealViewController.tableView.isUserInteractionEnabled = false // Отключаем основную табле вью Чтобы не нажимались ячейки тд
-//      self.mealViewController.mealView.customNavBar.searchBar.isUserInteractionEnabled = false
+      
+      self.mainViewController.tableView.isScrollEnabled = false
+      self.mainViewController.setUppanGestureRecogniser()  // Повесим recogniser
 
       self.currentState = self.currentState.opposite
-//      self.mealViewController.menuState = self.currentState
     }
 
     animator.startAnimation()

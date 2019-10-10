@@ -24,9 +24,14 @@ class ProductsTableViewInMealCellFooterView: UIView {
   }
   
   private func setUpResultView() {
+
+    let stackView = UIStackView(arrangedSubviews: [
+      resultsView
+      ])
+    stackView.alignment = .top
+    addSubview(stackView)
+    stackView.fillSuperview()
     
-    addSubview(resultsView)
-    resultsView.fillSuperview()
   }
 
   

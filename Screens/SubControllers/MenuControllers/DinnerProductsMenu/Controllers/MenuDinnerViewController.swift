@@ -35,28 +35,23 @@ class MenuDinnerViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    print("View Did Load")
+    print("View Did Load Menu Dinner")
     
     view.backgroundColor = .white
     setUpMenuDinnerView()
     
-    tableViewProductsData = menuRealmWorker.fetchAllProducts()
-    tableView.reloadData()
+    
     
   }
   
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    
-    
-    print("Vie Did Appear")
-    
+  deinit {
+    print("Deinit Menu Dinner")
   }
-  
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    
+    tableViewProductsData = menuRealmWorker.fetchAllProducts()
+    tableView.reloadData()
     print("View Will Appear Menu Dinner")
   }
   
@@ -93,18 +88,23 @@ extension MenuDinnerViewController {
     
 //    menuDinnerView.fillSuperview()
     
+
+    configureTableView()
+    setClousersMenuView()
+
+    
+  }
+  
+  private func configureTableView() {
+    
     tableView = menuDinnerView.tableView
     
     tableView.register(MenuFoodListCell.self, forCellReuseIdentifier: MenuFoodListCell.cellId)
     tableView.delegate = self
     tableView.dataSource = self
     
-    
-    tableView.rowHeight = 50
-    
-    setClousersMenuView()
-
-    
+    tableView.estimatedRowHeight = 100
+    tableView.rowHeight = UITableView.automaticDimension
   }
   
   private func setClousersMenuView() {
@@ -153,6 +153,9 @@ extension MenuDinnerViewController {
     currentSegment = segment
   }
 }
+
+
+// MARK: TableView Delegate
 
 
 extension MenuDinnerViewController: UITableViewDataSource, UITableViewDelegate {

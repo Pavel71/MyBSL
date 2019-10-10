@@ -18,14 +18,17 @@ struct MenuProductListViewModel: MenuFoodListCellViewModelable {
   var name: String
   var carboOn100Grm: String
   var portion: String
+  var category: String
+  
   var isFavorit: Bool
   var isChoosen: Bool
   
-  init(id: String,name: String,carboOn100Grm: String,isFavorit: Bool,portion: String,isChoosen: Bool = false) {
+  init(id: String,name: String,carboOn100Grm: String,isFavorit: Bool,portion: String,category: String,isChoosen: Bool = false) {
     self.id = id
     self.name = name
     self.carboOn100Grm = carboOn100Grm
     self.portion = portion
+    self.category = category
     self.isFavorit = isFavorit
     self.isChoosen = isChoosen
   }

@@ -53,9 +53,11 @@ extension MenuRealmWorker {
     var dummyArray: [MenuProductListViewModel] = []
     
     for product in items {
+      
       let carboString = String(product.carbo)
       let portionString = String(product.portion)
-      let productCellViewModel = MenuProductListViewModel(id: product.id, name: product.name, carboOn100Grm: carboString, isFavorit: product.isFavorits, portion: portionString)
+      
+      let productCellViewModel = MenuProductListViewModel(id: product.id, name: product.name, carboOn100Grm: carboString, isFavorit: product.isFavorits, portion: portionString, category: product.category)
       
       dummyArray.append(productCellViewModel)
     }
