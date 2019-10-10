@@ -27,12 +27,15 @@ class FoodRouter: NSObject, FoodRoutingLogic {
     let mealController = MealViewController(headerInSectionWorker: headerInSectionWorker)
     
     mealController.didUpdateHeaderWorkerInFoodViewController = viewController?.updateHeaderWorkerInSection
-
     
-    let containerViewController = ContainerViewController(mealController: mealController)
+    let menuController = MenuProductsListViewController()
+    
+//    let containerViewController = ContainerViewController(mealController: mealController)
+    
+    let newContainerController = NewMealContainer(mainController: mealController, menuController: menuController)
   
     
-    viewController?.navigationController?.pushViewController(containerViewController, animated: true)
+    viewController?.navigationController?.pushViewController(newContainerController, animated: true)
   }
   
 }

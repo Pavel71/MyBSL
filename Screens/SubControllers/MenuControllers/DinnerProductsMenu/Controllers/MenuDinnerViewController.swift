@@ -16,7 +16,7 @@ class MenuDinnerViewController: UIViewController {
 
   
   // Views
-  var menuDinnerView = MenuDinnerView()
+  var menuDinnerView = MenuView()
   var tableView: UITableView!
   
   // CLousers

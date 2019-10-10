@@ -25,7 +25,7 @@ class MenuProductsListViewController: UIViewController {
   }
   
   let menuRealmWorker = MenuRealmWorker()
-//  let foodRealmManager = FoodRealmManager()
+
   
   // Back Data!
   var addProductsData: [ProductListViewModel] = []
@@ -43,12 +43,12 @@ class MenuProductsListViewController: UIViewController {
   }()
   
   
-  // Table View
-  var tableHeaderView = FoodTableViewHeader(frame: FoodTableViewHeader.headerSize, setSegments: ["Все продукты","Избранное"])
+  
   var currentSegment: Segment = .allProducts
   
-  var tableView = UITableView(frame: .zero, style: .plain)
+  var menuView: MenuView!
   
+  var tableView:UITableView!
   var tableViewData: [MenuProductListViewModel] = []
   
   // CLousers
@@ -60,11 +60,11 @@ class MenuProductsListViewController: UIViewController {
     super.viewDidLoad()
     
     view.backgroundColor = .white
-    view.frame = CGRect(x: 0, y: 0, width: MenuProductsListViewController.screenWidth, height: UIScreen.main.bounds.height)
+    
+//    view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2)
     
     
-     setUpSearchBar()
-     setUpTableView()
+    setUpMenuView()
     
      tableViewData =  menuRealmWorker.fetchAllProducts()
      tableView.reloadData()
@@ -93,31 +93,31 @@ class MenuProductsListViewController: UIViewController {
 // MARK: Set UP Views
 extension MenuProductsListViewController {
   
-  
-  private func setUpSearchBar() {
-    view.addSubview(searchBar)
-    searchBar.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor,padding: .zero,size: .init(width: 0, height: 60))
-    searchBar.delegate = self
+  private func setUpMenuView() {
+    menuView = MenuView()
+    view.addSubview(menuView)
+    menuView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
+    menuView.constrainHeight(constant: view.frame.height / 2)
+    
+    configureTableView()
   }
   
-  private func setUpTableView() {
+  private func configureTableView() {
+    tableView = menuView.tableView
+    tableView.estimatedRowHeight = 200
+    tableView.rowHeight = UITableView.automaticDimension
     
-    view.addSubview(tableView)
-    tableView.anchor(top: searchBar.bottomAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
-    
-    //    tableView.estimatedRowHeight = 200
-    //    tableView.rowHeight = UITableView.automaticDimension
-    //
     tableView.delegate = self
     tableView.dataSource = self
     
-    tableView.keyboardDismissMode = .interactive
-    
     tableView.register(MenuFoodListCell.self, forCellReuseIdentifier: MenuFoodListCell.cellId)
-    tableView.tableHeaderView = tableHeaderView
     
-    tableHeaderView.didSegmentValueChange = {[weak self] segmentControll in self?.didSegmentChange(segmentControll: segmentControll)}
+    menuView.tableHeaderView.didSegmentValueChange = {[weak self] segmentControll in self?.didSegmentChange(segmentControll: segmentControll)}
+  
+    tableView.keyboardDismissMode = .interactive
   }
+  
+
 }
 
 // MARK: SearchBar Delegate

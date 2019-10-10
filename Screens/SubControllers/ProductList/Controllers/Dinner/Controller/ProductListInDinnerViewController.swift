@@ -163,7 +163,7 @@ extension ProductListInDinnerViewController {
   // Обрабатываем изменения Порции в режиме ввода
   @objc private func didChangePortionTextField(textField: UITextField) {
 
-    guard let indexPath = ComputedValueThanChangeOne.getIndexPathIntableViewForTextFiedl(textField: textField, tableView: tableView) else {return}
+    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
     
     let cell = tableView.cellForRow(at: indexPath) as! ProductListCell
     
@@ -201,7 +201,8 @@ extension ProductListInDinnerViewController {
   
   // MARK: DidChange InsulinFiedl
   @objc private func didChangeInsulinTextField(textField: UITextField) {
-    guard let indexPath = ComputedValueThanChangeOne.getIndexPathIntableViewForTextFiedl(textField: textField, tableView: tableView) else {return}
+    
+    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
     
     let insulin = (textField.text! as NSString).floatValue
     
@@ -228,14 +229,7 @@ extension ProductListInDinnerViewController {
 
   }
   
-//  private func getIndexPathIntableViewForTextFiedl(textField: UITextField) -> IndexPath? {
-//
-//    let point = tableView.convert(textField.center, from: textField.superview)
-//    guard let indexPath = tableView.indexPathForRow(at: point) else {return nil}
-//
-//    return indexPath
-//
-//  }
+
   
   
 }

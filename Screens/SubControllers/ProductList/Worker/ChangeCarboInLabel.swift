@@ -28,12 +28,6 @@ class ComputedValueThanChangeOne {
 //  }
   
   
-  static func getIndexPathIntableViewForTextFiedl(textField: UITextField, tableView: UITableView) -> IndexPath? {
-    
-    let point = tableView.convert(textField.center, from: textField.superview)
-    guard let indexPath = tableView.indexPathForRow(at: point) else {return nil}
-    
-    return indexPath
-  }
+
   
 }

@@ -13,9 +13,12 @@ import UIKit
 
 protocol ShowMenuAnimatable: UIViewController {
   
-  var tableView: UITableView {get}
+  var tableView: UITableView! {get set}
+  
+  var slideMenuPanGestureRecogniser: UIPanGestureRecognizer! {get set}
   func setUppanGestureRecogniser()
   func removeGestureRecogniser()
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool
 }
 
 class ShowMenuAnimator {
@@ -26,7 +29,7 @@ class ShowMenuAnimator {
   var menuController: UIViewController
   var menuDistanceTranslate: CGFloat
   
-  init(mainController:ShowMenuAnimatable,menuController:ShowMenuAnimatable,menuDistanceTranslate:CGFloat,mainDistanceTranslate: CGFloat ) {
+  init(mainController:ShowMenuAnimatable,menuController:UIViewController,menuDistanceTranslate:CGFloat,mainDistanceTranslate: CGFloat ) {
     self.mainController = mainController
     self.menuController = menuController
     self.menuDistanceTranslate = menuDistanceTranslate

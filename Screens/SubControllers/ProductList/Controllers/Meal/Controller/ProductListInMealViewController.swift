@@ -174,7 +174,7 @@ extension ProductListInMealViewController: UITextFieldDelegate {
   
   private func changeCarboInPortionFromPortionSize(textField: UITextField) {
     
-    guard let indexPath = getIndexPathIntableViewForTextFiedl(textField: textField) else {return}
+    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
     let cell = tableView.cellForRow(at: indexPath) as! ProductListCell
 
     let portion: Int = (textField.text! as NSString).integerValue
@@ -190,14 +190,6 @@ extension ProductListInMealViewController: UITextFieldDelegate {
   }
   
 
-  
-  private func getIndexPathIntableViewForTextFiedl(textField: UITextField) -> IndexPath? {
-    
-    let point = tableView.convert(textField.center, from: textField.superview)
-    guard let indexPath = tableView.indexPathForRow(at: point) else {return nil}
-    
-    return indexPath
-  }
 
   
   func handlePortionTextFieldEndEditing(textField: UITextField) {
@@ -209,7 +201,8 @@ extension ProductListInMealViewController: UITextFieldDelegate {
       ProgressHUD.showError("Продукт не будет учтен при расчете так как вы оставили поле пустым!")
 
     } else {
-      guard let row = getRowProductThanChangePortion(textField: textField) else {return}
+       guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return }
+      let row = indexPath.row
       let portionInt = Int(text)!
       
       // Отправляем результат на MealController и в Реалм
@@ -218,12 +211,6 @@ extension ProductListInMealViewController: UITextFieldDelegate {
     
   }
 
-  
-  private func getRowProductThanChangePortion(textField: UITextField) -> Int? {
-    guard let indexPath = getIndexPathIntableViewForTextFiedl(textField: textField) else {return nil}
-    return indexPath.row
-  }
-  
   
 }
 

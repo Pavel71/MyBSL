@@ -143,11 +143,10 @@ class MealCell: UITableViewCell {
     
   }
   
-  var didAddNewProductInmeal: ((String) -> Void)?
-  @objc private func handleAddNewProductInMeal() {
-    
-    print("Add New Product")
-    didAddNewProductInmeal!(mealId)
+  var didAddNewProductInmeal: ((String,UIButton) -> Void)?
+  @objc private func handleAddNewProductInMeal(button: UIButton) {
+    // Здесь наверно нужно передавать Button и чекать какая ячейка! потомучто мне нужны ее point
+    didAddNewProductInmeal!(mealId,button)
     
   }
   

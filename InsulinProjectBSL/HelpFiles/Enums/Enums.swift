@@ -13,3 +13,15 @@ enum Segment: Int {
   case favorits
   case meals
 }
+
+enum State {
+  case closed
+  case open
+  
+  var opposite: State {
+    switch self {
+    case .open: return .closed
+    case .closed: return .open
+    }
+  }
+}

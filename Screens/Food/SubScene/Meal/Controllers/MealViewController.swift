@@ -53,6 +53,8 @@ class MealViewController: UIViewController, MealDisplayLogic {
   var blurView: UIVisualEffectView!
   var tableView: UITableView!
   
+  var slideMenuPanGestureRecogniser: UIPanGestureRecognizer!
+  
   var pickerView: UIPickerView!
   
   var pickerData:[String] = [] {
@@ -72,7 +74,9 @@ class MealViewController: UIViewController, MealDisplayLogic {
   // передаем информацию о том какие секции открыты в обедах
   var didUpdateHeaderWorkerInFoodViewController:((HeaderInSectionWorker) -> Void)?
   // Просим ContainerViewController добавить другой контроллер
-  var didShowMenuProductsListViewControllerClouser: EmptyClouser?
+  var didShowMenuProductsListViewControllerClouser: ((CGFloat) -> Void)?
+  // Menu ANimated
+  var didPanGestureValueChange: ((UIPanGestureRecognizer) -> Void)?
   
   // MARK: Object lifecycle
   
@@ -130,89 +134,7 @@ class MealViewController: UIViewController, MealDisplayLogic {
     NotificationCenter.default.removeObserver(self)
   }
   
-  private func setUpView() {
-    
-//    view.backgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
-    
-    
-    mealView = MealView(frame: view.frame)
-    view.addSubview(mealView)
-    
-    configureCustomNavBar()
-    configureNewMealView()
-    configurePickerView()
-    configureBlurView()
-    confirmTableView()
-    
-  }
-  
-  // Custom Nav Bar
-  
-  private func configureCustomNavBar() {
-    
-    customNavBar = mealView.customNavBar
-    
-    customNavBar.backButton.addTarget(self, action: #selector(didTapNavBackButton), for: .touchUpInside)
-    
-
-    customNavBar.addButton.addTarget(self,action: #selector(didTapAddNewMealButton), for: .touchUpInside)
-    
-    customNavBar.didTapChangeSectionViewButton = {[weak self] in self?.didTapShowSectionTypeMealButton()}
-
-    
-    customNavBar.searchBar.delegate = self
-    
-  }
-  
-  // New Meal View
-  private func configureNewMealView() {
-    
-    newMealView = mealView.newMealView
-    
-    // либо тут вешать тарегты либо открывать клоузеры тут и сейвить их
-    
-    newMealView.cancelButton.addTarget(self, action: #selector(didTapCancelButtonInNewMealView), for: .touchUpInside)
-    
-    newMealView.okButton.addTarget(self, action: #selector(didTapSaveNewMealButton), for: .touchUpInside)
-    
-    newMealView.categoryWithButtonTextFiled.listButton.addTarget(self, action: #selector(didTapShowTypeOfMealsButton), for: .touchUpInside)
-    
-    newMealView.mealValidator.isValidCallBack = { [weak self] (isSave) in
-      self?.textFiledsValidateCanSave(isCanSave: isSave)
-    }
-    
-  }
-  
-  // Picker View
-  private func configurePickerView() {
-    
-    pickerView = mealView.pickerView
-    pickerView.dataSource = self
-    pickerView.delegate = self
-    
-  }
-  // Blur
-  private func configureBlurView() {
-    
-    blurView = mealView.blurView
-    mealView.didTapBlurViewClouser = { [weak self] in self?.didTapOnBlur() }
-  }
-  
-  // TableView
-  private func confirmTableView() {
-    
-    tableView = mealView.tableView
-    
-    tableView.delegate = self
-    tableView.dataSource = self
-    tableView.register(MealCell.self, forCellReuseIdentifier: MealCell.cellId)
-    
-    tableView.keyboardDismissMode = .interactive
-    tableView.tableFooterView = UIView()
-    
-    tableView.separatorStyle = .none
-    
-  }
+ 
   
   //  MARK: Display Data
   func displayData(viewModel: Meal.Model.ViewModel.ViewModelData) {
@@ -291,6 +213,95 @@ class MealViewController: UIViewController, MealDisplayLogic {
   }
   
   
+}
+
+// MARK: Set UP Views
+
+extension MealViewController {
+  
+  private func setUpView() {
+    
+    //    view.backgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
+    
+    
+    mealView = MealView(frame: view.frame)
+    view.addSubview(mealView)
+    
+    configureCustomNavBar()
+    configureNewMealView()
+    configurePickerView()
+    configureBlurView()
+    confirmTableView()
+    
+  }
+  
+  // Custom Nav Bar
+  
+  private func configureCustomNavBar() {
+    
+    customNavBar = mealView.customNavBar
+    
+    customNavBar.backButton.addTarget(self, action: #selector(didTapNavBackButton), for: .touchUpInside)
+    
+    
+    customNavBar.addButton.addTarget(self,action: #selector(didTapAddNewMealButton), for: .touchUpInside)
+    
+    customNavBar.didTapChangeSectionViewButton = {[weak self] in self?.didTapShowSectionTypeMealButton()}
+    
+    
+    customNavBar.searchBar.delegate = self
+    
+  }
+  
+  // New Meal View
+  private func configureNewMealView() {
+    
+    newMealView = mealView.newMealView
+    
+    // либо тут вешать тарегты либо открывать клоузеры тут и сейвить их
+    
+    newMealView.cancelButton.addTarget(self, action: #selector(didTapCancelButtonInNewMealView), for: .touchUpInside)
+    
+    newMealView.okButton.addTarget(self, action: #selector(didTapSaveNewMealButton), for: .touchUpInside)
+    
+    newMealView.categoryWithButtonTextFiled.listButton.addTarget(self, action: #selector(didTapShowTypeOfMealsButton), for: .touchUpInside)
+    
+    newMealView.mealValidator.isValidCallBack = { [weak self] (isSave) in
+      self?.textFiledsValidateCanSave(isCanSave: isSave)
+    }
+    
+  }
+  
+  // Picker View
+  private func configurePickerView() {
+    
+    pickerView = mealView.pickerView
+    pickerView.dataSource = self
+    pickerView.delegate = self
+    
+  }
+  // Blur
+  private func configureBlurView() {
+    
+    blurView = mealView.blurView
+    mealView.didTapBlurViewClouser = { [weak self] in self?.didTapOnBlur() }
+  }
+  
+  // TableView
+  private func confirmTableView() {
+    
+    tableView = mealView.tableView
+    
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.register(MealCell.self, forCellReuseIdentifier: MealCell.cellId)
+    
+    tableView.keyboardDismissMode = .interactive
+    tableView.tableFooterView = UIView()
+    
+    tableView.separatorStyle = .none
+    
+  }
 }
 
 
@@ -376,7 +387,7 @@ extension MealViewController {
     
     // Здесь нужно сделать проверку не показан ли slideMenu? если показан то надо вернутся обратно и изменить буул
     if menuState == .open {
-      didShowMenuProductsListViewControllerClouser!()
+//      didShowMenuProductsListViewControllerClouser!()
       
     } else {
       didUpdateHeaderWorkerInFoodViewController!(headerInSectionWorker)
@@ -481,13 +492,35 @@ extension MealViewController {
     interactor?.makeRequest(request: .deleteProductFromMeal(mealId: mealId, rowProduct: rowProduct))
   }
   
-  // ADD new product
-  private func addNewproductInMeal(mealId: String) {
-    print("Add")
+  // MARK: Show MenuView
+  
+  private func addNewproductInMeal(mealId: String, button: UIButton) {
+    
+    // Мне нужно получить координаты ячейки где эта кнопка
+    
+    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: button) else {return}
+    
+    let cell = tableView.cellForRow(at: indexPath)!
+    
+    // Вообщем здесь Есть решение! Нужно подумать получше как сделать половчее!
+    // Чтобы экран опускался точно до середины а маин не поднималься выше середины
+    
+    let mealViewOffsetY = calculateCurrectDistanceToShowMenu(cellY: cell.center.y - 50)
     //    isShowSlideMenuProductsList = true
     mealIdByAddPorduct = mealId
-    didShowMenuProductsListViewControllerClouser!()
     
+    // теперь здесь мне нужно прокинуть координаты
+    didShowMenuProductsListViewControllerClouser!(mealViewOffsetY)
+    
+  }
+  
+  private func calculateCurrectDistanceToShowMenu(cellY: CGFloat) -> CGFloat {
+    
+    let middelScreenHeight = UIScreen.main.bounds.height / 2
+    
+    print(middelScreenHeight,cellY)
+    
+    return middelScreenHeight - cellY
   }
   
   
@@ -504,10 +537,6 @@ extension MealViewController {
   }
   
 }
-
-
-
-
 
 // MARK: Set Up Keyboard Notification
 extension MealViewController {
@@ -640,7 +669,7 @@ extension MealViewController: UITableViewDelegate, UITableViewDataSource {
   
     cell.productListViewController.didDeleteProductFromMealClouser = {[weak self] rowProduct, mealId in self?.deleteProductFromMeal(rowProduct: rowProduct, mealId: mealId) }
     
-    cell.didAddNewProductInmeal = {[weak self] mealId in self?.addNewproductInMeal(mealId: mealId) }
+    cell.didAddNewProductInmeal = {[weak self] mealId,button in self?.addNewproductInMeal(mealId: mealId,button:button) }
     
 
     
@@ -752,6 +781,36 @@ extension MealViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     newMealView.setCategory(typeOfMeal: pickerData[row])
     
+  }
+  
+  
+}
+
+
+
+// MARK: Show Menu Animatable
+
+extension MealViewController: ShowMenuAnimatable,UIGestureRecognizerDelegate {
+  
+
+  func setUppanGestureRecogniser() {
+    slideMenuPanGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(handleSwipeMenu))
+    slideMenuPanGestureRecogniser.delegate = self
+    view.addGestureRecognizer(slideMenuPanGestureRecogniser)
+  }
+  
+  @objc private func handleSwipeMenu(gesture: UIPanGestureRecognizer) {
+    didPanGestureValueChange!(gesture)
+  }
+  
+  func removeGestureRecogniser() {
+    view.removeGestureRecognizer(slideMenuPanGestureRecogniser)
+  }
+  
+  
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    return abs((slideMenuPanGestureRecogniser.velocity(in: slideMenuPanGestureRecogniser.view)).y) > abs((slideMenuPanGestureRecogniser.velocity(in: slideMenuPanGestureRecogniser.view)).x)
+  
   }
   
   

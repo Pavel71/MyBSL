@@ -12,7 +12,7 @@
 		0509FD06233FCA9700B04B30 /* DinnerRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0509FD05233FCA9700B04B30 /* DinnerRealm.swift */; };
 		05253077234CD89800BA1EA7 /* Task in Resources */ = {isa = PBXBuildFile; fileRef = 05253076234CD89800BA1EA7 /* Task */; };
 		0537370D234B256700411C46 /* DinnerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0537370C234B256700411C46 /* DinnerData.swift */; };
-		05373713234B2B1700411C46 /* MenuDinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05373712234B2B1700411C46 /* MenuDinnerView.swift */; };
+		05373713234B2B1700411C46 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05373712234B2B1700411C46 /* MenuView.swift */; };
 		05373716234B2B4800411C46 /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05373715234B2B4800411C46 /* SwipeView.swift */; };
 		05373718234B2F5500411C46 /* Tasks in Resources */ = {isa = PBXBuildFile; fileRef = 05373717234B2F5500411C46 /* Tasks */; };
 		053BAB52233B56D60080359B /* Validatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053BAB51233B56D60080359B /* Validatable.swift */; };
@@ -27,6 +27,8 @@
 		055BE0DA2344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */; };
 		055BE0DD2344DB290029D298 /* WillActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0DC2344DB290029D298 /* WillActiveView.swift */; };
 		057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */; };
+		057B9841234F5054002EAD68 /* NewMealContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9840234F5054002EAD68 /* NewMealContainer.swift */; };
+		057B9848234F6B4C002EAD68 /* PointSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9847234F6B4C002EAD68 /* PointSearcher.swift */; };
 		05952A4F233BB0FD00EE996E /* BaseProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A4E233BB0FD00EE996E /* BaseProductList.swift */; };
 		05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A51233BB22B00EE996E /* ProductListProtocol.swift */; };
 		05952A58233BB51600EE996E /* ProductListInDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */; };
@@ -142,7 +144,7 @@
 		0509FD05233FCA9700B04B30 /* DinnerRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerRealm.swift; sourceTree = "<group>"; };
 		05253076234CD89800BA1EA7 /* Task */ = {isa = PBXFileReference; lastKnownFileType = text; path = Task; sourceTree = "<group>"; };
 		0537370C234B256700411C46 /* DinnerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerData.swift; sourceTree = "<group>"; };
-		05373712234B2B1700411C46 /* MenuDinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuDinnerView.swift; sourceTree = "<group>"; };
+		05373712234B2B1700411C46 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		05373715234B2B4800411C46 /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
 		05373717234B2F5500411C46 /* Tasks */ = {isa = PBXFileReference; lastKnownFileType = text; path = Tasks; sourceTree = "<group>"; };
 		053BAB51233B56D60080359B /* Validatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validatable.swift; sourceTree = "<group>"; };
@@ -157,6 +159,8 @@
 		055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePlaceInjectionsViewAnimated.swift; sourceTree = "<group>"; };
 		055BE0DC2344DB290029D298 /* WillActiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillActiveView.swift; sourceTree = "<group>"; };
 		057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMenuAnimator.swift; sourceTree = "<group>"; };
+		057B9840234F5054002EAD68 /* NewMealContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMealContainer.swift; sourceTree = "<group>"; };
+		057B9847234F6B4C002EAD68 /* PointSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointSearcher.swift; sourceTree = "<group>"; };
 		05952A4E233BB0FD00EE996E /* BaseProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductList.swift; sourceTree = "<group>"; };
 		05952A51233BB22B00EE996E /* ProductListProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListProtocol.swift; sourceTree = "<group>"; };
 		05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInDinnerViewController.swift; sourceTree = "<group>"; };
@@ -332,15 +336,6 @@
 			path = Controllers/Data;
 			sourceTree = "<group>";
 		};
-		0537370F234B2AEA00411C46 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				05373712234B2B1700411C46 /* MenuDinnerView.swift */,
-				05373714234B2B3100411C46 /* SwipeView */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		05373710234B2AF100411C46 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -403,7 +398,6 @@
 			isa = PBXGroup;
 			children = (
 				05373717234B2F5500411C46 /* Tasks */,
-				0537370F234B2AEA00411C46 /* Views */,
 				05373710234B2AF100411C46 /* Controllers */,
 				05373711234B2AF800411C46 /* Models */,
 			);
@@ -456,6 +450,23 @@
 				057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */,
 			);
 			path = BaseContainerController;
+			sourceTree = "<group>";
+		};
+		057B9845234F634C002EAD68 /* MenuView */ = {
+			isa = PBXGroup;
+			children = (
+				05373712234B2B1700411C46 /* MenuView.swift */,
+				05373714234B2B3100411C46 /* SwipeView */,
+			);
+			path = MenuView;
+			sourceTree = "<group>";
+		};
+		057B9846234F6B3C002EAD68 /* PointSercher */ = {
+			isa = PBXGroup;
+			children = (
+				057B9847234F6B4C002EAD68 /* PointSearcher.swift */,
+			);
+			path = PointSercher;
 			sourceTree = "<group>";
 		};
 		05952A47233B766A00EE996E /* Screens */ = {
@@ -854,6 +865,7 @@
 			children = (
 				F150DBED2317DD2300380AE0 /* MealViewController.swift */,
 				F1495357232918790027E655 /* ContainerViewController.swift */,
+				057B9840234F5054002EAD68 /* NewMealContainer.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1283,6 +1295,7 @@
 		F1E78D00230D546500592AB8 /* Workers */ = {
 			isa = PBXGroup;
 			children = (
+				057B9846234F6B3C002EAD68 /* PointSercher */,
 				0541BA55233777E900F87B18 /* HeaderinSectionWorker */,
 				F1EC85A423321CA700E14D33 /* Calculate */,
 				F1E78D3C2314214600592AB8 /* Validator */,
@@ -1357,6 +1370,7 @@
 		F1EC85982330EE8400E14D33 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				057B9845234F634C002EAD68 /* MenuView */,
 				F1EC85A123320FBF00E14D33 /* HeaderInSectionView */,
 				F1EC859E233101C500E14D33 /* TableViewCell */,
 			);
@@ -1551,6 +1565,7 @@
 				F1E78CE9230D33AE00592AB8 /* StatsViewController.swift in Sources */,
 				F1E78CE6230D33AE00592AB8 /* StatsWorker.swift in Sources */,
 				F13B352923193E480020AD26 /* MealHeaderInSectionView.swift in Sources */,
+				057B9841234F5054002EAD68 /* NewMealContainer.swift in Sources */,
 				055BE0CD2340A69C0029D298 /* ContainerDinnerViewController.swift in Sources */,
 				F1E78CFA230D355F00592AB8 /* UITextField+Extension.swift in Sources */,
 				F1116323231CF858000C79FA /* StatsTableViewCell.swift in Sources */,
@@ -1586,6 +1601,7 @@
 				F1E78CD6230D338A00592AB8 /* SettingsPresenter.swift in Sources */,
 				F1EC85A623321CC500E14D33 /* CalculateHeightView.swift in Sources */,
 				F1E78D1E230D688900592AB8 /* FoodRealmManager.swift in Sources */,
+				057B9848234F6B4C002EAD68 /* PointSearcher.swift in Sources */,
 				F13C34782333676B003A618B /* SlideMenuAnimated.swift in Sources */,
 				05A4F1B8233A0CDE00DFE4D7 /* BetterSnapingLayout.swift in Sources */,
 				F150DBF32317DD2300380AE0 /* MealModels.swift in Sources */,
@@ -1633,7 +1649,7 @@
 				F1116329231D555F000C79FA /* ProductListCell.swift in Sources */,
 				F1103B60232A726F009A338A /* MealTableViewPresenterWorker.swift in Sources */,
 				057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */,
-				05373713234B2B1700411C46 /* MenuDinnerView.swift in Sources */,
+				05373713234B2B1700411C46 /* MenuView.swift in Sources */,
 				05A4F19F2339EF6A00DFE4D7 /* MainView.swift in Sources */,
 				F1E78CBD230D334B00592AB8 /* FoodInteractor.swift in Sources */,
 				05A4F1A22339F2AC00DFE4D7 /* MainCustomNavBar.swift in Sources */,

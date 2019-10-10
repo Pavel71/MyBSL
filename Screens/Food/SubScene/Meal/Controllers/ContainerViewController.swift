@@ -8,17 +8,17 @@
 
 import UIKit
 
-enum State {
-  case closed
-  case open
-  
-  var opposite: State {
-    switch self {
-    case .open: return .closed
-    case .closed: return .open
-    }
-  }
-}
+//enum State {
+//  case closed
+//  case open
+//
+//  var opposite: State {
+//    switch self {
+//    case .open: return .closed
+//    case .closed: return .open
+//    }
+//  }
+//}
 
 class ContainerViewController: UIViewController {
   
@@ -55,7 +55,7 @@ class ContainerViewController: UIViewController {
   
   func configureMealViewController() {
     // при нажатие на кнопку добавить просить добавить product controller
-    mealViewController.didShowMenuProductsListViewControllerClouser = {[weak self] in  self?.configureProductListViewController() }
+//    mealViewController.didShowMenuProductsListViewControllerClouser = {[weak self] in  self?.configureProductListViewController() }
     
     controller = mealViewController
     
@@ -128,6 +128,9 @@ class ContainerViewController: UIViewController {
 
   
 }
+
+
+
 
 
 // MARK: Animated Show Menu View COntroller
