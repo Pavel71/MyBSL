@@ -77,11 +77,7 @@ class MealCell: UITableViewCell {
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-//    backgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
-//    backgroundColor = .clear
-////    backgroundColor = .white
-//    
-//    productListViewController.view.backgroundColor = .red
+
 
     let vertiaclStackView = UIStackView(arrangedSubviews: [
 
@@ -131,10 +127,14 @@ class MealCell: UITableViewCell {
     addNewProductInMealButton.addTarget(self, action: #selector(handleAddNewProductInMeal), for: .touchUpInside)
     
     
+//    addNewProductInMealButton.center = .init(x: productListViewController.view.frame.origin.x, y: productListViewController.view.frame.maxY)
     
+//    addNewProductInMealButton.center.y = productListViewController.view.frame.maxY
     addSubview(addNewProductInMealButton)
-    addNewProductInMealButton.anchor(top: productListViewController.view.bottomAnchor, leading: nil, bottom: nil, trailing: nil,padding: .init(top: -35, left: 0, bottom: 0, right: 0))
+    
+    addNewProductInMealButton.anchor(top: productListViewController.view.bottomAnchor, leading: nil, bottom: nil, trailing: nil,padding: .init(top: -45, left: 0, bottom: 0, right: 0))
     addNewProductInMealButton.centerXAnchor.constraint(equalTo: productListViewController.view.centerXAnchor).isActive = true
+
     
     
     addNewProductInMealButton.constrainHeight(constant: Constants.ProductList.TableFooterView.addButtonHeight)
@@ -142,6 +142,7 @@ class MealCell: UITableViewCell {
     
     
   }
+
   
   var didAddNewProductInmeal: ((String,UIButton) -> Void)?
   @objc private func handleAddNewProductInMeal(button: UIButton) {
@@ -171,13 +172,15 @@ class MealCell: UITableViewCell {
     expanded(isExpand: viewModel.isExpanded)
   
   }
+
   
   
   func expanded(isExpand: Bool) {
     
+    
     productListViewController.view.isHidden = !isExpand
     addNewProductInMealButton.isHidden = !isExpand
-    
+//
     let expandButtonImage = isExpand ? #imageLiteral(resourceName: "up-arrow").withRenderingMode(.alwaysTemplate) : #imageLiteral(resourceName: "angle-arrow-down").withRenderingMode(.alwaysTemplate)
 
     self.expandedButton.setImage(expandButtonImage, for: .normal)

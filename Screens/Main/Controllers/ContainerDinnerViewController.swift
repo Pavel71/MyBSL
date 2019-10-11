@@ -214,7 +214,7 @@ extension ContainerDinnerViewController {
     
     animator.addAnimations {
       
-      self.menuProductsListViewController.view.center.y -= self.menuScreenHeight + UIApplication.shared.statusBarFrame.height
+      self.menuProductsListViewController.view.center.y -= self.menuScreenHeight + UIApplication.shared.statusBarFrame.height + Constants.Main.DinnerCollectionView.shugarViewInCellHeight + Constants.Main.DinnerCollectionView.topMarginBetweenView * 2
       self.controller.view.frame.origin.y = 0
       
     }
@@ -239,10 +239,12 @@ extension ContainerDinnerViewController {
 
 
   func openMenu() {
+    
+    // Нужно решить проблему с правельным рассчетом дистанции!
 
     animator.addAnimations {
       // Опускаем VIew на половниу
-      self.menuProductsListViewController.view.center.y += self.menuScreenHeight + UIApplication.shared.statusBarFrame.height
+      self.menuProductsListViewController.view.center.y += self.menuScreenHeight + UIApplication.shared.statusBarFrame.height + Constants.Main.DinnerCollectionView.shugarViewInCellHeight + Constants.Main.DinnerCollectionView.topMarginBetweenView * 2
       
       
     }

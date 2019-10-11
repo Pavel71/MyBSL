@@ -8,6 +8,10 @@
 
 import UIKit
 
+
+
+// Посути класс объеденяте всебе ТОлько ТО как будут отображатся элементы на экране и какие общие свойства содержит класс
+
 class BaseProductList: UIViewController,BaseProductListViewControllerable {
   
   var footerView = ProductsTableViewInMealCellFooterView(frame: .init(x: 0, y: 0, width: 0, height: Constants.ProductList.TableFooterView.footerHeight))
@@ -18,7 +22,7 @@ class BaseProductList: UIViewController,BaseProductListViewControllerable {
   var headerView = ProductListTableHeaderView(frame: .init(x: 0, y: 0, width: 0, height: ProductListTableHeaderView.height))
   
   
-  var didSelectTextFieldCellClouser: TextFieldPassClouser?
+//  var didSelectTextFieldCellClouser: TextFieldPassClouser?
   
   
   
@@ -41,6 +45,7 @@ class BaseProductList: UIViewController,BaseProductListViewControllerable {
     view.addSubview(tableView)
     tableView.fillSuperview()
     
+    tableView.isScrollEnabled = false
     tableView.tableFooterView = footerView // footerView
 
   }
@@ -56,13 +61,13 @@ class BaseProductList: UIViewController,BaseProductListViewControllerable {
   
 }
 
-extension BaseProductList: UITableViewDelegate {
-  
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return Constants.ProductList.cellHeight
-  }
-  
-}
+//extension BaseProductList: UITableViewDelegate {
+//  
+//  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//    return Constants.ProductList.cellHeight
+//  }
+//  
+//}
 
 
 
@@ -70,11 +75,11 @@ extension BaseProductList: UITableViewDelegate {
 
 
 
-extension BaseProductList: UITextFieldDelegate {
-  
-  func textFieldDidBeginEditing(_ textField: UITextField) {
-    didSelectTextFieldCellClouser!(textField)
-  }
-  
-
-}
+//extension BaseProductList: UITextFieldDelegate {
+//  
+//  func textFieldDidBeginEditing(_ textField: UITextField) {
+//    didSelectTextFieldCellClouser!(textField)
+//  }
+//  
+//
+//}

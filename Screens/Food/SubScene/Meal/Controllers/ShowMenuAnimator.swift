@@ -18,32 +18,45 @@ protocol ShowMenuAnimatable: UIViewController {
   var slideMenuPanGestureRecogniser: UIPanGestureRecognizer! {get set}
   func setUppanGestureRecogniser()
   func removeGestureRecogniser()
-  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool
+  
 }
 
 class ShowMenuAnimator {
   
+  let screenWidth: CGFloat = UIScreen.main.bounds.width
+  let screenHeight: CGFloat = UIScreen.main.bounds.height
+  
   var mainController: ShowMenuAnimatable
-  var mainDistanceTranslate: CGFloat
-  
   var menuController: UIViewController
-  var menuDistanceTranslate: CGFloat
+//  var menuDistanceTranslate: CGFloat
   
-  init(mainController:ShowMenuAnimatable,menuController:UIViewController,menuDistanceTranslate:CGFloat,mainDistanceTranslate: CGFloat ) {
+  var mainDistanceTranslate: CGFloat!
+  var menuDistanceTranslate: CGFloat!
+  
+  init(mainController:ShowMenuAnimatable,menuController:UIViewController) {
     self.mainController = mainController
     self.menuController = menuController
-    self.menuDistanceTranslate = menuDistanceTranslate
-    self.mainDistanceTranslate = mainDistanceTranslate
+    
+    menuDistanceTranslate = screenHeight / 2
   }
   
-  // Тут нужно подумать на сколько должна эта шторка выезжать!
-  let menuScreenHeight: CGFloat = UIScreen.main.bounds.height / 2
+  deinit {
+    print("Deinit show Menu ANimator")
+  }
   
+
   private  lazy var animator: UIViewPropertyAnimator = {
     return UIViewPropertyAnimator(duration: 0.5, curve: .easeOut)
   }()
   
   private  var currentState: State = .closed
+  
+  
+  // Установим расстояние для изменениея положения главного экрана
+  
+  func setMainDistanceValue(distance:CGFloat) {
+    mainDistanceTranslate = distance
+  }
   
 }
 
@@ -69,9 +82,7 @@ extension ShowMenuAnimator {
   
   func handleSwipeMenu(gesture: UIPanGestureRecognizer,containerView: UIView) {
     
-    let translationY = -gesture.translation(in: containerView).y
-    
-    print(translationY)
+    let translationX = -gesture.translation(in: containerView).x
     
     switch gesture.state {
       
@@ -81,11 +92,11 @@ extension ShowMenuAnimator {
       
     case .changed:
       
-      let fraction = translationY / menuDistanceTranslate
+      let fraction = translationX / mainDistanceTranslate
       animator.fractionComplete = fraction
     case .ended:
       // Развернем анимацию если не преодолил барьер
-      if translationY < 200 {
+      if translationX < screenWidth / 4 {
         animator.isReversed = !animator.isReversed
       }
       
@@ -116,6 +127,7 @@ extension ShowMenuAnimator {
         
         self.mainController.removeGestureRecogniser() // Убрать гестер
         self.mainController.tableView.isScrollEnabled = true
+        self.mainController.tableView.allowsSelection = true
         self.currentState = self.currentState.opposite
         
 //        containerView.endEditing(true)
@@ -135,6 +147,7 @@ extension ShowMenuAnimator {
       
       
     }
+    
     animator.addAnimations({
       self.mainController.view.frame.origin.y = self.mainDistanceTranslate
     }, delayFactor: 0.35)
@@ -143,6 +156,7 @@ extension ShowMenuAnimator {
     animator.addCompletion { position in
       
       self.mainController.tableView.isScrollEnabled = false
+      self.mainController.tableView.allowsSelection = false
       self.mainController.setUppanGestureRecogniser()  // Повесим recogniser
       
       self.currentState = self.currentState.opposite

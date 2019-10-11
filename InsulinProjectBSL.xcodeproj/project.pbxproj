@@ -35,6 +35,9 @@
 		05952A5A233BB7A900EE996E /* ProductListInDinnerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A59233BB7A900EE996E /* ProductListInDinnerViewModel.swift */; };
 		05952A5D233BC6AE00EE996E /* ChangeCarboInLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A5C233BC6AE00EE996E /* ChangeCarboInLabel.swift */; };
 		05952A5F233E873E00EE996E /* TouchesPassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A5E233E873E00EE996E /* TouchesPassView.swift */; };
+		059D7E7A23505C3A00286E57 /* Tasks in Resources */ = {isa = PBXBuildFile; fileRef = 059D7E7923505C3A00286E57 /* Tasks */; };
+		059D7E7E23506C3200286E57 /* CalculateDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059D7E7D23506C3200286E57 /* CalculateDistance.swift */; };
+		059D7E802350A88800286E57 /* SeacrhBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 059D7E7F2350A88800286E57 /* SeacrhBar+Extensions.swift */; };
 		05A4F1942338B82B00DFE4D7 /* NewFoodViewWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1932338B82B00DFE4D7 /* NewFoodViewWorker.swift */; };
 		05A4F1962338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1952338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift */; };
 		05A4F19F2339EF6A00DFE4D7 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F19E2339EF6A00DFE4D7 /* MainView.swift */; };
@@ -167,6 +170,9 @@
 		05952A59233BB7A900EE996E /* ProductListInDinnerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInDinnerViewModel.swift; sourceTree = "<group>"; };
 		05952A5C233BC6AE00EE996E /* ChangeCarboInLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCarboInLabel.swift; sourceTree = "<group>"; };
 		05952A5E233E873E00EE996E /* TouchesPassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchesPassView.swift; sourceTree = "<group>"; };
+		059D7E7923505C3A00286E57 /* Tasks */ = {isa = PBXFileReference; lastKnownFileType = text; path = Tasks; sourceTree = "<group>"; };
+		059D7E7D23506C3200286E57 /* CalculateDistance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateDistance.swift; sourceTree = "<group>"; };
+		059D7E7F2350A88800286E57 /* SeacrhBar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SeacrhBar+Extensions.swift"; sourceTree = "<group>"; };
 		05A4F1932338B82B00DFE4D7 /* NewFoodViewWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFoodViewWorker.swift; sourceTree = "<group>"; };
 		05A4F1952338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTableViewPresenterWorker.swift; sourceTree = "<group>"; };
 		05A4F19E2339EF6A00DFE4D7 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -320,11 +326,12 @@
 			path = ChoosePlaceInjectionView;
 			sourceTree = "<group>";
 		};
-		052EDE16234C9F13009C6EAC /* New Group */ = {
+		052EDE16234C9F13009C6EAC /* CalculateValue */ = {
 			isa = PBXGroup;
 			children = (
+				055BE0CE23434AEE0029D298 /* CalculateValueTextField.swift */,
 			);
-			path = "New Group";
+			path = CalculateValue;
 			sourceTree = "<group>";
 		};
 		0537370E234B296E00411C46 /* Data */ = {
@@ -444,14 +451,6 @@
 			path = WillActivy;
 			sourceTree = "<group>";
 		};
-		057B983D234F4965002EAD68 /* BaseContainerController */ = {
-			isa = PBXGroup;
-			children = (
-				057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */,
-			);
-			path = BaseContainerController;
-			sourceTree = "<group>";
-		};
 		057B9845234F634C002EAD68 /* MenuView */ = {
 			isa = PBXGroup;
 			children = (
@@ -560,6 +559,22 @@
 				0509FCFF233F9DBC00B04B30 /* ConfirmProductListResultViewModel.swift */,
 			);
 			path = Worker;
+			sourceTree = "<group>";
+		};
+		059D7E7B23505E6C00286E57 /* OldContainer */ = {
+			isa = PBXGroup;
+			children = (
+				F1495357232918790027E655 /* ContainerViewController.swift */,
+			);
+			path = OldContainer;
+			sourceTree = "<group>";
+		};
+		059D7E7C23506C1900286E57 /* CalculateDistance */ = {
+			isa = PBXGroup;
+			children = (
+				059D7E7D23506C3200286E57 /* CalculateDistance.swift */,
+			);
+			path = CalculateDistance;
 			sourceTree = "<group>";
 		};
 		05A4F1972339EE4600DFE4D7 /* Controllers */ = {
@@ -863,8 +878,9 @@
 		F112845D2327D93100416AF4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				059D7E7B23505E6C00286E57 /* OldContainer */,
+				057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */,
 				F150DBED2317DD2300380AE0 /* MealViewController.swift */,
-				F1495357232918790027E655 /* ContainerViewController.swift */,
 				057B9840234F5054002EAD68 /* NewMealContainer.swift */,
 			);
 			path = Controllers;
@@ -1050,6 +1066,7 @@
 		F150DBE82317DCCA00380AE0 /* Meal */ = {
 			isa = PBXGroup;
 			children = (
+				059D7E7923505C3A00286E57 /* Tasks */,
 				F13B352523192C510020AD26 /* Views */,
 				F112845D2327D93100416AF4 /* Controllers */,
 				F112845F2327D94700416AF4 /* Presenters */,
@@ -1173,7 +1190,6 @@
 		F1E78CCE230D337300592AB8 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				057B983D234F4965002EAD68 /* BaseContainerController */,
 				05253076234CD89800BA1EA7 /* Task */,
 				0537370E234B296E00411C46 /* Data */,
 				05A4F1982339EE5100DFE4D7 /* Views */,
@@ -1272,6 +1288,7 @@
 				F1E78CFB230D358000592AB8 /* UIViewController+Extension.swift */,
 				F1932B41231FB009003DC351 /* UITableView + Extension.swift */,
 				F1EC85A7233251AD00E14D33 /* UiImageView + Extension.swift */,
+				059D7E7F2350A88800286E57 /* SeacrhBar+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1404,9 +1421,9 @@
 		F1EC85A423321CA700E14D33 /* Calculate */ = {
 			isa = PBXGroup;
 			children = (
-				052EDE16234C9F13009C6EAC /* New Group */,
+				059D7E7C23506C1900286E57 /* CalculateDistance */,
+				052EDE16234C9F13009C6EAC /* CalculateValue */,
 				052EDE14234C72AF009C6EAC /* CalcHeight */,
-				055BE0CE23434AEE0029D298 /* CalculateValueTextField.swift */,
 			);
 			path = Calculate;
 			sourceTree = "<group>";
@@ -1482,6 +1499,7 @@
 				F1E78CA6230D31E900592AB8 /* LaunchScreen.storyboard in Resources */,
 				F1E78CA3230D31E900592AB8 /* Assets.xcassets in Resources */,
 				F1E78D22230D811700592AB8 /* Tasks in Resources */,
+				059D7E7A23505C3A00286E57 /* Tasks in Resources */,
 				05373718234B2F5500411C46 /* Tasks in Resources */,
 				05253077234CD89800BA1EA7 /* Task in Resources */,
 			);
@@ -1571,6 +1589,7 @@
 				F1116323231CF858000C79FA /* StatsTableViewCell.swift in Sources */,
 				F1E78CC9230D336B00592AB8 /* MainRouter.swift in Sources */,
 				F112845A2327926B00416AF4 /* NewMealView.swift in Sources */,
+				059D7E7E23506C3200286E57 /* CalculateDistance.swift in Sources */,
 				F1E78CC7230D336B00592AB8 /* MainPresenter.swift in Sources */,
 				F1E78CCB230D336B00592AB8 /* MainViewController.swift in Sources */,
 				F13B35212318DED40020AD26 /* MealRealmManager.swift in Sources */,
@@ -1632,6 +1651,7 @@
 				05A4F1C0233A371500DFE4D7 /* DinnerCollectionViewCell.swift in Sources */,
 				05373716234B2B4800411C46 /* SwipeView.swift in Sources */,
 				F14953332328D0940027E655 /* AddNewElemetnProtocol.swift in Sources */,
+				059D7E802350A88800286E57 /* SeacrhBar+Extensions.swift in Sources */,
 				F13B352423190FC20020AD26 /* Enums.swift in Sources */,
 				F1E78CF8230D353E00592AB8 /* UIView+ Extension.swift in Sources */,
 				F1E78D0E230D565300592AB8 /* FoodTableViewHeader.swift in Sources */,

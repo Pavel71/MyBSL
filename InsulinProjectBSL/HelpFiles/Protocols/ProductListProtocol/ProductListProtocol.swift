@@ -14,7 +14,7 @@ protocol BaseProductListViewControllerable: UIViewController {
   var tableView: UITableView{get set}
   var headerView: ProductListTableHeaderView {get set}
   
-  var didSelectTextFieldCellClouser: TextFieldPassClouser? {get set}
+//  var didSelectTextFieldCellClouser: TextFieldPassClouser? {get set}
   
   func setUpTableView()
   

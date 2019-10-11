@@ -11,9 +11,9 @@ import UIKit
 
 class FoodTableViewHeader: UIView {
   
-  static let headerSize: CGRect = .init(x: 0, y: 0, width: 0, height: 50)
+  static let headerSize: CGRect = .init(x: 0, y: 0, width: 0, height: 40)
   
-  var items: [String] = []
+  var items: [String] = [] 
   
   lazy var segmentController: UISegmentedControl = {
     let sg = UISegmentedControl(items: items) // ["Все продукты","Избранное", "Обеды"]
@@ -36,6 +36,28 @@ class FoodTableViewHeader: UIView {
     
     return sg
   }()
+  
+  func createSegmentControll(items: [String]) -> UISegmentedControl {
+    let sg = UISegmentedControl(items: items) // ["Все продукты","Избранное", "Обеды"]
+    sg.selectedSegmentIndex = 0
+    
+    sg.addTarget(self, action: #selector(handleSegmentChange), for: .valueChanged)
+    
+    sg.backgroundColor = .clear
+    sg.tintColor = .clear
+    
+    sg.setTitleTextAttributes([
+      NSAttributedString.Key.font : UIFont(name: "DINCondensed-Bold", size: 20),
+      NSAttributedString.Key.foregroundColor: UIColor.lightGray
+      ], for: .normal)
+    
+    sg.setTitleTextAttributes([
+      NSAttributedString.Key.font : UIFont(name: "DINCondensed-Bold", size: 20),
+      NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.0592937693, green: 0.4987372756, blue: 0.822627306, alpha: 1)
+      ], for: .selected)
+    
+    return sg
+  }
   
   var setsegmentIndex: Int! {
     didSet {

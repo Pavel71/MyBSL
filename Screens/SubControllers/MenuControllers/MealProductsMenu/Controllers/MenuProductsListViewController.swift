@@ -46,7 +46,7 @@ class MenuProductsListViewController: UIViewController {
   
   var currentSegment: Segment = .allProducts
   
-  var menuView: MenuView!
+  var menuView = MenuView(segmentItems: ["Все","Избранное"])
   
   var tableView:UITableView!
   var tableViewData: [MenuProductListViewModel] = []
@@ -54,7 +54,7 @@ class MenuProductsListViewController: UIViewController {
   // CLousers
   
   var didAddProductInMealClouser: ((String) -> Void)?
-
+//  var didTapSwipeBackMenuButton: EmptyClouser?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -94,11 +94,15 @@ class MenuProductsListViewController: UIViewController {
 extension MenuProductsListViewController {
   
   private func setUpMenuView() {
-    menuView = MenuView()
-    view.addSubview(menuView)
-    menuView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
-    menuView.constrainHeight(constant: view.frame.height / 2)
     
+    // Короче надо сдесь разобратсчя и все будет Норм!
+
+    menuView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2)
+    view.addSubview(menuView)
+    
+    menuView.searchBar.delegate = self
+    
+//    setMenuViewClousers()
     configureTableView()
   }
   
@@ -117,8 +121,23 @@ extension MenuProductsListViewController {
     tableView.keyboardDismissMode = .interactive
   }
   
+//  private func setMenuViewClousers() {
+//    menuView.swipeView.swipeMenuButton.addTarget(self, action: #selector(handleTapSwipeButton), for: .touchUpInside)
+//  }
+  
+  
 
 }
+
+// MARK: Tap Buttons or CLousers
+
+//extension MenuProductsListViewController {
+//
+//  @objc private func handleTapSwipeButton() {
+//
+//    didTapSwipeBackMenuButton!()
+//  }
+//}
 
 // MARK: SearchBar Delegate
 extension MenuProductsListViewController: UISearchBarDelegate {
@@ -180,6 +199,8 @@ extension MenuProductsListViewController: UITableViewDelegate, UITableViewDataSo
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: MenuFoodListCell.cellId, for: indexPath) as! MenuFoodListCell
     cell.setViewModel(viewModel: tableViewData[indexPath.row], isFavoritsSegment: currentSegment == .favorits)
+    
+    
     return cell
   }
   
@@ -198,14 +219,14 @@ extension MenuProductsListViewController: UITableViewDelegate, UITableViewDataSo
   
   // Header In Section
   
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let header = MenuFoodListheaderInSectionView()
-    header.showPortionLabel(isFavoritsSegment: currentSegment == .favorits)
-    return header
-  }
-  
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return Constants.MenuController.TableView.headerInSectionHeight
-  }
+//  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//    let header = MenuFoodListheaderInSectionView()
+//    header.showPortionLabel(isFavoritsSegment: currentSegment == .favorits)
+//    return header
+//  }
+//  
+//  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//    return Constants.MenuController.TableView.headerInSectionHeight
+//  }
   
 }

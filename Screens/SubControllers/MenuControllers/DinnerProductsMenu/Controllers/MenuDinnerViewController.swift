@@ -16,7 +16,7 @@ class MenuDinnerViewController: UIViewController {
 
   
   // Views
-  var menuDinnerView = MenuView()
+  var menuDinnerView = MenuView(segmentItems: ["Все","Избранное","Обеды"])
   var tableView: UITableView!
   
   // CLousers
@@ -82,8 +82,9 @@ extension MenuDinnerViewController {
     
     // Пока вынужден использовать  view так опустить вниз весь функционал и вызывать опускать вьюшку на половниу экрана
     
-    menuDinnerView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor)
-    menuDinnerView.constrainHeight(constant: view.frame.height / 2)
+    menuDinnerView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor,padding: .init(top: 0, left: 10, bottom: 0, right: 10))
+    
+    menuDinnerView.constrainHeight(constant: (view.frame.height / 2) + Constants.Main.DinnerCollectionView.shugarViewInCellHeight + Constants.Main.DinnerCollectionView.topMarginBetweenView * 2)
     
     
 //    menuDinnerView.fillSuperview()
@@ -109,7 +110,7 @@ extension MenuDinnerViewController {
   
   private func setClousersMenuView() {
     
-    menuDinnerView.swipeView.swipeMenuButton.addTarget(self, action: #selector(handleSwipeMenuBack), for: .touchUpInside)
+//    menuDinnerView.swipeView.swipeMenuButton.addTarget(self, action: #selector(handleSwipeMenuBack), for: .touchUpInside)
     
     menuDinnerView.tableHeaderView.didSegmentValueChange = {[weak self] sc in
       self?.didsegmentChange(segmentController: sc)
@@ -217,15 +218,15 @@ extension MenuDinnerViewController: UITableViewDataSource, UITableViewDelegate {
   
   // Header In Section
   
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let header = MenuFoodListheaderInSectionView()
-    header.showPortionLabel(isFavoritsSegment: currentSegment == .favorits)
-    return header
-  }
-  
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return Constants.MenuController.TableView.headerInSectionHeight
-  }
+//  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//    let header = MenuFoodListheaderInSectionView()
+//    header.showPortionLabel(isFavoritsSegment: currentSegment == .favorits)
+//    return header
+//  }
+//
+//  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//    return Constants.MenuController.TableView.headerInSectionHeight
+//  }
   
   
 }

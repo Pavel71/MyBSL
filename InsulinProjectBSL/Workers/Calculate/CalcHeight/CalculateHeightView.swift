@@ -57,7 +57,7 @@ class CalculateHeightView {
     
     let cellPading = Constants.ProductList.marginCell.bottom * 2
     
-//    let footerHeight = isPreviosDinner ? Constants.ProductList.TableFooterView.resultsViewHeight : Constants.ProductList.TableFooterView.footerHeight
+    // Здесь нам нужно добавить немного из за того что кнопка весит посередине footerView
     let footerHeight = isPreviosDinner ? Constants.ProductList.TableFooterView.footerHeight - 10 : Constants.ProductList.TableFooterView.footerHeight
     
 //    let headerInSection = ProductListHeaderInSection.height

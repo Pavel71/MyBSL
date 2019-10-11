@@ -27,9 +27,10 @@ class MenuFoodListCell: UITableViewCell {
   
   private let nameLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 16)
+    label.font = UIFont.systemFont(ofSize: 18)
     label.numberOfLines = 0
     
+    label.textColor = .white
     return label
   }()
   
@@ -61,6 +62,7 @@ class MenuFoodListCell: UITableViewCell {
   private let categoryLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 12)
+    label.textColor = .white
     label.numberOfLines = 0
     return label
   }()
@@ -84,14 +86,23 @@ class MenuFoodListCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
+    backgroundColor = .clear
+    
     let containerView = UIView()
     containerView.addSubview(chooseImageView)
     containerView.contentMode = .center
     chooseImageView.centerInSuperview(size: .init(width: 20, height: 20))
+    
+//    let bottomStackView = UIStackView(arrangedSubviews: [
+//      carboLabel, portionLabel
+//      ])
+//    bottomStackView.distribution = .fillEqually
+//    bottomStackView.spacing = 2
 
     let leftVerticalStackView = UIStackView(arrangedSubviews: [
       nameLabel,
-      categoryLabel
+      categoryLabel,
+      
       ])
     leftVerticalStackView.axis = .vertical
     leftVerticalStackView.spacing = 2
@@ -102,25 +113,25 @@ class MenuFoodListCell: UITableViewCell {
     leftStackView.spacing = 2
     containerView.constrainWidth(constant: 30)
 
-    rightStackView = UIStackView(arrangedSubviews: [
-      portionLabel,
-      carboLabel
-      ])
-    rightStackView.spacing = 2
-    rightStackView.distribution = .fillEqually
-
-//    carboLabel.constrainWidth(constant: 30)
-
-    let stackView = UIStackView(arrangedSubviews: [
-      leftStackView,rightStackView
-      ])
-
-    stackView.distribution = .fillEqually
-    stackView.spacing = 2
+//    rightStackView = UIStackView(arrangedSubviews: [
+//      portionLabel,
+//      carboLabel
+//      ])
+//    rightStackView.spacing = 2
+//    rightStackView.distribution = .fillEqually
+//
+////    carboLabel.constrainWidth(constant: 30)
+//
+//    let stackView = UIStackView(arrangedSubviews: [
+//      leftStackView,rightStackView
+//      ])
+//
+//    stackView.distribution = .fillEqually
+//    stackView.spacing = 2
 //    stackView.alignment = .center
 
-    addSubview(stackView)
-    stackView.fillSuperview(padding: Constants.cellMargin)
+    addSubview(leftStackView)
+    leftStackView.fillSuperview(padding: Constants.cellMargin)
     
     
     

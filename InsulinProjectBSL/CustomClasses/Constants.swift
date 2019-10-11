@@ -50,7 +50,7 @@ struct Constants {
   }
   
   struct TableView {
-    static let tableViewTopPadding: CGFloat  = 3
+    static let tableViewTopPadding: CGFloat  = 6
     static let heightForHeaderInSection: CGFloat = 50
     static let tableViewHeaderHeight: CGFloat = 50
   }

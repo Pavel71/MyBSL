@@ -13,12 +13,12 @@ import ProgressHUD
 
 
 
-class ProductListInMealViewController: UIViewController {
+class ProductListInMealViewController: BaseProductList {
   
-  var footerView = ProductsTableViewInMealCellFooterView(frame: .init(x: 0, y: 0, width: 0, height: Constants.ProductList.TableFooterView.footerHeight))
-  
-  var tableView = UITableView(frame: .zero, style: .plain)
-  var headerView = ProductListTableHeaderView(frame: .init(x: 0, y: 0, width: 0, height: ProductListTableHeaderView.height))
+//  var footerView = ProductsTableViewInMealCellFooterView(frame: .init(x: 0, y: 0, width: 0, height: Constants.ProductList.TableFooterView.footerHeight))
+//
+//  var tableView = UITableView(frame: .zero, style: .plain)
+//  var headerView = ProductListTableHeaderView(frame: .init(x: 0, y: 0, width: 0, height: ProductListTableHeaderView.height))
   
   
   // View Model ProductList
@@ -29,9 +29,9 @@ class ProductListInMealViewController: UIViewController {
   
   
   
-  init() {
-    
-    super.init(nibName: nil, bundle: nil)
+  override init() {
+    super.init()
+//    super.init(nibName: nil, bundle: nil)
   }
   
   deinit {
@@ -47,31 +47,18 @@ class ProductListInMealViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    view.clipsToBounds = true
-    view.layer.cornerRadius = 10
-    
-    setUpTableView()
+
+    super.setUpTableView()
+    configureTableView()
   }
   
-  private func setUpTableView() {
-    
-    view.addSubview(tableView)
-    tableView.fillSuperview()
-    
+  private func configureTableView() {
     tableView.backgroundColor = .white
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(ProductListCell.self, forCellReuseIdentifier: ProductListCell.cellID)
-    
-//    footerView.addNewProductInMealButton.addTarget(self, action: #selector(handleAddProductInMeal), for: .touchUpInside)
-    tableView.tableFooterView = footerView // footerView
-    
-
- 
   }
-  
- 
+
   
   func setViewModel(viewModel: ProductListInMealViewModel) {
     

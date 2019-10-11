@@ -225,7 +225,8 @@ class MealRealmManager {
       
       let newProduct = ProductRealm(name: product.name, category: product.category, carbo: product.carbo, isFavorits: product.isFavorits,portion: product.portion)
       try! realmMeal.write {
-        meal.listProduct.append(newProduct)
+//        meal.listProduct.append(newProduct)
+        meal.listProduct.insert(newProduct, at: 0)
       }
       
     }

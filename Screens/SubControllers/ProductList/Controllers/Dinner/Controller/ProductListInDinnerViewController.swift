@@ -38,6 +38,9 @@ class ProductListInDinnerViewController: BaseProductList {
   
   var tableViewData: [ProductListViewModel] = []
   
+  // Clousers
+  var didSelectTextFieldCellClouser: ((UITextField) -> Void)?
+  
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -46,17 +49,18 @@ class ProductListInDinnerViewController: BaseProductList {
   }
   
   override func setUpTableView() {
+    
     super.setUpTableView()
+    configureTableView()
     
-    
+
+  }
+  
+  private func configureTableView() {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(ProductListCell.self, forCellReuseIdentifier: ProductListCell.cellID)
     tableView.keyboardDismissMode = .interactive
-    
-    
-    
-//    footerView.addNewProductInMealButton.addTarget(self, action: #selector(handleAddProductInMeal), for: .touchUpInside)
   }
   
   func setViewModel(viewModel: ProductListInDinnerViewModel) {
@@ -104,7 +108,7 @@ class ProductListInDinnerViewController: BaseProductList {
 
 // MARK: TableView Delegate Datasource
 
-extension ProductListInDinnerViewController: UITableViewDataSource {
+extension ProductListInDinnerViewController: UITableViewDataSource,UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return tableViewData.count
@@ -152,12 +156,26 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     tableView.deselectRow(at: indexPath, animated: true)
   }
   
+  
+  // Высота Может стоит вынести это в Base я посмотрю
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return Constants.ProductList.cellHeight
+  }
+  
+  
+  
 }
 
 
 // MARK: TextFiedl Methods
 
-extension ProductListInDinnerViewController {
+
+
+extension ProductListInDinnerViewController:UITextFieldDelegate {
+  
+  internal func textFieldDidBeginEditing(_ textField: UITextField) {
+        didSelectTextFieldCellClouser!(textField)
+      }
   
   
   // Обрабатываем изменения Порции в режиме ввода

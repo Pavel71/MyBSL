@@ -336,7 +336,7 @@ extension MainViewController {
     products.forEach { (product) in
       let productListViewModel = ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
       
-      mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.append(productListViewModel)
+      mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.insert(productListViewModel,at:0)
     }
     
     tableView.reloadRows(at: [IndexPath(item: 1, section: 0)], with: .automatic)

@@ -64,7 +64,7 @@ class MealViewController: UIViewController, MealDisplayLogic {
   }
   
   // Header in Section
-  var headerInSectionView: CustomHeaderInSectionView!
+//  var headerInSectionView: CustomHeaderInSectionView!
   //  weak var headerInSectionWorker: HeaderInSectionWorker?
   
   var headerInSectionWorker: HeaderInSectionWorker // пока попробую просто этот обЪект
@@ -165,7 +165,6 @@ class MealViewController: UIViewController, MealDisplayLogic {
     // Show Allerts
     case .showAlertAfterAddMeal(let isSuccessAdd, let isUpdateMeal):
       
-      print("Потом Алерт")
       // Значит мы обновляли обед
       if isUpdateMeal {
         showUpdateMealAlertString(success: isSuccessAdd)
@@ -384,15 +383,8 @@ extension MealViewController {
   // Back Button
   @objc private func didTapNavBackButton() {
     
-    
-    // Здесь нужно сделать проверку не показан ли slideMenu? если показан то надо вернутся обратно и изменить буул
-    if menuState == .open {
-//      didShowMenuProductsListViewControllerClouser!()
-      
-    } else {
-      didUpdateHeaderWorkerInFoodViewController!(headerInSectionWorker)
-      navigationController?.popViewController(animated: true)
-    }
+    didUpdateHeaderWorkerInFoodViewController!(headerInSectionWorker)
+    navigationController?.popViewController(animated: true)
     
   }
   
@@ -415,9 +407,7 @@ extension MealViewController {
   
   @objc private func didTapExpandedButton(button: UIButton) {
     
-    let point = tableView.convert(button.center, from: button.superview!)
-
-    guard let indexPath = tableView.indexPathForRow(at: point) else {return}
+    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: button) else {return}
 
     let mealID = sectionViewModelList[indexPath.section].meals[indexPath.row].mealId!
     interactor?.makeRequest(request: .expandedMeal(mealId: mealID))
@@ -460,22 +450,7 @@ extension MealViewController {
   
 }
 
-// MARK: SearchBar Delegate
 
-extension MealViewController: UISearchBarDelegate {
-  
-  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    
-    if searchText.isEmpty {
-      
-      interactor?.makeRequest(request: .showListMealsBySection(isDefaultList: headerInSectionWorker.isDefaultListMeal))
-    } else {
-      interactor?.makeRequest(request: .searchMealByname(character: searchText))
-    }
-    
-    print(searchText)
-  }
-}
 
 // MARK: Product List Add Delete Update Show Menu ProductListController
 
@@ -492,7 +467,7 @@ extension MealViewController {
     interactor?.makeRequest(request: .deleteProductFromMeal(mealId: mealId, rowProduct: rowProduct))
   }
   
-  // MARK: Show MenuView
+  // MARK: Show MenuView And Calculate Distance
   
   private func addNewproductInMeal(mealId: String, button: UIButton) {
     
@@ -502,25 +477,13 @@ extension MealViewController {
     
     let cell = tableView.cellForRow(at: indexPath)!
     
-    // Вообщем здесь Есть решение! Нужно подумать получше как сделать половчее!
-    // Чтобы экран опускался точно до середины а маин не поднималься выше середины
+    let mealViewOffsetY = CalculateDistance.calculateDistanceMealCellToMenuController(cellY: cell.frame.origin.y)
     
-    let mealViewOffsetY = calculateCurrectDistanceToShowMenu(cellY: cell.center.y - 50)
-    //    isShowSlideMenuProductsList = true
     mealIdByAddPorduct = mealId
     
     // теперь здесь мне нужно прокинуть координаты
     didShowMenuProductsListViewControllerClouser!(mealViewOffsetY)
     
-  }
-  
-  private func calculateCurrectDistanceToShowMenu(cellY: CGFloat) -> CGFloat {
-    
-    let middelScreenHeight = UIScreen.main.bounds.height / 2
-    
-    print(middelScreenHeight,cellY)
-    
-    return middelScreenHeight - cellY
   }
   
   
@@ -585,6 +548,7 @@ extension MealViewController {
   private func setTextFiedlPoint(textField: UITextField) {
     
     let point = mealView.convert(textField.center, from: textField.superview!)
+    
     textFieldSelectedPoint = point
   }
   
@@ -757,7 +721,7 @@ extension MealViewController {
   
 }
 
-// MARK: PickerView Delegate
+// MARK: PickerView Delegate Add New Meal!
 
 extension MealViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   
@@ -786,16 +750,33 @@ extension MealViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   
 }
 
+// MARK: SearchBar Delegate
 
+extension MealViewController: UISearchBarDelegate {
+  
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    
+    if searchText.isEmpty {
+      
+      interactor?.makeRequest(request: .showListMealsBySection(isDefaultList: headerInSectionWorker.isDefaultListMeal))
+    } else {
+      interactor?.makeRequest(request: .searchMealByname(character: searchText))
+    }
+    
+    print(searchText)
+  }
+}
 
 // MARK: Show Menu Animatable
 
-extension MealViewController: ShowMenuAnimatable,UIGestureRecognizerDelegate {
+extension MealViewController: ShowMenuAnimatable {
+
+  
   
 
   func setUppanGestureRecogniser() {
     slideMenuPanGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(handleSwipeMenu))
-    slideMenuPanGestureRecogniser.delegate = self
+//    slideMenuPanGestureRecogniser.delegate = self
     view.addGestureRecognizer(slideMenuPanGestureRecogniser)
   }
   
@@ -807,10 +788,11 @@ extension MealViewController: ShowMenuAnimatable,UIGestureRecognizerDelegate {
     view.removeGestureRecognizer(slideMenuPanGestureRecogniser)
   }
   
+  // Отключаем Горизонтальное листание
   
   func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
     return abs((slideMenuPanGestureRecogniser.velocity(in: slideMenuPanGestureRecogniser.view)).y) > abs((slideMenuPanGestureRecogniser.velocity(in: slideMenuPanGestureRecogniser.view)).x)
-  
+
   }
   
   
