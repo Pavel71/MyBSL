@@ -76,6 +76,8 @@ class MenuFoodListCell: UITableViewCell {
     return iv
   }()
   
+ 
+  
   
   var leftStackView: UIStackView!
   var rightStackView: UIStackView!
@@ -86,6 +88,7 @@ class MenuFoodListCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
+    selectionStyle = .none
     backgroundColor = .clear
     
     let containerView = UIView()

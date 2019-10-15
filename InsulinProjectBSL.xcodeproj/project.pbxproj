@@ -27,7 +27,7 @@
 		055BE0DA2344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */; };
 		055BE0DD2344DB290029D298 /* WillActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0DC2344DB290029D298 /* WillActiveView.swift */; };
 		057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */; };
-		057B9841234F5054002EAD68 /* NewMealContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9840234F5054002EAD68 /* NewMealContainer.swift */; };
+		057B9841234F5054002EAD68 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9840234F5054002EAD68 /* ContainerController.swift */; };
 		057B9848234F6B4C002EAD68 /* PointSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9847234F6B4C002EAD68 /* PointSearcher.swift */; };
 		05952A4F233BB0FD00EE996E /* BaseProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A4E233BB0FD00EE996E /* BaseProductList.swift */; };
 		05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A51233BB22B00EE996E /* ProductListProtocol.swift */; };
@@ -162,7 +162,7 @@
 		055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePlaceInjectionsViewAnimated.swift; sourceTree = "<group>"; };
 		055BE0DC2344DB290029D298 /* WillActiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillActiveView.swift; sourceTree = "<group>"; };
 		057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMenuAnimator.swift; sourceTree = "<group>"; };
-		057B9840234F5054002EAD68 /* NewMealContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMealContainer.swift; sourceTree = "<group>"; };
+		057B9840234F5054002EAD68 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		057B9847234F6B4C002EAD68 /* PointSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointSearcher.swift; sourceTree = "<group>"; };
 		05952A4E233BB0FD00EE996E /* BaseProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductList.swift; sourceTree = "<group>"; };
 		05952A51233BB22B00EE996E /* ProductListProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListProtocol.swift; sourceTree = "<group>"; };
@@ -382,6 +382,30 @@
 			path = HeaderinSectionWorker;
 			sourceTree = "<group>";
 		};
+		054B5C2F235466270061D705 /* NewViewAnimated */ = {
+			isa = PBXGroup;
+			children = (
+				F1E78D02230D549E00592AB8 /* FoodAnimator.swift */,
+			);
+			path = NewViewAnimated;
+			sourceTree = "<group>";
+		};
+		054B5C30235466440061D705 /* MenuAnimated */ = {
+			isa = PBXGroup;
+			children = (
+				057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */,
+			);
+			path = MenuAnimated;
+			sourceTree = "<group>";
+		};
+		054B5C31235466810061D705 /* ContainerController */ = {
+			isa = PBXGroup;
+			children = (
+				057B9840234F5054002EAD68 /* ContainerController.swift */,
+			);
+			path = ContainerController;
+			sourceTree = "<group>";
+		};
 		0550B7FF234636C600D88732 /* ListTrainsView */ = {
 			isa = PBXGroup;
 			children = (
@@ -485,6 +509,7 @@
 		05952A48233B769000EE996E /* SubControllers */ = {
 			isa = PBXGroup;
 			children = (
+				054B5C31235466810061D705 /* ContainerController */,
 				05510CC5234DECB70076FB92 /* MenuControllers */,
 				05952A4D233BB0E300EE996E /* ProductList */,
 				05A4F1B0233A0B7F00DFE4D7 /* DinnerCollection */,
@@ -879,9 +904,7 @@
 			isa = PBXGroup;
 			children = (
 				059D7E7B23505E6C00286E57 /* OldContainer */,
-				057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */,
 				F150DBED2317DD2300380AE0 /* MealViewController.swift */,
-				057B9840234F5054002EAD68 /* NewMealContainer.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1325,9 +1348,10 @@
 		F1E78D01230D547100592AB8 /* Animator */ = {
 			isa = PBXGroup;
 			children = (
+				054B5C30235466440061D705 /* MenuAnimated */,
+				054B5C2F235466270061D705 /* NewViewAnimated */,
 				055BE0D82344AC220029D298 /* ChoosePlaceInjectionsAnimator */,
 				F13C3476233366A0003A618B /* SlideMenuAnimated */,
-				F1E78D02230D549E00592AB8 /* FoodAnimator.swift */,
 			);
 			path = Animator;
 			sourceTree = "<group>";
@@ -1583,7 +1607,7 @@
 				F1E78CE9230D33AE00592AB8 /* StatsViewController.swift in Sources */,
 				F1E78CE6230D33AE00592AB8 /* StatsWorker.swift in Sources */,
 				F13B352923193E480020AD26 /* MealHeaderInSectionView.swift in Sources */,
-				057B9841234F5054002EAD68 /* NewMealContainer.swift in Sources */,
+				057B9841234F5054002EAD68 /* ContainerController.swift in Sources */,
 				055BE0CD2340A69C0029D298 /* ContainerDinnerViewController.swift in Sources */,
 				F1E78CFA230D355F00592AB8 /* UITextField+Extension.swift in Sources */,
 				F1116323231CF858000C79FA /* StatsTableViewCell.swift in Sources */,

@@ -14,7 +14,9 @@ protocol MealDisplayLogic: class {
   func displayData(viewModel: Meal.Model.ViewModel.ViewModelData)
 }
 
-class MealViewController: UIViewController, MealDisplayLogic {
+class MealViewController: UIViewController, MealDisplayLogic,MainControllerInContainerProtocol {
+  
+  
   
   var interactor: MealBusinessLogic?
   var router: (NSObjectProtocol & MealRoutingLogic)?
@@ -36,6 +38,9 @@ class MealViewController: UIViewController, MealDisplayLogic {
   // Это нужно для анимации
   var addViewBottomY: CGFloat!
   var isShowingNewMealViewNow = false
+  
+  // Смещение главного экрана при появление MenuViewController
+  var mealViewOffsetY: CGFloat!
   
   // Animate Slide Menu
   //  var isShowSlideMenuProductsList = false
@@ -477,7 +482,7 @@ extension MealViewController {
     
     let cell = tableView.cellForRow(at: indexPath)!
     
-    let mealViewOffsetY = CalculateDistance.calculateDistanceMealCellToMenuController(cellY: cell.frame.origin.y)
+    mealViewOffsetY = CalculateDistance.calculateDistanceMealCellToMenuController(cellY: cell.frame.origin.y)
     
     mealIdByAddPorduct = mealId
     
@@ -546,6 +551,12 @@ extension MealViewController {
   // Than select TextFiedl on TableView KeyBoardFrame
   
   private func setTextFiedlPoint(textField: UITextField) {
+    
+    // Здесь нужно запустить метод анимации меню! Если менюшка сейчас активна
+    
+    if menuState == .open {
+      didShowMenuProductsListViewControllerClouser!(mealViewOffsetY)
+    }
     
     let point = mealView.convert(textField.center, from: textField.superview!)
     
@@ -769,14 +780,14 @@ extension MealViewController: UISearchBarDelegate {
 
 // MARK: Show Menu Animatable
 
-extension MealViewController: ShowMenuAnimatable {
+extension MealViewController: ShowMenuAnimatable,UIGestureRecognizerDelegate {
 
   
   
 
   func setUppanGestureRecogniser() {
     slideMenuPanGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(handleSwipeMenu))
-//    slideMenuPanGestureRecogniser.delegate = self
+    slideMenuPanGestureRecogniser.delegate = self
     view.addGestureRecognizer(slideMenuPanGestureRecogniser)
   }
   

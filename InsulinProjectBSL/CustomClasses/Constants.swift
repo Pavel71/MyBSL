@@ -12,6 +12,9 @@ import UIKit
 
 struct Constants {
   
+  static let screenHeight = UIScreen.main.bounds.height
+  static let screenWidth = UIScreen.main.bounds.height
+  
   static let cornerRadiusForButtonAndTextField: CGFloat = 10
   
   struct Color {

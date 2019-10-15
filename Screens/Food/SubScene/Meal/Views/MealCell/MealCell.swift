@@ -193,10 +193,10 @@ class MealCell: UITableViewCell {
     addNewProductInMealButton.clipsToBounds = true
     addNewProductInMealButton.layer.cornerRadius = Constants.ProductList.TableFooterView.addButtonHeight / 2
     
-    addNewProductInMealButton.layer.shadowColor = UIColor.black.cgColor
-    addNewProductInMealButton.layer.shadowOffset  = .init(width: 0, height: 3)
-    addNewProductInMealButton.layer.shadowOpacity = 0.7
-    addNewProductInMealButton.layer.shadowRadius = 3
+//    addNewProductInMealButton.layer.shadowColor = UIColor.black.cgColor
+//    addNewProductInMealButton.layer.shadowOffset  = .init(width: 0, height: 3)
+//    addNewProductInMealButton.layer.shadowOpacity = 0.7
+//    addNewProductInMealButton.layer.shadowRadius = 3
   }
 
   required init?(coder aDecoder: NSCoder) {

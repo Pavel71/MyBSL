@@ -12,9 +12,8 @@ import RealmSwift
 
 // Задача класса собрать массив продуктов с Определнной моделью и передать его в MealViewController!
 
-class MenuProductsListViewController: UIViewController {
+class MenuProductsListViewController: UIViewController,MenuControllerInContainerProtocol {
   
-  static let screenWidth: CGFloat = (UIScreen.main.bounds.width / 2) + 50
   
   init() {
     print("Init Menu View Controller")
@@ -53,16 +52,13 @@ class MenuProductsListViewController: UIViewController {
   
   // CLousers
   
-  var didAddProductInMealClouser: ((String) -> Void)?
+  var didAddProductClouser: ((String) -> Void)?
 //  var didTapSwipeBackMenuButton: EmptyClouser?
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     view.backgroundColor = .white
-    
-//    view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2)
-    
     
     setUpMenuView()
     
@@ -97,47 +93,39 @@ extension MenuProductsListViewController {
     
     // Короче надо сдесь разобратсчя и все будет Норм!
 
-    menuView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2)
+//    menuView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2)
     view.addSubview(menuView)
+    menuView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor,padding: .init(top: 0, left: 10, bottom: 0, right: 10),size: .init(width: 0, height: UIScreen.main.bounds.height / 2))
     
     menuView.searchBar.delegate = self
     
-//    setMenuViewClousers()
     configureTableView()
+    setMenuViewClousers()
   }
   
   private func configureTableView() {
     tableView = menuView.tableView
     tableView.estimatedRowHeight = 200
     tableView.rowHeight = UITableView.automaticDimension
-    
+    tableView.separatorStyle = .none
     tableView.delegate = self
     tableView.dataSource = self
     
     tableView.register(MenuFoodListCell.self, forCellReuseIdentifier: MenuFoodListCell.cellId)
     
-    menuView.tableHeaderView.didSegmentValueChange = {[weak self] segmentControll in self?.didSegmentChange(segmentControll: segmentControll)}
+    
   
     tableView.keyboardDismissMode = .interactive
   }
   
-//  private func setMenuViewClousers() {
-//    menuView.swipeView.swipeMenuButton.addTarget(self, action: #selector(handleTapSwipeButton), for: .touchUpInside)
-//  }
+  private func setMenuViewClousers() {
+    menuView.tableHeaderView.didSegmentValueChange = {[weak self] segmentControll in self?.didSegmentChange(segmentControll: segmentControll)}
+  }
   
   
 
 }
 
-// MARK: Tap Buttons or CLousers
-
-//extension MenuProductsListViewController {
-//
-//  @objc private func handleTapSwipeButton() {
-//
-//    didTapSwipeBackMenuButton!()
-//  }
-//}
 
 // MARK: SearchBar Delegate
 extension MenuProductsListViewController: UISearchBarDelegate {
@@ -212,7 +200,7 @@ extension MenuProductsListViewController: UITableViewDelegate, UITableViewDataSo
     
     let producIdToAddMeal = tableViewData[indexPath.row].id
     
-    didAddProductInMealClouser!(producIdToAddMeal)
+    didAddProductClouser!(producIdToAddMeal)
     
     tableView.reloadRows(at: [indexPath], with: .none)
   }

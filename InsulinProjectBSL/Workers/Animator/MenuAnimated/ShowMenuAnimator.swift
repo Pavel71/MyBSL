@@ -14,6 +14,7 @@ import UIKit
 protocol ShowMenuAnimatable: UIViewController {
   
   var tableView: UITableView! {get set}
+  var menuState: State {get set}
   
   var slideMenuPanGestureRecogniser: UIPanGestureRecognizer! {get set}
   func setUppanGestureRecogniser()
@@ -23,12 +24,10 @@ protocol ShowMenuAnimatable: UIViewController {
 
 class ShowMenuAnimator {
   
-  let screenWidth: CGFloat = UIScreen.main.bounds.width
-  let screenHeight: CGFloat = UIScreen.main.bounds.height
   
   var mainController: ShowMenuAnimatable
   var menuController: UIViewController
-//  var menuDistanceTranslate: CGFloat
+
   
   var mainDistanceTranslate: CGFloat!
   var menuDistanceTranslate: CGFloat!
@@ -37,7 +36,7 @@ class ShowMenuAnimator {
     self.mainController = mainController
     self.menuController = menuController
     
-    menuDistanceTranslate = screenHeight / 2
+    menuDistanceTranslate = Constants.screenHeight / 2 + UIApplication.shared.statusBarFrame.height
   }
   
   deinit {
@@ -82,7 +81,7 @@ extension ShowMenuAnimator {
   
   func handleSwipeMenu(gesture: UIPanGestureRecognizer,containerView: UIView) {
     
-    let translationX = -gesture.translation(in: containerView).x
+    let translationY = -gesture.translation(in: containerView).y
     
     switch gesture.state {
       
@@ -92,11 +91,11 @@ extension ShowMenuAnimator {
       
     case .changed:
       
-      let fraction = translationX / mainDistanceTranslate
+      let fraction = translationY / menuDistanceTranslate
       animator.fractionComplete = fraction
     case .ended:
       // Развернем анимацию если не преодолил барьер
-      if translationX < screenWidth / 4 {
+      if translationY < Constants.screenHeight / 4 {
         animator.isReversed = !animator.isReversed
       }
       
@@ -124,13 +123,15 @@ extension ShowMenuAnimator {
       
       switch position {
       case .end:
-        
+
+        self.menuController.view.endEditing(true)
         self.mainController.removeGestureRecogniser() // Убрать гестер
         self.mainController.tableView.isScrollEnabled = true
         self.mainController.tableView.allowsSelection = true
-        self.currentState = self.currentState.opposite
         
-//        containerView.endEditing(true)
+        self.currentState = self.currentState.opposite
+        self.mainController.menuState = self.currentState
+        
       default: break
       }
       
@@ -149,17 +150,25 @@ extension ShowMenuAnimator {
     }
     
     animator.addAnimations({
+      
       self.mainController.view.frame.origin.y = self.mainDistanceTranslate
+      self.mainController.view.endEditing(true)
+      
     }, delayFactor: 0.35)
     
     // Это кгода Continue Animation
     animator.addCompletion { position in
       
+      
+
       self.mainController.tableView.isScrollEnabled = false
       self.mainController.tableView.allowsSelection = false
       self.mainController.setUppanGestureRecogniser()  // Повесим recogniser
       
+      
       self.currentState = self.currentState.opposite
+      self.mainController.menuState = self.currentState
+//      self.currentState = self.currentState.opposite
     }
     
     animator.startAnimation()

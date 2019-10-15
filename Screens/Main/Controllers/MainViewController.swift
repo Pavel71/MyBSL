@@ -17,7 +17,12 @@ protocol MainDisplayLogic: class {
 
 
 
-class MainViewController: UIViewController, MainDisplayLogic {
+class MainViewController: UIViewController, MainDisplayLogic,MainControllerInContainerProtocol {
+  
+
+  
+  var menuState: State = .closed
+  
   
   var interactor: MainBusinessLogic?
   var router: (NSObjectProtocol & MainRoutingLogic)?
@@ -39,8 +44,8 @@ class MainViewController: UIViewController, MainDisplayLogic {
   // CLousers
   
   // To ContainerController
-  var didShowMenuProductsListViewControllerClouser: EmptyClouser?
-  var didGestureRecognaserValueChange: ((UIPanGestureRecognizer) -> Void)?
+  var didShowMenuProductsListViewControllerClouser: ((CGFloat) -> Void)?
+  var didPanGestureValueChange: ((UIPanGestureRecognizer) -> Void)?
   
   // ViewModel
   var mainViewModel: MainViewModel!
@@ -328,6 +333,10 @@ extension MainViewController {
   
   
   // MARK: MenuDinnerViewController Cath Product
+  
+  func addProducts(products: [ProductRealm]) {
+    print("Add Products")
+  }
   
   func addProductInDinner(products: [ProductRealm]) {
     

@@ -32,7 +32,7 @@ class FoodRouter: NSObject, FoodRoutingLogic {
     
 //    let containerViewController = ContainerViewController(mealController: mealController)
     
-    let newContainerController = NewMealContainer(mainController: mealController, menuController: menuController)
+    let newContainerController = ContainerController(mainController: mealController, menuController: menuController)
   
     
     viewController?.navigationController?.pushViewController(newContainerController, animated: true)

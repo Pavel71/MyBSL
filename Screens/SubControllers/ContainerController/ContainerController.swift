@@ -9,24 +9,44 @@
 import UIKit
 
 
-class NewMealContainer: UIViewController {
+protocol MainControllerInContainerProtocol: UIViewController, ShowMenuAnimatable {
   
+  var didShowMenuProductsListViewControllerClouser: ((CGFloat) -> Void)? {get set}
+  var didPanGestureValueChange: ((UIPanGestureRecognizer) -> Void)? {get set}
   
+  func addProducts(products: [ProductRealm])
+  
+}
+
+protocol MenuControllerInContainerProtocol: UIViewController {
+  
+  var didAddProductClouser: ((String) -> Void)? {get set}
+  func setDefaultChooseProduct()
+}
+
+protocol ContainerProtocol {
+  
+  var showMenuAnimator: ShowMenuAnimator {get set}
+  var mainController: MainControllerInContainerProtocol {get set}
+  var menuController: MenuControllerInContainerProtocol {get set}
+  
+}
+
+
+class ContainerController: UIViewController,ContainerProtocol {
+
   var showMenuAnimator: ShowMenuAnimator
   
-  var mainController: MealViewController
-  var menuController: MenuProductsListViewController
+  var mainController: MainControllerInContainerProtocol
+  var menuController: MenuControllerInContainerProtocol
   
-  init(mainController: MealViewController, menuController: MenuProductsListViewController) {
+  init(mainController: MainControllerInContainerProtocol, menuController: MenuControllerInContainerProtocol) {
     
     print("Init New COntainer")
     
     self.mainController = mainController
     self.menuController = menuController
-    
-    
-    
-    
+
     self.showMenuAnimator = ShowMenuAnimator(mainController: mainController, menuController: menuController)
     
     super.init(nibName: nil, bundle: nil)
@@ -52,7 +72,7 @@ class NewMealContainer: UIViewController {
 
 // MARK: Configure Controllers
 
-extension NewMealContainer {
+extension ContainerController {
   
   
   // MAIN
@@ -71,8 +91,6 @@ extension NewMealContainer {
 
       // Установлю выбор на default
       menuController?.setDefaultChooseProduct()
-      // Не знаю на сколько это законно вообще
-//      showMenuAnimator?.mainDistanceTranslate = mainViewOffsetY
       showMenuAnimator?.setMainDistanceValue(distance: mainContentOffsetY)
 
       showMenuAnimator?.toogleMenu()
@@ -81,7 +99,7 @@ extension NewMealContainer {
     
     mainController.didPanGestureValueChange = {[weak showMenuAnimator, weak self] gesture in
       showMenuAnimator?.handleSwipeMenu(gesture: gesture, containerView: self!.view)
-    }
+      } 
     
   }
   
@@ -95,19 +113,16 @@ extension NewMealContainer {
     addChild(menuController)
     
     
-    self.menuController.view.center.y -= UIScreen.main.bounds.height
+    self.menuController.view.center.y -= Constants.screenHeight
     setMenuClousers()
   }
   
   private func setMenuClousers() {
     
-    menuController.didAddProductInMealClouser = {[weak mainController] productId in
+    menuController.didAddProductClouser = {[weak mainController] productId in
       mainController?.addProductInMeal(productId: productId)
     }
-    
-//    menuController.didTapSwipeBackMenuButton = {[weak showMenuAnimator]  in
-//      showMenuAnimator?.toogleMenu()
-//    }
+
   }
   
 }

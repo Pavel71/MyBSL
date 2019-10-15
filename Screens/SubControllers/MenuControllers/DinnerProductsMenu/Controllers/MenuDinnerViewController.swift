@@ -9,7 +9,6 @@
 import UIKit
 
 
-// Сейчас идея выпукивать контроолер из первой ячейки и увеличивать ее размер!
 
 
 class MenuDinnerViewController: UIViewController {
@@ -22,15 +21,17 @@ class MenuDinnerViewController: UIViewController {
   // CLousers
   var didTapSwipeMenuBackButton: EmptyClouser?
   var didAddProductInDinnerClouser: (([ProductRealm]) -> Void)?
+  
   // ViewModel
-
   var tableViewProductsData: [MenuProductListViewModel] = []
-//  var allMealsData
+
   
   // Properties
   var currentSegment: Segment = .allProducts
+  
+  // Workers
   let menuRealmWorker = MenuRealmWorker()
-//  let foodRealmManager = FoodRealmManager()
+
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -86,10 +87,6 @@ extension MenuDinnerViewController {
     
     menuDinnerView.constrainHeight(constant: (view.frame.height / 2) + Constants.Main.DinnerCollectionView.shugarViewInCellHeight + Constants.Main.DinnerCollectionView.topMarginBetweenView * 2)
     
-    
-//    menuDinnerView.fillSuperview()
-    
-
     configureTableView()
     setClousersMenuView()
 
@@ -125,9 +122,9 @@ extension MenuDinnerViewController {
   
   // MARK: Swipe Menu Back
   
-  @objc private func handleSwipeMenuBack() {
-    didTapSwipeMenuBackButton!()
-  }
+//  @objc private func handleSwipeMenuBack() {
+//    didTapSwipeMenuBackButton!()
+//  }
   
   // MARK: SegmentChange
   
