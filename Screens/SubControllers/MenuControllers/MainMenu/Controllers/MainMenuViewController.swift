@@ -11,19 +11,22 @@ import UIKit
 
 
 
-class MenuDinnerViewController: UIViewController {
-
+class MainMenuViewController: UIViewController,MenuControllerInContainerProtocol {
   
+
   // Views
   var menuDinnerView = MenuView(segmentItems: ["Все","Избранное","Обеды"])
   var tableView: UITableView!
   
   // CLousers
   var didTapSwipeMenuBackButton: EmptyClouser?
-  var didAddProductInDinnerClouser: (([ProductRealm]) -> Void)?
+  var didAddProductClouser: (([ProductRealm]) -> Void)?
+//  var didAddProductInDinnerClouser: (([ProductRealm]) -> Void)?
   
   // ViewModel
   var tableViewProductsData: [MenuProductListViewModel] = []
+  // Я так думаю что под обеды мне нужна своя модель
+  var tableViewMealsData: [MealViewModelCell] = []
 
   
   // Properties
@@ -40,9 +43,7 @@ class MenuDinnerViewController: UIViewController {
     
     view.backgroundColor = .white
     setUpMenuDinnerView()
-    
-    
-    
+
   }
   
   deinit {
@@ -73,11 +74,13 @@ class MenuDinnerViewController: UIViewController {
 }
 
 // MARK: Set UP Views
-extension MenuDinnerViewController {
+extension MainMenuViewController {
   
   private func setUpMenuDinnerView() {
     
     // Задача добавить это View но на половину экарана
+    
+    menuDinnerView.searchBar.delegate = self
     
     view.addSubview(menuDinnerView)
     
@@ -85,7 +88,7 @@ extension MenuDinnerViewController {
     
     menuDinnerView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor,padding: .init(top: 0, left: 10, bottom: 0, right: 10))
     
-    menuDinnerView.constrainHeight(constant: (view.frame.height / 2) + Constants.Main.DinnerCollectionView.shugarViewInCellHeight + Constants.Main.DinnerCollectionView.topMarginBetweenView * 2)
+    menuDinnerView.constrainHeight(constant: Constants.screenHeight / 2)
     
     configureTableView()
     setClousersMenuView()
@@ -98,16 +101,17 @@ extension MenuDinnerViewController {
     tableView = menuDinnerView.tableView
     
     tableView.register(MenuFoodListCell.self, forCellReuseIdentifier: MenuFoodListCell.cellId)
+    tableView.register(MenuMealListCell.self, forCellReuseIdentifier: MenuMealListCell.cellId)
+    
     tableView.delegate = self
     tableView.dataSource = self
     
+    tableView.separatorStyle = .none
     tableView.estimatedRowHeight = 100
     tableView.rowHeight = UITableView.automaticDimension
   }
   
   private func setClousersMenuView() {
-    
-//    menuDinnerView.swipeView.swipeMenuButton.addTarget(self, action: #selector(handleSwipeMenuBack), for: .touchUpInside)
     
     menuDinnerView.tableHeaderView.didSegmentValueChange = {[weak self] sc in
       self?.didsegmentChange(segmentController: sc)
@@ -118,13 +122,25 @@ extension MenuDinnerViewController {
 
 // MARK: Set Up CLousers or Methods
 
-extension MenuDinnerViewController {
+extension MainMenuViewController {
   
-  // MARK: Swipe Menu Back
   
-//  @objc private func handleSwipeMenuBack() {
-//    didTapSwipeMenuBackButton!()
-//  }
+  // MARK: Meal Cell CLousers
+  
+  private func didTapExpandButton(_ button: UIButton) {
+    print("Expand Button")
+    
+    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: button) else {return}
+    
+    // Сохранять ничего в Realm не будем просто покажим
+    
+    let expanded = tableViewMealsData[indexPath.row].isExpanded
+    tableViewMealsData[indexPath.row].isExpanded = !expanded
+    
+
+    tableView.reloadRows(at: [indexPath], with: .automatic)
+
+  }
   
   // MARK: SegmentChange
   
@@ -141,12 +157,16 @@ extension MenuDinnerViewController {
   private func setTableViewDataToSegment(segment: Segment) {
     
     switch segment {
-    case .allProducts:
-      tableViewProductsData = menuRealmWorker.fetchAllProducts()
-    case .favorits:
-      tableViewProductsData = menuRealmWorker.fetchFavorits()
+      case .allProducts:
+        tableViewProductsData = menuRealmWorker.fetchAllProducts()
+      case .favorits:
+        tableViewProductsData = menuRealmWorker.fetchFavorits()
       
-    default:break
+      case .meals:
+        // Нужно убрать раскрытые обеды это не очень юзабельно
+        // если что это можно будет сделать здесь пока не вижу смысла можт я уберу это вообще!
+        tableViewMealsData = menuRealmWorker.fetchAllMeals()
+      
     }
     currentSegment = segment
   }
@@ -156,17 +176,16 @@ extension MenuDinnerViewController {
 // MARK: TableView Delegate
 
 
-extension MenuDinnerViewController: UITableViewDataSource, UITableViewDelegate {
+extension MainMenuViewController: UITableViewDataSource, UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
     var currentCount: Int
     switch  currentSegment {
-    case .meals:
-      print("Предлагаем другое кол-во")
-      return 0
-    default:
-      currentCount = tableViewProductsData.count
+      case .meals:
+        currentCount = tableViewMealsData.count
+      default:
+        currentCount = tableViewProductsData.count
     }
     return currentCount
   }
@@ -174,14 +193,29 @@ extension MenuDinnerViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     switch currentSegment {
-    case .meals:
-      print("Будет совя ячейка!")
-    default:
-      let cell = tableView.dequeueReusableCell(withIdentifier: MenuFoodListCell.cellId, for: indexPath) as! MenuFoodListCell
-      cell.setViewModel(viewModel: tableViewProductsData[indexPath.row], isFavoritsSegment: currentSegment == .favorits)
-      return cell
+      
+      case .meals:
+        
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: MenuMealListCell.cellId, for: indexPath) as! MenuMealListCell
+        
+        let viewModel = tableViewMealsData[indexPath.row]
+        cell.setViewModel(viewModel: viewModel)
+        setMealCellClousers(cell)
+        return cell
+      
+      default:
+        let cell = tableView.dequeueReusableCell(withIdentifier: MenuFoodListCell.cellId, for: indexPath) as! MenuFoodListCell
+        cell.setViewModel(viewModel: tableViewProductsData[indexPath.row], isFavoritsSegment: currentSegment == .favorits)
+        return cell
     }
-    return UITableViewCell()
+
+  }
+  
+  private func setMealCellClousers(_ cell:MenuMealListCell ) {
+    cell.didTapExpandButtonClouser = { [weak self] button in
+      self?.didTapExpandButton(button)
+    }
   }
   
   
@@ -202,12 +236,30 @@ extension MenuDinnerViewController: UITableViewDataSource, UITableViewDelegate {
         
         let producIdToDinner = tableViewProductsData[indexPath.row].id
         guard let product = menuRealmWorker.getProductFromRealm(productId: producIdToDinner) else {return}
-        didAddProductInDinnerClouser!([product])
+        didAddProductClouser!([product])
+        
       }
 
     }
 
     tableView.reloadRows(at: [indexPath], with: .none)
+  }
+  
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    switch  currentSegment {
+    case .meals:
+      // Здесь мы посчитаем в ручную размер ячеек!
+      let isExpanded = tableViewMealsData[indexPath.row].isExpanded
+      let countProductInMeal = tableViewMealsData[indexPath.row].products.count
+      let mealName = tableViewMealsData[indexPath.row].name
+      
+      let cellHeight = CalculateHeightView.calculateMealCellHeight(isExpanded: isExpanded, countRow: countProductInMeal, mealName: mealName)
+      
+      return cellHeight
+      
+    default:
+      return UITableView.automaticDimension
+    }
   }
   
   
@@ -226,4 +278,23 @@ extension MenuDinnerViewController: UITableViewDataSource, UITableViewDelegate {
 //  }
   
   
+}
+
+extension MainMenuViewController: UISearchBarDelegate {
+  
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
+    if searchText.isEmpty {
+      setTableViewDataToSegment(segment: currentSegment)
+      
+    } else {
+      
+      tableViewProductsData = tableViewProductsData.filter({ (product) -> Bool in
+        product.name.contains(searchText)
+      })
+    }
+    
+    tableView.reloadData()
+    
+  }
 }

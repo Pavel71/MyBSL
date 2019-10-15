@@ -20,7 +20,7 @@ protocol MainControllerInContainerProtocol: UIViewController, ShowMenuAnimatable
 
 protocol MenuControllerInContainerProtocol: UIViewController {
   
-  var didAddProductClouser: ((String) -> Void)? {get set}
+  var didAddProductClouser: (([ProductRealm]) -> Void)? {get set}
   func setDefaultChooseProduct()
 }
 
@@ -119,8 +119,9 @@ extension ContainerController {
   
   private func setMenuClousers() {
     
-    menuController.didAddProductClouser = {[weak mainController] productId in
-      mainController?.addProductInMeal(productId: productId)
+    menuController.didAddProductClouser = {[weak mainController] products in
+      mainController?.addProducts(products: products)
+
     }
 
   }

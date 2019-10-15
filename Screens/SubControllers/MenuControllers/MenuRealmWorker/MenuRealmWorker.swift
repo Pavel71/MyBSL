@@ -15,23 +15,45 @@ import RealmSwift
 
 final class MenuRealmWorker {
   
-  var foodRealmManager: FoodRealmManager
+  private var foodRealmManager: FoodRealmManager
+  private var mealRealmManager: MealRealmManager
   
   init() {
     self.foodRealmManager = FoodRealmManager()
+    self.mealRealmManager = MealRealmManager()
   }
+  
+  
+
+  
+}
+
+// MARK: Meal Requests
+extension MenuRealmWorker {
+  
+  func fetchAllMeals() -> [MealViewModelCell] {
+    let meals = mealRealmManager.fetchAllMeals()
+    
+    return presentMealViewModel(items: meals)
+  }
+  
+}
+
+// MARK: Product Requests
+
+extension MenuRealmWorker {
   
   // Fetch All product
   func fetchAllProducts() -> [MenuProductListViewModel] {
     
     let items = foodRealmManager.allProducts()
-    return presentViewModel(items: items)
+    return presentProductViewModel(items: items)
   }
   
   // Fetch Favorits
   func fetchFavorits() ->  [MenuProductListViewModel] {
     let items = foodRealmManager.fetchFavorits()
-    return presentViewModel(items: items)
+    return presentProductViewModel(items: items)
   }
   
   // FetchProduct By ID
@@ -40,15 +62,44 @@ final class MenuRealmWorker {
     
     return foodRealmManager.getProductById(id: productId)
   }
-
-  
 }
 
 
 // MARK: Prepare Data to ViewModel
 extension MenuRealmWorker {
   
-  private func presentViewModel(items: Results<ProductRealm>) -> [MenuProductListViewModel] {
+  // Вообщем ладно мне нужно создавать здесь свой КлассViewModel и все будет норм!
+  // Пока я его напишу руками а там посмотрим
+  
+  // Get MealViewModel
+  
+  private func presentMealViewModel(items: Results<MealRealm>) -> [MealViewModelCell] {
+    
+    return items.map(getMealsViewModel)
+
+  }
+  
+  private func getMealsViewModel(meal:MealRealm) -> MealViewModel {
+    
+    var mealViewModel = MealViewModel.init(isExpand:meal.isExpandMeal, name: meal.name, typeMeal: meal.typeMeal, products: [], mealId: meal.id)
+    
+    mealViewModel.products = meal.listProduct.map(getProductListViewModel)
+    return mealViewModel
+  }
+  
+  private func getProductListViewModel(product: ProductRealm) -> ProductListViewModel {
+    
+    let product = ProductListViewModel.init(insulinValue: nil, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
+    
+    return product
+    
+  }
+  
+  
+  
+  // Get ProductViewModel
+  
+  private func presentProductViewModel(items: Results<ProductRealm>) -> [MenuProductListViewModel] {
     
     var dummyArray: [MenuProductListViewModel] = []
     

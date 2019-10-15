@@ -25,11 +25,11 @@ class DinnerData {
     
     let result = ProductListResultsViewModel(sumCarboValue: "12", sumPortionValue: "25", sumInsulinValue: "33")
     
-    let productListViewController1 = ProductListInDinnerViewModel(productsData: [product1,product2], dinnerItemResultsViewModel: result, isPreviosDinner: false)
+    let productListViewController1 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [product1,product2], isPreviosDinner: false)
     
-    let productListViewController2 = ProductListInDinnerViewModel(productsData: [product2,product1,product2], dinnerItemResultsViewModel: result, isPreviosDinner: true)
+    let productListViewController2 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [product2,product1,product2], isPreviosDinner: true)
     
-    let productListViewController3 = ProductListInDinnerViewModel(productsData: [product1,product2,product1], dinnerItemResultsViewModel: result, isPreviosDinner: true)
+    let productListViewController3 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [product1,product2,product1], isPreviosDinner: true)
     
     
     let dinner1 = DinnerViewModel(shugarTopViewModel: shugarViewModel1, productListInDinnerViewModel: productListViewController1)

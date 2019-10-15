@@ -86,6 +86,8 @@ class ProductListCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
+    backgroundColor = .clear
+    
     portionTextField.keyboardType = .numberPad
     insulinTextField.keyboardType = .decimalPad
     
@@ -115,6 +117,7 @@ class ProductListCell: UITableViewCell {
   
   
   // По сути здесь нужно узнавать если с инсулином то засеть еще и инсулин
+  // То что эта ячейка юзает и в диннер и в меню это не парвельно конечно нужно создать базовый класс для ячеек и потом добавлять что то в них или убавлять!
 
   func setViewModel(viewModel: ProductListViewModelCell,withInsulinTextFields: Bool, isPreviosDinner: Bool = false) {
     
@@ -132,7 +135,11 @@ class ProductListCell: UITableViewCell {
     // Здесь нужна логика установки Insulina!
     
 
+    
+
   }
+  
+
 
   
   required init?(coder aDecoder: NSCoder) {

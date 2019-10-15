@@ -145,6 +145,7 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     
     
     cell.willActiveRow.trainTextField.listButton.addTarget(self, action: #selector(handleTapListButtonInWillActiveTextField), for: .touchUpInside)
+    
     cell.willActiveRow.didSwitchActiveView = {[weak self] in
       self?.didSwitchActiveView()
     }

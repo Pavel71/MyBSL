@@ -13,12 +13,21 @@ class CustomValueTextField: UITextField {
   
   let padding: CGFloat = 5
   
+  var withCornerLayer: Bool = true {
+    didSet {setNeedsDisplay()} // Обнови методы отображения
+  }
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
     textAlignment = .center
     backgroundColor = .white
     self.addDoneButtonOnKeyboard()
+  }
+  
+  convenience init(withCornerLayer: Bool) {
+    self.init(frame: .zero)
+    self.withCornerLayer = withCornerLayer
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -28,11 +37,15 @@ class CustomValueTextField: UITextField {
   override func draw(_ rect: CGRect) {
     super.draw(rect)
     
-    layer.borderWidth = 1
-    layer.borderColor = UIColor.lightGray.cgColor
+    if withCornerLayer {
+      layer.borderWidth = 1
+      layer.borderColor = UIColor.lightGray.cgColor
+      
+      clipsToBounds = true
+      layer.cornerRadius = 10
+    }
     
-    clipsToBounds = true
-    layer.cornerRadius = 10
+
   }
   
   override func textRect(forBounds bounds: CGRect) -> CGRect {

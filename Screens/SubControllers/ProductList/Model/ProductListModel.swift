@@ -9,6 +9,18 @@
 import Foundation
 
 
+protocol ProductListViewModalable {
+  var resultsViewModel: ProductListResultsViewModel {get set}
+  var productsData: [ProductListViewModel] {get set}
+}
+
+
+protocol ProductListInDinnerViewModalable: ProductListViewModalable {
+  
+  var isPreviosDinner: Bool {get set}
+}
+
+
 struct ProductListViewModel: ProductListViewModelCell {
   
   var insulinValue: Float?

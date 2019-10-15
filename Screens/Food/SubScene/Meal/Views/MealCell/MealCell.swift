@@ -35,11 +35,6 @@ class MealCell: UITableViewCell {
   static let cellId = "mealCellId"
   var mealId: String = ""
   
-  private let expandImageView : UIImageView =  {
-    let iv = UIImageView(image: #imageLiteral(resourceName: "angle-arrow-down").withRenderingMode(.alwaysTemplate))
-    
-    return iv
-  }()
   
   let expandedButton: UIButton = {
     let button = UIButton(type: .system)
@@ -72,7 +67,7 @@ class MealCell: UITableViewCell {
     return button
   }()
   
-  var productListViewController = ProductListInMealViewController()
+  var productListViewController = ProductListInMealViewController(isTemaColorDark: true)
 
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -167,6 +162,8 @@ class MealCell: UITableViewCell {
     self.mealId = mealId
 
     let productListViewModel = ProductListInMealViewModel(mealId: self.mealId, productsData: viewModel.products)
+    
+//    productListViewController.setViewModel(viewModel: productListViewModel)
     
     productListViewController.setViewModel(viewModel: productListViewModel)
     expanded(isExpand: viewModel.isExpanded)

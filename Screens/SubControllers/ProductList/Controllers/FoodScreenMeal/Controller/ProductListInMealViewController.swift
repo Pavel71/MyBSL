@@ -14,24 +14,27 @@ import ProgressHUD
 
 
 class ProductListInMealViewController: BaseProductList {
-  
-//  var footerView = ProductsTableViewInMealCellFooterView(frame: .init(x: 0, y: 0, width: 0, height: Constants.ProductList.TableFooterView.footerHeight))
-//
-//  var tableView = UITableView(frame: .zero, style: .plain)
-//  var headerView = ProductListTableHeaderView(frame: .init(x: 0, y: 0, width: 0, height: ProductListTableHeaderView.height))
-  
-  
-  // View Model ProductList
+
+  var valueColor: UIColor!
   
   
   var mealId: String = ""
   var tableViewData: [ProductListViewModel] = []
   
   
+  // Здесь нужно ввести ряд настроек
+  //1.Цвет лабел должен быть белый
+  //2. тексфилды не нужны только Лаблы
   
-  override init() {
+  
+  init(isTemaColorDark: Bool) {
+    valueColor = .white
+//    valueColor = isTemaColorDark ? .darkGray : .white
     super.init()
-//    super.init(nibName: nil, bundle: nil)
+    print(valueColor)
+    
+
+
   }
   
   deinit {
@@ -53,7 +56,10 @@ class ProductListInMealViewController: BaseProductList {
   }
   
   private func configureTableView() {
-    tableView.backgroundColor = .white
+    
+    tableView.backgroundColor = .clear
+    
+    
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(ProductListCell.self, forCellReuseIdentifier: ProductListCell.cellID)
@@ -208,12 +214,16 @@ extension ProductListInMealViewController {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     
-    let header = ProductListHeaderInSection(frame: .zero, withInsulinLabel: false)
+    
+    let header = ProductListHeaderInSection(withInsulinLabel: false, temaColor: valueColor)
     // Если продуктов нет то скрой хеадер
     header.isHidden = tableViewData.isEmpty
     
     return header
   }
+  
+  
+  
   // Sections
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return Constants.ProductList.headerInSectionHeight

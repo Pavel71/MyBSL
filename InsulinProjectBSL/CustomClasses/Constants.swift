@@ -87,6 +87,10 @@ struct Constants {
   
   struct ProductList {
     
+//    static let valueAndTextColor: UIColor = .black
+    
+    
+    
     static let labelValueWidth: CGFloat = 50
     static let marginCell = UIEdgeInsets(top: 5, left: 16, bottom: 5, right: 16)
     static let cellHeight: CGFloat = 32

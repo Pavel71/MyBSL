@@ -33,12 +33,14 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
   var listTrainsViewController = ListTrainsViewController(style: .plain)
   
   // Место где выбран TextField
-  var textFieldSelectedPoint: CGPoint!
+  var textFieldSelectedPoint: CGPoint?
   
   
   // Здесь должна быть VIewModel которая содержит в себе данные для первой ячейки так и для второй ячейки
   
   // PanGesture Recogniser
+  // в Данном случае Distance у нас будет статичен
+  let distanceTranslateMainController = (Constants.screenHeight / 2) - Constants.Main.Cell.headerCellHeight - Constants.customNavBarHeight - Constants.Main.DinnerCollectionView.shugarViewInCellHeight
   var slideMenuPanGestureRecogniser: UIPanGestureRecognizer!
   
   // CLousers
@@ -129,6 +131,16 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
     return dinnerItem
   }
   
+  
+  
+  private func closeMenu() {
+    if menuState == .open {
+      didShowMenuProductsListViewControllerClouser!(distanceTranslateMainController)
+    }
+  }
+  
+  
+  
   required init?(coder aDecoder: NSCoder) {
     
     fatalError("init(coder:) has not been implemented")
@@ -165,6 +177,7 @@ extension MainViewController {
     tableView.showsVerticalScrollIndicator = false
     tableView.keyboardDismissMode = .interactive
     tableView.allowsSelection = false
+    
     
     tableView.register(MainTableViewHeaderCell.self, forCellReuseIdentifier: MainTableViewHeaderCell.cellId)
     tableView.register(MainTableViewMiddleCell.self, forCellReuseIdentifier: MainTableViewMiddleCell.cellId)
@@ -245,8 +258,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewMiddleCell.cellId) as! MainTableViewMiddleCell
     
-    
-    print(mainViewModel.dinnerCollectionViewModel)
     cell.setViewModel(viewModel: mainViewModel.dinnerCollectionViewModel)
     
     setMiddleCellClouser(cell: cell)
@@ -283,7 +294,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     cell.dinnerCollectionViewController.didSwitchActiveViewToMainView = {[weak self] in
-      self?.removeListTrainTableView() // если листа нет то ниче не произойдет если есть то уберет
+      
+      self?.didSwitchTrainActivate()
+//      self?.removeListTrainTableView() // если листа нет то ниче не произойдет если есть то уберет
     }
     
     cell.dinnerCollectionViewController.didEndEditingWillActiveTextField = {[weak self] textField in
@@ -334,14 +347,11 @@ extension MainViewController {
   
   // MARK: MenuDinnerViewController Cath Product
   
+  // Add Product in Realm
+  // MARK: TODO Add Product In Realm
+  
   func addProducts(products: [ProductRealm]) {
     print("Add Products")
-  }
-  
-  func addProductInDinner(products: [ProductRealm]) {
-    
-    // Тут нужна проыерка на то есть ли такие продукты в базе это проще будет на реалме сделать потомучто возможно мы будем просто по id работать и все!
-    
     products.forEach { (product) in
       let productListViewModel = ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
       
@@ -349,14 +359,19 @@ extension MainViewController {
     }
     
     tableView.reloadRows(at: [IndexPath(item: 1, section: 0)], with: .automatic)
-    
   }
+  
+
   
   
 
   
   // Begin Editing TextField
   private func didSelectTextField(textField: UITextField) {
+    
+    // Если выбрали текст филд при открытом menu
+    closeMenu()
+    
     setTextFiedlPoint(textField: textField)
     
     // Можно тут вслепую просто запилить что если вбираешь текст филд то убери
@@ -378,14 +393,14 @@ extension MainViewController {
   }
   
   
+  // MARK: To Menu ViewController
 
   // Add NEw Product in PorductListViewController
   private func addNewProductInDinner() {
     print("Add New product Main")
-
     
     // Use COntainer COntroller
-    didShowMenuProductsListViewControllerClouser!()
+    didShowMenuProductsListViewControllerClouser!(distanceTranslateMainController)
   }
   
   
@@ -394,6 +409,12 @@ extension MainViewController {
 
 // MARK: Work With Train ListView Controller
 extension MainViewController {
+  
+  
+  private func didSwitchTrainActivate() {
+    closeMenu()
+    removeListTrainTableView()
+  }
   
   private func didEndEditingTrainTextField(textField: UITextField) {
     
@@ -414,6 +435,8 @@ extension MainViewController {
   }
   
   private func didTapListButtonInActiveTextField(textField: UITextField) {
+    
+    
     
     if mainView.subviews.contains(listTrainsViewController.view) {
       removeListTrainTableView()
@@ -461,6 +484,7 @@ extension MainViewController {
   // Показываем Человечка
   private func choosePlaceInjections() {
     // Так же нам понадобится анимация
+    closeMenu()
     
     ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: true)
     
@@ -468,8 +492,7 @@ extension MainViewController {
   }
   
   private func didChooseNewPlaceInjections(namePlace: String) {
-    
-    
+
     let dinnerItem = getFirstDinnerCell()
     
     dinnerItem.chooseRowView.chooseButton.setTitle(namePlace, for: .normal)
@@ -528,7 +551,7 @@ extension MainViewController {
   
   private func animateMealViewThanSelectTextField(isMove: Bool, keyBoardFrame: CGRect) {
 
-    let textFieldPointY = textFieldSelectedPoint.y
+    guard let textFieldPointY = textFieldSelectedPoint?.y else {return}
     
     let saveDistance = view.frame.height - keyBoardFrame.height - Constants.KeyBoard.doneToolBarHeight
     
@@ -565,7 +588,8 @@ extension MainViewController: UIGestureRecognizerDelegate {
   }
   
   @objc private func handleSwipeMenu(gesture: UIPanGestureRecognizer) {
-    didGestureRecognaserValueChange!(gesture)
+    didPanGestureValueChange!(gesture)
+    
   }
   
   

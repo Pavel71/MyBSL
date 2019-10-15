@@ -12,18 +12,17 @@ class BaseTabBarController: UITabBarController {
   
   override func viewDidLoad() {
     
-    let mainContainerController = ContainerController(mainController: MainViewController(), menuController: MenuDinnerViewController())
+    let mainContainerController = ContainerController(mainController: MainViewController(), menuController: MainMenuViewController())
+
     
-    let mainViewController = createNavController(ContainerDinnerViewController(mainController: MainViewController()),name: "Main",imageName: "today")
+    let mainViewController = createNavController(mainContainerController,name: "Main",imageName: "today")
     
 
     
     let productViewController = FoodViewController()
     
     let productController = createNavController(productViewController,name: "Products", imageName: "diet")
-    
-    //    foodController.tableView.allowsSelection = false
-    //    foodController.tableView.isScrollEnabled = false
+
     
     let statsController = createNavController(StatsViewController(), name: "Stats", imageName: "clipboard" )
     let settingsController = createNavController(SettingsViewController(), name: "Settings", imageName: "settings")

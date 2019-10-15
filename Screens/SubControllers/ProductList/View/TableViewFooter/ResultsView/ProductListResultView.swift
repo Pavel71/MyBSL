@@ -32,10 +32,9 @@ class ProductListResultView: UIView {
   
   func createResultLabel(name: String?,fontSize: CGFloat) -> UILabel {
     let label = UILabel()
-//    label.font = UIFont(name: "DINCondensed-Bold", size: fontSize)
+
     label.font = UIFont.systemFont(ofSize: fontSize)
     label.text = name ?? ""
-//    label.textColor = Constants.Color.darKBlueBackgroundColor
     label.textAlignment = .center
     return label
   }
@@ -74,6 +73,13 @@ class ProductListResultView: UIView {
     resultTitle.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: nil,padding: .init(top: 0, left: Constants.ProductList.marginCell.left, bottom: 0, right: 0))
     
     
+  }
+  
+  func setTextColor(color: UIColor) {
+    resultTitle.textColor = color
+    carboResultLabel.textColor = color
+    portionResultLabel.textColor = color
+    insulinResultLabel.textColor = color
   }
   
   func setViewModel(viewModel:ProductListResultViewModelable, withInsulin: Bool = true) {

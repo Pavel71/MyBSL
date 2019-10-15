@@ -15,6 +15,8 @@ protocol MealDisplayLogic: class {
 }
 
 class MealViewController: UIViewController, MealDisplayLogic,MainControllerInContainerProtocol {
+ 
+  
   
   
   
@@ -498,11 +500,12 @@ extension MealViewController {
 
 extension MealViewController {
   
-  func addProductInMeal(productId: String) {
-    
+  func addProducts(products: [ProductRealm]) {
     guard let mealId = mealIdByAddPorduct else {return}
-    interactor?.makeRequest(request: .addProductInMeal(mealId: mealId, productId: productId))
+    guard let product = products.first else {return}
+    interactor?.makeRequest(request: .addProductInMeal(mealId: mealId, product: product))
   }
+  
   
 }
 

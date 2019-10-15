@@ -9,22 +9,13 @@
 import UIKit
 
 
-protocol ProductListInDinnerViewModalable {
-  
-  var dinnerItemResultsViewModel: ProductListResultsViewModel {get set}
-  var productsData: [ProductListViewModel] {get set}
-  var isPreviosDinner: Bool {get set}
-}
-
-
 class ProductListInDinnerViewController: BaseProductList {
   
 
-  
   var viewModel: ProductListInDinnerViewModel! {
     
     didSet {
-      self.dinnerItemResultsViewModel = viewModel.dinnerItemResultsViewModel
+      self.dinnerItemResultsViewModel = viewModel.resultsViewModel
 
       self.tableViewData = viewModel.productsData
     }
@@ -186,21 +177,7 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
     let cell = tableView.cellForRow(at: indexPath) as! ProductListCell
     
     let portion: Int = (textField.text! as NSString).integerValue
-    
-//    let carboIn100GrmPoroduct = tableViewData[indexPath.row].carboIn100Grm
-    
-    // Изменит значение лейбла в зависимости от порции котрую мы вводим
-//    let carboInPortion = ComputedValueThanChangeOne.changeCarboInlabel(tableView: tableView, carboOn100Grm: carboIn100GrmPoroduct, portion: portion, indexPath: indexPath)
-    
-    // Этот коэффициент нужно сохранять в ячейке! или модели данных!
-//    let carboIn100GrmPoroduct = tableViewData[indexPath.row].carboIn100Grm
-//
-//    let carboInPortion: Int = CalculateValueTextField.calculateCarboInPortion(carboIn100grm: carboIn100GrmPoroduct, portionSize: portion)
-//
-//
-//
-//
-//
+
     
     // Подумать как приукрасит
     let sumPortion = CalculateValueTextField.calculateSumPortion(portion: portion,indexPath:indexPath, tableViewData: &tableViewData)
@@ -260,7 +237,7 @@ extension ProductListInDinnerViewController {
   
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let header = ProductListHeaderInSection(frame: .zero, withInsulinLabel: true)
+    let header = ProductListHeaderInSection(withInsulinLabel: true,temaColor: .darkGray)
     // Если продуктов нет то скрой хеадер
     header.isHidden = tableViewData.isEmpty
     

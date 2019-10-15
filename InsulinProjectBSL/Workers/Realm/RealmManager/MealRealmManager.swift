@@ -213,12 +213,12 @@ class MealRealmManager {
     }
   }
   
-  func addproductInMeal(mealId: String, productId: String) {
+  func addproductInMeal(mealId: String, product: ProductRealm) {
     
     let realmMeal = RealmProvider.meals.realm
     
     guard let  meal = getMealById(mealId: mealId) else {return}
-    guard let product = foodRealmManager.getProductById(id: productId) else {return}
+//    guard let product = foodRealmManager.getProductById(id: productId) else {return}
     
     // Создаем только кошда нет такого имени в обеде!
     if isProductInMeal(meal: meal, productName: product.name) {

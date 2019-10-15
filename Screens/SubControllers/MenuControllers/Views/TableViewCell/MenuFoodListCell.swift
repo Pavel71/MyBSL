@@ -95,12 +95,6 @@ class MenuFoodListCell: UITableViewCell {
     containerView.addSubview(chooseImageView)
     containerView.contentMode = .center
     chooseImageView.centerInSuperview(size: .init(width: 20, height: 20))
-    
-//    let bottomStackView = UIStackView(arrangedSubviews: [
-//      carboLabel, portionLabel
-//      ])
-//    bottomStackView.distribution = .fillEqually
-//    bottomStackView.spacing = 2
 
     let leftVerticalStackView = UIStackView(arrangedSubviews: [
       nameLabel,
@@ -116,76 +110,12 @@ class MenuFoodListCell: UITableViewCell {
     leftStackView.spacing = 2
     containerView.constrainWidth(constant: 30)
 
-//    rightStackView = UIStackView(arrangedSubviews: [
-//      portionLabel,
-//      carboLabel
-//      ])
-//    rightStackView.spacing = 2
-//    rightStackView.distribution = .fillEqually
-//
-////    carboLabel.constrainWidth(constant: 30)
-//
-//    let stackView = UIStackView(arrangedSubviews: [
-//      leftStackView,rightStackView
-//      ])
-//
-//    stackView.distribution = .fillEqually
-//    stackView.spacing = 2
-//    stackView.alignment = .center
-
     addSubview(leftStackView)
     leftStackView.fillSuperview(padding: Constants.cellMargin)
-    
-    
-    
-    
-    
-    
-//    handSetConstrints()
+
 
   }
-  
-  
-  private func handSetConstrints() {
-    
-    
-    let containerView = UIView()
-    containerView.addSubview(chooseImageView)
-    containerView.contentMode = .center
-    chooseImageView.centerInSuperview(size: .init(width: 20, height: 20))
-    
-    let leftVerticalStackView = UIStackView(arrangedSubviews: [
-      nameLabel,
-      categoryLabel
-      ])
-    leftVerticalStackView.axis = .vertical
-    leftVerticalStackView.spacing = 2
-    
-    leftStackView = UIStackView(arrangedSubviews: [
-      containerView,leftVerticalStackView
-      ])
-    leftStackView.spacing = 2
-    containerView.constrainWidth(constant: 30)
-    
-    addSubview(leftStackView)
-    leftStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: nil)
-    
 
-    addSubview(carboLabel)
-    carboLabel.anchor(top: topAnchor, leading: nil, bottom: bottomAnchor, trailing: trailingAnchor,padding: .init(top: 0, left: 0, bottom: 0, right: 10))
-    
-    addSubview(portionLabel)
-    portionLabel.anchor(top: topAnchor, leading: nil, bottom: bottomAnchor, trailing: carboLabel.leadingAnchor,padding: .init(top: 0, left: 0, bottom: 0, right: 5))
-    
-    
-    
-    leftStackViewTrailingConstraintToPortion = leftStackView.trailingAnchor.constraint(equalTo: portionLabel.leadingAnchor)
-    leftStackViewTrailingConstraintToPortion.isActive = true
-    
-    leftStackViewTrailingConstraintToCarbo = leftStackView.trailingAnchor.constraint(equalTo: carboLabel.leadingAnchor)
-    leftStackViewTrailingConstraintToCarbo.isActive = false
-    
-  }
   
   
   func setViewModel(viewModel:MenuFoodListCellViewModelable, isFavoritsSegment: Bool) {

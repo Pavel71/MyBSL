@@ -15,6 +15,8 @@ import RealmSwift
 class MenuProductsListViewController: UIViewController,MenuControllerInContainerProtocol {
   
   
+  
+  
   init() {
     print("Init Menu View Controller")
     super.init(nibName: nil, bundle: nil)
@@ -51,8 +53,8 @@ class MenuProductsListViewController: UIViewController,MenuControllerInContainer
   var tableViewData: [MenuProductListViewModel] = []
   
   // CLousers
-  
-  var didAddProductClouser: ((String) -> Void)?
+  var didAddProductClouser: (([ProductRealm]) -> Void)?
+//  var didAddProductClouser: ((String) -> Void)?
 //  var didTapSwipeBackMenuButton: EmptyClouser?
   
   override func viewDidLoad() {
@@ -200,7 +202,9 @@ extension MenuProductsListViewController: UITableViewDelegate, UITableViewDataSo
     
     let producIdToAddMeal = tableViewData[indexPath.row].id
     
-    didAddProductClouser!(producIdToAddMeal)
+    guard let product = menuRealmWorker.getProductFromRealm(productId: producIdToAddMeal) else {return}
+    
+    didAddProductClouser!([product])
     
     tableView.reloadRows(at: [indexPath], with: .none)
   }

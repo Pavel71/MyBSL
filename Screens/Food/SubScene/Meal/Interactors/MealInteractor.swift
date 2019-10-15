@@ -82,8 +82,8 @@ class MealInteractor: MealBusinessLogic {
       case .updateProductPortionFromMeal(let mealId, let rowProduct, let portion):
         realmManager.updateProductPortionFromMeal(row: rowProduct, mealId: mealId, portion: portion) // realmDBDidChange
       
-      case .addProductInMeal(let mealId, let productId):
-        realmManager.addproductInMeal(mealId: mealId, productId: productId) // realmDBDidChange
+      case .addProductInMeal(let mealId, let product):
+        realmManager.addproductInMeal(mealId: mealId, product: product) // realmDBDidChange
       
       
     default:break

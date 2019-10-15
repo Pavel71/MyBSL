@@ -145,8 +145,7 @@ extension ShowMenuAnimator {
     animator.addAnimations {
       // Опускаем VIew на половниу
       self.menuController.view.center.y += self.menuDistanceTranslate
-      
-      
+
     }
     
     animator.addAnimations({

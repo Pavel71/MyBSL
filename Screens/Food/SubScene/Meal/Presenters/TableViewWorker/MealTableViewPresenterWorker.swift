@@ -37,27 +37,25 @@ class MealTableViewPresenterWorker {
   private static func getDefaultListViewModel(items: [MealRealm]) -> SectionMealViewModel {
     
     var sectionViewModel = SectionMealViewModel.init(meals: [])
-    
-    for mealRealm in items {
-      
-      var meals = MealViewModel.init(isExpand:mealRealm.isExpandMeal, name: mealRealm.name, typeMeal: mealRealm.typeMeal, products: [], mealId: mealRealm.id)
-      
-      for product in mealRealm.listProduct {
-        
-        
+    sectionViewModel.meals = items.map(getMealsViewModel)
 
-//        let carboInPortionInt = CalculateValueTextField.calculateCarboInPortion(carboIn100grm: product.carbo, portionSize: product.portion)
-    
-        let product = ProductListViewModel.init(insulinValue: nil, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
-        
-        meals.products.append(product)
-      }
-      
-      sectionViewModel.meals.append(meals)
-    }
-    
-    
     return sectionViewModel
+  }
+  
+  private static func getMealsViewModel(meal:MealRealm) -> MealViewModel {
+    
+    var mealViewModel = MealViewModel.init(isExpand:meal.isExpandMeal, name: meal.name, typeMeal: meal.typeMeal, products: [], mealId: meal.id)
+
+    mealViewModel.products = meal.listProduct.map(getProductListViewModel)
+    return mealViewModel
+  }
+  
+  private static func getProductListViewModel(product: ProductRealm) -> ProductListViewModel {
+    
+    let product = ProductListViewModel.init(insulinValue: nil, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
+    
+    return product
+    
   }
   
   // By Section

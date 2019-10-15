@@ -14,7 +14,7 @@ class ContainerDinnerViewController: UIViewController {
   var controller: UIViewController!
   
   var mainViewController: MainViewController
-  var menuProductsListViewController: MenuDinnerViewController!
+  var menuProductsListViewController: MainMenuViewController!
   
   
   private lazy var animator: UIViewPropertyAnimator = {
@@ -115,16 +115,17 @@ extension ContainerDinnerViewController {
   
   private func setMenuControllerClousers() {
     // Нажимаем кнопочку добавить продукт
-    mainViewController.didShowMenuProductsListViewControllerClouser = {[weak self] in  self?.toogleMenu() }
-    mainViewController.didGestureRecognaserValueChange = {[weak self] gesture in
-      self?.handleSwipeMenu(gesture: gesture)
-    }
+//    mainViewController.didShowMenuProductsListViewControllerClouser = {[weak self] in  self?.toogleMenu() }
+//    mainViewController.didPanGestureValueChange = {[weak self] gesture in
+//      self?.handleSwipeMenu(gesture: gesture)
+//    }
+  
 
   }
   
   private func setUpMenuControllerView() {
 
-    menuProductsListViewController = MenuDinnerViewController()
+    menuProductsListViewController = MainMenuViewController()
     
     menuProductsListViewController.view.center.y -= UIScreen.main.bounds.height
     view.addSubview(menuProductsListViewController.view)
@@ -141,8 +142,8 @@ extension ContainerDinnerViewController {
       self?.toogleMenu()
     }
     
-    menuProductsListViewController.didAddProductInDinnerClouser = {[weak mainViewController = mainViewController] productsRealm in
-      mainViewController?.addProductInDinner(products: productsRealm)
+    menuProductsListViewController.didAddProductClouser = {[weak mainViewController = mainViewController] productsRealm in
+      mainViewController?.addProducts(products: productsRealm)
     }
   }
   

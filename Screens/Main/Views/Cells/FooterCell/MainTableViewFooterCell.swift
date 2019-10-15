@@ -40,6 +40,8 @@ class MainTableViewFooterCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
+    selectionStyle = .none
+    
     saveButton.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
 
     robotView.didChangeRobotImage = {[weak self] in

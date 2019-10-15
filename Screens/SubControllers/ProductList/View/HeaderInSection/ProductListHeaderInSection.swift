@@ -21,6 +21,7 @@ class ProductListHeaderInSection: UIView {
     label.numberOfLines = 0
     label.textAlignment = .center
     
+    
     return label
   }()
   
@@ -46,10 +47,17 @@ class ProductListHeaderInSection: UIView {
     
   }()
   
-  init(frame: CGRect,withInsulinLabel: Bool) {
-    super.init(frame: frame)
+
+  
+  init(withInsulinLabel: Bool,temaColor: UIColor) {
+    super.init(frame: .zero)
+    
+    insulinLabel.textColor = temaColor
+    portionLabel.textColor = temaColor
+    carboInPortionLabel.textColor = temaColor
     
     insulinLabel.isHidden = !withInsulinLabel
+    
 
     
     let stackView = UIStackView(arrangedSubviews: [
@@ -64,6 +72,8 @@ class ProductListHeaderInSection: UIView {
     stackView.spacing = 5
     addSubview(stackView)
     stackView.fillSuperview(padding: Constants.ProductList.marginCell)
+    
+    
   }
   
   required init?(coder aDecoder: NSCoder) {
