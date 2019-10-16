@@ -31,10 +31,15 @@ final class MenuRealmWorker {
 // MARK: Meal Requests
 extension MenuRealmWorker {
   
-  func fetchAllMeals() -> [MealViewModelCell] {
+  func fetchAllMeals() -> [MenuModel.MenuMealViewModel] {
     let meals = mealRealmManager.fetchAllMeals()
     
     return presentMealViewModel(items: meals)
+  }
+  
+  func fetchAllProductsInMeal(mealId: String) -> [ProductRealm]? {
+    let products = mealRealmManager.fetchAllProductsInMealById(mealId: mealId)
+    return products
   }
   
 }
@@ -44,14 +49,14 @@ extension MenuRealmWorker {
 extension MenuRealmWorker {
   
   // Fetch All product
-  func fetchAllProducts() -> [MenuProductListViewModel] {
+  func fetchAllProducts() -> [MenuModel.MenuProductListViewModel] {
     
     let items = foodRealmManager.allProducts()
     return presentProductViewModel(items: items)
   }
   
   // Fetch Favorits
-  func fetchFavorits() ->  [MenuProductListViewModel] {
+  func fetchFavorits() ->  [MenuModel.MenuProductListViewModel] {
     let items = foodRealmManager.fetchFavorits()
     return presentProductViewModel(items: items)
   }
@@ -73,15 +78,17 @@ extension MenuRealmWorker {
   
   // Get MealViewModel
   
-  private func presentMealViewModel(items: Results<MealRealm>) -> [MealViewModelCell] {
+  private func presentMealViewModel(items: Results<MealRealm>) -> [MenuModel.MenuMealViewModel] {
     
     return items.map(getMealsViewModel)
 
   }
   
-  private func getMealsViewModel(meal:MealRealm) -> MealViewModel {
+  private func getMealsViewModel(meal:MealRealm) -> MenuModel.MenuMealViewModel {
     
-    var mealViewModel = MealViewModel.init(isExpand:meal.isExpandMeal, name: meal.name, typeMeal: meal.typeMeal, products: [], mealId: meal.id)
+    var mealViewModel = MenuModel.MenuMealViewModel(isChoosen: false, mealId: meal.id, isExpanded: meal.isExpandMeal, name: meal.name, typeMeal: meal.typeMeal, products: [])
+    
+//    var mealViewModel = MealViewModel.init(isExpand:meal.isExpandMeal, name: meal.name, typeMeal: meal.typeMeal, products: [], mealId: meal.id)
     
     mealViewModel.products = meal.listProduct.map(getProductListViewModel)
     return mealViewModel
@@ -99,16 +106,16 @@ extension MenuRealmWorker {
   
   // Get ProductViewModel
   
-  private func presentProductViewModel(items: Results<ProductRealm>) -> [MenuProductListViewModel] {
+  private func presentProductViewModel(items: Results<ProductRealm>) -> [MenuModel.MenuProductListViewModel] {
     
-    var dummyArray: [MenuProductListViewModel] = []
+    var dummyArray: [MenuModel.MenuProductListViewModel] = []
     
     for product in items {
       
       let carboString = String(product.carbo)
       let portionString = String(product.portion)
       
-      let productCellViewModel = MenuProductListViewModel(id: product.id, name: product.name, carboOn100Grm: carboString, isFavorit: product.isFavorits, portion: portionString, category: product.category)
+      let productCellViewModel = MenuModel.MenuProductListViewModel(id: product.id, name: product.name, carboOn100Grm: carboString, isFavorit: product.isFavorits, portion: portionString, category: product.category)
       
       dummyArray.append(productCellViewModel)
     }

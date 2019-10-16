@@ -15,10 +15,8 @@ protocol MealDisplayLogic: class {
 }
 
 class MealViewController: UIViewController, MealDisplayLogic,MainControllerInContainerProtocol {
- 
   
-  
-  
+
   
   var interactor: MealBusinessLogic?
   var router: (NSObjectProtocol & MealRoutingLogic)?
@@ -184,6 +182,7 @@ class MealViewController: UIViewController, MealDisplayLogic,MainControllerInCon
   }
   
   private func reloadTable() {
+    
     
     UIView.transition(with: tableView, duration: 0.2, options: [.transitionCrossDissolve], animations: {
       self.tableView.reloadData()
@@ -419,6 +418,8 @@ extension MealViewController {
     let mealID = sectionViewModelList[indexPath.section].meals[indexPath.row].mealId!
     interactor?.makeRequest(request: .expandedMeal(mealId: mealID))
     
+    
+    
   }
   
   
@@ -470,8 +471,9 @@ extension MealViewController {
   }
   
   // Delete product From Meal
-  private func deleteProductFromMeal(rowProduct: Int, mealId: String) {
-    interactor?.makeRequest(request: .deleteProductFromMeal(mealId: mealId, rowProduct: rowProduct))
+  private func deleteProductFromMeal(productName: String, mealId: String) {
+    
+    interactor?.makeRequest(request: .deleteProductFromMeal(mealId: mealId, productName: productName))
   }
   
   // MARK: Show MenuView And Calculate Distance
@@ -504,6 +506,13 @@ extension MealViewController {
     guard let mealId = mealIdByAddPorduct else {return}
     guard let product = products.first else {return}
     interactor?.makeRequest(request: .addProductInMeal(mealId: mealId, product: product))
+  }
+  
+  func deleteProducts(products: [ProductRealm]) {
+    print("Delete products In Meal")
+    guard let mealId = mealIdByAddPorduct else {return}
+    guard let product = products.first else {return}
+    interactor?.makeRequest(request: .deleteProductFromMeal(mealId: mealId, productName: product.name))
   }
   
   
@@ -645,7 +654,7 @@ extension MealViewController: UITableViewDelegate, UITableViewDataSource {
     cell.productListViewController.didChangePortionTextFieldClouser = {[weak self] portion,row,mealId in
       self?.didChangePortionSizeProductListCell(portion: portion, row: row, mealId: mealId) }
   
-    cell.productListViewController.didDeleteProductFromMealClouser = {[weak self] rowProduct, mealId in self?.deleteProductFromMeal(rowProduct: rowProduct, mealId: mealId) }
+    cell.productListViewController.didDeleteProductFromMealClouser = {[weak self] productName, mealId in self?.deleteProductFromMeal(productName: productName, mealId: mealId) }
     
     cell.didAddNewProductInmeal = {[weak self] mealId,button in self?.addNewproductInMeal(mealId: mealId,button:button) }
     

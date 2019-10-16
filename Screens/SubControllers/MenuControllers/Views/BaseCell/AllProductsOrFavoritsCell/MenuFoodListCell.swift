@@ -18,6 +18,8 @@ protocol MenuFoodListCellViewModelable {
   
   var isFavorit: Bool {get}
   var isChoosen: Bool {get}
+  
+  
 }
 
 class MenuFoodListCell: UITableViewCell {

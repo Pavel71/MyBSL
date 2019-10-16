@@ -49,6 +49,27 @@ class MealRealmManager {
   }
   
   
+
+  
+  private func setItems() {
+    let realm = RealmProvider.meals.realm
+    items = realm.objects(MealRealm.self)
+  }
+  
+
+  
+}
+
+// MARK: Work with Meal
+
+extension MealRealmManager {
+  
+  func fetchAllProductsInMealById(mealId: String) -> [ProductRealm]? {
+    
+    guard let meal = getMealById(mealId: mealId) else {return nil}
+    return Array(meal.listProduct)
+  }
+  
   // Fetch ALL
   func fetchAllMeals() -> Results<MealRealm> {
     
@@ -57,33 +78,18 @@ class MealRealmManager {
     return realm.objects(MealRealm.self)
   }
   
-  private func setItems() {
-    let realm = RealmProvider.meals.realm
-    items = realm.objects(MealRealm.self)
-  }
-  
-  // Search Meal By Name
-  
-//  func seacrhMealByName(character: String) -> Results<MealRealm> {
-//
-//    return fetchAllMeals().filter("name CONTAINS[cd] %@",character)
-//  }
+  // Search
   
   func seacrhMealByName(character: String) -> Results<MealRealm> {
-    
     return items.filter("name CONTAINS[cd] %@",character)
   }
-  
-  // либо вручную перезаписывать items или повесить обсервер!
-  
-  // MARK: Work With Meal
   
   // Delete Meal
   func deleteMeal(mealId: String) {
     let realm = RealmProvider.meals.realm
     
     guard let mealById = getMealById(mealId: mealId) else {return}
- 
+    
     try! realm.write {
       realm.delete(mealById)
     }
@@ -98,7 +104,7 @@ class MealRealmManager {
     try! realm.write {
       mealById.isExpandMeal = !mealById.isExpandMeal
     }
-
+    
   }
   
   // UPdate Meal
@@ -138,7 +144,7 @@ class MealRealmManager {
       
       callBackError(false)
     }
-   
+    
   }
   
   private func addMeal(meal: MealRealm) {
@@ -184,16 +190,21 @@ class MealRealmManager {
     
     return Array(category).sorted()
   }
-  
+}
+
+// MARK: Work With Product List in Meal
+
+extension MealRealmManager {
   
   // MARK: Add Delete Update ProductList in MEal
   
-  func deleteProductFromMeal(row: Int, mealId: String) {
+  func deleteProductFromMeal(productName: String, mealId: String) {
     let realm = RealmProvider.meals.realm
     guard let  meal = getMealById(mealId: mealId) else {return}
     
+    guard let index = meal.listProduct.index(matching: "name == %@",productName) else {return}
     try! realm.write {
-      meal.listProduct.remove(at: row)
+      meal.listProduct.remove(at: index)
     }
     
   }
@@ -209,7 +220,7 @@ class MealRealmManager {
     try! realm.write {
       
       meal.listProduct[row].portion = portion
-
+      
     }
   }
   
@@ -218,19 +229,19 @@ class MealRealmManager {
     let realmMeal = RealmProvider.meals.realm
     
     guard let  meal = getMealById(mealId: mealId) else {return}
-//    guard let product = foodRealmManager.getProductById(id: productId) else {return}
+    //    guard let product = foodRealmManager.getProductById(id: productId) else {return}
     
     // Создаем только кошда нет такого имени в обеде!
     if isProductInMeal(meal: meal, productName: product.name) {
       
       let newProduct = ProductRealm(name: product.name, category: product.category, carbo: product.carbo, isFavorits: product.isFavorits,portion: product.portion)
       try! realmMeal.write {
-//        meal.listProduct.append(newProduct)
+        //        meal.listProduct.append(newProduct)
         meal.listProduct.insert(newProduct, at: 0)
       }
       
     }
-
+    
     
   }
   
@@ -238,5 +249,4 @@ class MealRealmManager {
     
     return meal.listProduct.filter("name == %@",productName).isEmpty
   }
-  
 }

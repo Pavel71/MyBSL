@@ -15,12 +15,14 @@ protocol MainControllerInContainerProtocol: UIViewController, ShowMenuAnimatable
   var didPanGestureValueChange: ((UIPanGestureRecognizer) -> Void)? {get set}
   
   func addProducts(products: [ProductRealm])
+  func deleteProducts(products: [ProductRealm])
   
 }
 
 protocol MenuControllerInContainerProtocol: UIViewController {
   
   var didAddProductClouser: (([ProductRealm]) -> Void)? {get set}
+  var didDeleteProductClouser: (([ProductRealm]) -> Void)? {get set}
   func setDefaultChooseProduct()
 }
 
@@ -122,6 +124,11 @@ extension ContainerController {
     menuController.didAddProductClouser = {[weak mainController] products in
       mainController?.addProducts(products: products)
 
+    }
+    // Вообщем сюда нужно добавить и удаление при выборы и снятие
+    menuController.didDeleteProductClouser = {[weak mainController] products in
+      mainController?.deleteProducts(products: products)
+      
     }
 
   }

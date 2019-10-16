@@ -9,13 +9,16 @@
 import UIKit
 
 
-protocol ProductListViewModelCell {
-  
-  var name: String {get set}
-  var portion: Int {get set }
-  var carboInPortion: Int {get}
-  var insulinValue: Float? {get set}
-}
+//protocol ProductListViewModelCell {
+//
+//  var name: String {get set}
+//  var portion: Int {get set }
+//  var carboInPortion: Int {get}
+//  var insulinValue: Float? {get set}
+//}
+
+
+// Depricat4ed Удалить!
 
 class ProductListCell: UITableViewCell {
   
@@ -129,6 +132,8 @@ class ProductListCell: UITableViewCell {
     carboInPortionLabel.text = carboInPortion
     
     insulinTextField.isHidden = !withInsulinTextFields
+    
+    // Dinner Cell
     portionTextField.isUserInteractionEnabled = !isPreviosDinner
     portionTextField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
     
@@ -146,7 +151,7 @@ class ProductListCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  
+  // Pocker View
   var resultCompTens: Float = 0
   var resultCompSimple: Float = 0
   var resultComDrob: Float = 0

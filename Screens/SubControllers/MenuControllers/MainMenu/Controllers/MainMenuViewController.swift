@@ -13,6 +13,8 @@ import UIKit
 
 class MainMenuViewController: UIViewController,MenuControllerInContainerProtocol {
   
+  
+  
 
   // Views
   var menuDinnerView = MenuView(segmentItems: ["Все","Избранное","Обеды"])
@@ -21,12 +23,13 @@ class MainMenuViewController: UIViewController,MenuControllerInContainerProtocol
   // CLousers
   var didTapSwipeMenuBackButton: EmptyClouser?
   var didAddProductClouser: (([ProductRealm]) -> Void)?
+  var didDeleteProductClouser: (([ProductRealm]) -> Void)?
 //  var didAddProductInDinnerClouser: (([ProductRealm]) -> Void)?
   
   // ViewModel
-  var tableViewProductsData: [MenuProductListViewModel] = []
+  var tableViewProductsData: [MenuModel.MenuProductListViewModel] = []
   // Я так думаю что под обеды мне нужна своя модель
-  var tableViewMealsData: [MealViewModelCell] = []
+  var tableViewMealsData: [MenuModel.MenuMealViewModel] = []
 
   
   // Properties
@@ -163,7 +166,7 @@ extension MainMenuViewController {
         tableViewProductsData = menuRealmWorker.fetchFavorits()
       
       case .meals:
-        // Нужно убрать раскрытые обеды это не очень юзабельно
+        // Нужно убрать раскрытые обеды это не очень юзабельно Сохранение
         // если что это можно будет сделать здесь пока не вижу смысла можт я уберу это вообще!
         tableViewMealsData = menuRealmWorker.fetchAllMeals()
       
@@ -198,10 +201,10 @@ extension MainMenuViewController: UITableViewDataSource, UITableViewDelegate {
         
         
         let cell = tableView.dequeueReusableCell(withIdentifier: MenuMealListCell.cellId, for: indexPath) as! MenuMealListCell
-        
         let viewModel = tableViewMealsData[indexPath.row]
         cell.setViewModel(viewModel: viewModel)
         setMealCellClousers(cell)
+        
         return cell
       
       default:
@@ -224,25 +227,51 @@ extension MainMenuViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
     switch currentSegment {
-    case .meals:
-      print("Выбор обедов обрабатывается по своему")
-    default:
-      // Во всех остальных случаях
-      
-      let choosed = tableViewProductsData[indexPath.row].isChoosen
-      tableViewProductsData[indexPath.row].isChoosen = !choosed
-      
-      if !choosed {
-        
-        let producIdToDinner = tableViewProductsData[indexPath.row].id
-        guard let product = menuRealmWorker.getProductFromRealm(productId: producIdToDinner) else {return}
-        didAddProductClouser!([product])
-        
-      }
-
+      case .meals:
+        passMealToDinner(indexPath: indexPath)
+      default:
+        passProductToDinner(indexPath: indexPath)
     }
 
     tableView.reloadRows(at: [indexPath], with: .none)
+  }
+  
+  // MARK: Pass Product To Dinner
+  
+  private func passProductToDinner(indexPath: IndexPath) {
+    
+    let choosed = tableViewProductsData[indexPath.row].isChoosen
+    tableViewProductsData[indexPath.row].isChoosen = !choosed
+    
+    let producIdToDinner = tableViewProductsData[indexPath.row].id
+    guard let product = menuRealmWorker.getProductFromRealm(productId: producIdToDinner) else {return}
+    
+    if choosed {
+      
+      didDeleteProductClouser!([product])
+    } else {
+      didAddProductClouser!([product])
+    }
+
+  }
+  
+  private func passMealToDinner(indexPath: IndexPath) {
+    let choosed = tableViewMealsData[indexPath.row].isChoosen
+    tableViewMealsData[indexPath.row].isChoosen = !choosed
+    
+    // Что можно сделать ! Если choosed то удалить этот продукт или продукты
+    // ТОгда по нажатию и снятию галочки будут происходить эти дела
+    // Но здесь важно что нужно добавить при открытие меню наполнять продукты но это конечно не реально потомучто меню будет открыватся только на чистой ячейки поэтому эта работа он идет именно сейчас добавил у брал по нажатию
+    guard let mealId = tableViewMealsData[indexPath.row].mealId else {return}
+    // Получить массив всех продуктов
+    guard let products = menuRealmWorker.fetchAllProductsInMeal(mealId: mealId) else {return}
+    
+    if choosed {
+      print("Удалить продукты")
+      didDeleteProductClouser!(products)
+    } else {
+      didAddProductClouser!(products)
+    }
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

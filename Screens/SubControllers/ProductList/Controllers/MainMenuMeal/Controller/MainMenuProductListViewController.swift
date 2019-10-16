@@ -39,12 +39,10 @@ extension MainMenuProductListViewController {
     tableView.backgroundColor = .clear
     
     tableView.register(MainMenuProductListCell.self, forCellReuseIdentifier: MainMenuProductListCell.cellId)
-    tableView.delegate = self
     tableView.dataSource = self
   }
 }
 
-// в Общий класс
 // MARK: Set View Models
 extension MainMenuProductListViewController {
   // View Models
@@ -66,7 +64,7 @@ extension MainMenuProductListViewController {
   }
 }
 
-extension MainMenuProductListViewController: UITableViewDelegate,UITableViewDataSource {
+extension MainMenuProductListViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return tableViewData.count
@@ -76,16 +74,10 @@ extension MainMenuProductListViewController: UITableViewDelegate,UITableViewData
     let cell = tableView.dequeueReusableCell(withIdentifier: MainMenuProductListCell.cellId, for: indexPath) as! MainMenuProductListCell
     
     let viewModel = tableViewData[indexPath.row]
-    cell.setViewModel(viewModel: viewModel, withInsulinTextFields: false)
+    cell.setViewModel(viewModel: viewModel)
     return cell
   }
-  
-  // В общий Класс
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-      return Constants.ProductList.cellHeight
-    }
-  
-  
+
 
   
 }

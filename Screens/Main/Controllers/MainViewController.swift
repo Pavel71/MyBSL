@@ -87,10 +87,11 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
     setUpMainView()
     
     let headerViewModel = MainHeaderViewModel.init(lastInjectionValue: "1.5", lastTimeInjectionValue: "13:30", lastShugarValueLabel: "7.5", insulinSupplyInPanValue: "156")
+    
     let dinnerViewModels = DinnerData.getData()
     
     mainViewModel = MainViewModel.init(headerViewModelCell: headerViewModel, dinnerCollectionViewModel: dinnerViewModels)
-    // После установки обновим всю таблицу
+    
     tableView.reloadData()
     
   }
@@ -147,7 +148,6 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
   }
   
   
-//  var headerCell: MainTableViewHeaderCell!
   
 }
 
@@ -212,7 +212,7 @@ extension MainViewController {
 }
 
 
-// MARK: Configure TableView
+// MARK: TableView Delegate DataSource
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
   
@@ -261,9 +261,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     cell.setViewModel(viewModel: mainViewModel.dinnerCollectionViewModel)
     
     setMiddleCellClouser(cell: cell)
-    
-    
-    
+
     return cell
   }
   
@@ -274,8 +272,13 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
       self?.didSelectTextField(textField: textField)
     }
     
+    // Add New Product
     cell.dinnerCollectionViewController.didAddNewProductInDinner = {[weak self] in
       self?.addNewProductInDinner()
+    }
+    // Delete Product From Dinner
+    cell.dinnerCollectionViewController.didDeleteProductFromDinner = {[weak self] product in
+      self?.deleteProducts(products: product)
     }
     
     // Choose Place Incjections In Cell
@@ -345,25 +348,61 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 extension MainViewController {
   
   
-  // MARK: MenuDinnerViewController Cath Product
+  // MARK: MenuDinnerViewController Catch Product And Delete Product
   
-  // Add Product in Realm
-  // MARK: TODO Add Product In Realm
+  // Этим должна заниматся View Model! Или хотябы запихнуть в  Worker чтобы можно было бы тестировать!
   
-  func addProducts(products: [ProductRealm]) {
-    print("Add Products")
-    products.forEach { (product) in
-      let productListViewModel = ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
-      
-      mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.insert(productListViewModel,at:0)
-    }
-    
-    tableView.reloadRows(at: [IndexPath(item: 1, section: 0)], with: .automatic)
+  private func getFirstDinnerProductListViewModel() -> [ProductListViewModel] {
+    let newDinnerProducts = mainViewModel.dinnerCollectionViewModel.first!.productListInDinnerViewModel.productsData
+    return newDinnerProducts
   }
   
+  func addProducts(products: [ProductRealm]) {
+    
+    let currentArray = MainWorker.addProducts(products: products, newDinnerProducts: getFirstDinnerProductListViewModel())
+    
+    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.insert(contentsOf: currentArray, at: 0)
+    
+    // Здесь нужна проверочка на совпадение продуктов по именам
+    
+//    products.forEach { (product) in
+//
+//      if !checkProductByName(name: product.name) {
+//
+//        let productListViewModel = ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
+//
+//        mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.insert(productListViewModel,at:0)
+//      }
+//
+//
+//
+//    }
+    
+    reloadFirstDinner()
+  }
+  
+  private func checkProductByName(name: String) -> Bool {
+    let newDinnerProducts = mainViewModel.dinnerCollectionViewModel.first!.productListInDinnerViewModel.productsData
+    return newDinnerProducts.contains{ $0.name == name }
+    
+  }
+  
+  func deleteProducts(products: [ProductRealm]) {
 
+    var newDinnerProducts = mainViewModel.dinnerCollectionViewModel.first!.productListInDinnerViewModel.productsData
+
+    products.forEach { (productCame) in
+     
+      newDinnerProducts.removeAll{$0.name == productCame.name}
+    }
+    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = newDinnerProducts
+    print(newDinnerProducts)
+    reloadFirstDinner()
+  }
   
-  
+  private func reloadFirstDinner() {
+    tableView.reloadRows(at: [IndexPath(item: 1, section: 0)], with: .automatic)
+  }
 
   
   // Begin Editing TextField

@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol MenuMealListCellViewModelable: MealViewModelCell {
+  
+  var isChoosen: Bool {get}
+  
+}
+
 class MenuMealListCell: UITableViewCell {
   
   
@@ -114,7 +120,7 @@ class MenuMealListCell: UITableViewCell {
     return mealId
   }
   
-  func setViewModel(viewModel: MealViewModelCell) {
+  func setViewModel(viewModel: MenuMealListCellViewModelable) {
     
     mealTitleLabel.text = viewModel.name
     mealTypeLabel.text = viewModel.typeMeal
@@ -122,6 +128,10 @@ class MenuMealListCell: UITableViewCell {
     // Возможно здесь она не должна идти
     guard let mealId = viewModel.mealId else {return}
     self.mealId = mealId
+    
+    
+    chooseImageView.image = viewModel.isChoosen ? #imageLiteral(resourceName: "circular-shape-silhouette").withRenderingMode(.alwaysTemplate) : #imageLiteral(resourceName: "circumference").withRenderingMode(.alwaysTemplate)
+
     
     let productListViewModel = ProductListInMealViewModel(mealId: self.mealId, productsData: viewModel.products)
     

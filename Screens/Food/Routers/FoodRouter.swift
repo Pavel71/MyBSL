@@ -28,7 +28,7 @@ class FoodRouter: NSObject, FoodRoutingLogic {
     
     mealController.didUpdateHeaderWorkerInFoodViewController = viewController?.updateHeaderWorkerInSection
     
-    let menuController = MenuProductsListViewController()
+    let menuController = MenuInMealViewController()
     
 //    let containerViewController = ContainerViewController(mealController: mealController)
     

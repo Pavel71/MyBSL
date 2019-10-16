@@ -76,8 +76,8 @@ class MealInteractor: MealBusinessLogic {
     
     switch  request {
       // Product List Delete Update Add
-      case .deleteProductFromMeal(let mealId, let rowProduct):
-        realmManager.deleteProductFromMeal(row: rowProduct, mealId: mealId) // realmDBDidChange
+      case .deleteProductFromMeal(let mealId, let productName):
+        realmManager.deleteProductFromMeal(productName: productName, mealId: mealId) // realmDBDidChange
       
       case .updateProductPortionFromMeal(let mealId, let rowProduct, let portion):
         realmManager.updateProductPortionFromMeal(row: rowProduct, mealId: mealId, portion: portion) // realmDBDidChange

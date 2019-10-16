@@ -28,13 +28,8 @@ class ProductListInMealViewController: BaseProductList {
   
   
   init(isTemaColorDark: Bool) {
-    valueColor = .white
-//    valueColor = isTemaColorDark ? .darkGray : .white
+    valueColor  = isTemaColorDark ? .white : .darkGray
     super.init()
-    print(valueColor)
-    
-
-
   }
   
   deinit {
@@ -45,7 +40,7 @@ class ProductListInMealViewController: BaseProductList {
   
   var didChangePortionTextFieldClouser: ((Int,Int,String) -> Void)?
   var didSelectTextFieldCellClouser: ((UITextField) -> Void)?
-  var didDeleteProductFromMealClouser: ((Int,String) -> Void)?
+  var didDeleteProductFromMealClouser: ((String,String) -> Void)?
   var didAddProductInMealClouser: ((String) -> Void)?
   
   override func viewDidLoad() {
@@ -58,11 +53,9 @@ class ProductListInMealViewController: BaseProductList {
   private func configureTableView() {
     
     tableView.backgroundColor = .clear
-    
-    
-    tableView.delegate = self
+
     tableView.dataSource = self
-    tableView.register(ProductListCell.self, forCellReuseIdentifier: ProductListCell.cellID)
+    tableView.register(FoodMealProductListCell.self, forCellReuseIdentifier: FoodMealProductListCell.cellId)
   }
 
   
@@ -97,7 +90,7 @@ class ProductListInMealViewController: BaseProductList {
  
 }
 
-extension ProductListInMealViewController: UITableViewDataSource, UITableViewDelegate {
+extension ProductListInMealViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return tableViewData.count
@@ -105,16 +98,16 @@ extension ProductListInMealViewController: UITableViewDataSource, UITableViewDel
   
   // Здесь вот уже мне понадобится Custom ячейка с name и зщкешщт
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: ProductListCell.cellID, for: indexPath) as! ProductListCell
+    let cell = tableView.dequeueReusableCell(withIdentifier: FoodMealProductListCell.cellId, for: indexPath) as! FoodMealProductListCell
     
-    cell.setViewModel(viewModel: tableViewData[indexPath.row], withInsulinTextFields: false)
+    cell.setViewModel(viewModel: tableViewData[indexPath.row])
     setClousers(cell: cell)
    
     
     return cell
   }
   
-  private func setClousers(cell:ProductListCell) {
+  private func setClousers(cell:FoodMealProductListCell) {
     
     cell.didBeginEditingTextField = {[weak self] textField in
       self?.handleTextFieldDidBeginEditing(textField)
@@ -125,16 +118,10 @@ extension ProductListInMealViewController: UITableViewDataSource, UITableViewDel
     cell.didPortionTextFieldEditing = {[weak self] textField in
       self?.handlePortionTextFieldEndEditing(textField: textField)
     }
-    // AddNewProductInMeal
-    
-
 
     
   }
   
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return Constants.ProductList.cellHeight
-  }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
@@ -168,7 +155,7 @@ extension ProductListInMealViewController: UITextFieldDelegate {
   private func changeCarboInPortionFromPortionSize(textField: UITextField) {
     
     guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
-    let cell = tableView.cellForRow(at: indexPath) as! ProductListCell
+    let cell = tableView.cellForRow(at: indexPath) as! FoodMealProductListCell
 
     let portion: Int = (textField.text! as NSString).integerValue
 
@@ -239,9 +226,11 @@ extension ProductListInMealViewController {
     
     let deleteAction = UIContextualAction(style: .destructive, title: "Удалить продукт") { (action, view, succsess) in
       
-      let productRow = indexPath.row
+      let productName = self.tableViewData[indexPath.row].name
+     
       
-      self.didDeleteProductFromMealClouser!(productRow, self.mealId)
+      
+      self.didDeleteProductFromMealClouser!(productName, self.mealId)
 
       succsess(true)
     }

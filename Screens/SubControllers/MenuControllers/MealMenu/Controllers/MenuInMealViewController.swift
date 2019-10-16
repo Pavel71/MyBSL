@@ -12,11 +12,8 @@ import RealmSwift
 
 // Задача класса собрать массив продуктов с Определнной моделью и передать его в MealViewController!
 
-class MenuProductsListViewController: UIViewController,MenuControllerInContainerProtocol {
-  
-  
-  
-  
+class MenuInMealViewController: UIViewController,MenuControllerInContainerProtocol {
+
   init() {
     print("Init Menu View Controller")
     super.init(nibName: nil, bundle: nil)
@@ -50,12 +47,11 @@ class MenuProductsListViewController: UIViewController,MenuControllerInContainer
   var menuView = MenuView(segmentItems: ["Все","Избранное"])
   
   var tableView:UITableView!
-  var tableViewData: [MenuProductListViewModel] = []
+  var tableViewData: [MenuModel.MenuProductListViewModel] = []
   
   // CLousers
   var didAddProductClouser: (([ProductRealm]) -> Void)?
-//  var didAddProductClouser: ((String) -> Void)?
-//  var didTapSwipeBackMenuButton: EmptyClouser?
+  var didDeleteProductClouser: (([ProductRealm]) -> Void)?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -89,13 +85,10 @@ class MenuProductsListViewController: UIViewController,MenuControllerInContainer
 
 
 // MARK: Set UP Views
-extension MenuProductsListViewController {
+extension MenuInMealViewController {
   
   private func setUpMenuView() {
-    
-    // Короче надо сдесь разобратсчя и все будет Норм!
 
-//    menuView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2)
     view.addSubview(menuView)
     menuView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor,padding: .init(top: 0, left: 10, bottom: 0, right: 10),size: .init(width: 0, height: UIScreen.main.bounds.height / 2))
     
@@ -130,7 +123,7 @@ extension MenuProductsListViewController {
 
 
 // MARK: SearchBar Delegate
-extension MenuProductsListViewController: UISearchBarDelegate {
+extension MenuInMealViewController: UISearchBarDelegate {
   
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 
@@ -151,7 +144,7 @@ extension MenuProductsListViewController: UISearchBarDelegate {
 
 // MARK: DId Tap Some Buttons Change Text Or Segment
 
-extension MenuProductsListViewController {
+extension MenuInMealViewController {
   
   private func didSegmentChange(segmentControll: UISegmentedControl) {
     
@@ -180,7 +173,7 @@ extension MenuProductsListViewController {
 
 
 // MARK: TableView Delegate DataSource
-extension MenuProductsListViewController: UITableViewDelegate, UITableViewDataSource {
+extension MenuInMealViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return tableViewData.count
@@ -198,15 +191,27 @@ extension MenuProductsListViewController: UITableViewDelegate, UITableViewDataSo
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-    tableViewData[indexPath.row].isChoosen = !tableViewData[indexPath.row].isChoosen
     
-    let producIdToAddMeal = tableViewData[indexPath.row].id
-    
-    guard let product = menuRealmWorker.getProductFromRealm(productId: producIdToAddMeal) else {return}
-    
-    didAddProductClouser!([product])
+    passProductToDinner(indexPath: indexPath)
     
     tableView.reloadRows(at: [indexPath], with: .none)
+  }
+  
+  private func passProductToDinner(indexPath: IndexPath) {
+    
+    let choosed = tableViewData[indexPath.row].isChoosen
+    tableViewData[indexPath.row].isChoosen = !choosed
+    
+    let producIdToAddMeal = tableViewData[indexPath.row].id
+    guard let product = menuRealmWorker.getProductFromRealm(productId: producIdToAddMeal) else {return}
+    
+    if choosed {
+      
+      didDeleteProductClouser!([product])
+    } else {
+      didAddProductClouser!([product])
+    }
+    
   }
   
   // Header In Section

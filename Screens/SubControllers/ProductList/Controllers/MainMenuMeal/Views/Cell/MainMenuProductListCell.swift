@@ -30,7 +30,7 @@ class MainMenuProductListCell: BaseProductListCell {
 
   
   
-  override func setViewModel(viewModel: ProductListViewModelCell, withInsulinTextFields: Bool) {
+  override func setViewModel(viewModel: ProductListViewModelCell,withInsulinTextFields: Bool = false) {
     super.setViewModel(viewModel: viewModel, withInsulinTextFields: withInsulinTextFields)
     
     // Здесь я уже пишу что нужно сделать!

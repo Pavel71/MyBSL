@@ -25,7 +25,7 @@ class DinnerData {
     
     let result = ProductListResultsViewModel(sumCarboValue: "12", sumPortionValue: "25", sumInsulinValue: "33")
     
-    let productListViewController1 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [product1,product2], isPreviosDinner: false)
+    let productListViewController1 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [], isPreviosDinner: false)
     
     let productListViewController2 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [product2,product1,product2], isPreviosDinner: true)
     
@@ -36,11 +36,27 @@ class DinnerData {
     let dinner2 = DinnerViewModel(shugarTopViewModel: shugarViewModel2, productListInDinnerViewModel: productListViewController2)
     let dinner3 = DinnerViewModel(shugarTopViewModel: shugarViewModel3, productListInDinnerViewModel: productListViewController3)
     
-    
+    // Нужен какойто метод который будет создавать заглушку с пустым dinnerom и вставлять его в viewModel! Но это должна делать реалм схема!
     
     let dinnerViewModels = [
       dinner1
     ]
     return dinnerViewModels
   }
+  
+  // Задача функции возвращать пустую стандартную модель - заготовку для заполнения!
+  static func getDummyDinner() -> DinnerViewModel {
+    
+    let shugarViewModel1 = ShugarTopViewModel(isPreviosDinner: false, shugarBeforeValue: "", shugarAfterValue: "", timeBefore: "", timeAfter: "")
+    
+    let result = ProductListResultsViewModel(sumCarboValue: "12", sumPortionValue: "25", sumInsulinValue: "33")
+    
+    let productListViewController1 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [], isPreviosDinner: false)
+    
+    let dinner1 = DinnerViewModel(shugarTopViewModel: shugarViewModel1, productListInDinnerViewModel: productListViewController1)
+    
+    return dinner1
+    
+  }
+  
 }

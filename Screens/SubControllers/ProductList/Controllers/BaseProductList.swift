@@ -12,21 +12,17 @@ import UIKit
 
 // Посути класс объеденяте всебе ТОлько ТО как будут отображатся элементы на экране и какие общие свойства содержит класс
 
+// Здесь я лучше буду отображать общие данные расположение UI Element
+
 class BaseProductList: UIViewController,BaseProductListViewControllerable {
   
-//  var mealId: String = ""
+
   
   var footerView = ProductsTableViewInMealCellFooterView(frame: .init(x: 0, y: 0, width: 0, height: Constants.ProductList.TableFooterView.footerHeight))
 
   var tableView = UITableView(frame: .zero, style: .plain)
   var headerView = ProductListTableHeaderView(frame: .init(x: 0, y: 0, width: 0, height: ProductListTableHeaderView.height))
-  
-//  var tableViewData:[ProductListViewModel] = []
-  
-  
-//  var didSelectTextFieldCellClouser: TextFieldPassClouser?
-  
-  
+
   
   init() {
     super.init(nibName: nil, bundle: nil)
@@ -49,6 +45,7 @@ class BaseProductList: UIViewController,BaseProductListViewControllerable {
     view.addSubview(tableView)
     tableView.fillSuperview()
     
+    tableView.delegate = self
     tableView.isScrollEnabled = false
     tableView.tableFooterView = footerView // footerView
 
@@ -67,25 +64,12 @@ class BaseProductList: UIViewController,BaseProductListViewControllerable {
   
 }
 
-//extension BaseProductList: UITableViewDelegate {
-//  
-//  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//    return Constants.ProductList.cellHeight
-//  }
-//  
-//}
+extension BaseProductList: UITableViewDelegate {
+  
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return Constants.ProductList.cellHeight
+  }
+  
+}
 
 
-
-
-
-
-
-//extension BaseProductList: UITextFieldDelegate {
-//  
-//  func textFieldDidBeginEditing(_ textField: UITextField) {
-//    didSelectTextFieldCellClouser!(textField)
-//  }
-//  
-//
-//}

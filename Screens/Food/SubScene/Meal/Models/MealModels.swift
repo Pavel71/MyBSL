@@ -38,7 +38,7 @@ enum Meal {
         
         // ProductListRequests
         // Здесь надежнее будет работать через id! Переписать!
-        case deleteProductFromMeal(mealId: String,rowProduct: Int)
+        case deleteProductFromMeal(mealId: String, productName: String)
         case updateProductPortionFromMeal(mealId: String,rowProduct: Int,portion:Int)
         case addProductInMeal(mealId: String,product: ProductRealm)
         

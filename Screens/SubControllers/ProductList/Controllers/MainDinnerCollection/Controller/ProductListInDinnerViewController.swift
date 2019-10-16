@@ -16,7 +16,6 @@ class ProductListInDinnerViewController: BaseProductList {
     
     didSet {
       self.dinnerItemResultsViewModel = viewModel.resultsViewModel
-
       self.tableViewData = viewModel.productsData
     }
   }
@@ -31,6 +30,7 @@ class ProductListInDinnerViewController: BaseProductList {
   
   // Clousers
   var didSelectTextFieldCellClouser: ((UITextField) -> Void)?
+  var didDeleteProductClouser:(([ProductRealm]) -> Void)?
   
 
   override func viewDidLoad() {
@@ -48,15 +48,16 @@ class ProductListInDinnerViewController: BaseProductList {
   }
   
   private func configureTableView() {
-    tableView.delegate = self
     tableView.dataSource = self
-    tableView.register(ProductListCell.self, forCellReuseIdentifier: ProductListCell.cellID)
+    tableView.register(MainDinnerProductListCell.self, forCellReuseIdentifier: MainDinnerProductListCell.cellId)
     tableView.keyboardDismissMode = .interactive
   }
   
   func setViewModel(viewModel: ProductListInDinnerViewModel) {
-    self.viewModel = viewModel
     
+    tableView.tableHeaderView = viewModel.productsData.count == 0 ? headerView : nil
+    
+    self.viewModel = viewModel
     setResultViewModel()
   }
   
@@ -99,7 +100,7 @@ class ProductListInDinnerViewController: BaseProductList {
 
 // MARK: TableView Delegate Datasource
 
-extension ProductListInDinnerViewController: UITableViewDataSource,UITableViewDelegate {
+extension ProductListInDinnerViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return tableViewData.count
@@ -108,7 +109,7 @@ extension ProductListInDinnerViewController: UITableViewDataSource,UITableViewDe
   // Здесь вот уже мне понадобится Custom ячейка с name и зщкешщт
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-    let cell = tableView.dequeueReusableCell(withIdentifier: ProductListCell.cellID, for: indexPath) as! ProductListCell
+    let cell = tableView.dequeueReusableCell(withIdentifier: MainDinnerProductListCell.cellId, for: indexPath) as! MainDinnerProductListCell
     
     
     cell.setViewModel(viewModel: tableViewData[indexPath.row], withInsulinTextFields: true, isPreviosDinner: viewModel.isPreviosDinner)
@@ -118,7 +119,7 @@ extension ProductListInDinnerViewController: UITableViewDataSource,UITableViewDe
     return cell
   }
   
-  private func setCellClousers(cell:ProductListCell) {
+  private func setCellClousers(cell:MainDinnerProductListCell) {
     
     cell.didBeginEditingTextField = {[weak self] textField in
       self?.textFieldDidBeginEditing(textField) // SuperClass
@@ -131,10 +132,7 @@ extension ProductListInDinnerViewController: UITableViewDataSource,UITableViewDe
     cell.didChangeInsulinFromPickerView = {[weak self] textField in
       self?.didChangeInsulinTextField(textField: textField)
     }
-    
-//    cell.insulinTextField.addTarget(self, action: #selector(didChangeInsulinTextField), for: .editingChanged)
-    
-    
+
     cell.didPortionTextFieldEditing = {[weak self] textField in
       self?.handlePortionTextFieldEndEditing(textField: textField)
     }
@@ -146,13 +144,6 @@ extension ProductListInDinnerViewController: UITableViewDataSource,UITableViewDe
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
   }
-  
-  
-  // Высота Может стоит вынести это в Base я посмотрю
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return Constants.ProductList.cellHeight
-  }
-  
   
   
 }
@@ -174,7 +165,7 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
 
     guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
     
-    let cell = tableView.cellForRow(at: indexPath) as! ProductListCell
+    let cell = tableView.cellForRow(at: indexPath) as! MainDinnerProductListCell
     
     let portion: Int = (textField.text! as NSString).integerValue
 
@@ -208,9 +199,10 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
   
   // Эти методы нужны когда будем слать запросы в реалм
   
+  // А может и нужно будет удалить это нафиг!
+  
   private func handlePortionTextFieldEndEditing(textField: UITextField) {
     print("Portion End Editing")
-
 
 
   }
@@ -259,14 +251,16 @@ extension ProductListInDinnerViewController {
     
     let deleteAction = UIContextualAction(style: .destructive, title: "Удалить продукт") { (action, view, succsess) in
       
-//      let productRow = indexPath.row
-//
-//      self.didDeleteProductFromMealClouser!(productRow, self.mealId)
-      print("удалить продукт")
+      let productViewModel = self.tableViewData[indexPath.row]
+      let dummyRealmProduct = ProductRealm(name: productViewModel.name, category: "", carbo: productViewModel.carboIn100Grm, isFavorits: false)
+      
+      
+      print("Удаление продукта")
+      self.didDeleteProductClouser!([dummyRealmProduct])
       
       succsess(true)
     }
-    // Удаляет сам по индексу и не андо парится!
+    
     return UISwipeActionsConfiguration(actions: [deleteAction])
   }
   

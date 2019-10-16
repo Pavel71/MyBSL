@@ -46,6 +46,9 @@ class DinnerCollectionViewController: UIViewController {
   // WillActiveTextField
   var didEndEditingWillActiveTextField: TextFieldPassClouser?
   
+  // Delete product
+  var didDeleteProductFromDinner: (([ProductRealm]) -> Void)?
+  
   // Button
   var didAddNewProductInDinner: EmptyClouser?
   var didShowChoosepalceIncjectionView: EmptyClouser?
@@ -134,6 +137,10 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     // Add New Product
     cell.didTapAddNewProductInDinnerClouser = {[weak self] in
       self?.addNewProductInDinner()
+    }
+    // Delete Product
+    cell.productListViewController.didDeleteProductClouser = {[weak self] product in
+      self?.didDeleteProductFromDinner!(product)
     }
     
     // ChoosePlaceInjections

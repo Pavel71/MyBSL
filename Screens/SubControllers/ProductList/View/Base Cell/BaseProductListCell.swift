@@ -8,6 +8,14 @@
 
 import UIKit
 
+protocol ProductListViewModelCell {
+  
+  var name: String {get set}
+  var portion: Int {get set }
+  var carboInPortion: Int {get}
+  var insulinValue: Float? {get set}
+}
+
 class BaseProductListCell: UITableViewCell {
   
   
