@@ -32,20 +32,47 @@ class ProductListInDinnerViewController: BaseProductList {
   var didSelectTextFieldCellClouser: ((UITextField) -> Void)?
   var didDeleteProductClouser:(([ProductRealm]) -> Void)?
   
+  var didPortionTextFieldChangetToDinnerController: StringPassClouser?
+  var didInsulinTextFieldChangetToDinnerController: StringPassClouser?
 
   override func viewDidLoad() {
     super.viewDidLoad()
     
     setUpTableView()
   }
-  
   override func setUpTableView() {
     
     super.setUpTableView()
     configureTableView()
     
-
+    
   }
+  
+  
+  // MARK: AddNewProduct
+  
+  func addNewProduct(products: [ProductRealm]) {
+    
+    tableViewData.append(contentsOf: products.map(getProductListViewModelFromProductReal))
+
+    tableView.reloadData()
+    
+  }
+  
+  private func getProductListViewModelFromProductReal(product: ProductRealm) -> ProductListViewModel {
+    let productListViewModel = ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
+    return productListViewModel
+  }
+
+
+  
+}
+
+// MARK: Set UP Views
+
+extension ProductListInDinnerViewController {
+  
+ 
   
   private func configureTableView() {
     tableView.dataSource = self
@@ -69,34 +96,8 @@ class ProductListInDinnerViewController: BaseProductList {
     
     tableView.reloadData()
   }
-  
-  // MARK: AddNewProduct
-  
-  func addNewProduct(products: [ProductRealm]) {
-    
-    products.forEach { (product) in
-      let productListViewModel = ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
-      
-      tableViewData.append(productListViewModel)
-    }
-    // Короче нужно пересчитывать размер ячейки до какого то кол-ва
-    tableView.reloadData()
-    
-  }
-
-
-  
 }
 
-
-// MARK: TAP SOME BUTTONS
-//extension ProductListInDinnerViewController {
-//
-//  @objc private func handleAddProductInMeal() {
-//    print("Add New Product")
-//  }
-//
-//}
 
 // MARK: TableView Delegate Datasource
 
@@ -127,7 +128,10 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     
     // PortionTextField Delegate
     
-    cell.portionTextField.addTarget(self, action: #selector(didChangePortionTextField), for: .editingChanged)
+//    cell.portionTextField.addTarget(self, action: #selector(didChangePortionTextField), for: .editingChanged)
+    cell.didChangePortionFromPickerView = {[weak self] textField in
+      self?.didChangePortionTextField(textField: textField)
+    }
     
     cell.didChangeInsulinFromPickerView = {[weak self] textField in
       self?.didChangeInsulinTextField(textField: textField)
@@ -164,10 +168,11 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
   @objc private func didChangePortionTextField(textField: UITextField) {
 
     guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
+    guard let text = textField.text else {return}
     
     let cell = tableView.cellForRow(at: indexPath) as! MainDinnerProductListCell
     
-    let portion: Int = (textField.text! as NSString).integerValue
+    let portion: Int = (text as NSString).integerValue
 
     
     // Подумать как приукрасит
@@ -182,6 +187,15 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
     
     footerView.resultsView.portionResultLabel.text = String(sumPortion)
     footerView.resultsView.carboResultLabel.text = String(sumCarbo)
+    
+    
+    // Вообщем я сделаю ввод порций picker
+    // Потом если мы сохраняем а общий рещлуьтат по порциям или инсулинам 0 то выводить соответвующие сообщения
+    // + сделать тоже самое по продуктам!
+    // Это будет нормальным решением!
+    
+    
+    didPortionTextFieldChangetToDinnerController!(text)
 
   }
   
@@ -189,11 +203,15 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
   @objc private func didChangeInsulinTextField(textField: UITextField) {
     
     guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
+    guard let text = textField.text else {return}
     
-    let insulin = (textField.text! as NSString).floatValue
+    let insulin = (text as NSString).floatValue
     
     let sum = CalculateValueTextField.calculateSumInsulin(insulin: insulin, indexPath: indexPath, tableViewData: &tableViewData)
     footerView.resultsView.insulinResultLabel.text = String(sum)
+    
+    didInsulinTextFieldChangetToDinnerController!(text)
+
   }
   
   

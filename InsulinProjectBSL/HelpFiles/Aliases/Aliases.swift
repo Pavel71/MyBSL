@@ -11,5 +11,6 @@ import UIKit
 typealias EmptyClouser = (() -> Void)
 
 typealias TextFieldPassClouser = ((UITextField) -> Void)
+typealias StringPassClouser = ((String) -> Void)
 
 

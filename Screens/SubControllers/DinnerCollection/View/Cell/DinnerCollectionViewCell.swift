@@ -13,6 +13,8 @@ protocol DinnerViewModelCellable {
 
   var shugarTopViewModel: ShugarTopViewModelable {get set}
   var productListInDinnerViewModel: ProductListInDinnerViewModel {get set}
+  var placeInjection: String {get set}
+  var train: String? {get set}
 
 }
 
@@ -53,6 +55,13 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   var choosePlaceInjectionViewTopConstraint: NSLayoutConstraint!
   var heightProductListConstraint: NSLayoutConstraint!
   
+  
+  // CLousers
+  var didTapAddNewProductInDinnerClouser: EmptyClouser?
+  
+  // Pass Clousers
+  var didShugarBeforeTextFieldChangeToDinnerViewController: StringPassClouser?
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
@@ -64,19 +73,6 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     setUpChoosePlaceInjectionsRowView()
     setUpWillActiveRow()
   }
-  
-  
-
-  
-  // MARK: SOme Functions
-  
-  
-  var didTapAddNewProductInDinnerClouser: EmptyClouser?
-  @objc private func handleAddNewProduct() {
-    
-    didTapAddNewProductInDinnerClouser!()
-  }
-  
 
   // Height Product List
   
@@ -112,6 +108,20 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   }
 }
 
+// MARK: Set CLousers Or Functions
+
+extension DinnerCollectionViewCell {
+  
+ // Add New Product Button
+  @objc private func handleAddNewProduct() {
+    
+    didTapAddNewProductInDinnerClouser!()
+  }
+  
+  
+  
+}
+
 // MARK: Set UP Views
 
 extension DinnerCollectionViewCell {
@@ -124,6 +134,12 @@ extension DinnerCollectionViewCell {
     shugarSetView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom: 0, right: 8))
     
     shugarSetView.constrainHeight(constant: Constants.Main.DinnerCollectionView.shugarViewInCellHeight)
+    
+    // CLousers
+    shugarSetView.didChangeShugarBeforeTextFieldToDinnerCellClouser = {[weak self] text in
+      self?.didShugarBeforeTextFieldChangeToDinnerViewController!(text)
+    }
+    
   }
   // Set Up ProductView
   
@@ -193,12 +209,24 @@ extension DinnerCollectionViewCell {
   func setViewModel(viewModel: DinnerViewModel) {
     
     setShugarViewModel(shugarTopViewModel: viewModel.shugarTopViewModel)
-    setProductListViewModel(viewModel: viewModel)
+    setProductListViewModel(productListViewModel: viewModel.productListInDinnerViewModel)
+    
+    setChoosePlaceViewModel(placeInjections: viewModel.placeInjection)
     
     // Здесь мне нужно будет учесть что если обед переходит в разряд прошлых то мы блокиреум ввод всего кроме скорректированного инсулина
     
+    
   }
   
+  private func setChoosePlaceViewModel(placeInjections: String) {
+    
+    if placeInjections.isEmpty == false {
+      chooseRowView.chooseButton.setTitle(placeInjections, for: .normal)
+    }
+    
+  }
+  
+  // Shugar ViewModle
   private func setShugarViewModel(shugarTopViewModel: ShugarTopViewModelable) {
     
     shugarSetView.setViewModel(viewModel: shugarTopViewModel)
@@ -206,16 +234,19 @@ extension DinnerCollectionViewCell {
     
   }
   
-  private func setProductListViewModel(viewModel: DinnerViewModel) {
+  // ProductListViewModel
+  private func setProductListViewModel(productListViewModel: ProductListInDinnerViewModel) {
     
     
-    productListViewController.setViewModel(viewModel: viewModel.productListInDinnerViewModel)
+    productListViewController.setViewModel(viewModel: productListViewModel)
     
     
-    let isPreviosDinner = viewModel.productListInDinnerViewModel.isPreviosDinner
+    let isPreviosDinner = productListViewModel.isPreviosDinner
     
-    setProductListViewHeight(countProducts: viewModel.productListInDinnerViewModel.productsData.count, isPreviosDinner: isPreviosDinner)
+    setProductListViewHeight(countProducts:productListViewModel.productsData.count, isPreviosDinner: isPreviosDinner)
     
   }
+  
+  
 }
 

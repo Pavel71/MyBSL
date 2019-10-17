@@ -64,10 +64,12 @@ class ShugarSetView: UIView {
   
   // CLousers
   var didBeginEditingShugarBeforeTextField: TextFieldPassClouser?
+  var didChangeShugarBeforeTextFieldToDinnerCellClouser: StringPassClouser?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
+    shugarBeforeValueTextField.addTarget(self, action: #selector(handleShugarBeforeTextChange), for: .editingChanged)
     shugarBeforeValueTextField.keyboardType = .decimalPad
     shugarAfterValueTextField.keyboardType = .decimalPad
     
@@ -115,13 +117,14 @@ class ShugarSetView: UIView {
     
 
   }
+  
+  
 
   
   func setViewModel(viewModel:ShugarTopViewModelable) {
     
-    
-    
-    
+    shugarBeforeValueTextField.text = viewModel.shugarBeforeValue
+
     // Hidden right shugar StackView And S
     stackViewShugarAfter.isHidden = !viewModel.isPreviosDinner
     spacingView.isHidden = viewModel.isPreviosDinner
@@ -134,6 +137,7 @@ class ShugarSetView: UIView {
       timeBeforeLabel.text = viewModel.timeBefore
       timeAfterLabel.text = viewModel.timeAfter
     }
+    
   }
   
   
@@ -164,14 +168,26 @@ class ShugarSetView: UIView {
 
 extension ShugarSetView: UITextFieldDelegate {
   
+  @objc private func handleShugarBeforeTextChange(textField: UITextField) {
+    
+    guard let text = textField.text else {return}
+    didChangeShugarBeforeTextFieldToDinnerCellClouser!(text)
+  }
+  
   func textFieldDidBeginEditing(_ textField: UITextField) {
     
     didBeginEditingShugarBeforeTextField!(textField)
   }
   
+  
+  
   func textFieldDidEndEditing(_ textField: UITextField) {
-
-    setTimeBeforTime()
+    
+    if textField.text?.isEmpty == false {
+      setTimeBeforTime()
+    }
+    
+    
     
     // Возможно здесь мне нужно будет прокидывать clouser
   }

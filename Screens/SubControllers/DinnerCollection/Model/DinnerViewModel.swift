@@ -8,11 +8,25 @@
 
 import Foundation
 
+
+
+// Пока напишу здесь класс Валидатор
+
+
+
+
+
+
+
+
+
 // DinnerViewModelCellable
 struct DinnerViewModel: DinnerViewModelCellable {
-  
+
   var shugarTopViewModel: ShugarTopViewModelable
   var productListInDinnerViewModel: ProductListInDinnerViewModel
+  var placeInjection: String
+  var train: String?
 
 }
 

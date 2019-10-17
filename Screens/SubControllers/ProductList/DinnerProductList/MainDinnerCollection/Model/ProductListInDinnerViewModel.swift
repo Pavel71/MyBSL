@@ -19,13 +19,9 @@ import UIKit
 
 struct ProductListInDinnerViewModel: ProductListInDinnerViewModalable {
   
-
   var resultsViewModel: ProductListResultsViewModel
-
   var productsData: [ProductListViewModel]
-//  var dinnerItemResultsViewModel: ProductListResultsViewModel
   var isPreviosDinner: Bool
-  
   
 }
 

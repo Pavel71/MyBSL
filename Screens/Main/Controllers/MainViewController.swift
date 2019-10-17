@@ -51,7 +51,9 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
   
   // ViewModel
   var mainViewModel: MainViewModel!
-  
+  // Validator
+  // Валидируем данные с ячейки dinnerCOllectionView
+  let dinnerValidator = DinnerViewModelValidator()
   
   // MARK: Object lifecycle
   
@@ -84,17 +86,31 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
   override func viewDidLoad() {
     super.viewDidLoad()
     print("View Did Load")
+    
+    
+    dinnerValidator.isValidCallBack = {[weak self] succes in
+      // Если прошла валидация успешно
+      print(succes)
+      let footerCell = self?.getMainFooterCell()
+      footerCell?.saveButton.isEnabled = succes
+      
+    }
+    
+    
     setUpMainView()
     
     let headerViewModel = MainHeaderViewModel.init(lastInjectionValue: "1.5", lastTimeInjectionValue: "13:30", lastShugarValueLabel: "7.5", insulinSupplyInPanValue: "156")
     
-    let dinnerViewModels = DinnerData.getData()
+    let dinnerViewModels = DinnerData.getDummyDinner()
     
-    mainViewModel = MainViewModel.init(headerViewModelCell: headerViewModel, dinnerCollectionViewModel: dinnerViewModels)
+    mainViewModel = MainViewModel.init(headerViewModelCell: headerViewModel, dinnerCollectionViewModel: [dinnerViewModels])
     
     tableView.reloadData()
     
   }
+  
+  
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     setKeyboardNotification()
@@ -130,6 +146,11 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
     let dinnerItem = cell.dinnerCollectionViewController.collectionView.cellForItem(at:  IndexPath(item: 0, section: 0))  as! DinnerCollectionViewCell
     
     return dinnerItem
+  }
+  
+  private func getMainFooterCell() -> MainTableViewFooterCell {
+    let  cell = tableView.cellForRow(at: IndexPath(item: 2, section: 0)) as! MainTableViewFooterCell
+    return cell
   }
   
   
@@ -272,6 +293,35 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
       self?.didSelectTextField(textField: textField)
     }
     
+    // To Validator
+    
+    // Insulin TextField Change
+    cell.dinnerCollectionViewController.didInsulinTextFieldCnahgeToMain = {
+      [weak dinnerValidator] text in
+      //Это все нужно собирать в какойто модели пока руками буду вставлять
+      dinnerValidator?.insulinValue = text
+    }
+    
+    // Порция добавляется у меня через модель так шо это надо будет учесть чтобы валидатор тоже знал об этом!
+    
+    // Portion TextField Change
+    cell.dinnerCollectionViewController.didPortionTextFieldCnahgeToMain = {
+      [weak dinnerValidator] text in
+      
+      
+      dinnerValidator?.portion = text
+    }
+    
+    // Shugar Before TextField Change
+    cell.dinnerCollectionViewController.didShugarBeforeTextFieldChangeToMain = {[weak dinnerValidator,weak self] text in
+      
+      self?.mainViewModel.dinnerCollectionViewModel[0].shugarTopViewModel.shugarBeforeValue = text
+      
+      dinnerValidator?.shugarBeforeValue = text
+    }
+    
+    
+    
     // Add New Product
     cell.dinnerCollectionViewController.didAddNewProductInDinner = {[weak self] in
       self?.addNewProductInDinner()
@@ -301,6 +351,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
       self?.didSwitchTrainActivate()
 //      self?.removeListTrainTableView() // если листа нет то ниче не произойдет если есть то уберет
     }
+    
+    
     
     cell.dinnerCollectionViewController.didEndEditingWillActiveTextField = {[weak self] textField in
       self?.didEndEditingTrainTextField(textField: textField)
@@ -363,40 +415,23 @@ extension MainViewController {
     
     mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.insert(contentsOf: currentArray, at: 0)
     
-    // Здесь нужна проверочка на совпадение продуктов по именам
+    // Stupid Thing!
     
-//    products.forEach { (product) in
-//
-//      if !checkProductByName(name: product.name) {
-//
-//        let productListViewModel = ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
-//
-//        mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.insert(productListViewModel,at:0)
-//      }
-//
-//
-//
-//    }
+    let somePortion = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData[0].portion
+    let someInsulin = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData[0].insulinValue
+    
+    dinnerValidator.portion = "\(somePortion)"
+    dinnerValidator.insulinValue = "\(someInsulin)"
     
     reloadFirstDinner()
   }
-  
-  private func checkProductByName(name: String) -> Bool {
-    let newDinnerProducts = mainViewModel.dinnerCollectionViewModel.first!.productListInDinnerViewModel.productsData
-    return newDinnerProducts.contains{ $0.name == name }
-    
-  }
+
   
   func deleteProducts(products: [ProductRealm]) {
 
-    var newDinnerProducts = mainViewModel.dinnerCollectionViewModel.first!.productListInDinnerViewModel.productsData
-
-    products.forEach { (productCame) in
-     
-      newDinnerProducts.removeAll{$0.name == productCame.name}
-    }
-    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = newDinnerProducts
-    print(newDinnerProducts)
+    let currentArray = MainWorker.deleteProducts(products: products, newDinnerProducts: getFirstDinnerProductListViewModel())
+    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
+    
     reloadFirstDinner()
   }
   
@@ -436,7 +471,6 @@ extension MainViewController {
 
   // Add NEw Product in PorductListViewController
   private func addNewProductInDinner() {
-    print("Add New product Main")
     
     // Use COntainer COntroller
     didShowMenuProductsListViewControllerClouser!(distanceTranslateMainController)
@@ -524,7 +558,7 @@ extension MainViewController {
   private func choosePlaceInjections() {
     // Так же нам понадобится анимация
     closeMenu()
-    
+    print("Choose Inkections")
     ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: true)
     
     
@@ -537,8 +571,16 @@ extension MainViewController {
     dinnerItem.chooseRowView.chooseButton.setTitle(namePlace, for: .normal)
     // Теперь задача состоит в том что нужно транспортировать строку в row
     
+    // Добавляем в валидатор
+    dinnerValidator.placeInjection = namePlace
+    
+    // это все должно идти через презентер наверно где то там модель с данными должна лежать!
+    // Сохраняем в модель!
+    mainViewModel.dinnerCollectionViewModel[0].placeInjection = namePlace
     // Закрываем
     didTapClouseChoosePlaceInjectionView()
+    
+ 
     
   }
   

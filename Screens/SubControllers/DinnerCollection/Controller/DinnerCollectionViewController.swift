@@ -39,10 +39,18 @@ class DinnerCollectionViewController: UIViewController {
     }
   }
   
+  
+  
 
   // Clousers Pass to MainController
+  
   // TextField
   var didSelectTextField: TextFieldPassClouser?
+  
+  var didShugarBeforeTextFieldChangeToMain: StringPassClouser?
+  var didPortionTextFieldCnahgeToMain: StringPassClouser?
+  var didInsulinTextFieldCnahgeToMain : StringPassClouser?
+  
   // WillActiveTextField
   var didEndEditingWillActiveTextField: TextFieldPassClouser?
   
@@ -83,7 +91,7 @@ class DinnerCollectionViewController: UIViewController {
     dinnerViewModel = viewModel
   }
   
-  
+
   
   
 }
@@ -113,20 +121,19 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
   // в этом методе я расставлю  clouser чтобы только этот контроллер отвечал за все действия происходящие на его территории!
   private func setCellClousers(cell: DinnerCollectionViewCell,indexPath: IndexPath) {
     
-    // TextFiedl
-    
+    // Это Конечно не особо правельно! Нужно будет исправить это!
     cell.shugarSetView.shugarAfterValueTextField.delegate = self
-
     
-    // Select TextField
+    // ShugarSetView
     
-    cell.shugarSetView.didBeginEditingShugarBeforeTextField = {[weak self] textField in
-      self?.textFieldDidBeginEditing(textField)
-    }
+    setShugarSetViewClousers(cell: cell)
     
-    cell.productListViewController.didSelectTextFieldCellClouser = {[weak self] textField in
-      self?.textFieldDidBeginEditing(textField)
-    }
+    
+    // ProductListInDinner
+    
+    setProductListInDinnerClousers(cell: cell)
+    
+   
 
     // Touches Pass View
     
@@ -138,10 +145,7 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     cell.didTapAddNewProductInDinnerClouser = {[weak self] in
       self?.addNewProductInDinner()
     }
-    // Delete Product
-    cell.productListViewController.didDeleteProductClouser = {[weak self] product in
-      self?.didDeleteProductFromDinner!(product)
-    }
+  
     
     // ChoosePlaceInjections
     cell.chooseRowView.didTapChoosePlaceInjections = {[weak self] in
@@ -166,6 +170,45 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
 
     
     
+  }
+  
+  private func setShugarSetViewClousers(cell:DinnerCollectionViewCell) {
+    
+    // Begin Editing
+    cell.shugarSetView.didBeginEditingShugarBeforeTextField = {[weak self] textField in
+      self?.textFieldDidBeginEditing(textField)
+    }
+    // Changet
+    cell.didShugarBeforeTextFieldChangeToDinnerViewController = {[weak self] text in
+      self?.didShugarBeforeTextFieldChangeToMain!(text)
+      
+    }
+
+  }
+  
+  private func setProductListInDinnerClousers(cell:DinnerCollectionViewCell) {
+    
+    // InsulinTextField Change
+    cell.productListViewController.didInsulinTextFieldChangetToDinnerController = {
+      [weak self] text in
+      self?.didInsulinTextFieldCnahgeToMain!(text)
+    }
+    
+    // PortionTextFieldChange
+    cell.productListViewController.didPortionTextFieldChangetToDinnerController = {
+      [weak self] text in
+      self?.didPortionTextFieldCnahgeToMain!(text)
+    }
+    
+    // Begin TextField
+    cell.productListViewController.didSelectTextFieldCellClouser = {[weak self] textField in
+      self?.textFieldDidBeginEditing(textField)
+    }
+    
+    // Delete Product
+    cell.productListViewController.didDeleteProductClouser = {[weak self] product in
+      self?.didDeleteProductFromDinner!(product)
+    }
   }
   
   // По идеии эти сигналы нужно прокинуть на mainController

@@ -21,6 +21,8 @@ class MainTableViewFooterCell: UITableViewCell {
     
     b.tintColor = UIColor.white
     b.backgroundColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+    
+    b.isEnabled = false
     return b
   }()
   
@@ -81,7 +83,6 @@ class MainTableViewFooterCell: UITableViewCell {
   
   var didTapSaveButtonClouser: (() -> Void)?
   @objc private func didTapSaveButton() {
-    print("Did Tap Save Button")
     didTapSaveButtonClouser!()
   }
   
