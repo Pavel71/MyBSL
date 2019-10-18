@@ -59,4 +59,16 @@ class DinnerData {
     
   }
   
+  
+  static func getMainViewModelDummy() -> MainViewModel {
+    
+    let headerViewModel = MainHeaderViewModel.init(lastInjectionValue: "1.5", lastTimeInjectionValue: "13:30", lastShugarValueLabel: "7.5", insulinSupplyInPanValue: "156")
+    
+    let dinnerViewModels = DinnerData.getDummyDinner()
+    
+    let mainViewModel = MainViewModel.init(headerViewModelCell: headerViewModel, dinnerCollectionViewModel: [dinnerViewModels])
+    
+    return mainViewModel
+  }
+  
 }

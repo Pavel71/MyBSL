@@ -8,22 +8,64 @@
 
 import UIKit
 
+
 enum Main {
    
   enum Model {
+    
     struct Request {
+      
+      // Interactors
+      
       enum RequestType {
-        case some
+        
+        // Метод подгружает последние 10 обедов
+        case getViewModel
+        
+        // Update ViewModel Without Realm
+        case setPortionInProduct(portion: String, rowProduct: Int)
+        case setInsulinInProduct(insulin: String, rowProduct:Int,isPreviosDInner: Bool)
+        case setShugarBefore(shugarBefore: String)
+        case setPlaceIngections(place: String)
+        case setShigarBeforeInTime(time: String)
+        // Add Product
+        case addProductInNewDinner(products:[ProductRealm])
+        case deleteProductFromDinner(products: [ProductRealm])
       }
     }
+    
     struct Response {
+      
+      // Presenter
+      
       enum ResponseType {
-        case some
+        // Пока здесь сразу пойдет модель потом переделать это в реалм данные
+        case prepareViewModel(viewModel: MainViewModel)
+        
+        
+        // UPDateViewModel
+        
+        case setPortionInProduct(portion: String, rowProduct: Int)
+        case setInsulinInProduct(insulin: String, rowProduct:Int,isPreviosDInner:Bool)
+        case setShugarBefore(shugarBefore: String)
+        case setPlaceIngections(place: String)
+        case setShigarBeforeInTime(time: String)
+        
+        // Add Product
+        case addProductInDinner(products:[ProductRealm])
+        //Delete Product
+        case deleteProductFromDinner(products: [ProductRealm])
+        
       }
     }
+    
+    // ViewController
+    
     struct ViewModel {
+      
       enum ViewModelData {
-        case some
+        
+        case setViewModel(viewModel: MainViewModel)
       }
     }
   }

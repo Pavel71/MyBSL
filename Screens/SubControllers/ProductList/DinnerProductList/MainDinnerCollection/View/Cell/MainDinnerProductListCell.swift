@@ -88,12 +88,18 @@ class MainDinnerProductListCell: BaseProductListCell {
   func setViewModel(viewModel: ProductListViewModelCell, withInsulinTextFields: Bool = true, isPreviosDinner: Bool) {
     super.setViewModel(viewModel: viewModel, withInsulinTextFields: withInsulinTextFields)
     
+    
+    
     portionTextField.isUserInteractionEnabled = !isPreviosDinner
     portionTextField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
     
     // При сети данных из модели мы должны их прокинуть для валидатора
 //    didChangePortionFromPickerView!(portionTextField)
 //    didChangePortionFromPickerView!(insulinTextField)
+    
+    
+    guard let insulinValue = viewModel.insulinValue else {return}
+    insulinTextField.text = "\(insulinValue)"
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -127,14 +133,14 @@ extension MainDinnerProductListCell: UIPickerViewDelegate, UIPickerViewDataSourc
   }
   
   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    print("Reload Numbers of rows")
+    
      let data = getDataToCurrentPickerSegment(pickerSegment: currentPickerSegment)
     return data[component].count
   }
   
   func pickerView( _ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
     let data = getDataToCurrentPickerSegment(pickerSegment: currentPickerSegment)
-    print(data[component][row])
+    
     return data[component][row]
   }
   
@@ -188,9 +194,7 @@ extension MainDinnerProductListCell: UIPickerViewDelegate, UIPickerViewDataSourc
     let value = resultPortionComHundred + resultPortionCompTens + resultIPortionCompSimple
     
     portionTextField.text = String(value)
-    
-    print(value,"Portion Sum")
-    
+
     // Нужно прокинуть PortionTextField срфтпу
     // Делаем изменнеие как будто пишем текстом
     

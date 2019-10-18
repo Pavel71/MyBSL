@@ -89,8 +89,8 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
     
     
     dinnerValidator.isValidCallBack = {[weak self] succes in
-      // Если прошла валидация успешно
-      print(succes)
+      
+      
       let footerCell = self?.getMainFooterCell()
       footerCell?.saveButton.isEnabled = succes
       
@@ -98,14 +98,8 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
     
     
     setUpMainView()
-    
-    let headerViewModel = MainHeaderViewModel.init(lastInjectionValue: "1.5", lastTimeInjectionValue: "13:30", lastShugarValueLabel: "7.5", insulinSupplyInPanValue: "156")
-    
-    let dinnerViewModels = DinnerData.getDummyDinner()
-    
-    mainViewModel = MainViewModel.init(headerViewModelCell: headerViewModel, dinnerCollectionViewModel: [dinnerViewModels])
-    
-    tableView.reloadData()
+    interactor?.makeRequest(request: .getViewModel)
+
     
   }
   
@@ -132,12 +126,20 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
   
   func displayData(viewModel: Main.Model.ViewModel.ViewModelData) {
     
+    switch viewModel {
+    case .setViewModel(let viewModel):
+
+      print("Set ViewModel")
+      mainViewModel = viewModel
+
+    default:break
+    }
+    
+    
+    
   }
   
-  
-  private func setViewModel(viewModel: MainViewModel) {
-    mainViewModel = viewModel
-  }
+
   
   private func getFirstDinnerCell() -> DinnerCollectionViewCell {
     
@@ -293,12 +295,15 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
       self?.didSelectTextField(textField: textField)
     }
     
-    // To Validator
+    
     
     // Insulin TextField Change
     cell.dinnerCollectionViewController.didInsulinTextFieldCnahgeToMain = {
-      [weak dinnerValidator] text in
-      //Это все нужно собирать в какойто модели пока руками буду вставлять
+      [weak dinnerValidator,weak self] text,row in
+
+      self?.interactor?.makeRequest(request: .setInsulinInProduct(insulin: text, rowProduct: row, isPreviosDInner: false))
+
+      
       dinnerValidator?.insulinValue = text
     }
     
@@ -306,18 +311,25 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     // Portion TextField Change
     cell.dinnerCollectionViewController.didPortionTextFieldCnahgeToMain = {
-      [weak dinnerValidator] text in
+      [weak dinnerValidator,weak self] text,row in
       
       
+      self?.interactor?.makeRequest(request: .setPortionInProduct(portion: text, rowProduct: row))
+      
+      // Тут нужно правельно записать в модель данные которые приходят сюда
       dinnerValidator?.portion = text
     }
     
     // Shugar Before TextField Change
     cell.dinnerCollectionViewController.didShugarBeforeTextFieldChangeToMain = {[weak dinnerValidator,weak self] text in
       
-      self?.mainViewModel.dinnerCollectionViewModel[0].shugarTopViewModel.shugarBeforeValue = text
-      
+      self?.interactor?.makeRequest(request: .setShugarBefore(shugarBefore: text))
+
       dinnerValidator?.shugarBeforeValue = text
+    }
+    // TimeShugarBefore
+    cell.dinnerCollectionViewController.didSetShugarBeforeInTimeClouserToMain = {[weak self] time in
+      self?.interactor?.makeRequest(request: .setShigarBeforeInTime(time: time))
     }
     
     
@@ -411,11 +423,15 @@ extension MainViewController {
   
   func addProducts(products: [ProductRealm]) {
     
-    let currentArray = MainWorker.addProducts(products: products, newDinnerProducts: getFirstDinnerProductListViewModel())
+//    let currentArray = MainWorker.addProducts(products: products, newDinnerProducts: getFirstDinnerProductListViewModel())
+//    
+//    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.insert(contentsOf: currentArray, at: 0)
     
-    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.insert(contentsOf: currentArray, at: 0)
+    interactor?.makeRequest(request: .addProductInNewDinner(products: products))
     
     // Stupid Thing!
+    
+    // Мы просто сетим первое значение в валидатор и потом оно будет обновлятся если будет добавленно нескольок продуктов
     
     let somePortion = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData[0].portion
     let someInsulin = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData[0].insulinValue
@@ -429,8 +445,9 @@ extension MainViewController {
   
   func deleteProducts(products: [ProductRealm]) {
 
-    let currentArray = MainWorker.deleteProducts(products: products, newDinnerProducts: getFirstDinnerProductListViewModel())
-    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
+//    let currentArray = MainWorker.deleteProducts(products: products, newDinnerProducts: getFirstDinnerProductListViewModel())
+//    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
+    interactor?.makeRequest(request: .deleteProductFromDinner(products: products))
     
     reloadFirstDinner()
   }
@@ -571,12 +588,14 @@ extension MainViewController {
     dinnerItem.chooseRowView.chooseButton.setTitle(namePlace, for: .normal)
     // Теперь задача состоит в том что нужно транспортировать строку в row
     
+    
     // Добавляем в валидатор
     dinnerValidator.placeInjection = namePlace
     
     // это все должно идти через презентер наверно где то там модель с данными должна лежать!
     // Сохраняем в модель!
-    mainViewModel.dinnerCollectionViewModel[0].placeInjection = namePlace
+    interactor?.makeRequest(request: .setPlaceIngections(place: namePlace))
+//    mainViewModel.dinnerCollectionViewModel[0].placeInjection = namePlace
     // Закрываем
     didTapClouseChoosePlaceInjectionView()
     

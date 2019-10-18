@@ -32,8 +32,8 @@ class ProductListInDinnerViewController: BaseProductList {
   var didSelectTextFieldCellClouser: ((UITextField) -> Void)?
   var didDeleteProductClouser:(([ProductRealm]) -> Void)?
   
-  var didPortionTextFieldChangetToDinnerController: StringPassClouser?
-  var didInsulinTextFieldChangetToDinnerController: StringPassClouser?
+  var didPortionTextFieldChangetToDinnerController: ((String,Int) -> Void)?
+  var didInsulinTextFieldChangetToDinnerController: ((String,Int) -> Void)?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -194,8 +194,9 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
     // + сделать тоже самое по продуктам!
     // Это будет нормальным решением!
     
+    // Здесь нам нужно передать какой именно продукт мы редактируем! Чтобы Main Controller  знал об этом!
     
-    didPortionTextFieldChangetToDinnerController!(text)
+    didPortionTextFieldChangetToDinnerController!(text,indexPath.row)
 
   }
   
@@ -210,7 +211,7 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
     let sum = CalculateValueTextField.calculateSumInsulin(insulin: insulin, indexPath: indexPath, tableViewData: &tableViewData)
     footerView.resultsView.insulinResultLabel.text = String(sum)
     
-    didInsulinTextFieldChangetToDinnerController!(text)
+    didInsulinTextFieldChangetToDinnerController!(text,indexPath.row)
 
   }
   

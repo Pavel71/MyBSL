@@ -48,8 +48,9 @@ class DinnerCollectionViewController: UIViewController {
   var didSelectTextField: TextFieldPassClouser?
   
   var didShugarBeforeTextFieldChangeToMain: StringPassClouser?
-  var didPortionTextFieldCnahgeToMain: StringPassClouser?
-  var didInsulinTextFieldCnahgeToMain : StringPassClouser?
+  var didSetShugarBeforeInTimeClouserToMain: StringPassClouser?
+  var didPortionTextFieldCnahgeToMain: ((String,Int) -> Void)?
+  var didInsulinTextFieldCnahgeToMain : ((String,Int) -> Void)?
   
   // WillActiveTextField
   var didEndEditingWillActiveTextField: TextFieldPassClouser?
@@ -183,6 +184,10 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
       self?.didShugarBeforeTextFieldChangeToMain!(text)
       
     }
+    
+    cell.shugarSetView.didSetShugarBeforeInTimeClouser = {[weak self] time in
+      self?.didSetShugarBeforeInTimeClouserToMain!(time)
+    }
 
   }
   
@@ -190,14 +195,14 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     
     // InsulinTextField Change
     cell.productListViewController.didInsulinTextFieldChangetToDinnerController = {
-      [weak self] text in
-      self?.didInsulinTextFieldCnahgeToMain!(text)
+      [weak self] text, row in
+      self?.didInsulinTextFieldCnahgeToMain!(text,row)
     }
     
     // PortionTextFieldChange
     cell.productListViewController.didPortionTextFieldChangetToDinnerController = {
-      [weak self] text in
-      self?.didPortionTextFieldCnahgeToMain!(text)
+      [weak self] text, row in
+      self?.didPortionTextFieldCnahgeToMain!(text,row)
     }
     
     // Begin TextField

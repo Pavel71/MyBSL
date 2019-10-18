@@ -65,6 +65,7 @@ class ShugarSetView: UIView {
   // CLousers
   var didBeginEditingShugarBeforeTextField: TextFieldPassClouser?
   var didChangeShugarBeforeTextFieldToDinnerCellClouser: StringPassClouser?
+  var didSetShugarBeforeInTimeClouser: StringPassClouser?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -124,7 +125,8 @@ class ShugarSetView: UIView {
   func setViewModel(viewModel:ShugarTopViewModelable) {
     
     shugarBeforeValueTextField.text = viewModel.shugarBeforeValue
-
+    timeBeforeLabel.text = viewModel.timeBefore
+    
     // Hidden right shugar StackView And S
     stackViewShugarAfter.isHidden = !viewModel.isPreviosDinner
     spacingView.isHidden = viewModel.isPreviosDinner
@@ -141,7 +143,7 @@ class ShugarSetView: UIView {
   }
   
   
-  private func setTimeBeforTime() {
+  private func setTimeBeforTime() -> String {
     
     let timeNow = Date()
     let timeString = dateFormatter.string(from: timeNow)
@@ -151,6 +153,8 @@ class ShugarSetView: UIView {
     UIView.animate(withDuration: 0.5) {
       self.timeBeforeLabel.alpha = 1
     }
+    
+    return timeString
     
   }
   
@@ -172,6 +176,8 @@ extension ShugarSetView: UITextFieldDelegate {
     
     guard let text = textField.text else {return}
     didChangeShugarBeforeTextFieldToDinnerCellClouser!(text)
+    
+    // Здесь нужно установить время и прокинуть его в модельку потомучто потом мы будем сохранять все в базу данных
   }
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -184,7 +190,9 @@ extension ShugarSetView: UITextFieldDelegate {
   func textFieldDidEndEditing(_ textField: UITextField) {
     
     if textField.text?.isEmpty == false {
-      setTimeBeforTime()
+      let timeBefore = setTimeBeforTime()
+      
+      didSetShugarBeforeInTimeClouser!(timeBefore)
     }
     
     

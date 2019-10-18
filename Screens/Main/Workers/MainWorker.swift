@@ -34,7 +34,7 @@ extension MainWorker {
 
     products.forEach { (product) in
       
-      if !checkProductByName(name: product.name,newDinnerProducts: newDinnerProducts) {
+      if !checkProductByName(name: product.name, newDinnerProducts: newDinnerProducts) {
         let productListViewModel = getProductListViewModel(product: product)
         dummyData.insert(productListViewModel,at:0)
       }
