@@ -58,6 +58,7 @@
 		05A4F1C4233A3E8000DFE4D7 /* ShugarSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1C3233A3E8000DFE4D7 /* ShugarSetView.swift */; };
 		05C16D61233F23A800486CAE /* ProductListResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D60233F23A800486CAE /* ProductListResultView.swift */; };
 		05C16D66233F4E6100486CAE /* RobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D65233F4E6100486CAE /* RobotView.swift */; };
+		05D26A30235DC31C00155F31 /* ShugarCorrectorWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A2F235DC31C00155F31 /* ShugarCorrectorWorker.swift */; };
 		05D806142348C9CF00C19764 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D806132348C9CF00C19764 /* MainMenuViewController.swift */; };
 		EBAC44563616B6E965B0E898 /* Pods_InsulinProjectBSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E76FB4114CAD25CECEF0EE0 /* Pods_InsulinProjectBSL.framework */; };
 		F1103B59232A34EF009A338A /* ProductsTableViewInMealCellFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1103B58232A34EF009A338A /* ProductsTableViewInMealCellFooterView.swift */; };
@@ -199,6 +200,7 @@
 		05A4F1C3233A3E8000DFE4D7 /* ShugarSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShugarSetView.swift; sourceTree = "<group>"; };
 		05C16D60233F23A800486CAE /* ProductListResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListResultView.swift; sourceTree = "<group>"; };
 		05C16D65233F4E6100486CAE /* RobotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotView.swift; sourceTree = "<group>"; };
+		05D26A2F235DC31C00155F31 /* ShugarCorrectorWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShugarCorrectorWorker.swift; sourceTree = "<group>"; };
 		05D806132348C9CF00C19764 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		3E76FB4114CAD25CECEF0EE0 /* Pods_InsulinProjectBSL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InsulinProjectBSL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A0FC66BAC35F6B18007EC60 /* Pods-InsulinProjectBSL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsulinProjectBSL.debug.xcconfig"; path = "Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1360,6 +1362,7 @@
 		F1E78CCE230D337300592AB8 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				05D26A2F235DC31C00155F31 /* ShugarCorrectorWorker.swift */,
 				059AD9AA23585670007DE168 /* Validator */,
 				05A4F1982339EE5100DFE4D7 /* Views */,
 				05A4F1972339EE4600DFE4D7 /* Controllers */,
@@ -1800,6 +1803,7 @@
 				05A4F1962338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift in Sources */,
 				F1E78CB0230D325600592AB8 /* BaseTabBarController.swift in Sources */,
 				05C16D66233F4E6100486CAE /* RobotView.swift in Sources */,
+				05D26A30235DC31C00155F31 /* ShugarCorrectorWorker.swift in Sources */,
 				F1E78D3E231425E600592AB8 /* FoodValidator.swift in Sources */,
 				F1CC2D6D232FB6D200EF7D18 /* ProductListInMealViewModel.swift in Sources */,
 				F1E78CDB230D338A00592AB8 /* SettingsInteractor.swift in Sources */,

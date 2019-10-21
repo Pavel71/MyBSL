@@ -62,8 +62,10 @@ class MainInteractor: MainBusinessLogic {
         presenter?.presentData(response: .setPlaceIngections(place: place))
       case .setShugarBefore(let shugarBefore):
         presenter?.presentData(response: .setShugarBefore(shugarBefore: shugarBefore))
-    case .setShigarBeforeInTime(let time):
-      presenter?.presentData(response: .setShigarBeforeInTime(time: time))
+      case .setShigarBeforeInTime(let time):
+        presenter?.presentData(response: .setShigarBeforeInTime(time: time))
+      case .setCorrectionInsulinBySHugar(let correctionValue):
+          presenter?.presentData(response: .setCorrectionInsulinByShugar(correction: correctionValue))
 
     default:break
     }

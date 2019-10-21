@@ -288,89 +288,21 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     return cell
   }
   
+  // MARK: Set Clousers By Dinner
+  
   private func setMiddleCellClouser(cell: MainTableViewMiddleCell) {
     
-    // TextFiedl Begin Editing
-    cell.dinnerCollectionViewController.didSelectTextField = {[weak self] textField in
-      self?.didSelectTextField(textField: textField)
-    }
     
-    
-    
-    // Insulin TextField Change
-    cell.dinnerCollectionViewController.didInsulinTextFieldCnahgeToMain = {
-      [weak dinnerValidator,weak self] text,row in
+    setShugarSetViewClousers(cell)
+    setWillActivityClousers(cell)
+    setChoosePlaceInjectiosnClousers(cell)
+    setProductListInDinnerClousers(cell)
+   
 
-      self?.interactor?.makeRequest(request: .setInsulinInProduct(insulin: text, rowProduct: row, isPreviosDInner: false))
-
-      
-      dinnerValidator?.insulinValue = text
-    }
-    
-    // Порция добавляется у меня через модель так шо это надо будет учесть чтобы валидатор тоже знал об этом!
-    
-    // Portion TextField Change
-    cell.dinnerCollectionViewController.didPortionTextFieldCnahgeToMain = {
-      [weak dinnerValidator,weak self] text,row in
-      
-      
-      self?.interactor?.makeRequest(request: .setPortionInProduct(portion: text, rowProduct: row))
-      
-      // Тут нужно правельно записать в модель данные которые приходят сюда
-      dinnerValidator?.portion = text
-    }
-    
-    // Shugar Before TextField Change
-    cell.dinnerCollectionViewController.didShugarBeforeTextFieldChangeToMain = {[weak dinnerValidator,weak self] text in
-      
-      self?.interactor?.makeRequest(request: .setShugarBefore(shugarBefore: text))
-
-      dinnerValidator?.shugarBeforeValue = text
-    }
-    // TimeShugarBefore
-    cell.dinnerCollectionViewController.didSetShugarBeforeInTimeClouserToMain = {[weak self] time in
-      self?.interactor?.makeRequest(request: .setShigarBeforeInTime(time: time))
-    }
-    
-    
-    
-    // Add New Product
-    cell.dinnerCollectionViewController.didAddNewProductInDinner = {[weak self] in
-      self?.addNewProductInDinner()
-    }
-    // Delete Product From Dinner
-    cell.dinnerCollectionViewController.didDeleteProductFromDinner = {[weak self] product in
-      self?.deleteProducts(products: product)
-    }
-    
-    // Choose Place Incjections In Cell
-    cell.dinnerCollectionViewController.didShowChoosepalceIncjectionView = {[weak self] in
-      self?.choosePlaceInjections()
-    }
-    
-    // Will Active Row in Cell
-    
-    cell.dinnerCollectionViewController.didTapListButtonInActiveTextField = {[weak self] textField in
-      self?.didTapListButtonInActiveTextField(textField: textField)
-    }
-    
-    cell.dinnerCollectionViewController.didScrollDinnerCollectionView = {[weak self] in
-      self?.didScrollDinnerCollectionView()
-    }
-    
-    cell.dinnerCollectionViewController.didSwitchActiveViewToMainView = {[weak self] in
-      
-      self?.didSwitchTrainActivate()
-//      self?.removeListTrainTableView() // если листа нет то ниче не произойдет если есть то уберет
-    }
-    
-    
-    
-    cell.dinnerCollectionViewController.didEndEditingWillActiveTextField = {[weak self] textField in
-      self?.didEndEditingTrainTextField(textField: textField)
-    }
     
   }
+  
+  
   private func configureFooterCell() -> MainTableViewFooterCell {
     
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewFooterCell.cellId) as! MainTableViewFooterCell
@@ -409,10 +341,97 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: Catch All Clousers Or Buttons Target
 
+
+// Work with SetShugarView CLousers
+extension MainViewController {
+  // Shugar Set View
+  private func setShugarSetViewClousers(_ cell:MainTableViewMiddleCell) {
+    
+    // Correction Insulin
+    cell.dinnerCollectionViewController.didSetCorrectionShugarByInsulinClouserToMain = {[weak dinnerValidator,weak self] text in
+      // Тут также должен пойти запрос в Interactor на обновление модели
+      
+     
+//      print(ShugarCorrectorWorker.shared.correctionInsulinByShugar)
+      // Если будет nil то значит мы хотим чтобы юзер писал нам
+      // если не будет nil ничего страшного
+      self?.interactor?.makeRequest(request: .setCorrectionInsulinBySHugar(correctionValue: text))
+      
+      // Теперь корректировку надо обновить в модели!
+      dinnerValidator?.correctShugarByInsulin = text
+    }
+    
+    // Shugar Before TextField Change
+    cell.dinnerCollectionViewController.didShugarBeforeTextFieldChangeToMain = {[weak dinnerValidator,weak self] text in
+      
+      self?.interactor?.makeRequest(request: .setShugarBefore(shugarBefore: text))
+      
+      // нам нужно повесить обсервер на сахар до и если он не прохидт по условиям тогда удалять поле с correctInsulin и ждать его заполнения
+      dinnerValidator?.shugarBeforeValue = text
+      dinnerValidator?.correctionInsulin = ShugarCorrectorWorker.shared.correctionInsulinByShugar
+  
+
+      
+   
+    }
+    // TimeShugarBefore
+    cell.dinnerCollectionViewController.didSetShugarBeforeInTimeClouserToMain = {[weak self] time in
+      self?.interactor?.makeRequest(request: .setShigarBeforeInTime(time: time))
+    }
+  }
+}
+
+
+// MARK: Work With Product List Clousers
+
 extension MainViewController {
   
+  // Set Clousers By Dinner
   
-  // MARK: MenuDinnerViewController Catch Product And Delete Product
+  private func setProductListInDinnerClousers(_ cell: MainTableViewMiddleCell) {
+    
+    // TextFiedl Begin Editing
+    cell.dinnerCollectionViewController.didSelectTextField = {[weak self] textField in
+      self?.didSelectTextField(textField: textField)
+    }
+    
+    
+    
+    // Insulin TextField Change
+    cell.dinnerCollectionViewController.didInsulinTextFieldCnahgeToMain = {
+      [weak dinnerValidator,weak self] text,row in
+      
+      self?.interactor?.makeRequest(request: .setInsulinInProduct(insulin: text, rowProduct: row, isPreviosDInner: false))
+      
+      
+      dinnerValidator?.insulinValue = text
+    }
+    
+    // Порция добавляется у меня через модель так шо это надо будет учесть чтобы валидатор тоже знал об этом!
+    
+    // Portion TextField Change
+    cell.dinnerCollectionViewController.didPortionTextFieldCnahgeToMain = {
+      [weak dinnerValidator,weak self] text,row in
+      
+      
+      self?.interactor?.makeRequest(request: .setPortionInProduct(portion: text, rowProduct: row))
+      
+      // Тут нужно правельно записать в модель данные которые приходят сюда
+      dinnerValidator?.portion = text
+    }
+    
+    
+    // Add New Product
+    cell.dinnerCollectionViewController.didAddNewProductInDinner = {[weak self] in
+      self?.addNewProductInDinner()
+    }
+    // Delete Product From Dinner
+    cell.dinnerCollectionViewController.didDeleteProductFromDinner = {[weak self] product in
+      self?.deleteProducts(products: product)
+    }
+    
+  }
+
   
   // Этим должна заниматся View Model! Или хотябы запихнуть в  Worker чтобы можно было бы тестировать!
   
@@ -422,17 +441,9 @@ extension MainViewController {
   }
   
   func addProducts(products: [ProductRealm]) {
-    
-//    let currentArray = MainWorker.addProducts(products: products, newDinnerProducts: getFirstDinnerProductListViewModel())
-//    
-//    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.insert(contentsOf: currentArray, at: 0)
-    
+
     interactor?.makeRequest(request: .addProductInNewDinner(products: products))
-    
-    // Stupid Thing!
-    
-    // Мы просто сетим первое значение в валидатор и потом оно будет обновлятся если будет добавленно нескольок продуктов
-    
+
     let somePortion = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData[0].portion
     let someInsulin = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData[0].insulinValue
     
@@ -445,8 +456,6 @@ extension MainViewController {
   
   func deleteProducts(products: [ProductRealm]) {
 
-//    let currentArray = MainWorker.deleteProducts(products: products, newDinnerProducts: getFirstDinnerProductListViewModel())
-//    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
     interactor?.makeRequest(request: .deleteProductFromDinner(products: products))
     
     reloadFirstDinner()
@@ -462,9 +471,7 @@ extension MainViewController {
     
     // Если выбрали текст филд при открытом menu
     closeMenu()
-    
     setTextFiedlPoint(textField: textField)
-    
     // Можно тут вслепую просто запилить что если вбираешь текст филд то убери
     removeListTrainTableView()
   }
@@ -500,6 +507,29 @@ extension MainViewController {
 // MARK: Work With Train ListView Controller
 extension MainViewController {
   
+  private func setWillActivityClousers(_ cell: MainTableViewMiddleCell) {
+    
+    // List Button
+    cell.dinnerCollectionViewController.didTapListButtonInActiveTextField = {[weak self] textField in
+      self?.didTapListButtonInActiveTextField(textField: textField)
+    }
+    // When Scroll
+    cell.dinnerCollectionViewController.didScrollDinnerCollectionView = {[weak self] in
+      self?.didScrollDinnerCollectionView()
+    }
+    // Tap On Switch
+    cell.dinnerCollectionViewController.didSwitchActiveViewToMainView = {[weak self] in
+      
+      self?.didSwitchTrainActivate()
+      //      self?.removeListTrainTableView() // если листа нет то ниче не произойдет если есть то уберет
+    }
+    
+    
+    
+    cell.dinnerCollectionViewController.didEndEditingWillActiveTextField = {[weak self] textField in
+      self?.didEndEditingTrainTextField(textField: textField)
+    }
+  }
   
   private func didSwitchTrainActivate() {
     closeMenu()
@@ -569,7 +599,13 @@ extension MainViewController {
 // MARK: Work With ChoosePlaceInjectionView
 
 extension MainViewController {
-  
+  // Set Clousers
+  private func setChoosePlaceInjectiosnClousers(_ cell: MainTableViewMiddleCell) {
+    
+    cell.dinnerCollectionViewController.didShowChoosepalceIncjectionView = {[weak self] in
+      self?.choosePlaceInjections()
+    }
+  }
   
   // Показываем Человечка
   private func choosePlaceInjections() {

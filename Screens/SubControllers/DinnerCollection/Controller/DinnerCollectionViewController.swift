@@ -49,6 +49,7 @@ class DinnerCollectionViewController: UIViewController {
   
   var didShugarBeforeTextFieldChangeToMain: StringPassClouser?
   var didSetShugarBeforeInTimeClouserToMain: StringPassClouser?
+  var didSetCorrectionShugarByInsulinClouserToMain: StringPassClouser?
   var didPortionTextFieldCnahgeToMain: ((String,Int) -> Void)?
   var didInsulinTextFieldCnahgeToMain : ((String,Int) -> Void)?
   
@@ -178,6 +179,9 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     // Begin Editing
     cell.shugarSetView.didBeginEditingShugarBeforeTextField = {[weak self] textField in
       self?.textFieldDidBeginEditing(textField)
+    }
+    cell.shugarSetView.didSetCorrectionShugarByInsulinClouser = {[weak self] text in
+      self?.didSetCorrectionShugarByInsulinClouserToMain!(text)
     }
     // Changet
     cell.didShugarBeforeTextFieldChangeToDinnerViewController = {[weak self] text in

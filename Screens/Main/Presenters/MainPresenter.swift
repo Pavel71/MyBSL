@@ -98,6 +98,10 @@ class MainPresenter: MainPresentationLogic {
       mainViewModel.dinnerCollectionViewModel[0].shugarTopViewModel.timeBefore = time
       
       passViewModelInViewController()
+      
+    case .setCorrectionInsulinByShugar(let correction):
+      mainViewModel.dinnerCollectionViewModel[0].shugarTopViewModel.correctInsulinByShugar = (correction as NSString).floatValue
+      passViewModelInViewController()
     default:break
     }
 

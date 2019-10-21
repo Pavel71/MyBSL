@@ -31,9 +31,9 @@ class MainDinnerProductListCell: BaseProductListCell {
   
   
   let pickerPortionData = [
-    ["0.0","100.0","200.0","300.0","400.0","500.0","600.0","700.0","800.0","900.0","1000.0"],
-    ["0.0","10.0","20.0","30.0","40.0","50.0","60.0","70.0","80.0","90.0"],
-    ["0.0","1.0","2.0","3.0","4.0","5.0","6.0","7.0","8.0","9.0"]
+    ["0","100","200","300","400","500","600","700","800","900","1000"],
+    ["0","10","20","30","40","50","60","70","80","90"],
+    ["0","1","2","3","4","5","6","7","8","9"]
   ]
   
   let pickerInsulinData = [
@@ -193,7 +193,7 @@ extension MainDinnerProductListCell: UIPickerViewDelegate, UIPickerViewDataSourc
     
     let value = resultPortionComHundred + resultPortionCompTens + resultIPortionCompSimple
     
-    portionTextField.text = String(value)
+    portionTextField.text = String(Int(value))
 
     // Нужно прокинуть PortionTextField срфтпу
     // Делаем изменнеие как будто пишем текстом

@@ -28,6 +28,8 @@ enum Main {
         case setShugarBefore(shugarBefore: String)
         case setPlaceIngections(place: String)
         case setShigarBeforeInTime(time: String)
+        case setCorrectionInsulinBySHugar(correctionValue: String)
+        
         // Add Product
         case addProductInNewDinner(products:[ProductRealm])
         case deleteProductFromDinner(products: [ProductRealm])
@@ -50,6 +52,7 @@ enum Main {
         case setShugarBefore(shugarBefore: String)
         case setPlaceIngections(place: String)
         case setShigarBeforeInTime(time: String)
+        case setCorrectionInsulinByShugar(correction: String)
         
         // Add Product
         case addProductInDinner(products:[ProductRealm])

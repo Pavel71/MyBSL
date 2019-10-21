@@ -10,12 +10,30 @@ import Foundation
 
 class DinnerViewModelValidator: Validateble {
   
+ 
+  
   
   // Этот Валидатор нужно базировать в Main! потомучто ряд полей приходят из main + перенаправлять потом в 3 ячейку!
   
   // Fields Validate
   
-  var shugarBeforeValue: String? {didSet {checkForm()}}
+  
+  var correctionInsulin: Float? {
+    didSet {
+      if let correction = correctionInsulin {
+        correctShugarByInsulin = String(correction)
+      } else {
+        correctShugarByInsulin = nil
+      }
+      
+    }
+  }
+  var correctShugarByInsulin: String? {didSet{checkForm()}}
+
+  
+  var shugarBeforeValue: String? {didSet {checkForm()}
+    
+  }
   
   // просто 2 свойства не помогут
   var insulinValue: String? {didSet {checkForm()}}
@@ -44,7 +62,7 @@ class DinnerViewModelValidator: Validateble {
   }
   
   func checkForm() {
-    isValidate = shugarBeforeValue?.isEmpty == false && insulinValue?.isEmpty == false && portion?.isEmpty == false && placeInjection?.isEmpty == false
+    isValidate = shugarBeforeValue?.isEmpty == false && insulinValue?.isEmpty == false && portion?.isEmpty == false && placeInjection?.isEmpty == false && correctShugarByInsulin?.isEmpty == false
     
   }
   
@@ -53,6 +71,7 @@ class DinnerViewModelValidator: Validateble {
     insulinValue = nil
     portion = nil
     placeInjection = nil
+    correctShugarByInsulin = nil
   }
   
   
