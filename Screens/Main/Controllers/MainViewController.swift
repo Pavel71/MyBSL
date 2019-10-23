@@ -131,7 +131,9 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
 
       print("Set ViewModel")
       mainViewModel = viewModel
-
+      
+//      tableView.reloadRows(at: [IndexPath(item: 2, section: 0)], with: .none)
+      
     default:break
     }
     
@@ -307,8 +309,13 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewFooterCell.cellId) as! MainTableViewFooterCell
     
+    cell.setViewModel(viewModel: mainViewModel.footerViewModel)
+    
     return cell
   }
+  
+  
+  // Height Cells
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
@@ -349,13 +356,10 @@ extension MainViewController {
     
     // Correction Insulin
     cell.dinnerCollectionViewController.didSetCorrectionShugarByInsulinClouserToMain = {[weak dinnerValidator,weak self] text in
-      // Тут также должен пойти запрос в Interactor на обновление модели
-      
-     
-//      print(ShugarCorrectorWorker.shared.correctionInsulinByShugar)
-      // Если будет nil то значит мы хотим чтобы юзер писал нам
-      // если не будет nil ничего страшного
+
+      print("Correction Insulin Add",text)
       self?.interactor?.makeRequest(request: .setCorrectionInsulinBySHugar(correctionValue: text))
+
       
       // Теперь корректировку надо обновить в модели!
       dinnerValidator?.correctShugarByInsulin = text

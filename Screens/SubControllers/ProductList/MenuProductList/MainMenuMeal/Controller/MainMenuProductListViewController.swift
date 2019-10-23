@@ -55,9 +55,10 @@ extension MainMenuProductListViewController {
   }
   
   private func setResultViewModel() {
+    // Похорошему эти данные должны приходить из презентера
+//    let productListResultViewModel = ConfirmProductListResultViewModel.calculateProductListResultViewModel(data: tableViewData)
     
-    let productListResultViewModel = ConfirmProductListResultViewModel.calculateProductListResultViewModel(data: tableViewData)
-    
+    let productListResultViewModel = ProductListResultWorker.shared.getRusultViewModelByProducts(data: tableViewData)
     footerView.resultsView.setViewModel(viewModel: productListResultViewModel,withInsulin: false)
     
     tableView.reloadData()

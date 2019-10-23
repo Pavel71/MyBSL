@@ -52,18 +52,22 @@ class MainPresenter: MainPresentationLogic {
       
       let firstDinnerModel = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData
       
-      let currentArray = MainWorker.deleteProducts(products: products, newDinnerProducts: firstDinnerModel)
+      let currentArray = ProductListWorker.deleteProducts(products: products, newDinnerProducts: firstDinnerModel)
         mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
       
+      calculateResultViewModel()
       passViewModelInViewController()
       
     case .addProductInDinner(let products):
       
       
-      let firstDinnerModel = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData
-      let currentArray = MainWorker.addProducts(products: products, newDinnerProducts: firstDinnerModel)
-      mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData.insert(contentsOf: currentArray, at: 0)
+      let firstDinnerProducts = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData
       
+      let currentArray = ProductListWorker.addProducts(products: products, newDinnerProducts: firstDinnerProducts)
+      
+      mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
+      
+      calculateResultViewModel()
       passViewModelInViewController()
       
     case .setInsulinInProduct(let insulin,let rowProduct,let isPreviosDinner):
@@ -71,6 +75,8 @@ class MainPresenter: MainPresentationLogic {
       let dinnerNumber = isPreviosDinner ? 1:0
       guard let floatInsulin = Float(insulin) else {return}
       mainViewModel.dinnerCollectionViewModel[dinnerNumber].productListInDinnerViewModel.productsData[rowProduct].insulinValue = floatInsulin
+      
+      calculateResultViewModel()
       passViewModelInViewController()
       
     case .setPortionInProduct(let portion,let rowProduct):
@@ -81,6 +87,9 @@ class MainPresenter: MainPresentationLogic {
       // Так как пока я жопускаю возможность изменять параметр порций только в новом обеде
       
      mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData[rowProduct].portion = portionInt
+      
+      calculateResultViewModel()
+      // Похорошему во всех этих методах нужно изменять данные 
       
       passViewModelInViewController()
       
@@ -101,6 +110,14 @@ class MainPresenter: MainPresentationLogic {
       
     case .setCorrectionInsulinByShugar(let correction):
       mainViewModel.dinnerCollectionViewModel[0].shugarTopViewModel.correctInsulinByShugar = (correction as NSString).floatValue
+      
+      // Здесь мне нужно обновить резалт кстати
+      
+      // Пока я думаю что стоит вынести эту общую статитсику в footer Cell! возможно здесь стоит переправить этот раздел!
+      
+      // Нужно это значение пересчитывать постоянно
+      let totalInsulinValue = calculateSumInsulinValueByCorrectionInsulin(correction: correction)
+      mainViewModel.footerViewModel.totalInsulinValue = totalInsulinValue
       passViewModelInViewController()
     default:break
     }
@@ -111,8 +128,47 @@ class MainPresenter: MainPresentationLogic {
   
   
   private func passViewModelInViewController() {
+    // Нужно поставить здесь обновление резулт view
     
     viewController?.displayData(viewModel: .setViewModel(viewModel: mainViewModel))
+  }
+
+  
+}
+
+// MARK: Worker With ProductList In Dinner
+
+// When add New Product or delete we should calculate Again
+
+extension MainPresenter {
+  
+  private func calculateResultViewModel() {
+    
+    let productsData = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData
+    
+    let resultViewModel = ProductListResultWorker.shared.getRusultViewModelByProducts(data: productsData)
+    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.resultsViewModel = resultViewModel
+    
+  }
+  
+  private func calculateSumInsulinValueByCorrectionInsulin(correction: String) -> Float {
+    
+   
+    let correctionFloat = (correction as NSString).floatValue
+    let sumInsulinByProduct = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.resultsViewModel.sumInsulinValue
+    
+    let totalInsulin = correctionFloat + (sumInsulinByProduct as NSString).floatValue
+    return totalInsulin
+    
+    // Здесь мне нужно обновить footerViewModel
+    
+//    let resultViewModel = ProductListResultWorker.shared.getRusultViewModelByCorrectionInsulin(correction: correctionFloat)
+//
+//    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.resultsViewModel = resultViewModel
+  }
+  
+  private func addValueInResultView() {
+    
   }
   
   
@@ -120,3 +176,10 @@ class MainPresenter: MainPresentationLogic {
 }
 
 
+
+// MARK: Worker With Shugar Set View
+
+extension MainPresenter {
+  
+  
+}

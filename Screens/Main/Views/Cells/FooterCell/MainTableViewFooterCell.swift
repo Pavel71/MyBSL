@@ -8,11 +8,18 @@
 
 import UIKit
 
+
+protocol MainTableViewFooterCellable {
+  
+  var totalInsulinValue: Float {get set}
+}
+
 class MainTableViewFooterCell: UITableViewCell {
   
   static let cellId = "MainTableViewFooterCellId"
   
   let robotView = RobotView()
+  let totalView = TotalView()
   
   let saveButton: UIButton = {
     let b = UIButton(type: .system)
@@ -39,6 +46,8 @@ class MainTableViewFooterCell: UITableViewCell {
   
   
   
+  
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
@@ -55,6 +64,7 @@ class MainTableViewFooterCell: UITableViewCell {
     }
 
     let buttonStackView = UIStackView(arrangedSubviews: [
+      totalView,
       saveButton,
       predicateinsulinButton
       ])
@@ -62,10 +72,10 @@ class MainTableViewFooterCell: UITableViewCell {
 
     buttonStackView.axis = .vertical
     buttonStackView.distribution = .fillEqually
-    buttonStackView.spacing = 10
+    buttonStackView.spacing = 8
 
     buttonStackView.isLayoutMarginsRelativeArrangement = true
-    buttonStackView.layoutMargins = .init(top: 30, left: 10, bottom: 30, right: 10)
+    buttonStackView.layoutMargins = .init(top: 20, left: 10, bottom: 20, right: 10)
 
 
     let overAllStackView = UIStackView(arrangedSubviews: [
@@ -79,6 +89,10 @@ class MainTableViewFooterCell: UITableViewCell {
     overAllStackView.fillSuperview(padding: .init(top: 10, left: 10, bottom: 10, right: 10))
     
     
+  }
+  
+  func setViewModel(viewModel: MainTableViewFooterCellable) {
+    totalView.totalInsulinValue.text = "\(viewModel.totalInsulinValue)"
   }
   
   var didTapSaveButtonClouser: (() -> Void)?

@@ -49,7 +49,7 @@ class DinnerData {
     
     let shugarViewModel1 = ShugarTopViewModel(isPreviosDinner: false, shugarBeforeValue: "", shugarAfterValue: "", timeBefore: "", timeAfter: "")
     
-    let result = ProductListResultsViewModel(sumCarboValue: "12", sumPortionValue: "25", sumInsulinValue: "33")
+    let result = ProductListResultsViewModel(sumCarboValue: "", sumPortionValue: "", sumInsulinValue: "")
     
     let productListViewController1 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [], isPreviosDinner: false)
     
@@ -66,7 +66,8 @@ class DinnerData {
     
     let dinnerViewModels = DinnerData.getDummyDinner()
     
-    let mainViewModel = MainViewModel.init(headerViewModelCell: headerViewModel, dinnerCollectionViewModel: [dinnerViewModels])
+    
+    let mainViewModel = MainViewModel.init(headerViewModelCell: headerViewModel, dinnerCollectionViewModel: [dinnerViewModels], footerViewModel: MainFooterViewModel(totalInsulinValue: 0.0))
     
     return mainViewModel
   }

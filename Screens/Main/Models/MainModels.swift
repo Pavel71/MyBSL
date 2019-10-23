@@ -78,11 +78,20 @@ enum Main {
 
 struct MainViewModel {
   
+  // Header Cell View Model
   var headerViewModelCell: MainTableViewHeaderCellable
   
+  // Middle Cell ViewModel
   var dinnerCollectionViewModel: [DinnerViewModel]
+  // Footer Cell ViewModel
+  var footerViewModel: MainFooterViewModel
   
-  
+}
+
+// Footer
+struct MainFooterViewModel: MainTableViewFooterCellable {
+  var totalInsulinValue: Float
+
 }
 
 // Header
@@ -111,7 +120,7 @@ struct MainHeaderViewModel: MainTableViewHeaderCellable {
   
 }
 
-struct MainDinnerViewModel {
-  
-  
-}
+//struct MainDinnerViewModel {
+//
+//
+//}

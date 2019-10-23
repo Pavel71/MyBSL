@@ -85,14 +85,15 @@ extension ProductListInDinnerViewController {
     tableView.tableHeaderView = viewModel.productsData.count == 0 ? headerView : nil
     
     self.viewModel = viewModel
-    setResultViewModel()
+    setResultViewModel(resultViewModel:viewModel.resultsViewModel)
   }
   
-  private func setResultViewModel() {
+  private func setResultViewModel(resultViewModel:ProductListResultViewModelable ) {
     
-    let productListResultViewModel = ConfirmProductListResultViewModel.calculateProductListResultViewModel(data: tableViewData)
+    // Этот блок пора выносит в презентер
+//    let productListResultViewModel = ConfirmProductListResultViewModel.calculateProductListResultViewModel(data: tableViewData)
     
-    footerView.resultsView.setViewModel(viewModel: productListResultViewModel)
+    footerView.resultsView.setViewModel(viewModel: resultViewModel)
     
     tableView.reloadData()
   }

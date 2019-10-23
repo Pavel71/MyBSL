@@ -84,6 +84,7 @@ class ProductListResultView: UIView {
   
   func setViewModel(viewModel:ProductListResultViewModelable, withInsulin: Bool = true) {
     
+    
     carboResultLabel.text = viewModel.sumCarboValue
     portionResultLabel.text = viewModel.sumPortionValue
     insulinResultLabel.text = viewModel.sumInsulinValue

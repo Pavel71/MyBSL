@@ -67,7 +67,9 @@ class ProductListInMealViewController: BaseProductList {
     }
     tableViewData = viewModel.productsData
     
-    let productListResultViewModel = ConfirmProductListResultViewModel.calculateProductListResultViewModel(data: tableViewData)
+//    let productListResultViewModel = ConfirmProductListResultViewModel.calculateProductListResultViewModel(data: tableViewData)
+    
+    let productListResultViewModel = ProductListResultWorker.shared.getRusultViewModelByProducts(data: tableViewData)
     
     footerView.resultsView.setViewModel(viewModel: productListResultViewModel,withInsulin: false)
 
