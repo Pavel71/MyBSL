@@ -88,14 +88,8 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
     print("View Did Load")
     
     
-    dinnerValidator.isValidCallBack = {[weak self] succes in
-      
-      
-      let footerCell = self?.getMainFooterCell()
-      footerCell?.saveButton.isEnabled = succes
-      
-    }
-    
+ 
+    setValidatorClouser()
     
     setUpMainView()
     interactor?.makeRequest(request: .getViewModel)
@@ -132,13 +126,20 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
       print("Set ViewModel")
       mainViewModel = viewModel
       
-//      tableView.reloadRows(at: [IndexPath(item: 2, section: 0)], with: .none)
+      
       
     default:break
     }
     
     
     
+  }
+  
+  private func reloadMiddleCell() {
+    tableView.reloadRows(at: [IndexPath(item: 1, section: 0)], with: .none)
+  }
+  private func reloadFooterCell() {
+    tableView.reloadRows(at: [IndexPath(item: 2, section: 0)], with: .none)
   }
   
 
@@ -162,6 +163,16 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
   private func closeMenu() {
     if menuState == .open {
       didShowMenuProductsListViewControllerClouser!(distanceTranslateMainController)
+    }
+  }
+  
+  private func setValidatorClouser() {
+    dinnerValidator.isValidCallBack = {[weak self] succes in
+      
+      
+      let footerCell = self?.getMainFooterCell()
+      footerCell?.saveButton.isEnabled = succes
+      
     }
   }
   
@@ -310,8 +321,15 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewFooterCell.cellId) as! MainTableViewFooterCell
     
     cell.setViewModel(viewModel: mainViewModel.footerViewModel)
-    
+    setClousersByFooterCell(cell)
     return cell
+  }
+  
+  private func setClousersByFooterCell(_ cell:MainTableViewFooterCell) {
+    cell.didTapSaveButtonClouser = {[weak self] in
+      print("Tap Save button")
+      self?.tapFooterSaveButton()
+    }
   }
   
   
@@ -346,10 +364,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 
-// MARK: Catch All Clousers Or Buttons Target
+// MARK: Work with SetShugarView CLousers
 
 
-// Work with SetShugarView CLousers
 extension MainViewController {
   // Shugar Set View
   private func setShugarSetViewClousers(_ cell:MainTableViewMiddleCell) {
@@ -360,9 +377,10 @@ extension MainViewController {
       print("Correction Insulin Add",text)
       self?.interactor?.makeRequest(request: .setCorrectionInsulinBySHugar(correctionValue: text))
 
-      
       // Теперь корректировку надо обновить в модели!
       dinnerValidator?.correctShugarByInsulin = text
+      
+      self?.reloadFooterCell()
     }
     
     // Shugar Before TextField Change
@@ -372,15 +390,18 @@ extension MainViewController {
       
       // нам нужно повесить обсервер на сахар до и если он не прохидт по условиям тогда удалять поле с correctInsulin и ждать его заполнения
       dinnerValidator?.shugarBeforeValue = text
-      dinnerValidator?.correctionInsulin = ShugarCorrectorWorker.shared.correctionInsulinByShugar
+      
+     
   
 
       
    
     }
     // TimeShugarBefore
-    cell.dinnerCollectionViewController.didSetShugarBeforeInTimeClouserToMain = {[weak self] time in
+    cell.dinnerCollectionViewController.didSetShugarBeforeInTimeClouserToMain = {[weak self,weak dinnerValidator] time in
       self?.interactor?.makeRequest(request: .setShigarBeforeInTime(time: time))
+      
+      dinnerValidator?.correctionInsulin = ShugarCorrectorWorker.shared.correctionInsulinByShugar
     }
   }
 }
@@ -407,7 +428,9 @@ extension MainViewController {
       
       self?.interactor?.makeRequest(request: .setInsulinInProduct(insulin: text, rowProduct: row, isPreviosDInner: false))
       
-      
+      // Поидеи тотал надо обновлять именно здесь!
+      // Но это дико не прозрачно! поэтому это нужно будет разветвялть в презентере
+      self?.reloadFooterCell()
       dinnerValidator?.insulinValue = text
     }
     
@@ -454,7 +477,8 @@ extension MainViewController {
     dinnerValidator.portion = "\(somePortion)"
     dinnerValidator.insulinValue = "\(someInsulin)"
     
-    reloadFirstDinner()
+    reloadMiddleCell()
+    reloadFooterCell()
   }
 
   
@@ -462,12 +486,11 @@ extension MainViewController {
 
     interactor?.makeRequest(request: .deleteProductFromDinner(products: products))
     
-    reloadFirstDinner()
+    reloadMiddleCell()
+    reloadFooterCell()
   }
   
-  private func reloadFirstDinner() {
-    tableView.reloadRows(at: [IndexPath(item: 1, section: 0)], with: .automatic)
-  }
+  
 
   
   // Begin Editing TextField
@@ -649,6 +672,16 @@ extension MainViewController {
     ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: false)
   }
   
+}
+
+
+// MARK: Work With Footer Cell
+
+extension MainViewController {
+  
+  private func tapFooterSaveButton() {
+    interactor?.makeRequest(request: .saveViewModel(viewModel: mainViewModel.dinnerCollectionViewModel[0]))
+  }
 }
 
 

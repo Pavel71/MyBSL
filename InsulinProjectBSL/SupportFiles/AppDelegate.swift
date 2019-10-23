@@ -33,6 +33,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   ]
   
+  var dinners: [DinnerRealm] = [
+//    DinnerRealm(shugarBefore: 20, timeShugarBefore: Date(), placeInjection: "Живот", trainName: "", listProduct: <#T##List<ProductRealm>#>)
+  ]
+  
   var sectionType: [SectionMealTypeRealm] = []
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -64,6 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     initializeRealm()
 //    initSectionMealRealm()
     initMeals()
+    initDinners()
     
     return true
   }
@@ -128,6 +133,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     try! realm.write {
 //      realm.deleteAll()
       realm.add(meals)
+    }
+    
+  }
+  
+  private func initDinners() {
+    let realm = RealmProvider.dinners.realm
+    
+    guard realm.isEmpty else { return }
+    
+    try! realm.write {
+      //      realm.deleteAll()
+      realm.add(dinners)
     }
     
   }

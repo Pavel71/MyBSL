@@ -32,9 +32,9 @@ class DinnerData {
     let productListViewController3 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [product1,product2,product1], isPreviosDinner: true)
     
     
-    let dinner1 = DinnerViewModel(shugarTopViewModel: shugarViewModel1, productListInDinnerViewModel: productListViewController1, placeInjection: "", train: nil)
-    let dinner2 = DinnerViewModel(shugarTopViewModel: shugarViewModel2, productListInDinnerViewModel: productListViewController2, placeInjection: "", train: nil)
-    let dinner3 = DinnerViewModel(shugarTopViewModel: shugarViewModel3, productListInDinnerViewModel: productListViewController3, placeInjection: "", train: nil)
+    let dinner1 = DinnerViewModel(isPreviosDinner: false, shugarTopViewModel: shugarViewModel1, productListInDinnerViewModel: productListViewController1, placeInjection: "", train: nil)
+    let dinner2 = DinnerViewModel(isPreviosDinner: false, shugarTopViewModel: shugarViewModel2, productListInDinnerViewModel: productListViewController2, placeInjection: "", train: nil)
+    let dinner3 = DinnerViewModel(isPreviosDinner: false, shugarTopViewModel: shugarViewModel3, productListInDinnerViewModel: productListViewController3, placeInjection: "", train: nil)
     
     // Нужен какойто метод который будет создавать заглушку с пустым dinnerom и вставлять его в viewModel! Но это должна делать реалм схема!
     
@@ -53,7 +53,7 @@ class DinnerData {
     
     let productListViewController1 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [], isPreviosDinner: false)
     
-    let dinner1 = DinnerViewModel(shugarTopViewModel: shugarViewModel1, productListInDinnerViewModel: productListViewController1, placeInjection: "", train: nil)
+    let dinner1 = DinnerViewModel(isPreviosDinner: false, shugarTopViewModel: shugarViewModel1, productListInDinnerViewModel: productListViewController1, placeInjection: "", train: nil)
     
     return dinner1
     

@@ -48,6 +48,7 @@ class ShugarCorrectorWorker {
 
     isNeedCorrectShugarByInsulin =  valueFloat > higherShuagrLevel || valueFloat < bottomShugarLevel
     
+    
     if isNeedCorrectShugarByInsulin {
       
       // Здесь должен быть еще 1 флаг ждем данные от пользователя? или считаем сами

@@ -22,7 +22,9 @@ class RealmProvider {
   }
 
   // MARK: - Realm Models
-
+  
+  
+  // Products
   private static let productConfig = Realm.Configuration(
     fileURL: try! Path.inDocuments("products.realm"),
     schemaVersion: 1,
@@ -33,6 +35,8 @@ class RealmProvider {
     return RealmProvider(config: productConfig)
   }()
   
+  
+  // Meal
   private static let mealConfig = Realm.Configuration(
     fileURL: try! Path.inDocuments("meals.realm"),
     schemaVersion: 1,
@@ -43,14 +47,26 @@ class RealmProvider {
     return RealmProvider.init(config: mealConfig)
   }()
   
-  private static let sectionMealTypeConfig = Realm.Configuration(
-    fileURL: try! Path.inDocuments("sectionMealType.realm"),
+  // Dinners
+  
+  private static let dinnerConfig = Realm.Configuration(
+    fileURL: try! Path.inDocuments("dinners.realm"),
     schemaVersion: 1,
     deleteRealmIfMigrationNeeded: true, // Это для тестирования
-    objectTypes: [SectionMealTypeRealm.self,MealRealm.self, ProductRealm.self])
+    objectTypes: [DinnerRealm.self,ProductRealm.self])
   
-  public static let sectionMealTypes: RealmProvider = {
-    return RealmProvider(config: sectionMealTypeConfig)
+  public static var dinners: RealmProvider = {
+    return RealmProvider.init(config: dinnerConfig)
   }()
+  
+//  private static let sectionMealTypeConfig = Realm.Configuration(
+//    fileURL: try! Path.inDocuments("sectionMealType.realm"),
+//    schemaVersion: 1,
+//    deleteRealmIfMigrationNeeded: true, // Это для тестирования
+//    objectTypes: [SectionMealTypeRealm.self,MealRealm.self, ProductRealm.self])
+//
+//  public static let sectionMealTypes: RealmProvider = {
+//    return RealmProvider(config: sectionMealTypeConfig)
+//  }()
   
 }

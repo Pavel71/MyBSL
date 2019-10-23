@@ -23,9 +23,12 @@ class MainPresenter: MainPresentationLogic {
     
     
     switch response {
-    case .prepareViewModel(let data):
+    case .prepareViewModel(let realmData):
       // Тут под вопросом может быть просто сразу отсюда брать но не важно
-      mainViewModel = data
+//      mainViewModel = data
+      
+      
+      prepareMainViewModel(realmData:realmData)
       
       passViewModelInViewController()
     default:break
@@ -56,6 +59,7 @@ class MainPresenter: MainPresentationLogic {
         mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
       
       calculateResultViewModel()
+      calculateTotalInsulin()
       passViewModelInViewController()
       
     case .addProductInDinner(let products):
@@ -68,6 +72,7 @@ class MainPresenter: MainPresentationLogic {
       mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
       
       calculateResultViewModel()
+      calculateTotalInsulin()
       passViewModelInViewController()
       
     case .setInsulinInProduct(let insulin,let rowProduct,let isPreviosDinner):
@@ -77,6 +82,7 @@ class MainPresenter: MainPresentationLogic {
       mainViewModel.dinnerCollectionViewModel[dinnerNumber].productListInDinnerViewModel.productsData[rowProduct].insulinValue = floatInsulin
       
       calculateResultViewModel()
+      calculateTotalInsulin()
       passViewModelInViewController()
       
     case .setPortionInProduct(let portion,let rowProduct):
@@ -116,8 +122,7 @@ class MainPresenter: MainPresentationLogic {
       // Пока я думаю что стоит вынести эту общую статитсику в footer Cell! возможно здесь стоит переправить этот раздел!
       
       // Нужно это значение пересчитывать постоянно
-      let totalInsulinValue = calculateSumInsulinValueByCorrectionInsulin(correction: correction)
-      mainViewModel.footerViewModel.totalInsulinValue = totalInsulinValue
+      calculateTotalInsulin()
       passViewModelInViewController()
     default:break
     }
@@ -136,6 +141,24 @@ class MainPresenter: MainPresentationLogic {
   
 }
 
+// MARK: Prepare MainViewModel From Realm Data
+extension MainPresenter {
+  
+  func prepareMainViewModel(realmData: [DinnerRealm]) {
+    
+    // Во ттакой план на эту функцию!
+    
+    // let topViewModel
+    // let middleViewModel
+    // let FootrrViewmodel
+    
+    // let MainView Model = mainViewmodle
+    
+    
+  }
+  
+}
+
 // MARK: Worker With ProductList In Dinner
 
 // When add New Product or delete we should calculate Again
@@ -151,23 +174,15 @@ extension MainPresenter {
     
   }
   
-  private func calculateSumInsulinValueByCorrectionInsulin(correction: String) -> Float {
-    
-   
-    let correctionFloat = (correction as NSString).floatValue
-    let sumInsulinByProduct = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.resultsViewModel.sumInsulinValue
-    
-    let totalInsulin = correctionFloat + (sumInsulinByProduct as NSString).floatValue
-    return totalInsulin
-    
-    // Здесь мне нужно обновить footerViewModel
-    
-//    let resultViewModel = ProductListResultWorker.shared.getRusultViewModelByCorrectionInsulin(correction: correctionFloat)
-//
-//    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.resultsViewModel = resultViewModel
-  }
   
-  private func addValueInResultView() {
+  // May i'll create footer Worker Class
+  private func calculateTotalInsulin() {
+    
+    let sumInsulinByProduct = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.resultsViewModel.sumInsulinValue
+    let correctionInsulin = mainViewModel.dinnerCollectionViewModel[0].shugarTopViewModel.correctInsulinByShugar
+    let totalInsulin = correctionInsulin + (sumInsulinByProduct as NSString).floatValue
+    mainViewModel.footerViewModel.totalInsulinValue = totalInsulin
+    
     
   }
   

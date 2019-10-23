@@ -15,7 +15,7 @@ protocol DinnerViewModelCellable {
   var productListInDinnerViewModel: ProductListInDinnerViewModel {get set}
   var placeInjection: String {get set}
   var train: String? {get set}
-
+  var isPreviosDinner: Bool {get set}
 }
 
 

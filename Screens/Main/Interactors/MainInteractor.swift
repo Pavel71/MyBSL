@@ -17,6 +17,8 @@ class MainInteractor: MainBusinessLogic {
   var presenter: MainPresentationLogic?
   var service: MainService?
   
+  var dinnerRealmManager = DinnerRealmManager()
+  
   func makeRequest(request: Main.Model.Request.RequestType) {
     if service == nil {
       service = MainService()
@@ -33,9 +35,17 @@ class MainInteractor: MainBusinessLogic {
     switch request {
       
       case .getViewModel:
-      let data = DinnerData.getMainViewModelDummy()
+//      let data = DinnerData.getMainViewModelDummy()
+      
+      let realmData = dinnerRealmManager.fetchAllData()
+      print(realmData)
+
       // Пока вместо Реалма статичные данны
-       presenter?.presentData(response: .prepareViewModel(viewModel: data))
+       presenter?.presentData(response: .prepareViewModel(realmData: realmData))
+      
+      
+    case .saveViewModel(let viewModel):
+      print("Dinner to Save Realm",viewModel)
       
       // Это возможно нужно перенести во ViewModel func
     case .addProductInNewDinner(let products):
@@ -71,5 +81,10 @@ class MainInteractor: MainBusinessLogic {
     }
     
   }
+  
+  
+  
+  
+  
   
 }

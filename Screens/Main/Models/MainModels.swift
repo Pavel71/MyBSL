@@ -33,6 +33,9 @@ enum Main {
         // Add Product
         case addProductInNewDinner(products:[ProductRealm])
         case deleteProductFromDinner(products: [ProductRealm])
+        
+        // Save View Model In Real // По факту нам нужен только Dinner
+        case saveViewModel(viewModel: DinnerViewModel)
       }
     }
     
@@ -42,7 +45,7 @@ enum Main {
       
       enum ResponseType {
         // Пока здесь сразу пойдет модель потом переделать это в реалм данные
-        case prepareViewModel(viewModel: MainViewModel)
+        case prepareViewModel(realmData: [DinnerRealm])
         
         
         // UPDateViewModel
@@ -58,6 +61,9 @@ enum Main {
         case addProductInDinner(products:[ProductRealm])
         //Delete Product
         case deleteProductFromDinner(products: [ProductRealm])
+        
+        // After Save ViewModel In Realm
+        case doAfterSaveDinnerInRealm
         
       }
     }
@@ -98,7 +104,7 @@ struct MainFooterViewModel: MainTableViewFooterCellable {
 
 struct MainHeaderViewModel: MainTableViewHeaderCellable {
   
-  var isMenuViewControoler: Bool
+//  var isMenuViewControoler: Bool
   
   var lastInjectionValue: String
   
@@ -108,13 +114,13 @@ struct MainHeaderViewModel: MainTableViewHeaderCellable {
   
   var insulinSupplyInPanValue: String
   
-  init(lastInjectionValue: String,lastTimeInjectionValue: String,lastShugarValueLabel: String,insulinSupplyInPanValue: String,isMenuViewControoler: Bool = false) {
+  init(lastInjectionValue: String,lastTimeInjectionValue: String,lastShugarValueLabel: String,insulinSupplyInPanValue: String) {
     
     self.lastInjectionValue = lastInjectionValue
     self.lastTimeInjectionValue = lastTimeInjectionValue
     self.lastShugarValueLabel = lastShugarValueLabel
     self.insulinSupplyInPanValue = insulinSupplyInPanValue
-    self.isMenuViewControoler = isMenuViewControoler
+//    self.isMenuViewControoler = isMenuViewControoler
   }
   
   

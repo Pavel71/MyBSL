@@ -27,14 +27,14 @@ class ShugarSetView: UIView {
   
   // Shugar Before
   
-  let shugarBeforeTitleLabel = CustomLabels(font: .systemFont(ofSize: 18), text: "До еды")
+  let shugarBeforeTitleLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Сахар до еды")
   
   let shugarBeforeValueTextField = CustomValueTextField(placeholder: "7.2", cornerRadius: 10)
   
   
   // Shugar After
   
-  let shugarAfterTitleLabel = CustomLabels(font: .systemFont(ofSize: 18), text: "После еды")
+  let shugarAfterTitleLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Сахар после еды")
   
   let shugarAfterValueTextField = CustomValueTextField(placeholder: "7.2", cornerRadius: 10)
   
@@ -49,8 +49,8 @@ class ShugarSetView: UIView {
   
   
   // Correct StackView
-  let correctionShugarInsulinValueTextField = CustomValueTextField(placeholder: "-1.0", cornerRadius: 10)
-  let correctionLabel = CustomLabels(font: .systemFont(ofSize: 14), text: "Внесите корректировку инсулином")
+  let correctionShugarInsulinValueTextField = CustomValueTextField(placeholder: "1.0", cornerRadius: 10)
+  let correctionLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Компенсационный инсулин")
   
   lazy var correctionShugarByInsulinStackView: UIStackView = {
     
@@ -58,6 +58,7 @@ class ShugarSetView: UIView {
       correctionLabel,correctionShugarInsulinValueTextField
       ])
     correctionShugarInsulinValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
+    stackView.spacing = 5
     
     stackView.isHidden = true
     return stackView
@@ -245,16 +246,19 @@ extension ShugarSetView: UITextFieldDelegate {
   func textFieldDidEndEditing(_ textField: UITextField) {
     
     if let text = textField.text {
+      
+      // Просто с синглтонами нихера не понятно если честно не читаетс код не понятно откуда идет сигнал просто по факту видно что он уже имее тсво1ство а когда оно засетилось туда не особо понятно
+      ShugarCorrectorWorker.shared.setInsulinCorrectionByShugar(shugarValue: text)
+      
+      
       let timeBefore = setTimeBeforTime()
       
       didSetShugarBeforeInTimeClouser!(timeBefore)
       
-      
-      ShugarCorrectorWorker.shared.setInsulinCorrectionByShugar(shugarValue: text)
-      
       isHIddenCorrectionShugarByInsulinStackView()
       
-
+      
+      
     }
 
   }

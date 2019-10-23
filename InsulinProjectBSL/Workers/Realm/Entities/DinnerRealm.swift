@@ -21,6 +21,8 @@ import RealmSwift
   //
   
   dynamic var id: String = UUID().uuidString
+  
+  dynamic var isPreviosDinner: Bool = false
 
   // Top
   dynamic var shugarBefore: Float = 0
@@ -28,6 +30,10 @@ import RealmSwift
 
   dynamic var timeShugarBefore: Date? = nil
   dynamic var timeShugarAfter: Date? = nil
+  
+  dynamic var correctionInsulin: Float = 0
+  
+  // Middle
   
   // Product
   
@@ -37,6 +43,10 @@ import RealmSwift
   dynamic var placeInjection: String = ""
   // Activity
   dynamic var trainName: String = ""
+  
+  // Footer
+  
+  dynamic var totalInsulin: Float = 0
   
   
   

@@ -61,6 +61,7 @@
 		05D26A30235DC31C00155F31 /* ShugarCorrectorWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A2F235DC31C00155F31 /* ShugarCorrectorWorker.swift */; };
 		05D26A35236041FE00155F31 /* ProductListWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A34236041FE00155F31 /* ProductListWorker.swift */; };
 		05D26A3923605D9200155F31 /* TotalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A3823605D9200155F31 /* TotalView.swift */; };
+		05D26A3E236093CB00155F31 /* DinnerRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A3D236093CB00155F31 /* DinnerRealmManager.swift */; };
 		05D806142348C9CF00C19764 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D806132348C9CF00C19764 /* MainMenuViewController.swift */; };
 		EBAC44563616B6E965B0E898 /* Pods_InsulinProjectBSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E76FB4114CAD25CECEF0EE0 /* Pods_InsulinProjectBSL.framework */; };
 		F1103B59232A34EF009A338A /* ProductsTableViewInMealCellFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1103B58232A34EF009A338A /* ProductsTableViewInMealCellFooterView.swift */; };
@@ -205,6 +206,7 @@
 		05D26A2F235DC31C00155F31 /* ShugarCorrectorWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShugarCorrectorWorker.swift; sourceTree = "<group>"; };
 		05D26A34236041FE00155F31 /* ProductListWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListWorker.swift; sourceTree = "<group>"; };
 		05D26A3823605D9200155F31 /* TotalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalView.swift; sourceTree = "<group>"; };
+		05D26A3D236093CB00155F31 /* DinnerRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerRealmManager.swift; sourceTree = "<group>"; };
 		05D806132348C9CF00C19764 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		3E76FB4114CAD25CECEF0EE0 /* Pods_InsulinProjectBSL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InsulinProjectBSL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A0FC66BAC35F6B18007EC60 /* Pods-InsulinProjectBSL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsulinProjectBSL.debug.xcconfig"; path = "Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL.debug.xcconfig"; sourceTree = "<group>"; };
@@ -800,7 +802,6 @@
 			children = (
 				05D26A3B236062C100155F31 /* FooterCellWorker */,
 				05D26A3A236062AE00155F31 /* MiddleCellWorker */,
-				F1E78CC1230D336B00592AB8 /* MainWorker.swift */,
 			);
 			path = Workers;
 			sourceTree = "<group>";
@@ -975,6 +976,8 @@
 		05D26A3A236062AE00155F31 /* MiddleCellWorker */ = {
 			isa = PBXGroup;
 			children = (
+				F1E78CC1230D336B00592AB8 /* MainWorker.swift */,
+				05D26A3C2360721700155F31 /* ShugarCorrector */,
 				05D26A362360422C00155F31 /* ProductList */,
 			);
 			path = MiddleCellWorker;
@@ -985,6 +988,14 @@
 			children = (
 			);
 			path = FooterCellWorker;
+			sourceTree = "<group>";
+		};
+		05D26A3C2360721700155F31 /* ShugarCorrector */ = {
+			isa = PBXGroup;
+			children = (
+				05D26A2F235DC31C00155F31 /* ShugarCorrectorWorker.swift */,
+			);
+			path = ShugarCorrector;
 			sourceTree = "<group>";
 		};
 		4A80211A4DAEF2A23ED80AC7 /* Pods */ = {
@@ -1392,7 +1403,6 @@
 		F1E78CCE230D337300592AB8 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				05D26A2F235DC31C00155F31 /* ShugarCorrectorWorker.swift */,
 				059AD9AA23585670007DE168 /* Validator */,
 				05A4F1982339EE5100DFE4D7 /* Views */,
 				05A4F1972339EE4600DFE4D7 /* Controllers */,
@@ -1456,6 +1466,7 @@
 			children = (
 				F1E78D1D230D688900592AB8 /* FoodRealmManager.swift */,
 				F13B35202318DED40020AD26 /* MealRealmManager.swift */,
+				05D26A3D236093CB00155F31 /* DinnerRealmManager.swift */,
 			);
 			path = RealmManager;
 			sourceTree = "<group>";
@@ -1805,6 +1816,7 @@
 				055BE0D723448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift in Sources */,
 				F1E78CFF230D544C00592AB8 /* CustomLabels.swift in Sources */,
 				05952A5F233E873E00EE996E /* TouchesPassView.swift in Sources */,
+				05D26A3E236093CB00155F31 /* DinnerRealmManager.swift in Sources */,
 				F1E78C9C230D31E600592AB8 /* AppDelegate.swift in Sources */,
 				F1103B63232A735D009A338A /* NewMealViewWorker.swift in Sources */,
 				F1E78CB8230D334B00592AB8 /* FoodPresenter.swift in Sources */,

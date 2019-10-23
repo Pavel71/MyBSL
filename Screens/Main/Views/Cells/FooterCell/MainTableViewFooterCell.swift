@@ -59,7 +59,7 @@ class MainTableViewFooterCell: UITableViewCell {
       self?.changeEnablePredictaButton()
     }
 
-    self.didTapSaveButtonClouser = {[weak robotView] in
+    self.didTapSaveButtonToRobotViewClouser = {[weak robotView] in
       robotView?.handleTap()
     }
 
@@ -96,8 +96,16 @@ class MainTableViewFooterCell: UITableViewCell {
   }
   
   var didTapSaveButtonClouser: (() -> Void)?
+  var didTapSaveButtonToRobotViewClouser: (() -> Void)?
   @objc private func didTapSaveButton() {
-    didTapSaveButtonClouser!()
+    
+    // Таким образом сохранение в реалм произойдет в паралельном потоке
+    DispatchQueue.global().async {
+      self.didTapSaveButtonClouser!()
+    }
+    
+    didTapSaveButtonToRobotViewClouser!()
+    
   }
   
   private func changeEnablePredictaButton() {
