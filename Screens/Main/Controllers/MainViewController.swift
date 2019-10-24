@@ -125,9 +125,7 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
 
       print("Set ViewModel")
       mainViewModel = viewModel
-      
-      
-      
+
     default:break
     }
     

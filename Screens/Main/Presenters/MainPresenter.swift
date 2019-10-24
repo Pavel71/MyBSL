@@ -19,6 +19,13 @@ class MainPresenter: MainPresentationLogic {
   var mainViewModel: MainViewModel!
   
   
+  let dateFormatter: DateFormatter = {
+    let dateF = DateFormatter()
+    dateF.dateFormat = "dd-MM-yy HH:mm"
+    return dateF
+  }()
+  
+  
   func presentData(response: Main.Model.Response.ResponseType) {
     
     
@@ -26,8 +33,7 @@ class MainPresenter: MainPresentationLogic {
     case .prepareViewModel(let realmData):
       // Тут под вопросом может быть просто сразу отсюда брать но не важно
 //      mainViewModel = data
-      
-      
+
       prepareMainViewModel(realmData:realmData)
       
       passViewModelInViewController()
@@ -52,27 +58,13 @@ class MainPresenter: MainPresentationLogic {
     switch response {
       
     case .deleteProductFromDinner(let products):
-      
-      let firstDinnerModel = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData
-      
-      let currentArray = ProductListWorker.deleteProducts(products: products, newDinnerProducts: firstDinnerModel)
-        mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
-      
-      calculateResultViewModel()
-      calculateTotalInsulin()
+
+      deleteProductFromDinner(products: products)
       passViewModelInViewController()
       
     case .addProductInDinner(let products):
       
-      
-      let firstDinnerProducts = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData
-      
-      let currentArray = ProductListWorker.addProducts(products: products, newDinnerProducts: firstDinnerProducts)
-      
-      mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
-      
-      calculateResultViewModel()
-      calculateTotalInsulin()
+      addProductsIndDinner(products: products)
       passViewModelInViewController()
       
     case .setInsulinInProduct(let insulin,let rowProduct,let isPreviosDinner):
@@ -87,12 +79,9 @@ class MainPresenter: MainPresentationLogic {
       
     case .setPortionInProduct(let portion,let rowProduct):
       
-      guard let portionFloat = Float(portion) else {return}
-      let portionInt = Int(portionFloat)
-      
-      // Так как пока я жопускаю возможность изменять параметр порций только в новом обеде
-      
-     mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData[rowProduct].portion = portionInt
+//      guard let portionFloat = Float(portion) else {return}
+      guard let portionInt = Int(portion) else {return}
+      mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData[rowProduct].portion = portionInt
       
       calculateResultViewModel()
       // Похорошему во всех этих методах нужно изменять данные 
@@ -148,16 +137,127 @@ extension MainPresenter {
     
     // Во ттакой план на эту функцию!
     
-    // let topViewModel
-    // let middleViewModel
-    // let FootrrViewmodel
+    // Так как я буду Сортирвоать по дате то мне нужно брать самый свежий
+    guard let lastDinner = realmData.last else {return}
     
-    // let MainView Model = mainViewmodle
+    let topViewModel = prepareTopViewModel(lastDinner: lastDinner)
+    
+    let middleViewModel = prepareMiddleViewModel(dinners: realmData)
+    
+    
+    // Просто тут не понятно будет ли менятся это значение для каждого обеда! или просто будет высчитыватся для новых обедов
+    let footerViewModel = MainFooterViewModel(totalInsulinValue: 0)
+  
+    
+    mainViewModel = MainViewModel(headerViewModelCell: topViewModel, dinnerCollectionViewModel: middleViewModel, footerViewModel: footerViewModel)
     
     
   }
   
+  // TopViewModel
+  private func prepareTopViewModel(lastDinner: DinnerRealm) -> MainHeaderViewModel {
+    let lastInjections = String(lastDinner.totalInsulin)
+    
+    let lastTimeString = getTimeString(time: lastDinner.timeShugarBefore)
+
+    let lastShugar = String(lastDinner.shugarBefore)
+    
+    // Этот класс будет отвечать за всю логику по работе с запасом инсулина
+    let supplyInsulin = String(HeaderCellWorker.shared.getSupplyValue())
+    
+    return MainHeaderViewModel(lastInjectionValue: lastInjections, lastTimeInjectionValue: lastTimeString, lastShugarValueLabel: lastShugar, insulinSupplyInPanValue: supplyInsulin)
+  }
+  
+  private func getTimeString(time: Date?) -> String {
+    var lastTimeString: String
+    if let lastTime = time {
+      lastTimeString = dateFormatter.string(from: lastTime)
+    } else {
+      lastTimeString = ""
+    }
+    return lastTimeString
+  }
+  
+  
+  
+  // MiddleViewModel
+  
+  private func prepareMiddleViewModel(dinners: [DinnerRealm]) -> [DinnerViewModel] {
+    
+    return Array(dinners.map(createDinnerViewModel))
+    
+  }
+  
+  private func createDinnerViewModel(dinner: DinnerRealm) -> DinnerViewModel {
+
+    let shugarViewModel = createShugarTopInCellViewModel(dinner: dinner)
+    
+    let productListViewModel = createProductListInDinnerViewModel(dinner: dinner)
+    
+    return DinnerViewModel(isPreviosDinner: dinner.isPreviosDinner, shugarTopViewModel: shugarViewModel, productListInDinnerViewModel: productListViewModel, placeInjection: dinner.placeInjection, train: dinner.trainName)
+    
+  }
+  
+  private func createShugarTopInCellViewModel(dinner: DinnerRealm) -> ShugarTopViewModel {
+    
+    let shugarBeforeString = String(dinner.shugarBefore)
+    let shugarAfterString = String(dinner.shugarAfter)
+
+    let timeBeforeString = getTimeString(time: dinner.timeShugarBefore)
+    
+    let timeAfterString = getTimeString(time: dinner.timeShugarAfter)
+
+    return ShugarTopViewModel(isPreviosDinner: dinner.isPreviosDinner, shugarBeforeValue: shugarBeforeString, shugarAfterValue: shugarAfterString, timeBefore: timeBeforeString, timeAfter: timeAfterString)
+  }
+  
+  private func createProductListInDinnerViewModel(dinner: DinnerRealm) -> ProductListInDinnerViewModel {
+    
+    let productsData = Array(dinner.listProduct.map(createProductListViewModel))
+    
+    let resultsViewModel = ProductListResultWorker.shared.getRusultViewModelByProducts(data: productsData)
+    
+    return ProductListInDinnerViewModel(resultsViewModel: resultsViewModel, productsData: productsData, isPreviosDinner: dinner.isPreviosDinner)
+  }
+  
+  private func createProductListViewModel(product:ProductRealm) -> ProductListViewModel {
+    
+    return ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
+  }
+  
 }
+
+// Add Product in Dinner or Delete Product
+
+extension MainPresenter {
+  
+  // Add Product
+  private func addProductsIndDinner(products: [ProductRealm]) {
+    
+    let firstDinnerProducts = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData
+    
+    let currentArray = ProductListWorker.addProducts(products: products, newDinnerProducts: firstDinnerProducts)
+    
+    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
+    
+    calculateResultViewModel()
+    calculateTotalInsulin()
+    
+  }
+  
+  // Delete Product
+  private func deleteProductFromDinner(products: [ProductRealm]) {
+    
+    let firstDinnerModel = mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData
+    
+    let currentArray = ProductListWorker.deleteProducts(products: products, newDinnerProducts: firstDinnerModel)
+    mainViewModel.dinnerCollectionViewModel[0].productListInDinnerViewModel.productsData = currentArray
+    
+    calculateResultViewModel()
+    calculateTotalInsulin()
+  }
+  
+}
+
 
 // MARK: Worker With ProductList In Dinner
 

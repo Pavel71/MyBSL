@@ -13,7 +13,7 @@ import RealmSwift
 @objcMembers class DinnerRealm: Object {
   
   enum Property: String {
-    case id, name
+    case id, name, timeShugarBefore
   }
   
   // Поля которые будут в диннере для UI это 1
@@ -22,7 +22,7 @@ import RealmSwift
   
   dynamic var id: String = UUID().uuidString
   
-  dynamic var isPreviosDinner: Bool = false
+  dynamic var isPreviosDinner: Bool = true
 
   // Top
   dynamic var shugarBefore: Float = 0
@@ -50,14 +50,18 @@ import RealmSwift
   
   
   
-  convenience init(shugarBefore: Float,timeShugarBefore: Date, placeInjection: String, trainName: String,listProduct: List<ProductRealm>) {
+  convenience init(shugarBefore: Float,shugarAfter:Float,timeShugarBefore: Date?,timeShugarAfter: Date?,placeInjection: String, trainName: String,correctionInsulin:Float,totalInsulin: Float,isPreviosDinner:Bool = true) {
     self.init()
     
     self.shugarBefore = shugarBefore
+    self.shugarAfter = shugarAfter
     self.timeShugarBefore = timeShugarBefore
+    self.timeShugarAfter = timeShugarAfter
     self.placeInjection = placeInjection
     self.trainName = trainName
-    self.listProduct = listProduct
+    self.totalInsulin = totalInsulin
+    self.correctionInsulin = correctionInsulin
+    self.isPreviosDinner = isPreviosDinner
 
   }
 

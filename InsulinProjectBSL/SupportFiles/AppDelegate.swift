@@ -26,15 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   ]
   
   var meals: [MealRealm] = [
-    
-//    MealRealm(name: "Обед1"),
-//    MealRealm(name: "Обед2"),
-//    MealRealm(name: "Обед3"),
-  
+
   ]
   
   var dinners: [DinnerRealm] = [
-//    DinnerRealm(shugarBefore: 20, timeShugarBefore: Date(), placeInjection: "Живот", trainName: "", listProduct: <#T##List<ProductRealm>#>)
+
   ]
   
   var sectionType: [SectionMealTypeRealm] = []
@@ -64,16 +60,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     sectionType.append(launch)
     
     
-    root()
     initializeRealm()
-//    initSectionMealRealm()
     initMeals()
     initDinners()
+    
+    root()
+    
     
     return true
   }
   
   func root() {
+    
+    
+    
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.makeKeyAndVisible()
     
@@ -139,11 +139,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   private func initDinners() {
     let realm = RealmProvider.dinners.realm
+//    guard realm.isEmpty else { return }
+
+    let dummyDinner = DinnerRealm(shugarBefore: 0, shugarAfter: 0, timeShugarBefore: nil, timeShugarAfter: nil, placeInjection: "", trainName: "", correctionInsulin: 0, totalInsulin: 0,isPreviosDinner: false)
+    dinners.append(dummyDinner)
     
-    guard realm.isEmpty else { return }
-    
+    print(dummyDinner,"Init Dinners")
     try! realm.write {
-      //      realm.deleteAll()
+      realm.deleteAll()
       realm.add(dinners)
     }
     
