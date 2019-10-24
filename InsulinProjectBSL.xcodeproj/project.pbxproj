@@ -57,6 +57,7 @@
 		05A4F1C0233A371500DFE4D7 /* DinnerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1BF233A371500DFE4D7 /* DinnerCollectionViewCell.swift */; };
 		05A4F1C2233A3D1500DFE4D7 /* CustomValueTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1C1233A3D1500DFE4D7 /* CustomValueTextField.swift */; };
 		05A4F1C4233A3E8000DFE4D7 /* ShugarSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1C3233A3E8000DFE4D7 /* ShugarSetView.swift */; };
+		05AD21532361B784008E6BB0 /* DateWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD21522361B784008E6BB0 /* DateWorker.swift */; };
 		05C16D61233F23A800486CAE /* ProductListResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D60233F23A800486CAE /* ProductListResultView.swift */; };
 		05C16D66233F4E6100486CAE /* RobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D65233F4E6100486CAE /* RobotView.swift */; };
 		05D26A30235DC31C00155F31 /* ShugarCorrectorWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A2F235DC31C00155F31 /* ShugarCorrectorWorker.swift */; };
@@ -203,6 +204,7 @@
 		05A4F1BF233A371500DFE4D7 /* DinnerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerCollectionViewCell.swift; sourceTree = "<group>"; };
 		05A4F1C1233A3D1500DFE4D7 /* CustomValueTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomValueTextField.swift; sourceTree = "<group>"; };
 		05A4F1C3233A3E8000DFE4D7 /* ShugarSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShugarSetView.swift; sourceTree = "<group>"; };
+		05AD21522361B784008E6BB0 /* DateWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateWorker.swift; sourceTree = "<group>"; };
 		05C16D60233F23A800486CAE /* ProductListResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListResultView.swift; sourceTree = "<group>"; };
 		05C16D65233F4E6100486CAE /* RobotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotView.swift; sourceTree = "<group>"; };
 		05D26A2F235DC31C00155F31 /* ShugarCorrectorWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShugarCorrectorWorker.swift; sourceTree = "<group>"; };
@@ -943,6 +945,14 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		05AD21512361B772008E6BB0 /* DateWorker */ = {
+			isa = PBXGroup;
+			children = (
+				05AD21522361B784008E6BB0 /* DateWorker.swift */,
+			);
+			path = DateWorker;
+			sourceTree = "<group>";
+		};
 		05C16D62233F323A00486CAE /* ResultsView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1536,6 +1546,7 @@
 		F1E78D00230D546500592AB8 /* Workers */ = {
 			isa = PBXGroup;
 			children = (
+				05AD21512361B772008E6BB0 /* DateWorker */,
 				057B9846234F6B3C002EAD68 /* PointSercher */,
 				0541BA55233777E900F87B18 /* HeaderinSectionWorker */,
 				F1EC85A423321CA700E14D33 /* Calculate */,
@@ -1806,6 +1817,7 @@
 				F1E78CC9230D336B00592AB8 /* MainRouter.swift in Sources */,
 				F112845A2327926B00416AF4 /* NewMealView.swift in Sources */,
 				059AD9A9235854E0007DE168 /* DinnerViewModelValidator.swift in Sources */,
+				05AD21532361B784008E6BB0 /* DateWorker.swift in Sources */,
 				059D7E7E23506C3200286E57 /* CalculateDistance.swift in Sources */,
 				F1E78CC7230D336B00592AB8 /* MainPresenter.swift in Sources */,
 				F1E78CCB230D336B00592AB8 /* MainViewController.swift in Sources */,

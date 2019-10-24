@@ -24,8 +24,9 @@ protocol ProductListInDinnerViewModalable: ProductListViewModalable {
 struct ProductListViewModel: ProductListViewModelCell {
   
   var insulinValue: Float?
-  
+  var isFavorit: Bool
   var carboIn100Grm: Int
+  var category: String
   
   // ProductViewModelCell
   

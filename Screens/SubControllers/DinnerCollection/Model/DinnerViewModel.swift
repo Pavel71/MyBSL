@@ -26,8 +26,10 @@ struct DinnerViewModel: DinnerViewModelCellable {
   var isPreviosDinner: Bool
   var shugarTopViewModel: ShugarTopViewModelable
   var productListInDinnerViewModel: ProductListInDinnerViewModel
+  
   var placeInjection: String
   var train: String?
+  var totalInsulin: Float
 
 }
 
@@ -39,15 +41,15 @@ struct ShugarTopViewModel: ShugarTopViewModelable {
   
   var isPreviosDinner: Bool
   
-  var shugarBeforeValue: String
+  var shugarBeforeValue: Float
   
-  var shugarAfterValue: String
+  var shugarAfterValue: Float
   
-  var timeBefore: String
+  var timeBefore: Date?
   
-  var timeAfter: String
+  var timeAfter: Date?
   
-  init(isPreviosDinner: Bool,shugarBeforeValue: String,shugarAfterValue: String,timeBefore: String,timeAfter: String,correctHsugarByInsulin: Float = 0.0) {
+  init(isPreviosDinner: Bool,shugarBeforeValue: Float,shugarAfterValue: Float,timeBefore: Date?,timeAfter: Date?,correctHsugarByInsulin: Float = 0.0) {
     self.isPreviosDinner = isPreviosDinner
     self.shugarBeforeValue = shugarBeforeValue
     self.shugarAfterValue = shugarAfterValue

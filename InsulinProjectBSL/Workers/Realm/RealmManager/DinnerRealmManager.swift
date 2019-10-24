@@ -22,6 +22,21 @@ class DinnerRealmManager {
   
 }
 
+// MARK: Save Data
+
+extension DinnerRealmManager {
+  
+  func saveDinner(dinner:DinnerRealm) {
+    
+    let realm = provider.realm
+    
+    try! realm.write {
+      realm.add(dinner)
+    }
+  }
+  
+}
+
 // MARK: Fetch Data
 
 extension DinnerRealmManager {

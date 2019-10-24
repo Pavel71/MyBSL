@@ -29,11 +29,11 @@ class ProductListInDinnerViewController: BaseProductList {
   var tableViewData: [ProductListViewModel] = []
   
   // Clousers
-  var didSelectTextFieldCellClouser: ((UITextField) -> Void)?
+  var didSelectTextFieldCellClouser: TextFieldPassClouser?
   var didDeleteProductClouser:(([ProductRealm]) -> Void)?
   
-  var didPortionTextFieldChangetToDinnerController: ((String,Int) -> Void)?
-  var didInsulinTextFieldChangetToDinnerController: ((String,Int) -> Void)?
+  var didPortionTextFieldChangetToDinnerController: ((Int,Int) -> Void)?
+  var didInsulinTextFieldChangetToDinnerController: ((Float,Int) -> Void)?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -60,7 +60,7 @@ class ProductListInDinnerViewController: BaseProductList {
   }
   
   private func getProductListViewModelFromProductReal(product: ProductRealm) -> ProductListViewModel {
-    let productListViewModel = ProductListViewModel(insulinValue: product.insulin, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
+    let productListViewModel = ProductListViewModel(insulinValue: product.insulin, isFavorit: product.isFavorits, carboIn100Grm: product.carbo, category: product.category, name: product.name, portion: product.portion)
     return productListViewModel
   }
 
@@ -196,8 +196,8 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
     // Это будет нормальным решением!
     
     // Здесь нам нужно передать какой именно продукт мы редактируем! Чтобы Main Controller  знал об этом!
-    
-    didPortionTextFieldChangetToDinnerController!(text,indexPath.row)
+    let portionInt = (text as NSString).integerValue
+    didPortionTextFieldChangetToDinnerController!(portionInt,indexPath.row)
 
   }
   
@@ -212,7 +212,7 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
     let sum = CalculateValueTextField.calculateSumInsulin(insulin: insulin, indexPath: indexPath, tableViewData: &tableViewData)
     footerView.resultsView.insulinResultLabel.text = String(sum)
     
-    didInsulinTextFieldChangetToDinnerController!(text,indexPath.row)
+    didInsulinTextFieldChangetToDinnerController!(insulin,indexPath.row)
 
   }
   

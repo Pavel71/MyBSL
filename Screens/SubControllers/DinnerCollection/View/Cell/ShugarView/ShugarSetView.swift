@@ -15,10 +15,10 @@ protocol ShugarTopViewModelable {
   
   
   var correctInsulinByShugar: Float {get set}
-  var shugarBeforeValue: String {get set}
-  var shugarAfterValue: String {get set}
-  var timeBefore: String {get set}
-  var timeAfter: String {get set}
+  var shugarBeforeValue: Float {get set}
+  var shugarAfterValue: Float {get set}
+  var timeBefore: Date? {get set}
+  var timeAfter: Date? {get set}
   
 }
 
@@ -91,20 +91,20 @@ class ShugarSetView: UIView {
     
   }()
   
-  let dateFormatter: DateFormatter = {
-    
-    let dateF = DateFormatter()
-    dateF.dateFormat = "dd-MM-yy HH:mm"
-    return dateF
-  }()
+//  let dateFormatter: DateFormatter = {
+//
+//    let dateF = DateFormatter()
+//    dateF.dateFormat = "dd-MM-yy HH:mm"
+//    return dateF
+//  }()
   
   
   
   // CLousers
   var didBeginEditingShugarBeforeTextField: TextFieldPassClouser?
-  var didChangeShugarBeforeTextFieldToDinnerCellClouser: StringPassClouser?
-  var didSetShugarBeforeInTimeClouser: StringPassClouser?
-  var didSetCorrectionShugarByInsulinClouser: StringPassClouser?
+  var didChangeShugarBeforeTextFieldToDinnerCellClouser: FloatPassClouser?
+  var didSetShugarBeforeInTimeClouser: DatePassClouser?
+  var didSetCorrectionShugarByInsulinClouser: FloatPassClouser?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -166,8 +166,8 @@ class ShugarSetView: UIView {
   
   func setViewModel(viewModel:ShugarTopViewModelable) {
     
-    shugarBeforeValueTextField.text = viewModel.shugarBeforeValue
-    timeBeforeLabel.text = viewModel.timeBefore
+    shugarBeforeValueTextField.text = String(viewModel.shugarBeforeValue)
+    timeBeforeLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeBefore)
     
     
     correctionShugarInsulinValueTextField.text = String(viewModel.correctInsulinByShugar)
@@ -184,19 +184,19 @@ class ShugarSetView: UIView {
     
     if viewModel.isPreviosDinner {
       
-      shugarBeforeValueTextField.text = viewModel.shugarBeforeValue
+      shugarBeforeValueTextField.text = String(viewModel.shugarBeforeValue)
       shugarBeforeValueTextField.isEnabled = !viewModel.isPreviosDinner
       
-      timeBeforeLabel.text = viewModel.timeBefore
-      timeAfterLabel.text = viewModel.timeAfter
+      timeBeforeLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeBefore)
+      timeAfterLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeAfter)
     }
   }
   
   
-  private func setTimeBeforTime() -> String {
+  private func setTimeBeforTime() -> Date {
     
     let timeNow = Date()
-    let timeString = dateFormatter.string(from: timeNow)
+    let timeString = DateWorker.shared.getTimeString(date: timeNow)
     timeBeforeLabel.text = timeString
     timeBeforeLabel.alpha = 0
     
@@ -204,7 +204,7 @@ class ShugarSetView: UIView {
       self.timeBeforeLabel.alpha = 1
     }
     
-    return timeString
+    return timeNow
     
   }
   
@@ -232,7 +232,8 @@ extension ShugarSetView: UITextFieldDelegate {
   @objc private func handleShugarBeforeTextChange(textField: UITextField) {
     
     guard let text = textField.text else {return}
-    didChangeShugarBeforeTextFieldToDinnerCellClouser!(text)
+    let shugarFloat = (text as NSString).floatValue
+    didChangeShugarBeforeTextFieldToDinnerCellClouser!(shugarFloat)
     
     // Здесь нужно установить время и прокинуть его в модельку потомучто потом мы будем сохранять все в базу данных
   }
@@ -248,7 +249,9 @@ extension ShugarSetView: UITextFieldDelegate {
     if let text = textField.text {
       
       // Просто с синглтонами нихера не понятно если честно не читаетс код не понятно откуда идет сигнал просто по факту видно что он уже имее тсво1ство а когда оно засетилось туда не особо понятно
-      ShugarCorrectorWorker.shared.setInsulinCorrectionByShugar(shugarValue: text)
+      let shugarFloat = (text as NSString).floatValue
+      
+      ShugarCorrectorWorker.shared.setInsulinCorrectionByShugar(shugarValue: shugarFloat)
       
       
       let timeBefore = setTimeBeforTime()
@@ -293,7 +296,7 @@ extension ShugarSetView: UIPickerViewDelegate,UIPickerViewDataSource {
     // По идеии эту корректировку намбы хронить в диннере! Поэтому нам нужно это поле там создать!
     correctionShugarInsulinValueTextField.text = String(valueResult)
     
-    didSetCorrectionShugarByInsulinClouser!(String(valueResult))
+    didSetCorrectionShugarByInsulinClouser!(valueResult)
   }
   
   

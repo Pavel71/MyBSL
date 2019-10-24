@@ -23,12 +23,12 @@ enum Main {
         case getViewModel
         
         // Update ViewModel Without Realm
-        case setPortionInProduct(portion: String, rowProduct: Int)
-        case setInsulinInProduct(insulin: String, rowProduct:Int,isPreviosDInner: Bool)
-        case setShugarBefore(shugarBefore: String)
+        case setPortionInProduct(portion: Int, rowProduct: Int)
+        case setInsulinInProduct(insulin: Float, rowProduct:Int,isPreviosDInner: Bool)
+        case setShugarBefore(shugarBefore: Float)
         case setPlaceIngections(place: String)
-        case setShigarBeforeInTime(time: String)
-        case setCorrectionInsulinBySHugar(correctionValue: String)
+        case setShigarBeforeInTime(time: Date)
+        case setCorrectionInsulinBySHugar(correctionValue: Float)
         
         // Add Product
         case addProductInNewDinner(products:[ProductRealm])
@@ -50,12 +50,12 @@ enum Main {
         
         // UPDateViewModel
         
-        case setPortionInProduct(portion: String, rowProduct: Int)
-        case setInsulinInProduct(insulin: String, rowProduct:Int,isPreviosDInner:Bool)
-        case setShugarBefore(shugarBefore: String)
+        case setPortionInProduct(portion: Int, rowProduct: Int)
+        case setInsulinInProduct(insulin: Float, rowProduct:Int,isPreviosDInner:Bool)
+        case setShugarBefore(shugarBefore: Float)
         case setPlaceIngections(place: String)
-        case setShigarBeforeInTime(time: String)
-        case setCorrectionInsulinByShugar(correction: String)
+        case setShigarBeforeInTime(time: Date?)
+        case setCorrectionInsulinByShugar(correction: Float)
         
         // Add Product
         case addProductInDinner(products:[ProductRealm])
@@ -106,19 +106,19 @@ struct MainHeaderViewModel: MainTableViewHeaderCellable {
   
 //  var isMenuViewControoler: Bool
   
-  var lastInjectionValue: String
+  var lastInjectionValue: Float
   
-  var lastTimeInjectionValue: String
+  var lastTimeInjectionValue: Date?
   
-  var lastShugarValueLabel: String
+  var lastShugarValue: Float
   
-  var insulinSupplyInPanValue: String
+  var insulinSupplyInPanValue: Float
   
-  init(lastInjectionValue: String,lastTimeInjectionValue: String,lastShugarValueLabel: String,insulinSupplyInPanValue: String) {
+  init(lastInjectionValue: Float,lastTimeInjectionValue: Date?,lastShugarValue: Float,insulinSupplyInPanValue: Float) {
     
     self.lastInjectionValue = lastInjectionValue
     self.lastTimeInjectionValue = lastTimeInjectionValue
-    self.lastShugarValueLabel = lastShugarValueLabel
+    self.lastShugarValue = lastShugarValue
     self.insulinSupplyInPanValue = insulinSupplyInPanValue
 //    self.isMenuViewControoler = isMenuViewControoler
   }

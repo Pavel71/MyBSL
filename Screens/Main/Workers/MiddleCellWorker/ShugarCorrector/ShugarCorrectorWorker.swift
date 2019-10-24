@@ -42,11 +42,11 @@ class ShugarCorrectorWorker {
   }
   
   
-  func setInsulinCorrectionByShugar(shugarValue: String) {
+  func setInsulinCorrectionByShugar(shugarValue: Float) {
     
-    let valueFloat = (shugarValue as NSString).floatValue
+//    let valueFloat = (shugarValue as NSString).floatValue
 
-    isNeedCorrectShugarByInsulin =  valueFloat > higherShuagrLevel || valueFloat < bottomShugarLevel
+    isNeedCorrectShugarByInsulin =  shugarValue > higherShuagrLevel || shugarValue < bottomShugarLevel
     
     
     if isNeedCorrectShugarByInsulin {

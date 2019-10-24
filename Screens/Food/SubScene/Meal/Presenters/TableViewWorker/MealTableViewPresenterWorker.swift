@@ -52,7 +52,7 @@ class MealTableViewPresenterWorker {
   
   private static func getProductListViewModel(product: ProductRealm) -> ProductListViewModel {
     
-    let product = ProductListViewModel.init(insulinValue: nil, carboIn100Grm: product.carbo, name: product.name, portion: product.portion)
+    let product = ProductListViewModel.init(insulinValue: nil, isFavorit: product.isFavorits, carboIn100Grm: product.carbo, category: product.category, name: product.name, portion: product.portion)
     
     return product
     

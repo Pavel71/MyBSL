@@ -139,14 +139,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   private func initDinners() {
     let realm = RealmProvider.dinners.realm
-//    guard realm.isEmpty else { return }
+    guard realm.isEmpty else { return }
 
     let dummyDinner = DinnerRealm(shugarBefore: 0, shugarAfter: 0, timeShugarBefore: nil, timeShugarAfter: nil, placeInjection: "", trainName: "", correctionInsulin: 0, totalInsulin: 0,isPreviosDinner: false)
     dinners.append(dummyDinner)
     
     print(dummyDinner,"Init Dinners")
     try! realm.write {
-      realm.deleteAll()
+//      realm.deleteAll()
       realm.add(dinners)
     }
     

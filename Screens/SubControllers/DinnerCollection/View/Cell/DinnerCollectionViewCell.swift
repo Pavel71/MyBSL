@@ -60,7 +60,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   var didTapAddNewProductInDinnerClouser: EmptyClouser?
   
   // Pass Clousers
-  var didShugarBeforeTextFieldChangeToDinnerViewController: StringPassClouser?
+  var didShugarBeforeTextFieldChangeToDinnerViewController: FloatPassClouser?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -136,8 +136,8 @@ extension DinnerCollectionViewCell {
     shugarSetView.constrainHeight(constant: Constants.Main.DinnerCollectionView.shugarViewInCellHeight)
     
     // CLousers
-    shugarSetView.didChangeShugarBeforeTextFieldToDinnerCellClouser = {[weak self] text in
-      self?.didShugarBeforeTextFieldChangeToDinnerViewController!(text)
+    shugarSetView.didChangeShugarBeforeTextFieldToDinnerCellClouser = {[weak self] shugarBefore in
+      self?.didShugarBeforeTextFieldChangeToDinnerViewController!(shugarBefore)
     }
     
   }

@@ -11,10 +11,10 @@ import UIKit
 
 protocol MainTableViewHeaderCellable {
   
-  var lastInjectionValue: String {get}
-  var lastTimeInjectionValue: String {get}
-  var lastShugarValueLabel: String {get}
-  var insulinSupplyInPanValue: String {get}
+  var lastInjectionValue: Float {get}
+  var lastTimeInjectionValue: Date? {get}
+  var lastShugarValue: Float {get}
+  var insulinSupplyInPanValue: Float {get}
   
 }
 
@@ -63,7 +63,7 @@ class MainTableViewHeaderCell: UITableViewCell {
   
   // Menu View Controller
   
-//  let menuViewController = MenuDinnerViewController()
+  //  let menuViewController = MenuDinnerViewController()
   
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -79,7 +79,7 @@ class MainTableViewHeaderCell: UITableViewCell {
       lastTimeInjectionLabel,
       lastShugarLabel,
       insulinSupplyInPanLabel
-      ])
+    ])
     labelsStackView.axis = .vertical
     labelsStackView.distribution = .fillEqually
     
@@ -88,38 +88,41 @@ class MainTableViewHeaderCell: UITableViewCell {
       lastTimeInjectionValueLabel,
       lastShugarValueLabel,
       insulinSupplyInPanValueLabel
-      ])
+    ])
     valuelabelsStackView.axis = .vertical
     valuelabelsStackView.distribution = .fillEqually
     valuelabelsStackView.constrainWidth(constant: Constants.numberValueTextFieldWidth)
     
     let horizontalStackView = UIStackView(arrangedSubviews: [
       labelsStackView,valuelabelsStackView
-      ])
+    ])
     
     let overAllStackView = UIStackView(arrangedSubviews: [
       titleLabel,
       horizontalStackView
-      ])
+    ])
     overAllStackView.axis = .vertical
     overAllStackView.distribution = .fill
     titleLabel.textAlignment = .center
     titleLabel.constrainHeight(constant: 30)
     
     
-
+    
     
     addSubview(overAllStackView)
     overAllStackView.fillSuperview(padding: .init(top: 5, left: 8, bottom: 5, right: 8))
-
+    
   }
   
   func setViewModel(viewModel:MainTableViewHeaderCellable) {
     
-      lastInjectionValueLabel.text = viewModel.lastInjectionValue
-      lastTimeInjectionValueLabel.text = viewModel.lastTimeInjectionValue
-      insulinSupplyInPanValueLabel.text = viewModel.insulinSupplyInPanValue
-      lastShugarValueLabel.text = viewModel.lastShugarValueLabel
+ 
+    let timeString = DateWorker.shared.getTimeString(date: viewModel.lastTimeInjectionValue)
+    
+    lastInjectionValueLabel.text = String(viewModel.lastInjectionValue)
+    lastTimeInjectionValueLabel.text = timeString
+    insulinSupplyInPanValueLabel.text = String(viewModel.insulinSupplyInPanValue)
+    lastShugarValueLabel.text = String(viewModel.lastShugarValue)
     
     
     
@@ -127,18 +130,18 @@ class MainTableViewHeaderCell: UITableViewCell {
   
   
   // Короче надо засетить сюда флаг что мы меняем ячейку и пускай включается контроолер сверху
-//  func setUpMenuViewController() {
-//
-//    addSubview(menuViewController.view)
-//    menuViewController.view.fillSuperview()
-//    menuViewController.setDefaultChooseProduct()
-//
-//  }
-//
-//  func removeMenuViewController() {
-//    menuViewController.view.removeFromSuperview()
-//  }
-
+  //  func setUpMenuViewController() {
+  //
+  //    addSubview(menuViewController.view)
+  //    menuViewController.view.fillSuperview()
+  //    menuViewController.setDefaultChooseProduct()
+  //
+  //  }
+  //
+  //  func removeMenuViewController() {
+  //    menuViewController.view.removeFromSuperview()
+  //  }
+  
   
   
   required init?(coder aDecoder: NSCoder) {

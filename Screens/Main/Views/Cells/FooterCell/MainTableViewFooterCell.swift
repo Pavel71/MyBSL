@@ -100,9 +100,9 @@ class MainTableViewFooterCell: UITableViewCell {
   @objc private func didTapSaveButton() {
     
     // Таким образом сохранение в реалм произойдет в паралельном потоке
-    DispatchQueue.global().async {
-      self.didTapSaveButtonClouser!()
-    }
+    
+    self.didTapSaveButtonClouser!()
+    
     
     didTapSaveButtonToRobotViewClouser!()
     

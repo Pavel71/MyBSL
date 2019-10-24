@@ -12,5 +12,7 @@ typealias EmptyClouser = (() -> Void)
 
 typealias TextFieldPassClouser = ((UITextField) -> Void)
 typealias StringPassClouser = ((String) -> Void)
+typealias FloatPassClouser = ((Float) -> Void)
+typealias DatePassClouser = ((Date) -> Void)
 
 

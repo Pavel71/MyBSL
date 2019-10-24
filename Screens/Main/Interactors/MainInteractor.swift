@@ -38,16 +38,21 @@ class MainInteractor: MainBusinessLogic {
 //      let data = DinnerData.getMainViewModelDummy()
       
       let realmData = dinnerRealmManager.fetchAllData()
+      
       print(realmData)
-
+      
       // Пока вместо Реалма статичные данны
        presenter?.presentData(response: .prepareViewModel(realmData: realmData))
       
       
     case .saveViewModel(let viewModel):
       print("Dinner to Save Realm",viewModel)
+      // теперь нужно распаристь модельку в Объект DinnerRealm
+      let dinnerRealm = createDinnerRealmObject(viewModel: viewModel)
+      dinnerRealmManager.saveDinner(dinner: dinnerRealm)
       
-      // Это возможно нужно перенести во ViewModel func
+      presenter?.presentData(response: .doAfterSaveDinnerInRealm)
+      
     case .addProductInNewDinner(let products):
       presenter?.presentData(response: .addProductInDinner(products: products))
       
@@ -82,8 +87,41 @@ class MainInteractor: MainBusinessLogic {
     
   }
   
+  // MARK: Save Data in Realm
   
+  private func createDinnerRealmObject(viewModel: DinnerViewModel) -> DinnerRealm {
+
+    let placeInjections = viewModel.placeInjection
+    let shugarBefore = viewModel.shugarTopViewModel.shugarBeforeValue
+    let shugarAfter = viewModel.shugarTopViewModel.shugarAfterValue
+    let correctionInsulin = viewModel.shugarTopViewModel.correctInsulinByShugar
+    let timeShugarBefore = viewModel.shugarTopViewModel.timeBefore
+    let timeShugarAfter = viewModel.shugarTopViewModel.timeAfter
+    let totalInsulin = viewModel.totalInsulin
+    
+    let products = viewModel.productListInDinnerViewModel.productsData
+    
+    let realmProducts = createProductForRealm(products: products)
+    
+    let dinnerRealm = DinnerRealm(shugarBefore: shugarBefore, shugarAfter: shugarAfter, timeShugarBefore: timeShugarBefore, timeShugarAfter: timeShugarAfter, placeInjection: placeInjections, trainName: viewModel.train ?? "", correctionInsulin: correctionInsulin, totalInsulin: totalInsulin)
+    
+    dinnerRealm.listProduct.append(objectsIn: realmProducts)
+    
+    
+    return dinnerRealm
+  }
   
+  private func createProductForRealm(products: [ProductListViewModel]) -> [ProductRealm] {
+    
+    let realmProducts = products.map(convertProductListViewModeltToProductRealm)
+    return realmProducts
+    
+  }
+  
+  private func convertProductListViewModeltToProductRealm(prodViewModel: ProductListViewModel) -> ProductRealm {
+    
+    return ProductRealm(name: prodViewModel.name, category: prodViewModel.category, carbo: prodViewModel.carboInPortion, isFavorits: prodViewModel.isFavorit, portion: prodViewModel.portion, insulin: prodViewModel.insulinValue ?? 0)
+  }
   
   
   

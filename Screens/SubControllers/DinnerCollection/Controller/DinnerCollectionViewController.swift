@@ -47,11 +47,11 @@ class DinnerCollectionViewController: UIViewController {
   // TextField
   var didSelectTextField: TextFieldPassClouser?
   
-  var didShugarBeforeTextFieldChangeToMain: StringPassClouser?
-  var didSetShugarBeforeInTimeClouserToMain: StringPassClouser?
-  var didSetCorrectionShugarByInsulinClouserToMain: StringPassClouser?
-  var didPortionTextFieldCnahgeToMain: ((String,Int) -> Void)?
-  var didInsulinTextFieldCnahgeToMain : ((String,Int) -> Void)?
+  var didShugarBeforeTextFieldChangeToMain: FloatPassClouser?
+  var didSetShugarBeforeInTimeClouserToMain: DatePassClouser?
+  var didSetCorrectionShugarByInsulinClouserToMain: FloatPassClouser?
+  var didPortionTextFieldCnahgeToMain: ((Int,Int) -> Void)?
+  var didInsulinTextFieldCnahgeToMain : ((Float,Int) -> Void)?
   
   // WillActiveTextField
   var didEndEditingWillActiveTextField: TextFieldPassClouser?
@@ -180,12 +180,12 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     cell.shugarSetView.didBeginEditingShugarBeforeTextField = {[weak self] textField in
       self?.textFieldDidBeginEditing(textField)
     }
-    cell.shugarSetView.didSetCorrectionShugarByInsulinClouser = {[weak self] text in
-      self?.didSetCorrectionShugarByInsulinClouserToMain!(text)
+    cell.shugarSetView.didSetCorrectionShugarByInsulinClouser = {[weak self] correctInsulin in
+      self?.didSetCorrectionShugarByInsulinClouserToMain!(correctInsulin)
     }
     // Changet
-    cell.didShugarBeforeTextFieldChangeToDinnerViewController = {[weak self] text in
-      self?.didShugarBeforeTextFieldChangeToMain!(text)
+    cell.didShugarBeforeTextFieldChangeToDinnerViewController = {[weak self] shugatBefore in
+      self?.didShugarBeforeTextFieldChangeToMain!(shugatBefore)
       
     }
     
@@ -199,8 +199,8 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     
     // InsulinTextField Change
     cell.productListViewController.didInsulinTextFieldChangetToDinnerController = {
-      [weak self] text, row in
-      self?.didInsulinTextFieldCnahgeToMain!(text,row)
+      [weak self] insulin, row in
+      self?.didInsulinTextFieldCnahgeToMain!(insulin,row)
     }
     
     // PortionTextFieldChange
