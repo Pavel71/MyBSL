@@ -50,7 +50,7 @@ class MainInteractor: MainBusinessLogic {
     case .saveViewModel(let viewModel):
       print("Dinner to Save Realm",viewModel)
       // теперь нужно распаристь модельку в Объект DinnerRealm
-      let newDinnerViewModel = viewModel.dinnerCollectionViewModel[0]
+      let newDinnerViewModel = viewModel.dinnerCollectionViewModel.last!
       
       let dinnerRealm = createDinnerRealmObject(viewModel: newDinnerViewModel)
       dinnerRealmManager.saveDinner(dinner: dinnerRealm)
@@ -71,6 +71,7 @@ class MainInteractor: MainBusinessLogic {
   private func workWithViewModel(request: Main.Model.Request.RequestType) {
     
     switch request {
+      
     case .setInsulinInProduct(let insulin, let rowProduct,let isPreviosDinner):
       presenter?.presentData(response: .setInsulinInProduct(insulin: insulin, rowProduct: rowProduct,isPreviosDInner: isPreviosDinner))
       

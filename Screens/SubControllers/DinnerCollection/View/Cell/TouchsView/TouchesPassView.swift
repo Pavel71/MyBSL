@@ -21,7 +21,7 @@ class TouchesPassView: UIView {
 
     
     if view === self {
-      print("Hit Touches View")
+//      print("Hit Touches View")
       didHitTestProductListViewControllerClouser!(true)
       return nil
     }

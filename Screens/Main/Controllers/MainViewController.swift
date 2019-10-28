@@ -124,8 +124,6 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
       print("Set ViewModel")
       mainViewModel = viewModel
       
-      print("IS Previos First Dinner DOnt True",mainViewModel.dinnerCollectionViewModel[0].isPreviosDinner)
-      
       tableView.reloadData()
 
     default:break
@@ -146,9 +144,11 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
   
   private func getFirstDinnerCell() -> DinnerCollectionViewCell {
     
-    let  cell = tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as! MainTableViewMiddleCell
+    let cell = getMainMiddleCell()
     
-    let dinnerItem = cell.dinnerCollectionViewController.collectionView.cellForItem(at:  IndexPath(item: 0, section: 0))  as! DinnerCollectionViewCell
+    let indexNewDinner = mainViewModel.dinnerCollectionViewModel.count - 1
+    
+    let dinnerItem = cell.dinnerCollectionViewController.collectionView.cellForItem(at:  IndexPath(item: indexNewDinner, section: 0))  as! DinnerCollectionViewCell
     
     return dinnerItem
   }
@@ -156,6 +156,10 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
   private func getMainFooterCell() -> MainTableViewFooterCell {
     let  cell = tableView.cellForRow(at: IndexPath(item: 2, section: 0)) as! MainTableViewFooterCell
     return cell
+  }
+  
+  private func getMainMiddleCell() -> MainTableViewMiddleCell {
+    return tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as! MainTableViewMiddleCell
   }
   
   
@@ -421,6 +425,7 @@ extension MainViewController {
     cell.dinnerCollectionViewController.didInsulinTextFieldEndEditingToMain =  {
           [weak dinnerValidator,weak self] insulin,row in
           
+      // MARK: TODO here Bag!
           self?.interactor?.makeRequest(request: .setInsulinInProduct(insulin: insulin, rowProduct: row, isPreviosDInner: false))
 
           dinnerValidator?.insulinValue = String(insulin)
@@ -453,10 +458,10 @@ extension MainViewController {
   
   // Этим должна заниматся View Model! Или хотябы запихнуть в  Worker чтобы можно было бы тестировать!
   
-  private func getFirstDinnerProductListViewModel() -> [ProductListViewModel] {
-    let newDinnerProducts = mainViewModel.dinnerCollectionViewModel.first!.productListInDinnerViewModel.productsData
-    return newDinnerProducts
-  }
+//  private func getFirstDinnerProductListViewModel() -> [ProductListViewModel] {
+//    let newDinnerProducts = mainViewModel.dinnerCollectionViewModel.first!.productListInDinnerViewModel.productsData
+//    return newDinnerProducts
+//  }
   
   func addProducts(products: [ProductRealm]) {
 
@@ -468,8 +473,8 @@ extension MainViewController {
     dinnerValidator.portion = "\(somePortion)"
     dinnerValidator.insulinValue = "\(someInsulin)"
     
-    reloadMiddleCell()
-    reloadFooterCell()
+//    reloadMiddleCell()
+//    reloadFooterCell()
   }
 
   
@@ -477,8 +482,8 @@ extension MainViewController {
 
     interactor?.makeRequest(request: .deleteProductFromDinner(products: products))
     
-    reloadMiddleCell()
-    reloadFooterCell()
+//    reloadMiddleCell()
+//    reloadFooterCell()
   }
   
   
@@ -666,7 +671,7 @@ extension MainViewController {
 }
 
 
-// MARK: Work With Footer Cell
+// MARK: Save Dinner
 
 extension MainViewController {
   
@@ -680,6 +685,8 @@ extension MainViewController {
     
     interactor?.makeRequest(request: .saveViewModel(viewModel: mainViewModel))
     
+    let middleCell = getMainMiddleCell()
+    middleCell.dinnerCollectionViewController.scrollCollectionToheRight()
     // Обнули валидацию
     dinnerValidator.setDefault()
 //    tableView.reloadRows(at: [IndexPath(item: 0, section: 0),IndexPath(item: 1, section: 0)], with: .automatic)

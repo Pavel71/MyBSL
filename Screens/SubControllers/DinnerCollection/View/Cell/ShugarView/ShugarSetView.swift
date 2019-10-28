@@ -182,14 +182,13 @@ class ShugarSetView: UIView {
   private func configureIfisPreviosDinner(viewModel: ShugarTopViewModelable) {
     // Hidden right shugar StackView And S
     
-    print("View Model is Previos Should be Same The MainViewModel",viewModel.isPreviosDinner)
     
     stackViewShugarAfter.isHidden = !viewModel.isPreviosDinner
+    shugarBeforeValueTextField.isEnabled = !viewModel.isPreviosDinner
     
     if viewModel.isPreviosDinner {
       
       shugarBeforeValueTextField.text = String(viewModel.shugarBeforeValue)
-      shugarBeforeValueTextField.isEnabled = !viewModel.isPreviosDinner
       
       timeBeforeLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeBefore)
       timeAfterLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeAfter)

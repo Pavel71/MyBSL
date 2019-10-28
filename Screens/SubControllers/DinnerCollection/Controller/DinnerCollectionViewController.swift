@@ -99,7 +99,9 @@ class DinnerCollectionViewController: UIViewController {
     dinnerViewModel = viewModel
   }
   
-
+  func scrollCollectionToheRight() {
+    collectionView.scrollToItem(at: IndexPath(item: dinnerViewModel.count - 1, section: 0), at: .right, animated: true)
+  }
   
   
 }
