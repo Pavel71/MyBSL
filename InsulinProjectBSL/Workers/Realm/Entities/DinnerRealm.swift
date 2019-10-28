@@ -13,7 +13,7 @@ import RealmSwift
 @objcMembers class DinnerRealm: Object {
   
   enum Property: String {
-    case id, name, timeShugarBefore
+    case id, name, timeCreateDinner
   }
   
   // Поля которые будут в диннере для UI это 1
@@ -21,8 +21,8 @@ import RealmSwift
   //
   
   dynamic var id: String = UUID().uuidString
-  
   dynamic var isPreviosDinner: Bool = true
+  dynamic var timeCreateDinner: Date?
 
   // Top
   dynamic var shugarBefore: Float = 0
@@ -45,7 +45,6 @@ import RealmSwift
   dynamic var trainName: String = ""
   
   // Footer
-  
   dynamic var totalInsulin: Float = 0
   
   
@@ -61,6 +60,7 @@ import RealmSwift
     self.trainName = trainName
     self.totalInsulin = totalInsulin
     self.correctionInsulin = correctionInsulin
+    self.timeCreateDinner = Date() // Время создания обеда
     self.isPreviosDinner = isPreviosDinner
 
   }

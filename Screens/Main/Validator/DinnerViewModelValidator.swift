@@ -9,10 +9,7 @@
 import Foundation
 
 class DinnerViewModelValidator: Validateble {
-  
- 
-  
-  
+
   // Этот Валидатор нужно базировать в Main! потомучто ряд полей приходят из main + перенаправлять потом в 3 ячейку!
   
   // Fields Validate
@@ -28,7 +25,7 @@ class DinnerViewModelValidator: Validateble {
       
     }
   }
-  var correctShugarByInsulin: String? {didSet{checkForm()}}
+  private var correctShugarByInsulin: String? {didSet{checkForm()}}
 
   
   var shugarBeforeValue: String? {didSet {checkForm()}
@@ -71,7 +68,8 @@ class DinnerViewModelValidator: Validateble {
     insulinValue = nil
     portion = nil
     placeInjection = nil
-    correctShugarByInsulin = nil
+    correctionInsulin = nil
+    
   }
   
   

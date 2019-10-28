@@ -62,6 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     initializeRealm()
     initMeals()
+    
     initDinners()
     
     root()
@@ -83,32 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
   }
   
-  
-//  private func configureNavigationBar() {
-//    // NAvBar
-//    UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.497985065, green: 0.7887284756, blue: 1, alpha: 1)
-//    UINavigationBar.appearance().tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-//
-//    // StatusBar
-//    let statusBarView = UIView(frame: .init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 20))
-//    statusBarView.backgroundColor = #colorLiteral(red: 0.497985065, green: 0.7887284756, blue: 1, alpha: 1)
-//    UINavigationBar.appearance().barStyle = .blackTranslucent
-//
-//    self.window?.rootViewController?.view.insertSubview(statusBarView, at: 0)
-//
-//    // Title
-//    let textAttributes = [
-//      NSAttributedString.Key.foregroundColor : UIColor.white,
-//      NSAttributedString.Key.font: UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-//    ]
-//
-//    UINavigationBar.appearance().titleTextAttributes = textAttributes as [NSAttributedString.Key : Any]
-//
-//    // TabBar
-//    UITabBar.appearance().tintColor = .white
-//    UITabBar.appearance().barTintColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
-//    UITabBar.appearance().selectionIndicatorImage = UIImage(named: "tabSelectBG")
-//  }
+ 
   
   
   private func initializeRealm() {
@@ -139,15 +115,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   private func initDinners() {
     let realm = RealmProvider.dinners.realm
-    guard realm.isEmpty else { return }
+//    guard realm.isEmpty else { return }
 
-    let dummyDinner = DinnerRealm(shugarBefore: 0, shugarAfter: 0, timeShugarBefore: nil, timeShugarAfter: nil, placeInjection: "", trainName: "", correctionInsulin: 0, totalInsulin: 0,isPreviosDinner: false)
+    let dummyDinner = DinnerRealm(shugarBefore: 0, shugarAfter: 0, timeShugarBefore: Date(), timeShugarAfter: nil, placeInjection: "", trainName: "", correctionInsulin: 0, totalInsulin: 0,isPreviosDinner: false)
     dinners.append(dummyDinner)
     
-    print(dummyDinner,"Init Dinners")
     try! realm.write {
-//      realm.deleteAll()
-      realm.add(dinners)
+      realm.deleteAll()
+//      realm.add(dinners)
     }
     
   }

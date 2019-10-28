@@ -17,6 +17,12 @@ class DateWorker {
     return df
   }()
   
+  private let dateFormatterClock:DateFormatter = {
+    let df = DateFormatter()
+    df.dateFormat = "HH:mm"
+    return df
+  }()
+  
   static let shared: DateWorker = {
     let cls = DateWorker()
     return cls
@@ -26,6 +32,15 @@ class DateWorker {
     
     if let date = date {
       return dateFormatter.string(from: date)
+    }
+    return ""
+    
+  }
+  
+  func getOnlyClock(date: Date?) -> String {
+    
+    if let date = date {
+      return dateFormatterClock.string(from: date)
     }
     return ""
     

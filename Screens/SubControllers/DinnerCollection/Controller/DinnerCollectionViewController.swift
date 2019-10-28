@@ -19,7 +19,7 @@ class DinnerCollectionViewController: UIViewController {
     
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     
-    collectionView.semanticContentAttribute = .forceRightToLeft
+//    collectionView.semanticContentAttribute = .forceRightToLeft
     collectionView.contentInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
     collectionView.showsHorizontalScrollIndicator = false
     collectionView.decelerationRate = .fast
@@ -48,10 +48,16 @@ class DinnerCollectionViewController: UIViewController {
   var didSelectTextField: TextFieldPassClouser?
   
   var didShugarBeforeTextFieldChangeToMain: FloatPassClouser?
-  var didSetShugarBeforeInTimeClouserToMain: DatePassClouser?
+  
+//  var didSetShugarBeforeInTimeClouserToMain: DatePassClouser?
+  var didSetShugarBeforeValueAndTimeClouserToMain:((Date,Float) -> Void)?
+  
   var didSetCorrectionShugarByInsulinClouserToMain: FloatPassClouser?
-  var didPortionTextFieldCnahgeToMain: ((Int,Int) -> Void)?
-  var didInsulinTextFieldCnahgeToMain : ((Float,Int) -> Void)?
+  
+  
+  
+  var didPortionTextFieldEndEditingToMain: ((Int,Int) -> Void)?
+  var didInsulinTextFieldEndEditingToMain : ((Float,Int) -> Void)?
   
   // WillActiveTextField
   var didEndEditingWillActiveTextField: TextFieldPassClouser?
@@ -111,6 +117,7 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+     
     
     let item = collectionView.dequeueReusableCell(withReuseIdentifier: DinnerCollectionViewCell.cellId, for: indexPath) as! DinnerCollectionViewCell
 
@@ -134,8 +141,6 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
     // ProductListInDinner
     
     setProductListInDinnerClousers(cell: cell)
-    
-   
 
     // Touches Pass View
     
@@ -189,25 +194,28 @@ extension DinnerCollectionViewController: UICollectionViewDelegateFlowLayout,UIC
       
     }
     
-    cell.shugarSetView.didSetShugarBeforeInTimeClouser = {[weak self] time in
-      self?.didSetShugarBeforeInTimeClouserToMain!(time)
+    cell.shugarSetView.didSetShugarBeforeValueAndTimeClouser = {[weak self] time,shugar in
+      self?.didSetShugarBeforeValueAndTimeClouserToMain!(time,shugar)
     }
+
 
   }
   
   private func setProductListInDinnerClousers(cell:DinnerCollectionViewCell) {
     
-    // InsulinTextField Change
-    cell.productListViewController.didInsulinTextFieldChangetToDinnerController = {
-      [weak self] insulin, row in
-      self?.didInsulinTextFieldCnahgeToMain!(insulin,row)
+    // InsulinField End Editing
+    
+    cell.productListViewController.didInsulinTextFieldEndEditingToDinnerController = {[weak self] insulin,row in
+      self?.didInsulinTextFieldEndEditingToMain!(insulin,row)
     }
     
-    // PortionTextFieldChange
-    cell.productListViewController.didPortionTextFieldChangetToDinnerController = {
-      [weak self] text, row in
-      self?.didPortionTextFieldCnahgeToMain!(text,row)
+    // Portion End Editing
+    
+    cell.productListViewController.didPortionTextFieldEndEditingToDinnerController = {[weak self] portion,row in
+      self?.didPortionTextFieldEndEditingToMain!(portion,row)
+      
     }
+
     
     // Begin TextField
     cell.productListViewController.didSelectTextFieldCellClouser = {[weak self] textField in
@@ -255,7 +263,13 @@ extension DinnerCollectionViewController {
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     
-    let heightCell = CalculateHeightView.calculateMaxHeightDinnerCollectionView(dinnerData: dinnerViewModel)
+//    if indexPath.row == 2 {
+//      return .init(width: UIScreen.main.bounds.width - 40, height: 250)
+//    }
+    
+//    let heightCell = CalculateHeightView.calculateMaxHeightDinnerCollectionView(dinnerData: dinnerViewModel)
+    
+    let heightCell = CalculateHeightView.calculateCurrentHeightDinnerCell(dinner: dinnerViewModel[indexPath.row])
     
     return .init(width: UIScreen.main.bounds.width - 40, height: heightCell + 20)
   }

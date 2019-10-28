@@ -25,9 +25,13 @@ enum Main {
         // Update ViewModel Without Realm
         case setPortionInProduct(portion: Int, rowProduct: Int)
         case setInsulinInProduct(insulin: Float, rowProduct:Int,isPreviosDInner: Bool)
-        case setShugarBefore(shugarBefore: Float)
+//        case setShugarBefore(shugarBefore: Float)
+//        case setShigarBeforeInTime(time: Date)
+        
+        case setShugarBeforeValueAndTime(time: Date,shugar: Float)
+        
         case setPlaceIngections(place: String)
-        case setShigarBeforeInTime(time: Date)
+        
         case setCorrectionInsulinBySHugar(correctionValue: Float)
         
         // Add Product
@@ -35,7 +39,7 @@ enum Main {
         case deleteProductFromDinner(products: [ProductRealm])
         
         // Save View Model In Real // По факту нам нужен только Dinner
-        case saveViewModel(viewModel: DinnerViewModel)
+        case saveViewModel(viewModel: MainViewModel)
       }
     }
     
@@ -52,9 +56,14 @@ enum Main {
         
         case setPortionInProduct(portion: Int, rowProduct: Int)
         case setInsulinInProduct(insulin: Float, rowProduct:Int,isPreviosDInner:Bool)
-        case setShugarBefore(shugarBefore: Float)
+        
+//        case setShugarBefore(shugarBefore: Float)
+//        case setShigarBeforeInTime(time: Date?)
+        
+        case setShugarBeforeValueAndTime(time: Date,shugar: Float)
+        
         case setPlaceIngections(place: String)
-        case setShigarBeforeInTime(time: Date?)
+        
         case setCorrectionInsulinByShugar(correction: Float)
         
         // Add Product

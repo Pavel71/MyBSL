@@ -32,8 +32,13 @@ class ProductListInDinnerViewController: BaseProductList {
   var didSelectTextFieldCellClouser: TextFieldPassClouser?
   var didDeleteProductClouser:(([ProductRealm]) -> Void)?
   
-  var didPortionTextFieldChangetToDinnerController: ((Int,Int) -> Void)?
-  var didInsulinTextFieldChangetToDinnerController: ((Float,Int) -> Void)?
+  
+  
+//  var didPortionTextFieldChangetToDinnerController: ((Int,Int) -> Void)?
+//  var didInsulinTextFieldChangetToDinnerController: ((Float,Int) -> Void)?
+  
+  var didPortionTextFieldEndEditingToDinnerController: ((Int,Int) -> Void)?
+  var didInsulinTextFieldEndEditingToDinnerController: ((Float,Int) -> Void)?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -128,8 +133,7 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     }
     
     // PortionTextField Delegate
-    
-//    cell.portionTextField.addTarget(self, action: #selector(didChangePortionTextField), for: .editingChanged)
+
     cell.didChangePortionFromPickerView = {[weak self] textField in
       self?.didChangePortionTextField(textField: textField)
     }
@@ -139,11 +143,18 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     }
 
     cell.didPortionTextFieldEditing = {[weak self] textField in
-      self?.handlePortionTextFieldEndEditing(textField: textField)
+      
+      guard let (portion,indexpath) = self?.getValueAndRowTextField(textField: textField) else {return}
+   self?.didPortionTextFieldEndEditingToDinnerController!(Int(portion),indexpath.row)
+           
+      
     }
 
     cell.didInsulinTextFieldEditing = {[weak self] textField in
-      self?.handleInsulinTextFiedlEndEditing(textField: textField)}
+      guard let (isnulinValue,indexpath) = self?.getValueAndRowTextField(textField: textField) else {return}
+   self?.didInsulinTextFieldEndEditingToDinnerController!(isnulinValue,indexpath.row)
+      
+    }
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -168,72 +179,57 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
   // Обрабатываем изменения Порции в режиме ввода
   @objc private func didChangePortionTextField(textField: UITextField) {
 
-    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
-    guard let text = textField.text else {return}
+//    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
+//    guard let text = textField.text else {return}
+//
+
+//
+//    let portion: Int = (text as NSString).integerValue
     
+    guard let (portion,indexPath) = getValueAndRowTextField(textField: textField) else {return}
     let cell = tableView.cellForRow(at: indexPath) as! MainDinnerProductListCell
-    
-    let portion: Int = (text as NSString).integerValue
 
     
     // Подумать как приукрасит
-    let sumPortion = CalculateValueTextField.calculateSumPortion(portion: portion,indexPath:indexPath, tableViewData: &tableViewData)
+    let sumPortion = CalculateValueTextField.calculateSumPortion(portion: Int(portion),indexPath:indexPath, tableViewData: &tableViewData)
     
-    // Это Computed Property  и оно высчитывается после сета  Portion
     cell.carboInPortionLabel.text = String(tableViewData[indexPath.row].carboInPortion)
-    
-    
-    
+
     let sumCarbo = CalculateValueTextField.calculateSumCarbo(indexPath: indexPath, tableViewData: &tableViewData)
     
     footerView.resultsView.portionResultLabel.text = String(sumPortion)
     footerView.resultsView.carboResultLabel.text = String(sumCarbo)
+
     
-    
-    // Вообщем я сделаю ввод порций picker
-    // Потом если мы сохраняем а общий рещлуьтат по порциям или инсулинам 0 то выводить соответвующие сообщения
-    // + сделать тоже самое по продуктам!
-    // Это будет нормальным решением!
-    
-    // Здесь нам нужно передать какой именно продукт мы редактируем! Чтобы Main Controller  знал об этом!
-    let portionInt = (text as NSString).integerValue
-    didPortionTextFieldChangetToDinnerController!(portionInt,indexPath.row)
+//    didPortionTextFieldChangetToDinnerController!(Int(portion),row)
 
   }
   
   // MARK: DidChange InsulinFiedl
   @objc private func didChangeInsulinTextField(textField: UITextField) {
     
-    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
-    guard let text = textField.text else {return}
+//    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
+//    guard let text = textField.text else {return}
+//
+//    let insulin = (text as NSString).floatValue
     
-    let insulin = (text as NSString).floatValue
+    guard let (insulin,indexPath) = getValueAndRowTextField(textField: textField) else {return}
     
     let sum = CalculateValueTextField.calculateSumInsulin(insulin: insulin, indexPath: indexPath, tableViewData: &tableViewData)
     footerView.resultsView.insulinResultLabel.text = String(sum)
     
-    didInsulinTextFieldChangetToDinnerController!(insulin,indexPath.row)
+//    didInsulinTextFieldChangetToDinnerController!(insulin,row)
 
   }
   
-  
-  // Эти методы нужны когда будем слать запросы в реалм
-  
-  // А может и нужно будет удалить это нафиг!
-  
-  private func handlePortionTextFieldEndEditing(textField: UITextField) {
-    print("Portion End Editing")
-
-
-  }
-
-  private func handleInsulinTextFiedlEndEditing(textField: UITextField) {
-    print("Insulin End Editing")
-
-//    guard let indexPath = getIndexPathIntableViewForTextFiedl(textField: textField) else {return}
-
-
-
+  private func getValueAndRowTextField(textField: UITextField) ->(Float,IndexPath)? {
+    
+    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return nil}
+    guard let text = textField.text else {return nil}
+    
+    let value = (text as NSString).floatValue
+    
+    return (value,indexPath)
   }
   
 

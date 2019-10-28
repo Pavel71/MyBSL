@@ -12,7 +12,7 @@ import UIKit
 protocol ShugarTopViewModelable {
   
   var isPreviosDinner: Bool {get set}
-  
+  var isNeedInsulinCorrectByShugar: Bool {get set}
   
   var correctInsulinByShugar: Float {get set}
   var shugarBeforeValue: Float {get set}
@@ -56,7 +56,7 @@ class ShugarSetView: UIView {
     
     let stackView = UIStackView(arrangedSubviews: [
       correctionLabel,correctionShugarInsulinValueTextField
-      ])
+    ])
     correctionShugarInsulinValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
     stackView.spacing = 5
     
@@ -90,30 +90,28 @@ class ShugarSetView: UIView {
     return view
     
   }()
-  
-//  let dateFormatter: DateFormatter = {
-//
-//    let dateF = DateFormatter()
-//    dateF.dateFormat = "dd-MM-yy HH:mm"
-//    return dateF
-//  }()
-  
-  
+
   
   // CLousers
   var didBeginEditingShugarBeforeTextField: TextFieldPassClouser?
   var didChangeShugarBeforeTextFieldToDinnerCellClouser: FloatPassClouser?
+  
+  
   var didSetShugarBeforeInTimeClouser: DatePassClouser?
+  var didSetShugarBeforeValueAndTimeClouser: ((Date,Float) -> Void)?
+  
   var didSetCorrectionShugarByInsulinClouser: FloatPassClouser?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
     shugarBeforeValueTextField.addTarget(self, action: #selector(handleShugarBeforeTextChange), for: .editingChanged)
+    
     shugarBeforeValueTextField.keyboardType = .decimalPad
     shugarAfterValueTextField.keyboardType = .decimalPad
     
     shugarBeforeValueTextField.delegate = self
+    correctionShugarInsulinValueTextField.delegate = self
     
     correctionShugarInsulinValueTextField.inputView = pickerView
     pickerView.delegate = self
@@ -122,12 +120,12 @@ class ShugarSetView: UIView {
     let stackViewBefore = UIStackView(arrangedSubviews: [
       shugarBeforeTitleLabel,
       timeBeforeLabel
-      ])
+    ])
     stackViewBefore.axis = .vertical
     
     let stackViewShugarBefore = UIStackView(arrangedSubviews: [
       stackViewBefore,shugarBeforeValueTextField
-      ])
+    ])
     
     stackViewShugarBefore.distribution = .fill
     shugarBeforeValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
@@ -137,12 +135,12 @@ class ShugarSetView: UIView {
     let stackViewAfter = UIStackView(arrangedSubviews: [
       shugarAfterTitleLabel,
       timeAfterLabel
-      ])
+    ])
     stackViewAfter.axis = .vertical
     
     stackViewShugarAfter = UIStackView(arrangedSubviews: [
       stackViewAfter,shugarAfterValueTextField
-      ])
+    ])
     shugarAfterValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
     
     
@@ -150,36 +148,42 @@ class ShugarSetView: UIView {
     
     let stackView = UIStackView(arrangedSubviews: [
       stackViewShugarBefore,stackViewShugarAfter,correctionShugarByInsulinStackView,spacingView
-      ])
+    ])
     
     stackView.distribution = .fillEqually
     stackView.spacing = 10
-        
+    
     addSubview(stackView)
     stackView.fillSuperview()
     
-
+    
   }
-  
-  
-
   
   func setViewModel(viewModel:ShugarTopViewModelable) {
     
-    shugarBeforeValueTextField.text = String(viewModel.shugarBeforeValue)
+    let shugarBeforeString = viewModel.shugarBeforeValue == 0 ? "" : String(viewModel.shugarBeforeValue)
+    
+    shugarBeforeValueTextField.text = shugarBeforeString
     timeBeforeLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeBefore)
     
+    // теперь нам приходит како-ето значение!
     
-    correctionShugarInsulinValueTextField.text = String(viewModel.correctInsulinByShugar)
+     let correctInsulinByShugarString = viewModel.correctInsulinByShugar == 0 ? "" : String(viewModel.correctInsulinByShugar)
     
-    isHIddenCorrectionShugarByInsulinStackView()
-
+    correctionShugarInsulinValueTextField.text = correctInsulinByShugarString
+    
     configureIfisPreviosDinner(viewModel: viewModel)
+    
+    isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection:viewModel.isNeedInsulinCorrectByShugar)
+
     
   }
   
   private func configureIfisPreviosDinner(viewModel: ShugarTopViewModelable) {
     // Hidden right shugar StackView And S
+    
+    print("View Model is Previos Should be Same The MainViewModel",viewModel.isPreviosDinner)
+    
     stackViewShugarAfter.isHidden = !viewModel.isPreviosDinner
     
     if viewModel.isPreviosDinner {
@@ -207,16 +211,15 @@ class ShugarSetView: UIView {
     return timeNow
     
   }
-  
-  private func isHIddenCorrectionShugarByInsulinStackView() {
-    
-    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: {
-      self.correctionShugarByInsulinStackView.isHidden = !ShugarCorrectorWorker.shared.isNeedCorrectShugarByInsulin
-      self.spacingView.isHidden = ShugarCorrectorWorker.shared.isNeedCorrectShugarByInsulin
-    }, completion: nil)
+
+  private func isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection: Bool) {
+    self.correctionShugarByInsulinStackView.isHidden = !isHiddenCorrection
+
+    self.spacingView.isHidden = isHiddenCorrection
+
   }
   
- 
+  
   
   
   required init?(coder aDecoder: NSCoder) {
@@ -233,45 +236,74 @@ extension ShugarSetView: UITextFieldDelegate {
     
     guard let text = textField.text else {return}
     let shugarFloat = (text as NSString).floatValue
+    
     didChangeShugarBeforeTextFieldToDinnerCellClouser!(shugarFloat)
     
-    // Здесь нужно установить время и прокинуть его в модельку потомучто потом мы будем сохранять все в базу данных
   }
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    
     didBeginEditingShugarBeforeTextField!(textField)
-    // Вообщем план такой я ловлю этот сахар и отправляю запрос на интерактор на проверку если в норме то ничего не делаю! Если нет то показываю этот текстфилд и прошу внести корректировку! также получается его надо добавить в валидатор как то! 
   }
-
+  
   func textFieldDidEndEditing(_ textField: UITextField) {
     
-    if let text = textField.text {
+    guard let text = textField.text else {return}
+    
+    switch textField {
+    case shugarBeforeValueTextField:
+      didEndEdidtingShugarBefore(text: text)
       
-      // Просто с синглтонами нихера не понятно если честно не читаетс код не понятно откуда идет сигнал просто по факту видно что он уже имее тсво1ство а когда оно засетилось туда не особо понятно
-      let shugarFloat = (text as NSString).floatValue
+    case correctionShugarInsulinValueTextField:
+      didEndEditingCorrectionInsulinTextField(text:text)
       
-      ShugarCorrectorWorker.shared.setInsulinCorrectionByShugar(shugarValue: shugarFloat)
-      
-      
-      let timeBefore = setTimeBeforTime()
-      
-      didSetShugarBeforeInTimeClouser!(timeBefore)
-      
-      isHIddenCorrectionShugarByInsulinStackView()
-      
-      
-      
+    default:break
     }
-
+    
+    
   }
   
+  private func didEndEditingCorrectionInsulinTextField(text: String) {
+    let correctionValue = (text as NSString).floatValue
+    didSetCorrectionShugarByInsulinClouser!(correctionValue)
+  }
+  
+  
+  // End Editing SHugar Before
+  private func didEndEdidtingShugarBefore(text: String) {
+    
+    let shugarFloat = (text as NSString).floatValue
+    
+    let timeBefore = setTimeBeforTime()
+    
+    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: {
 
+      self.isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection: ShugarCorrectorWorker.shared.getIsShowCorrectTextField(shugarValue: shugarFloat))
+      
+    }, completion: { _ in
+      self.didSetShugarBeforeValueAndTimeClouser!(timeBefore,shugarFloat)
+    })
+    
+    
+
+    // если это значение будет приходить с viewModel   то можно оставить этот метода только в setViewModel
+    
+//    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: {
+//
+//      self.isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection: ShugarCorrectorWorker.shared.getIsShowCorrectTextField(shugarValue: shugarFloat))
+//
+//    }, completion: { _ in
+//      self.didSetShugarBeforeValueAndTimeClouser!(timeBefore,shugarFloat)
+//    })
+    
+    
+  }
+  
+  
 }
 
+
+
 extension ShugarSetView: UIPickerViewDelegate,UIPickerViewDataSource {
-  
-  
   
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     switch component {
@@ -290,13 +322,9 @@ extension ShugarSetView: UIPickerViewDelegate,UIPickerViewDataSource {
       valueResult *= -1
     }
     
-    // Просто проще здесь по условию показывать ли correctionUsnulin Text Fiedl или нет.
-    
-    
-    // По идеии эту корректировку намбы хронить в диннере! Поэтому нам нужно это поле там создать!
     correctionShugarInsulinValueTextField.text = String(valueResult)
+//    ShugarCorrectorWorker.shared.setInsulinCorrectionByShugar(shugarValue: valueResult)
     
-    didSetCorrectionShugarByInsulinClouser!(valueResult)
   }
   
   

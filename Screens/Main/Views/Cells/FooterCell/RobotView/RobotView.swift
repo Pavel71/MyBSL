@@ -76,7 +76,7 @@ class RobotView: UIView {
       changeImageView()
     }
     
-    basicAnimation.duration = 0.5
+    basicAnimation.duration = 0.3
     basicAnimation.fillMode = .forwards
     basicAnimation.isRemovedOnCompletion = false
     

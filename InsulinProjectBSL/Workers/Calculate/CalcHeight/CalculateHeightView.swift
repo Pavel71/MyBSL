@@ -29,26 +29,55 @@ class CalculateHeightView {
   // Dinner Collection View Height
   
   
+  static func calculateCurrentHeightDinnerCell(dinner: DinnerViewModel) -> CGFloat {
+    
+    let countProduct = getCountProductsInDinner(dinner)
+    
+    return getHeightDinnerCell(countProduct)
+  }
+  
+  
   static func calculateMaxHeightDinnerCollectionView(dinnerData: [DinnerViewModel]) -> CGFloat {
     
     
     var maxCount: Int = 0
     dinnerData.forEach { (dinner) in
-      let count = dinner.productListInDinnerViewModel.productsData.count
+      let count = getCountProductsInDinner(dinner)
       maxCount = max(count,maxCount)
     }
+    
+//    let shugarRowHeight = Constants.Main.DinnerCollectionView.shugarViewInCellHeight
+//    let choosePlaceInjectionsRowHeight = Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight
+//    let willActiveHeight = Constants.Main.DinnerCollectionView.willActiveRowHeight
+//
+//    let productListViewHeight = CalculateHeightView.calculateProductListViewheight(countRow:maxCount)
+//
+//    let margins = Constants.Main.DinnerCollectionView.topMarginBetweenView * 5
+//
+//    let heightCell = shugarRowHeight + productListViewHeight  + margins + choosePlaceInjectionsRowHeight + willActiveHeight
+    
+    return getHeightDinnerCell(maxCount)
+  }
+  
+  private static func getHeightDinnerCell(_ countProducts: Int) -> CGFloat {
     
     let shugarRowHeight = Constants.Main.DinnerCollectionView.shugarViewInCellHeight
     let choosePlaceInjectionsRowHeight = Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight
     let willActiveHeight = Constants.Main.DinnerCollectionView.willActiveRowHeight
     
-    let productListViewHeight = CalculateHeightView.calculateProductListViewheight(countRow:maxCount)
+    let productListViewHeight = CalculateHeightView.calculateProductListViewheight(countRow:countProducts)
     
     let margins = Constants.Main.DinnerCollectionView.topMarginBetweenView * 5
     
     let heightCell = shugarRowHeight + productListViewHeight  + margins + choosePlaceInjectionsRowHeight + willActiveHeight
     
     return heightCell
+    
+  }
+  
+  // Get count Products
+  static private func getCountProductsInDinner(_ dinner:DinnerViewModel) -> Int {
+    return dinner.productListInDinnerViewModel.productsData.count
   }
   
   // Product list Height

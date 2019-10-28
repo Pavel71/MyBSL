@@ -57,9 +57,11 @@ class MainDinnerProductListCell: BaseProductListCell {
   
   // CLousers
   
+  var didBeginEditingTextField: TextFieldPassClouser?
+  
   var didPortionTextFieldEditing: TextFieldPassClouser?
   var didInsulinTextFieldEditing: TextFieldPassClouser?
-  var didBeginEditingTextField: TextFieldPassClouser?
+  
   
   var didChangeInsulinFromPickerView: TextFieldPassClouser?
   var didChangePortionFromPickerView: TextFieldPassClouser?
@@ -99,7 +101,9 @@ class MainDinnerProductListCell: BaseProductListCell {
     
     
     guard let insulinValue = viewModel.insulinValue else {return}
-    insulinTextField.text = "\(insulinValue)"
+    
+    let insuLinString = insulinValue == 0 ? "" : "\(insulinValue)"
+    insulinTextField.text = insuLinString
   }
   
   required init?(coder aDecoder: NSCoder) {

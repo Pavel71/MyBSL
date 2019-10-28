@@ -24,6 +24,8 @@ import Foundation
 struct DinnerViewModel: DinnerViewModelCellable {
   
   var isPreviosDinner: Bool
+  
+  
   var shugarTopViewModel: ShugarTopViewModelable
   var productListInDinnerViewModel: ProductListInDinnerViewModel
   
@@ -36,6 +38,7 @@ struct DinnerViewModel: DinnerViewModelCellable {
 
 struct ShugarTopViewModel: ShugarTopViewModelable {
   
+  var isNeedInsulinCorrectByShugar: Bool = false
   
   var correctInsulinByShugar: Float
   

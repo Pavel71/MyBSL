@@ -13,7 +13,7 @@ protocol MainBusinessLogic {
 }
 
 class MainInteractor: MainBusinessLogic {
-
+  
   var presenter: MainPresentationLogic?
   var service: MainService?
   
@@ -30,58 +30,69 @@ class MainInteractor: MainBusinessLogic {
     
   }
   
+  // MARK: Work With Realm
+  
   private func workWithRealm(request: Main.Model.Request.RequestType) {
     
     switch request {
       
-      case .getViewModel:
-//      let data = DinnerData.getMainViewModelDummy()
+    case .getViewModel:
+      //      let data = DinnerData.getMainViewModelDummy()
       
       let realmData = dinnerRealmManager.fetchAllData()
       
       print(realmData)
       
       // Пока вместо Реалма статичные данны
-       presenter?.presentData(response: .prepareViewModel(realmData: realmData))
+      presenter?.presentData(response: .prepareViewModel(realmData: realmData))
       
       
     case .saveViewModel(let viewModel):
       print("Dinner to Save Realm",viewModel)
       // теперь нужно распаристь модельку в Объект DinnerRealm
-      let dinnerRealm = createDinnerRealmObject(viewModel: viewModel)
+      let newDinnerViewModel = viewModel.dinnerCollectionViewModel[0]
+      
+      let dinnerRealm = createDinnerRealmObject(viewModel: newDinnerViewModel)
       dinnerRealmManager.saveDinner(dinner: dinnerRealm)
       
-      presenter?.presentData(response: .doAfterSaveDinnerInRealm)
+      let realmData = dinnerRealmManager.fetchAllData()
+      presenter?.presentData(response: .prepareViewModel(realmData: realmData))
       
+//      presenter?.presentData(response: .doAfterSaveDinnerInRealm)
+      
+      
+      
+    default: break
+    }
+  }
+  
+  // MARK: Work with ViewModel
+  
+  private func workWithViewModel(request: Main.Model.Request.RequestType) {
+    
+    switch request {
+    case .setInsulinInProduct(let insulin, let rowProduct,let isPreviosDinner):
+      presenter?.presentData(response: .setInsulinInProduct(insulin: insulin, rowProduct: rowProduct,isPreviosDInner: isPreviosDinner))
+      
+    case .setPortionInProduct(let portion, let row):
+      presenter?.presentData(response: .setPortionInProduct(portion: portion, rowProduct: row))
+      
+    case .setPlaceIngections(let place):
+      presenter?.presentData(response: .setPlaceIngections(place: place))
+      
+    case .setShugarBeforeValueAndTime(let time,let shugar):
+      presenter?.presentData(response: .setShugarBeforeValueAndTime(time: time, shugar: shugar))
+
+      
+    case .setCorrectionInsulinBySHugar(let correctionValue):
+      presenter?.presentData(response: .setCorrectionInsulinByShugar(correction: correctionValue))
+    // add
     case .addProductInNewDinner(let products):
       presenter?.presentData(response: .addProductInDinner(products: products))
       
     case .deleteProductFromDinner(let products):
       presenter?.presentData(response: .deleteProductFromDinner(products: products))
       
-    default: break
-    }
-  }
-  
-  
-  private func workWithViewModel(request: Main.Model.Request.RequestType) {
-    
-    switch request {
-      case .setInsulinInProduct(let insulin, let rowProduct,let isPreviosDinner):
-        presenter?.presentData(response: .setInsulinInProduct(insulin: insulin, rowProduct: rowProduct,isPreviosDInner: isPreviosDinner))
-      
-      case .setPortionInProduct(let portion, let row):
-        presenter?.presentData(response: .setPortionInProduct(portion: portion, rowProduct: row))
-      
-      case .setPlaceIngections(let place):
-        presenter?.presentData(response: .setPlaceIngections(place: place))
-      case .setShugarBefore(let shugarBefore):
-        presenter?.presentData(response: .setShugarBefore(shugarBefore: shugarBefore))
-      case .setShigarBeforeInTime(let time):
-        presenter?.presentData(response: .setShigarBeforeInTime(time: time))
-      case .setCorrectionInsulinBySHugar(let correctionValue):
-          presenter?.presentData(response: .setCorrectionInsulinByShugar(correction: correctionValue))
-
     default:break
     }
     
@@ -90,7 +101,9 @@ class MainInteractor: MainBusinessLogic {
   // MARK: Save Data in Realm
   
   private func createDinnerRealmObject(viewModel: DinnerViewModel) -> DinnerRealm {
-
+    
+    
+    
     let placeInjections = viewModel.placeInjection
     let shugarBefore = viewModel.shugarTopViewModel.shugarBeforeValue
     let shugarAfter = viewModel.shugarTopViewModel.shugarAfterValue
@@ -117,6 +130,9 @@ class MainInteractor: MainBusinessLogic {
     return realmProducts
     
   }
+  
+  
+  
   
   private func convertProductListViewModeltToProductRealm(prodViewModel: ProductListViewModel) -> ProductRealm {
     

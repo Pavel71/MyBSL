@@ -45,7 +45,7 @@ extension DinnerRealmManager {
     
     let realm = provider.realm
     
-    let items = realm.objects(DinnerRealm.self).sorted(byKeyPath: DinnerRealm.Property.timeShugarBefore.rawValue)
+    let items = realm.objects(DinnerRealm.self).sorted(byKeyPath: DinnerRealm.Property.timeCreateDinner.rawValue, ascending: false)
     
     return Array(items)
     

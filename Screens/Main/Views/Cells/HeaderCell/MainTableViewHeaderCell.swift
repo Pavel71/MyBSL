@@ -105,27 +105,21 @@ class MainTableViewHeaderCell: UITableViewCell {
     overAllStackView.distribution = .fill
     titleLabel.textAlignment = .center
     titleLabel.constrainHeight(constant: 30)
-    
-    
-    
-    
+
     addSubview(overAllStackView)
     overAllStackView.fillSuperview(padding: .init(top: 5, left: 8, bottom: 5, right: 8))
     
   }
   
   func setViewModel(viewModel:MainTableViewHeaderCellable) {
-    
- 
-    let timeString = DateWorker.shared.getTimeString(date: viewModel.lastTimeInjectionValue)
+
+    let timeString = DateWorker.shared.getOnlyClock(date: viewModel.lastTimeInjectionValue)
     
     lastInjectionValueLabel.text = String(viewModel.lastInjectionValue)
     lastTimeInjectionValueLabel.text = timeString
     insulinSupplyInPanValueLabel.text = String(viewModel.insulinSupplyInPanValue)
     lastShugarValueLabel.text = String(viewModel.lastShugarValue)
-    
-    
-    
+
   }
   
   

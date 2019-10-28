@@ -19,12 +19,7 @@ class MainPresenter: MainPresentationLogic {
   var mainViewModel: MainViewModel!
   
   
-//  let dateFormatter: DateFormatter = {
-//    let dateF = DateFormatter()
-//    dateF.dateFormat = "dd-MM-yy HH:mm"
-//    return dateF
-//  }()
-  
+
   
   func presentData(response: Main.Model.Response.ResponseType) {
     
@@ -39,11 +34,15 @@ class MainPresenter: MainPresentationLogic {
       passViewModelInViewController()
       
     case .doAfterSaveDinnerInRealm:
-      // Нам здесь нужно добавить в модельку думми обед и начать его заполнять
-      let dummyDinner = getDummyDinner()
-      mainViewModel.dinnerCollectionViewModel.insert(dummyDinner, at: 0)
       
-      viewController?.displayData(viewModel: .setViewModel(viewModel: mainViewModel))
+      print("Do after Save")
+      // Нам здесь нужно добавить в модельку думми обед и начать его заполнять
+//      let dummyDinner = getDummyDinner()
+//
+//      mainViewModel.dinnerCollectionViewModel[0].isPreviosDinner = true
+//      mainViewModel.dinnerCollectionViewModel.insert(dummyDinner, at: 0)
+//
+//      passViewModelInViewController()
     default:break
     }
     
@@ -98,18 +97,20 @@ class MainPresenter: MainPresentationLogic {
       mainViewModel.dinnerCollectionViewModel[0].placeInjection = place
       passViewModelInViewController()
       
-    case .setShugarBefore(let shugarBefore):
+    case .setShugarBeforeValueAndTime(let time,let shugar):
+      // Set Shugar Before
+      mainViewModel.dinnerCollectionViewModel[0].shugarTopViewModel.shugarBeforeValue = shugar
       
-      mainViewModel.dinnerCollectionViewModel[0].shugarTopViewModel.shugarBeforeValue = shugarBefore
-      
-      passViewModelInViewController()
-      
-    case .setShigarBeforeInTime(let time):
+      // Set Time Shugar Set
       mainViewModel.dinnerCollectionViewModel[0].shugarTopViewModel.timeBefore = time
+        
+      // Set Should Correct Insulin By SHugar
+      mainViewModel.dinnerCollectionViewModel[0].shugarTopViewModel.isNeedInsulinCorrectByShugar = ShugarCorrectorWorker.shared.getIsShowCorrectTextField(shugarValue: shugar)
       
       passViewModelInViewController()
       
     case .setCorrectionInsulinByShugar(let correction):
+      
       mainViewModel.dinnerCollectionViewModel[0].shugarTopViewModel.correctInsulinByShugar = correction
       
       // Здесь мне нужно обновить резалт кстати
@@ -153,21 +154,42 @@ extension MainPresenter {
     return dinner1
     
   }
+  
+  private func dummyMainViewModel() {
+     
+     let topViewModel = MainHeaderViewModel(lastInjectionValue: 0, lastTimeInjectionValue: nil, lastShugarValue: 0, insulinSupplyInPanValue: 0)
+     let middleViewModel = [getDummyDinner()]
+     
+     // Просто тут не понятно будет ли менятся это значение для каждого обеда! или просто будет высчитыватся для новых обедов
+     
+     let footerViewModel = MainFooterViewModel(totalInsulinValue: 0)
+     
+     mainViewModel = MainViewModel(headerViewModelCell: topViewModel, dinnerCollectionViewModel: middleViewModel, footerViewModel: footerViewModel)
+     
+   }
+  
 }
 
 // MARK: Prepare MainViewModel From Realm Data
 
 extension MainPresenter {
+
   
   func prepareMainViewModel(realmData: [DinnerRealm]) {
+    
+    // Если пустая то надо запустить пустую форму
+    if realmData.isEmpty {
+      dummyMainViewModel()
+    }
     
     // Во ттакой план на эту функцию!
     // Так как я буду Сортирвоать по дате то мне нужно брать самый свежий
     
-    guard let lastDinner = realmData.last else {return}
+    guard let lastDinner = realmData.first else {return}
+    
+    print("Last Dinner", lastDinner)
     
     let topViewModel = prepareTopViewModel(lastDinner: lastDinner)
-    
     let middleViewModel = prepareMiddleViewModel(dinners: realmData)
     
     
@@ -194,7 +216,10 @@ extension MainPresenter {
   
   private func prepareMiddleViewModel(dinners: [DinnerRealm]) -> [DinnerViewModel] {
     
-    return Array(dinners.map(createDinnerViewModel))
+    var dinnerViewModels = Array(dinners.map(createDinnerViewModel))
+    // Добавляем нашу болванку в начало списка чтобы можно было заполнять
+    dinnerViewModels.insert(getDummyDinner(), at: 0)
+    return dinnerViewModels
     
   }
   

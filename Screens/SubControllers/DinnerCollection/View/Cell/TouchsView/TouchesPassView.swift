@@ -19,9 +19,9 @@ class TouchesPassView: UIView {
     
     let view = super.hitTest(point, with: event)
 
-    print("Hit Test")
+    
     if view === self {
-
+      print("Hit Touches View")
       didHitTestProductListViewControllerClouser!(true)
       return nil
     }

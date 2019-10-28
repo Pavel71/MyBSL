@@ -16,6 +16,7 @@ protocol DinnerViewModelCellable {
   var placeInjection: String {get set}
   var train: String? {get set}
   var isPreviosDinner: Bool {get set}
+  
 }
 
 
@@ -29,6 +30,9 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   
   // ProductController
   let productListViewController = ProductListInDinnerViewController()
+  
+  
+  // Если у нас вертикальное меню то это решение не нужно!
   let touchesPassView = TouchesPassView()
   
   // Add New Product Button
@@ -67,11 +71,24 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     
     backgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
     
+    
+    
     setUpShuagarView()
+    
+    setUpWillActiveRow()
+    setUpChoosePlaceInjectionsRowView()
+    
+    addSubview(touchesPassView)
+    touchesPassView.fillSuperview()
+    
     setUpProductView()
     setUpAddButton()
-    setUpChoosePlaceInjectionsRowView()
-    setUpWillActiveRow()
+    
+    
+    
+    
+    
+    
   }
 
   // Height Product List
@@ -83,9 +100,9 @@ class DinnerCollectionViewCell: UICollectionViewCell {
 
     heightProductListConstraint.constant = heightProductListView
  
-    addNewProductInMealButton.isHidden = isPreviosDinner
     
-    choosePlaceInjectionViewTopConstraint.constant = isPreviosDinner ? Constants.Main.DinnerCollectionView.topMarginBetweenView : 30
+    
+//    choosePlaceInjectionViewTopConstraint.constant = isPreviosDinner ? Constants.Main.DinnerCollectionView.topMarginBetweenView : 30
     
     
 
@@ -141,18 +158,21 @@ extension DinnerCollectionViewCell {
     }
     
   }
-  // Set Up ProductView
+  // Set Up ProductView And Touches View
   
   private func setUpProductView() {
     
-    addSubview(touchesPassView)
-    touchesPassView.fillSuperview()
+//    addSubview(touchesPassView)
+//    touchesPassView.fillSuperview()
     
     touchesPassView.addSubview(productListViewController.view)
     productListViewController.view.anchor(top: shugarSetView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding:.init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
     
     heightProductListConstraint = productListViewController.view.heightAnchor.constraint(equalToConstant: 0)
     heightProductListConstraint.isActive = true
+    
+    // Нам нужно добавить эту вьющку поверх
+//    insertSubview(touchesPassView, aboveSubview: productListViewController.view)
   }
   
   private func setUpAddButton() {
@@ -176,12 +196,12 @@ extension DinnerCollectionViewCell {
   private func setUpChoosePlaceInjectionsRowView() {
     
     // выводим врехний constraint  и регулируем его в зависимости от ситуацыии
-    choosePlaceInjectionViewTopConstraint = chooseRowView.topAnchor.constraint(equalTo: productListViewController.view.bottomAnchor, constant: Constants.Main.DinnerCollectionView.topMarginBetweenView)
+//    choosePlaceInjectionViewTopConstraint = chooseRowView.topAnchor.constraint(equalTo: productListViewController.view.bottomAnchor, constant: Constants.Main.DinnerCollectionView.topMarginBetweenView)
     
     addSubview(chooseRowView)
-    chooseRowView.anchor(top: nil, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: 0, left: 8, bottom:0, right: 8))
+    chooseRowView.anchor(top: nil, leading: leadingAnchor, bottom: willActiveRow.topAnchor, trailing: trailingAnchor,padding: .init(top: 0, left: 8, bottom:10, right: 8))
     
-    choosePlaceInjectionViewTopConstraint.isActive = true
+//    choosePlaceInjectionViewTopConstraint.isActive = true
     
     chooseRowView.constrainHeight(constant: Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight)
     
@@ -191,7 +211,7 @@ extension DinnerCollectionViewCell {
   private func setUpWillActiveRow() {
     
     addSubview(willActiveRow)
-    willActiveRow.anchor(top: chooseRowView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:0, right: 8))
+    willActiveRow.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:10, right: 8))
     willActiveRow.constrainHeight(constant: Constants.Main.DinnerCollectionView.willActiveRowHeight)
     
     
@@ -212,6 +232,8 @@ extension DinnerCollectionViewCell {
     setProductListViewModel(productListViewModel: viewModel.productListInDinnerViewModel)
     
     setChoosePlaceViewModel(placeInjections: viewModel.placeInjection)
+    
+    addNewProductInMealButton.isHidden = viewModel.isPreviosDinner
     
     // Здесь мне нужно будет учесть что если обед переходит в разряд прошлых то мы блокиреум ввод всего кроме скорректированного инсулина
     

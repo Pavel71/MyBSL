@@ -53,6 +53,7 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
   var mainViewModel: MainViewModel!
   // Validator
   // Валидируем данные с ячейки dinnerCOllectionView
+  
   let dinnerValidator = DinnerViewModelValidator()
   
   // MARK: Object lifecycle
@@ -92,7 +93,6 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
     setUpMainView()
     interactor?.makeRequest(request: .getViewModel)
 
-    tableView.reloadData()
   }
   
   
@@ -123,6 +123,10 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
 
       print("Set ViewModel")
       mainViewModel = viewModel
+      
+      print("IS Previos First Dinner DOnt True",mainViewModel.dinnerCollectionViewModel[0].isPreviosDinner)
+      
+      tableView.reloadData()
 
     default:break
     }
@@ -369,37 +373,33 @@ extension MainViewController {
     
     // Correction Insulin
     cell.dinnerCollectionViewController.didSetCorrectionShugarByInsulinClouserToMain = {[weak dinnerValidator,weak self] correctInsulin in
-
       
+      print("End COrrection Insulin")
+
       self?.interactor?.makeRequest(request: .setCorrectionInsulinBySHugar(correctionValue: correctInsulin))
-
-      // Теперь корректировку надо обновить в модели!
-      dinnerValidator?.correctShugarByInsulin = String(correctInsulin)
       
-      self?.reloadFooterCell()
+      // Теперь корректировку надо обновить в модели!
+      dinnerValidator?.correctionInsulin = correctInsulin
+
     }
     
     // Shugar Before TextField Change
-    cell.dinnerCollectionViewController.didShugarBeforeTextFieldChangeToMain = {[weak dinnerValidator,weak self] shugarBefore in
-      
-      self?.interactor?.makeRequest(request: .setShugarBefore(shugarBefore: shugarBefore))
-      
-      // нам нужно повесить обсервер на сахар до и если он не прохидт по условиям тогда удалять поле с correctInsulin и ждать его заполнения
-      dinnerValidator?.shugarBeforeValue = String(shugarBefore)
-      
-     
-  
+    cell.dinnerCollectionViewController.didShugarBeforeTextFieldChangeToMain = {[weak dinnerValidator] shugarBefore in
 
-      
+      dinnerValidator?.shugarBeforeValue = String(shugarBefore)
+
+      dinnerValidator?.correctionInsulin = ShugarCorrectorWorker.shared.getInsulinCorrectionByShugar(shugarValue: shugarBefore)
    
     }
-    // TimeShugarBefore
-    cell.dinnerCollectionViewController.didSetShugarBeforeInTimeClouserToMain = {[weak self,weak dinnerValidator] time in
-      
-      self?.interactor?.makeRequest(request: .setShigarBeforeInTime(time: time))
-      
-      dinnerValidator?.correctionInsulin = ShugarCorrectorWorker.shared.correctionInsulinByShugar
+    // End Editing Shugar Before and Time
+
+    cell.dinnerCollectionViewController.didSetShugarBeforeValueAndTimeClouserToMain = {[weak self] time,shugar in
+
+      self?.interactor?.makeRequest(request: .setShugarBeforeValueAndTime(time: time, shugar: shugar))
+
     }
+    
+    
   }
 }
 
@@ -417,24 +417,18 @@ extension MainViewController {
       self?.didSelectTextField(textField: textField)
     }
     
-    
-    
-    // Insulin TextField Change
-    cell.dinnerCollectionViewController.didInsulinTextFieldCnahgeToMain = {
-      [weak dinnerValidator,weak self] insulin,row in
-      
-      self?.interactor?.makeRequest(request: .setInsulinInProduct(insulin: insulin, rowProduct: row, isPreviosDInner: false))
-      
-      // Поидеи тотал надо обновлять именно здесь!
-      // Но это дико не прозрачно! поэтому это нужно будет разветвялть в презентере
-      self?.reloadFooterCell()
-      dinnerValidator?.insulinValue = String(insulin)
+    // Insulin TextField End Editing
+    cell.dinnerCollectionViewController.didInsulinTextFieldEndEditingToMain =  {
+          [weak dinnerValidator,weak self] insulin,row in
+          
+          self?.interactor?.makeRequest(request: .setInsulinInProduct(insulin: insulin, rowProduct: row, isPreviosDInner: false))
+
+          dinnerValidator?.insulinValue = String(insulin)
     }
     
-    // Порция добавляется у меня через модель так шо это надо будет учесть чтобы валидатор тоже знал об этом!
+    // Portion TextField End Editing
     
-    // Portion TextField Change
-    cell.dinnerCollectionViewController.didPortionTextFieldCnahgeToMain = {
+    cell.dinnerCollectionViewController.didPortionTextFieldEndEditingToMain = {
       [weak dinnerValidator,weak self] portion,row in
       
       
@@ -443,7 +437,7 @@ extension MainViewController {
       // Тут нужно правельно записать в модель данные которые приходят сюда
       dinnerValidator?.portion = String(portion)
     }
-    
+
     
     // Add New Product
     cell.dinnerCollectionViewController.didAddNewProductInDinner = {[weak self] in
@@ -679,13 +673,16 @@ extension MainViewController {
   private func tapFooterSaveButton() {
     
     
+    // Соотвественно это безобразие надо подрпавить
+    
     // Запишу здесь Конечную дозировку инслуина на обед
-    mainViewModel.dinnerCollectionViewModel[0].totalInsulin = mainViewModel.footerViewModel.totalInsulinValue
+//    mainViewModel.dinnerCollectionViewModel[0].totalInsulin = mainViewModel.footerViewModel.totalInsulinValue
     
-    interactor?.makeRequest(request: .saveViewModel(viewModel: mainViewModel.dinnerCollectionViewModel[0]))
+    interactor?.makeRequest(request: .saveViewModel(viewModel: mainViewModel))
     
-    
-    tableView.reloadRows(at: [IndexPath(item: 0, section: 0),IndexPath(item: 1, section: 0)], with: .automatic)
+    // Обнули валидацию
+    dinnerValidator.setDefault()
+//    tableView.reloadRows(at: [IndexPath(item: 0, section: 0),IndexPath(item: 1, section: 0)], with: .automatic)
   }
 }
 

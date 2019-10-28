@@ -19,7 +19,7 @@ class ShugarCorrectorWorker {
   var isNeedCorrectShugarByInsulin: Bool = false
   private var isUserHaveToSetData: Bool = true
   
-  var correctionInsulinByShugar: Float?
+  var correctionInsulinByShugar: Float? 
 
   
   // Singleton
@@ -42,11 +42,22 @@ class ShugarCorrectorWorker {
   }
   
   
-  func setInsulinCorrectionByShugar(shugarValue: Float) {
+  
+  
+  
+  func getIsShowCorrectTextField(shugarValue: Float) -> Bool {
+    return shugarValue > higherShuagrLevel || shugarValue < bottomShugarLevel
+  }
+
+  
+  
+  func getInsulinCorrectionByShugar(shugarValue: Float) -> Float? {
+    // Если 0 то значит мы сетим первый раз с viewModel!
+//    guard shugarValue != 0 else {return}
     
 //    let valueFloat = (shugarValue as NSString).floatValue
 
-    isNeedCorrectShugarByInsulin =  shugarValue > higherShuagrLevel || shugarValue < bottomShugarLevel
+    isNeedCorrectShugarByInsulin =  getIsShowCorrectTextField(shugarValue: shugarValue)
     
     
     if isNeedCorrectShugarByInsulin {
@@ -66,6 +77,8 @@ class ShugarCorrectorWorker {
     } else {
       correctionInsulinByShugar = 0
     }
+    
+    return correctionInsulinByShugar
     
     
     
