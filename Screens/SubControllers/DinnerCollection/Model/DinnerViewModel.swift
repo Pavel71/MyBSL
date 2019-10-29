@@ -38,8 +38,9 @@ struct DinnerViewModel: DinnerViewModelCellable {
 
 struct ShugarTopViewModel: ShugarTopViewModelable {
   
-  var isNeedInsulinCorrectByShugar: Bool = false
   
+  // Корректирующий инсулин
+  var isNeedInsulinCorrectByShugar: Bool 
   var correctInsulinByShugar: Float
   
   var isPreviosDinner: Bool
@@ -52,13 +53,14 @@ struct ShugarTopViewModel: ShugarTopViewModelable {
   
   var timeAfter: Date?
   
-  init(isPreviosDinner: Bool,shugarBeforeValue: Float,shugarAfterValue: Float,timeBefore: Date?,timeAfter: Date?,correctHsugarByInsulin: Float = 0.0) {
+  init(isPreviosDinner: Bool,shugarBeforeValue: Float,shugarAfterValue: Float,timeBefore: Date?,timeAfter: Date?,correctInsulinByShugar: Float = 0.0,isNeedInsulinCorrectByShugar:Bool = false) {
     self.isPreviosDinner = isPreviosDinner
     self.shugarBeforeValue = shugarBeforeValue
     self.shugarAfterValue = shugarAfterValue
     self.timeBefore = timeBefore
     self.timeAfter = timeAfter
-    self.correctInsulinByShugar = correctHsugarByInsulin
+    self.correctInsulinByShugar = correctInsulinByShugar
+    self.isNeedInsulinCorrectByShugar = isNeedInsulinCorrectByShugar
   }
   
   

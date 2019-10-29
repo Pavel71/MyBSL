@@ -50,6 +50,9 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   // Choose InjectionsPlace
   
   let chooseRowView = ChoosePlaceInjectionsRowView()
+  // Total Insulin View
+  
+  let totalInsulinView = TotalInsulinView()
   
   //  Will be Activity
   let willActiveRow = WillActiveView()
@@ -76,7 +79,8 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     setUpShuagarView()
     
     setUpWillActiveRow()
-    setUpChoosePlaceInjectionsRowView()
+    setUpChoosePlaceInjectionsAndTotalInsulinView()
+//    setUpChoosePlaceInjectionsRowView()
     
     addSubview(touchesPassView)
     touchesPassView.fillSuperview()
@@ -191,28 +195,51 @@ extension DinnerCollectionViewCell {
     addNewProductInMealButton.constrainWidth(constant: Constants.ProductList.TableFooterView.addButtonHeight)
   }
   
-  
-  
-  private func setUpChoosePlaceInjectionsRowView() {
+  private func setUpChoosePlaceInjectionsAndTotalInsulinView() {
     
-    // выводим врехний constraint  и регулируем его в зависимости от ситуацыии
-//    choosePlaceInjectionViewTopConstraint = chooseRowView.topAnchor.constraint(equalTo: productListViewController.view.bottomAnchor, constant: Constants.Main.DinnerCollectionView.topMarginBetweenView)
-    
-    addSubview(chooseRowView)
-    chooseRowView.anchor(top: nil, leading: leadingAnchor, bottom: willActiveRow.topAnchor, trailing: trailingAnchor,padding: .init(top: 0, left: 8, bottom:10, right: 8))
-    
-//    choosePlaceInjectionViewTopConstraint.isActive = true
-    
-    chooseRowView.constrainHeight(constant: Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight)
-    
+    let stackView = UIStackView(arrangedSubviews: [
+    chooseRowView,totalInsulinView
+    ])
+    totalInsulinView.constrainWidth(constant: 100)
+//    stackView.distribution = .fillEqually
+    stackView.spacing = 10
+    addSubview(stackView)
+    stackView.anchor(top: nil, leading: leadingAnchor, bottom: willActiveRow.topAnchor, trailing: trailingAnchor,padding: .init(top: 0, left: 8, bottom:10, right: 8))
+    stackView.constrainHeight(constant: Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight)
   }
+  
+  
+  
+//  private func setUpChoosePlaceInjectionsRowView() {
+//
+//    // выводим врехний constraint  и регулируем его в зависимости от ситуацыии
+////    choosePlaceInjectionViewTopConstraint = chooseRowView.topAnchor.constraint(equalTo: productListViewController.view.bottomAnchor, constant: Constants.Main.DinnerCollectionView.topMarginBetweenView)
+//
+//    addSubview(chooseRowView)
+//    chooseRowView.anchor(top: nil, leading: leadingAnchor, bottom: willActiveRow.topAnchor, trailing: trailingAnchor,padding: .init(top: 0, left: 8, bottom:10, right: 8))
+//
+////    choosePlaceInjectionViewTopConstraint.isActive = true
+//
+//    chooseRowView.constrainHeight(constant: Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight)
+//
+//  }
   
   
   private func setUpWillActiveRow() {
     
-    addSubview(willActiveRow)
-    willActiveRow.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:10, right: 8))
-    willActiveRow.constrainHeight(constant: Constants.Main.DinnerCollectionView.willActiveRowHeight)
+    let spacingView = UIView()
+    let stackView = UIStackView(arrangedSubviews: [
+    willActiveRow,spacingView
+    ])
+    spacingView.constrainWidth(constant: 100)
+    
+
+//    stackView.distribution = .fillEqually
+    stackView.spacing = 10
+    
+    addSubview(stackView)
+    stackView.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding: .init(top: Constants.Main.DinnerCollectionView.topMarginBetweenView, left: 8, bottom:10, right: 8))
+    stackView.constrainHeight(constant: Constants.Main.DinnerCollectionView.willActiveRowHeight)
     
     
     
@@ -231,6 +258,7 @@ extension DinnerCollectionViewCell {
     setShugarViewModel(shugarTopViewModel: viewModel.shugarTopViewModel)
     setProductListViewModel(productListViewModel: viewModel.productListInDinnerViewModel)
     
+    setTotalInsulinValue(totalInsulin: viewModel.totalInsulin)
     setChoosePlaceViewModel(placeInjections: viewModel.placeInjection)
     
     addNewProductInMealButton.isHidden = viewModel.isPreviosDinner
@@ -238,6 +266,10 @@ extension DinnerCollectionViewCell {
     // Здесь мне нужно будет учесть что если обед переходит в разряд прошлых то мы блокиреум ввод всего кроме скорректированного инсулина
     
     
+  }
+  
+  private func setTotalInsulinValue(totalInsulin: Float) {
+    totalInsulinView.totalInsulinLabel.text = String(totalInsulin)
   }
   
   private func setChoosePlaceViewModel(placeInjections: String) {

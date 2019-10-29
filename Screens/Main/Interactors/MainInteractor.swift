@@ -48,7 +48,7 @@ class MainInteractor: MainBusinessLogic {
       
       
     case .saveViewModel(let viewModel):
-      print("Dinner to Save Realm",viewModel)
+      
       // теперь нужно распаристь модельку в Объект DinnerRealm
       let newDinnerViewModel = viewModel.dinnerCollectionViewModel.last!
       
@@ -112,12 +112,15 @@ class MainInteractor: MainBusinessLogic {
     let timeShugarBefore = viewModel.shugarTopViewModel.timeBefore
     let timeShugarAfter = viewModel.shugarTopViewModel.timeAfter
     let totalInsulin = viewModel.totalInsulin
+    let isNeedCorrectDinnerInsulinByShugasr = viewModel.shugarTopViewModel.isNeedInsulinCorrectByShugar
     
     let products = viewModel.productListInDinnerViewModel.productsData
     
     let realmProducts = createProductForRealm(products: products)
     
-    let dinnerRealm = DinnerRealm(shugarBefore: shugarBefore, shugarAfter: shugarAfter, timeShugarBefore: timeShugarBefore, timeShugarAfter: timeShugarAfter, placeInjection: placeInjections, trainName: viewModel.train ?? "", correctionInsulin: correctionInsulin, totalInsulin: totalInsulin)
+    print("Создаем обед с коррекцией инсулина",correctionInsulin)
+    
+    let dinnerRealm = DinnerRealm(shugarBefore: shugarBefore, shugarAfter: shugarAfter, timeShugarBefore: timeShugarBefore, timeShugarAfter: timeShugarAfter, placeInjection: placeInjections, trainName: viewModel.train ?? "", correctionInsulin: correctionInsulin, totalInsulin: totalInsulin,isNeedCorrectInsulinByShugar: isNeedCorrectDinnerInsulinByShugasr)
     
     dinnerRealm.listProduct.append(objectsIn: realmProducts)
     

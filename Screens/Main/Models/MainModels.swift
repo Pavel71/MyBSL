@@ -99,15 +99,15 @@ struct MainViewModel {
   // Middle Cell ViewModel
   var dinnerCollectionViewModel: [DinnerViewModel]
   // Footer Cell ViewModel
-  var footerViewModel: MainFooterViewModel
+//  var footerViewModel: MainFooterViewModel
   
 }
 
 // Footer
-struct MainFooterViewModel: MainTableViewFooterCellable {
-  var totalInsulinValue: Float
-
-}
+//struct MainFooterViewModel: MainTableViewFooterCellable {
+//  var totalInsulinValue: Float
+//
+//}
 
 // Header
 

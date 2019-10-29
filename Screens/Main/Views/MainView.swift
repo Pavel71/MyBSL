@@ -22,7 +22,7 @@ class MainView: UIView {
     return blurView
   }()
   
-  let choosePlaceInjectionsView = ChoosePlaceInjectionView(frame: .init(x: 0, y: 0, width: 200, height: 350))
+  let choosePlaceInjectionsView = ChoosePlaceInjectionView(frame: .init(x: 0, y: 0, width: 250, height: 350))
   
   
   override init(frame: CGRect) {

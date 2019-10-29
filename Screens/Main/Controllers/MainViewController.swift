@@ -324,7 +324,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewFooterCell.cellId) as! MainTableViewFooterCell
     
-    cell.setViewModel(viewModel: mainViewModel.footerViewModel)
+//    cell.setViewModel(viewModel: mainViewModel.footerViewModel)
     setClousersByFooterCell(cell)
     return cell
   }
@@ -578,9 +578,7 @@ extension MainViewController {
   }
   
   private func didTapListButtonInActiveTextField(textField: UITextField) {
-    
-    
-    
+
     if mainView.subviews.contains(listTrainsViewController.view) {
       removeListTrainTableView()
     } else {
@@ -596,8 +594,10 @@ extension MainViewController {
     //     Жесткое дерьмо но работает останется только прокинуть в mainView
     mainView.addSubview(listTrainsViewController.view)
     
-    listTrainsViewController.view.anchor(top: textField.bottomAnchor, leading: textField.leadingAnchor, bottom: nil, trailing: textField.trailingAnchor)
+    listTrainsViewController.view.anchor(top: textField.bottomAnchor, leading: nil, bottom: nil, trailing: nil)
+    listTrainsViewController.view.centerXAnchor.constraint(equalTo: textField.centerXAnchor).isActive = true
     listTrainsViewController.view.constrainHeight(constant: 150)
+    listTrainsViewController.view.constrainWidth(constant: 120)
     
     UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
       self.listTrainsViewController.view.alpha = 1

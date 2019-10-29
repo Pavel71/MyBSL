@@ -156,43 +156,68 @@ class ShugarSetView: UIView {
     addSubview(stackView)
     stackView.fillSuperview()
     
+    stackViewShugarAfter.isHidden = true
+    correctionShugarByInsulinStackView.isHidden = true
+    
     
   }
   
   func setViewModel(viewModel:ShugarTopViewModelable) {
     
-    let shugarBeforeString = viewModel.shugarBeforeValue == 0 ? "" : String(viewModel.shugarBeforeValue)
-    
-    shugarBeforeValueTextField.text = shugarBeforeString
-    timeBeforeLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeBefore)
-    
-    // теперь нам приходит како-ето значение!
-    
-     let correctInsulinByShugarString = viewModel.correctInsulinByShugar == 0 ? "" : String(viewModel.correctInsulinByShugar)
-    
-    correctionShugarInsulinValueTextField.text = correctInsulinByShugarString
+    workWithSugarBefore(viewModel: viewModel)
+   
+    workWithTime(viewModel: viewModel)
+
+    workWithCorrectInsulin(viewModel: viewModel)
     
     configureIfisPreviosDinner(viewModel: viewModel)
     
-    isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection:viewModel.isNeedInsulinCorrectByShugar)
-
+//    print("IsNeedShowCorrectionInsulin",viewModel.isNeedInsulinCorrectByShugar)
+//    print("IsPreviosDinner",viewModel.isPreviosDinner)
     
+  }
+  
+  // MARK: Work With ViewModel
+  
+  private func workWithTime(viewModel:ShugarTopViewModelable) {
+    
+    timeBeforeLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeBefore)
+    
+    timeAfterLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeAfter)
+
+  }
+  
+  private func workWithSugarBefore(viewModel:ShugarTopViewModelable) {
+    let shugarBeforeString = viewModel.shugarBeforeValue == 0 ? "" : String(viewModel.shugarBeforeValue)
+       shugarBeforeValueTextField.text = shugarBeforeString
+    shugarBeforeValueTextField.isEnabled = !viewModel.isPreviosDinner
+    
+  }
+  
+  private func workWithCorrectInsulin(viewModel:ShugarTopViewModelable) {
+    
+    print("CorrectInsulin InViewModel",viewModel.correctInsulinByShugar)
+    let correctInsulinByShugarString = viewModel.correctInsulinByShugar == 0 ? "" : String(viewModel.correctInsulinByShugar)
+       correctionShugarInsulinValueTextField.text = correctInsulinByShugarString
+    isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection:viewModel.isNeedInsulinCorrectByShugar)
   }
   
   private func configureIfisPreviosDinner(viewModel: ShugarTopViewModelable) {
     // Hidden right shugar StackView And S
     
-    
-    stackViewShugarAfter.isHidden = !viewModel.isPreviosDinner
-    shugarBeforeValueTextField.isEnabled = !viewModel.isPreviosDinner
+    // Тут нужно дополнительное свойство не только предыдущий о бед но и то что мы засетили новый сахар его можно поместить уже туда
     
     if viewModel.isPreviosDinner {
       
-      shugarBeforeValueTextField.text = String(viewModel.shugarBeforeValue)
-      
-      timeBeforeLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeBefore)
-      timeAfterLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeAfter)
+      print("Work with Previos Dinner",viewModel.isNeedInsulinCorrectByShugar)
+      stackViewShugarAfter.isHidden = !viewModel.isPreviosDinner
+      isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection:viewModel.isNeedInsulinCorrectByShugar)
     }
+    
+    
+//    spacingView.isHidden = viewModel.isPreviosDinner
+    
+    
   }
   
   
@@ -213,7 +238,6 @@ class ShugarSetView: UIView {
 
   private func isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection: Bool) {
     self.correctionShugarByInsulinStackView.isHidden = !isHiddenCorrection
-
     self.spacingView.isHidden = isHiddenCorrection
 
   }

@@ -18,7 +18,7 @@ class CustomCategoryTextField: CustomTextField {
     return button
   }()
   
-  let rightViewSize: CGRect = .init(x: 0, y: 0, width: 30, height: 30)
+  let rightViewSize: CGRect = .init(x: 0, y: 0, width: 20, height: 20)
   
   override init(padding: CGFloat, placeholder: String, cornerRaduis: CGFloat) {
     super.init(padding: padding, placeholder: placeholder, cornerRaduis: cornerRaduis)

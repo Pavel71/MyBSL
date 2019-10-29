@@ -153,8 +153,7 @@ extension MainPresenter {
   
   func getDummyDinner() -> DinnerViewModel {
     
-    print("Get dummy Dinner")
-    
+  
     let shugarViewModel1 = ShugarTopViewModel(isPreviosDinner: false, shugarBeforeValue: 0.0, shugarAfterValue: 0.0, timeBefore: nil, timeAfter: nil)
     
     let result = ProductListResultsViewModel(sumCarboValue: "", sumPortionValue: "", sumInsulinValue: "")
@@ -174,9 +173,9 @@ extension MainPresenter {
      
      // Просто тут не понятно будет ли менятся это значение для каждого обеда! или просто будет высчитыватся для новых обедов
      
-     let footerViewModel = MainFooterViewModel(totalInsulinValue: 0)
+//     let footerViewModel = MainFooterViewModel(totalInsulinValue: 0)
      
-     mainViewModel = MainViewModel(headerViewModelCell: topViewModel, dinnerCollectionViewModel: middleViewModel, footerViewModel: footerViewModel)
+     mainViewModel = MainViewModel(headerViewModelCell: topViewModel, dinnerCollectionViewModel: middleViewModel)
      
    }
   
@@ -206,10 +205,10 @@ extension MainPresenter {
     
     // Просто тут не понятно будет ли менятся это значение для каждого обеда! или просто будет высчитыватся для новых обедов
     
-    let footerViewModel = MainFooterViewModel(totalInsulinValue: 0)
+//    let footerViewModel = MainFooterViewModel(totalInsulinValue: 0)
   
     
-    mainViewModel = MainViewModel(headerViewModelCell: topViewModel, dinnerCollectionViewModel: middleViewModel, footerViewModel: footerViewModel)
+    mainViewModel = MainViewModel(headerViewModelCell: topViewModel, dinnerCollectionViewModel: middleViewModel)
     
     
     
@@ -251,8 +250,16 @@ extension MainPresenter {
   // Shugar Top VieModle
   private func createShugarTopInCellViewModel(dinner: DinnerRealm) -> ShugarTopViewModel {
 
-
-    return ShugarTopViewModel(isPreviosDinner: dinner.isPreviosDinner, shugarBeforeValue: dinner.shugarBefore, shugarAfterValue: dinner.shugarAfter, timeBefore: dinner.timeShugarBefore, timeAfter: dinner.timeShugarAfter)
+    
+    return ShugarTopViewModel(
+      isPreviosDinner: dinner.isPreviosDinner,
+      shugarBeforeValue: dinner.shugarBefore,
+      shugarAfterValue: dinner.shugarAfter,
+      timeBefore: dinner.timeShugarBefore,
+      timeAfter: dinner.timeShugarAfter,
+      correctInsulinByShugar: dinner.correctionInsulin,
+      isNeedInsulinCorrectByShugar: dinner.isNeedCorrectInsulinByShugar
+    )
   }
   
   

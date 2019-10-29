@@ -19,7 +19,7 @@ class MainTableViewFooterCell: UITableViewCell {
   static let cellId = "MainTableViewFooterCellId"
   
   let robotView = RobotView()
-  let totalView = TotalView()
+//  let totalView = TotalView()
   
   let saveButton: UIButton = {
     let b = UIButton(type: .system)
@@ -64,7 +64,6 @@ class MainTableViewFooterCell: UITableViewCell {
     }
 
     let buttonStackView = UIStackView(arrangedSubviews: [
-      totalView,
       saveButton,
       predicateinsulinButton
       ])
@@ -91,9 +90,9 @@ class MainTableViewFooterCell: UITableViewCell {
     
   }
   
-  func setViewModel(viewModel: MainTableViewFooterCellable) {
-    totalView.totalInsulinValue.text = "\(viewModel.totalInsulinValue)"
-  }
+//  func setViewModel(viewModel: MainTableViewFooterCellable) {
+//    totalView.totalInsulinValue.text = "\(viewModel.totalInsulinValue)"
+//  }
   
   var didTapSaveButtonClouser: (() -> Void)?
   var didTapSaveButtonToRobotViewClouser: (() -> Void)?

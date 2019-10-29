@@ -22,6 +22,7 @@ import RealmSwift
   
   dynamic var id: String = UUID().uuidString
   dynamic var isPreviosDinner: Bool = true
+  dynamic var isNeedCorrectInsulinByShugar: Bool = false
   dynamic var timeCreateDinner: Date?
 
   // Top
@@ -49,7 +50,7 @@ import RealmSwift
   
   
   
-  convenience init(shugarBefore: Float,shugarAfter:Float,timeShugarBefore: Date?,timeShugarAfter: Date?,placeInjection: String, trainName: String,correctionInsulin:Float,totalInsulin: Float,isPreviosDinner:Bool = true) {
+  convenience init(shugarBefore: Float,shugarAfter:Float,timeShugarBefore: Date?,timeShugarAfter: Date?,placeInjection: String, trainName: String,correctionInsulin:Float,totalInsulin: Float,isPreviosDinner:Bool = true,isNeedCorrectInsulinByShugar: Bool = false) {
     self.init()
     
     self.shugarBefore = shugarBefore
@@ -62,6 +63,7 @@ import RealmSwift
     self.correctionInsulin = correctionInsulin
     self.timeCreateDinner = Date() // Время создания обеда
     self.isPreviosDinner = isPreviosDinner
+    self.isNeedCorrectInsulinByShugar = isNeedCorrectInsulinByShugar
 
   }
 

@@ -55,11 +55,18 @@ class ChoosePlaceInjectionView: UIView {
     return button
     
   }
+  
+  let titlelabel: UILabel = {
+    let label = UILabel()
+    label.text = "Выберите место укола!"
+    label.font = UIFont.systemFont(ofSize: 20)
+    return label
+  }()
 
   
-  let armsSize: CGSize = .init(width: 40, height: 150)
-  let legsSize: CGSize = .init(width: 50, height: 150)
-  let stomachSize: CGSize = .init(width: 100, height: 150)
+  let armsSize: CGSize = .init(width: 50, height: 150)
+  let legsSize: CGSize = .init(width: 60, height: 150)
+  let stomachSize: CGSize = .init(width: 120, height: 150)
   
   override init(frame: CGRect){
     super.init(frame: frame)
@@ -67,8 +74,15 @@ class ChoosePlaceInjectionView: UIView {
     self.alpha = 0
     
     
-    addSubview(closeButton)
-    closeButton.anchor(top: topAnchor, leading: nil, bottom: nil, trailing: trailingAnchor,padding: .zero,size: .init(width: 30, height: 30))
+    let topStackView = UIStackView(arrangedSubviews: [
+    titlelabel,closeButton
+    ])
+    topStackView.spacing = 10
+    topStackView.distribution = .fill
+
+    titlelabel.constrainWidth(constant: 230)
+    closeButton.constrainWidth(constant: 30)
+    closeButton.constrainHeight(constant: 30)
     
 
     stomAcheButton.constrainHeight(constant: stomachSize.height)
@@ -84,24 +98,31 @@ class ChoosePlaceInjectionView: UIView {
     leftLegButton.constrainHeight(constant: legsSize.height)
 
     
-    let overAllStackView = UIStackView(arrangedSubviews: [
+    let bodyStackView = UIStackView(arrangedSubviews: [
       stomAcheButton,
       legsStackView
       ])
-    overAllStackView.axis = .vertical
-    overAllStackView.distribution = .fill
-    overAllStackView.spacing = 5
+    bodyStackView.axis = .vertical
+    bodyStackView.distribution = .fill
+    bodyStackView.spacing = 5
     
-    addSubview(overAllStackView)
-    overAllStackView.centerInSuperview()
-
+    addSubview(bodyStackView)
+    bodyStackView.centerInSuperview()
+    
+    
+    
     
     addSubview(leftArmButton)
-    leftArmButton.anchor(top: overAllStackView.topAnchor, leading: overAllStackView.trailingAnchor, bottom: nil, trailing: nil,padding: .init(top: 20, left: 10, bottom: 0, right: 0),size: armsSize)
+    leftArmButton.anchor(top: bodyStackView.topAnchor, leading: bodyStackView.trailingAnchor, bottom: nil, trailing: nil,padding: .init(top: 20, left: 10, bottom: 0, right: 0),size: armsSize)
 
 
     addSubview(rightArmButton)
-    rightArmButton.anchor(top: overAllStackView.topAnchor, leading: nil, bottom: nil, trailing: overAllStackView.leadingAnchor,padding: .init(top: 20, left: 0, bottom: 0, right: 10),size: armsSize)
+    rightArmButton.anchor(top: bodyStackView.topAnchor, leading: nil, bottom: nil, trailing: bodyStackView.leadingAnchor,padding: .init(top: 20, left: 0, bottom: 0, right: 10),size: armsSize)
+    
+    addSubview(topStackView)
+    topStackView.anchor(top: nil, leading: nil, bottom: bodyStackView.topAnchor, trailing: nil,padding: .init(top: 0, left: 0, bottom: 10, right: 0))
+    
+    
     
     
   }

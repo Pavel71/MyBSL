@@ -11,7 +11,7 @@ import UIKit
 
 class ChoosePlaceInjectionsRowView: UIView {
   
-  let placeInJectionsLabel = CustomLabels(font: UIFont.systemFont(ofSize: 18), text: "Место укола:")
+//  let placeInJectionsLabel = CustomLabels(font: UIFont.systemFont(ofSize: 18), text: "Место укола:")
   
   let chooseButton: UIButton = {
     let button = UIButton(type: .system)
@@ -35,10 +35,10 @@ class ChoosePlaceInjectionsRowView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    placeInJectionsLabel.numberOfLines = 0
+//    placeInJectionsLabel.numberOfLines = 0
     
     let stackView = UIStackView(arrangedSubviews: [
-      placeInJectionsLabel,plaсeImageView,chooseButton
+      plaсeImageView,chooseButton
       ])
     stackView.distribution = .fillEqually
     addSubview(stackView)

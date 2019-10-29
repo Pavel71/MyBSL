@@ -19,7 +19,7 @@ class WillActiveView: UIView {
     return iv
   }()
   
-  let activityTitle = CustomLabels(font: UIFont.systemFont(ofSize: 18), text: "Тренировка:")
+//  let activityTitle = CustomLabels(font: UIFont.systemFont(ofSize: 18), text: "Тренировка:")
   
   let activeOn: UISwitch = {
     let st = UISwitch()
@@ -42,7 +42,7 @@ class WillActiveView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
   
-    activityTitle.numberOfLines = 0
+//    activityTitle.numberOfLines = 0
     trainTextField.isHidden = true
     trainTextField.alpha = 0
     trainTextField.delegate = self
@@ -59,7 +59,7 @@ class WillActiveView: UIView {
     
 
     let overStackView = UIStackView(arrangedSubviews: [
-      activityTitle,activityImageView,containerView,trainTextField
+      activityImageView,containerView,trainTextField
       ])
 
     overStackView.distribution = .fillEqually
