@@ -35,7 +35,7 @@ struct ProductListViewModel: ProductListViewModelCell {
   
   // Computed Property
   var carboInPortion: Int {
-    return Int(Float(carboIn100Grm) * Float(portion) / 100)
+    return Int(Float(carboIn100Grm) * (Float(portion) / 100))
   }
   
 }

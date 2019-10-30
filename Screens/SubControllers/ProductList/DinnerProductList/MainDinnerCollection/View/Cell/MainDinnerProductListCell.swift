@@ -88,6 +88,7 @@ class MainDinnerProductListCell: BaseProductListCell {
   
   
   func setViewModel(viewModel: ProductListViewModelCell, withInsulinTextFields: Bool = true, isPreviosDinner: Bool) {
+    
     super.setViewModel(viewModel: viewModel, withInsulinTextFields: withInsulinTextFields)
     
     
@@ -231,17 +232,28 @@ extension MainDinnerProductListCell: UITextFieldDelegate {
     case insulinTextField:
       
       didInsulinTextFieldEditing!(textField)
-      
+      setDefaultInsulinValue()
     case portionTextField:
       
       didPortionTextFieldEditing!(textField)
-      
+      setDefaultPortionValue()
     default: break
 
     }
-    
 
-    
+  }
+  
+  private func setDefaultPortionValue() {
+    resultPortionCompTens    = 0
+    resultIPortionCompSimple = 0
+    resultPortionComHundred  = 0
+  }
+   
+  
+  private func setDefaultInsulinValue() {
+    resultInsulinCompTens   = 0
+    resultInsulinCompSimple = 0
+    resultInsulinComDrob    = 0
   }
   
   func textFieldDidBeginEditing(_ textField: UITextField) {

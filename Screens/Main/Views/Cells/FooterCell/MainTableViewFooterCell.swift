@@ -54,6 +54,7 @@ class MainTableViewFooterCell: UITableViewCell {
     selectionStyle = .none
     
     saveButton.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
+    predicateinsulinButton.addTarget(self, action: #selector(didTapPredictButton), for: .touchUpInside)
 
     robotView.didChangeRobotImage = {[weak self] in
       self?.changeEnablePredictaButton()
@@ -90,31 +91,25 @@ class MainTableViewFooterCell: UITableViewCell {
     
   }
   
-//  func setViewModel(viewModel: MainTableViewFooterCellable) {
-//    totalView.totalInsulinValue.text = "\(viewModel.totalInsulinValue)"
-//  }
+  func setViewModel(isCanGetPredict: Bool) {
+    if isCanGetPredict {
+      changeEnablePredictaButton()
+    }
+  }
   
-  var didTapSaveButtonClouser: (() -> Void)?
-  var didTapSaveButtonToRobotViewClouser: (() -> Void)?
+  var didTapSaveButtonClouser: EmptyClouser?
+  var didTapSaveButtonToRobotViewClouser: EmptyClouser?
   
   @objc private func didTapSaveButton() {
     
-    // Таким образом сохранение в реалм произойдет в паралельном потоке
-    
-    
-    DispatchQueue.global(qos: .userInteractive).async {
-      self.didTapSaveButtonToRobotViewClouser!()
-      
-    }
-    
-    DispatchQueue.main.async {
-      self.didTapSaveButtonClouser!()
-    }
-    
-    
-
-    
-    
+    self.didTapSaveButtonToRobotViewClouser!()
+    self.didTapSaveButtonClouser!()
+ 
+  }
+  
+  var didTapPredictButtonClouser: EmptyClouser?
+  @objc private func didTapPredictButton(button: UIButton) {
+    didTapPredictButtonClouser!()
     
   }
   

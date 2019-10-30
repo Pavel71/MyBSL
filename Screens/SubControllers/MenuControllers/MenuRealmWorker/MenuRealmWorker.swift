@@ -96,7 +96,7 @@ extension MenuRealmWorker {
   
   private func getProductListViewModel(product: ProductRealm) -> ProductListViewModel {
     
-    let product = ProductListViewModel.init(insulinValue: nil, isFavorit: product.isFavorits, carboIn100Grm: product.carbo, category: product.category, name: product.name, portion: product.portion)
+    let product = ProductListViewModel.init(insulinValue: nil, isFavorit: product.isFavorits, carboIn100Grm: product.carboIn100grm, category: product.category, name: product.name, portion: product.portion)
     
     return product
     
@@ -112,7 +112,7 @@ extension MenuRealmWorker {
     
     for product in items {
       
-      let carboString = String(product.carbo)
+      let carboString = String(product.carboIn100grm)
       let portionString = String(product.portion)
       
       let productCellViewModel = MenuModel.MenuProductListViewModel(id: product.id, name: product.name, carboOn100Grm: carboString, isFavorit: product.isFavorits, portion: portionString, category: product.category)

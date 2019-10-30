@@ -14,7 +14,7 @@ import Foundation
 class HeaderCellWorker {
   
   
-  private let supplyInsulinValue: Float = 0
+  private var supplyInsulinValue: Float = 300
   
   static let shared:HeaderCellWorker = {
     let cls = HeaderCellWorker()
@@ -24,6 +24,10 @@ class HeaderCellWorker {
   
   func getSupplyValue() -> Float {
     return supplyInsulinValue
+  }
+  
+  func setLastInsulinIngections(insulin: Float) {
+    supplyInsulinValue -= insulin
   }
   
   

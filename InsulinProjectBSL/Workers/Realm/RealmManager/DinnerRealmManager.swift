@@ -51,3 +51,28 @@ extension DinnerRealmManager {
     
   }
 }
+
+// MARK: Update Previos Dinner
+
+extension DinnerRealmManager {
+  
+  // В реалме это последний обед
+  func getPreviosDinner() -> DinnerRealm {
+    let realm = provider.realm
+    guard let lastDinner = realm.objects(DinnerRealm.self).last else {fatalError("Последнего обеда нет")}
+    return lastDinner
+  }
+  
+  func updateShugarAfterInPreviosDinner(shugar: Float) {
+    let realm = provider.realm
+    
+    guard realm.objects(DinnerRealm.self).count > 0 else {return}
+    
+    let lastDinner = getPreviosDinner()
+    try! realm.write {
+      lastDinner.shugarAfter = shugar
+    }
+    
+  }
+  
+}

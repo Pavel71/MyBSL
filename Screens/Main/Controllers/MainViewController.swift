@@ -99,6 +99,7 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    
     setKeyboardNotification()
     navigationController?.navigationBar.isHidden = true
   }
@@ -324,7 +325,10 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewFooterCell.cellId) as! MainTableViewFooterCell
     
-//    cell.setViewModel(viewModel: mainViewModel.footerViewModel)
+    // Это конечно нужно будет подправить и собрать в Отдельную модель
+    let isCanGetPredict = mainViewModel.dinnerCollectionViewModel.count > 10
+    cell.setViewModel(isCanGetPredict: isCanGetPredict)
+    
     setClousersByFooterCell(cell)
     return cell
   }
@@ -333,6 +337,11 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     cell.didTapSaveButtonClouser = {[weak self] in
       print("Tap Save button")
       self?.tapFooterSaveButton()
+    }
+    
+    cell.didTapPredictButtonClouser = {[weak self] in
+      print("Tap Predict Button")
+      self?.predictInsulinByMLModel()
     }
   }
   
@@ -634,7 +643,7 @@ extension MainViewController {
   private func choosePlaceInjections() {
     // Так же нам понадобится анимация
     closeMenu()
-    print("Choose Inkections")
+    
     ChoosePlaceInjectionsAnimated.showView(blurView: mainView.blurView, choosePlaceInjectionView: mainView.choosePlaceInjectionsView, isShow: true)
     
     
@@ -650,12 +659,9 @@ extension MainViewController {
     
     // Добавляем в валидатор
     dinnerValidator.placeInjection = namePlace
-    
-    // это все должно идти через презентер наверно где то там модель с данными должна лежать!
-    // Сохраняем в модель!
+
     interactor?.makeRequest(request: .setPlaceIngections(place: namePlace))
-//    mainViewModel.dinnerCollectionViewModel[0].placeInjection = namePlace
-    // Закрываем
+
     didTapClouseChoosePlaceInjectionView()
     
  
@@ -671,26 +677,35 @@ extension MainViewController {
 }
 
 
-// MARK: Save Dinner
+// MARK: Save Dinner And Predict Insulin
 
 extension MainViewController {
   
+  // Save Dinner
+  
   private func tapFooterSaveButton() {
-    
-    
-    // Соотвественно это безобразие надо подрпавить
-    
-    // Запишу здесь Конечную дозировку инслуина на обед
-//    mainViewModel.dinnerCollectionViewModel[0].totalInsulin = mainViewModel.footerViewModel.totalInsulinValue
-    
+
     interactor?.makeRequest(request: .saveViewModel(viewModel: mainViewModel))
     
-    let middleCell = getMainMiddleCell()
-    middleCell.dinnerCollectionViewController.scrollCollectionToheRight()
+    scrollDinnerCollectionViewToTheRight()
     // Обнули валидацию
     dinnerValidator.setDefault()
-//    tableView.reloadRows(at: [IndexPath(item: 0, section: 0),IndexPath(item: 1, section: 0)], with: .automatic)
+
   }
+  
+  private func scrollDinnerCollectionViewToTheRight() {
+    let middleCell = getMainMiddleCell()
+    middleCell.dinnerCollectionViewController.scrollCollectionToheRight()
+  }
+  
+  // Predict Insulin
+  
+  private func predictInsulinByMLModel() {
+    
+    interactor?.makeRequest(request: .predictInsulinForProducts)
+  }
+  
+  
 }
 
 

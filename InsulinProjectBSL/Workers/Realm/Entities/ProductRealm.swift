@@ -18,19 +18,19 @@ import RealmSwift
   dynamic var id: String = UUID().uuidString
   dynamic var name: String = ""
   dynamic var category: String  = ""
-  dynamic var carbo: Int = 0
+  dynamic var carboIn100grm: Int = 0
   dynamic var portion: Int = 100
   
   dynamic var insulin: Float = 0
   
   dynamic var isFavorits: Bool = false
   
-  convenience init(name: String, category: String, carbo: Int, isFavorits: Bool, portion: Int = 100,insulin: Float = 0) {
+  convenience init(name: String, category: String, carboIn100Grm: Int, isFavorits: Bool, portion: Int = 100,insulin: Float = 0) {
     self.init()
     
     self.name = name
     self.category = category
-    self.carbo = carbo
+    self.carboIn100grm = carboIn100Grm
     self.portion = portion
     self.isFavorits = isFavorits
     self.insulin = insulin

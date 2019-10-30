@@ -19,7 +19,7 @@ class NewFoodViewPresenterWorker {
     
     if let updateProduct = updateProduct {
       
-      let carboString = "\(updateProduct.carbo)"
+      let carboString = "\(updateProduct.carboIn100grm)"
       let massaString = "\(updateProduct.portion)"
       
       newProductViewModel = NewProductViewModel(name: updateProduct.name, carbo: carboString, category: updateProduct.category, massa: massaString, isFavorits: updateProduct.isFavorits, listCategory: listCategory)

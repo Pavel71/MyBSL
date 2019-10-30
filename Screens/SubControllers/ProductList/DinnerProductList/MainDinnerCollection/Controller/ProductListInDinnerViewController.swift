@@ -65,7 +65,7 @@ class ProductListInDinnerViewController: BaseProductList {
   }
   
   private func getProductListViewModelFromProductReal(product: ProductRealm) -> ProductListViewModel {
-    let productListViewModel = ProductListViewModel(insulinValue: product.insulin, isFavorit: product.isFavorits, carboIn100Grm: product.carbo, category: product.category, name: product.name, portion: product.portion)
+    let productListViewModel = ProductListViewModel(insulinValue: product.insulin, isFavorit: product.isFavorits, carboIn100Grm: product.carboIn100grm, category: product.category, name: product.name, portion: product.portion)
     return productListViewModel
   }
 
@@ -94,9 +94,6 @@ extension ProductListInDinnerViewController {
   }
   
   private func setResultViewModel(resultViewModel:ProductListResultViewModelable ) {
-    
-    // Этот блок пора выносит в презентер
-//    let productListResultViewModel = ConfirmProductListResultViewModel.calculateProductListResultViewModel(data: tableViewData)
     
     footerView.resultsView.setViewModel(viewModel: resultViewModel)
     
@@ -179,12 +176,6 @@ extension ProductListInDinnerViewController:UITextFieldDelegate {
   // Обрабатываем изменения Порции в режиме ввода
   @objc private func didChangePortionTextField(textField: UITextField) {
 
-//    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
-//    guard let text = textField.text else {return}
-//
-
-//
-//    let portion: Int = (text as NSString).integerValue
     
     guard let (portion,indexPath) = getValueAndRowTextField(textField: textField) else {return}
     let cell = tableView.cellForRow(at: indexPath) as! MainDinnerProductListCell
@@ -268,7 +259,12 @@ extension ProductListInDinnerViewController {
     let deleteAction = UIContextualAction(style: .destructive, title: "Удалить продукт") { (action, view, succsess) in
       
       let productViewModel = self.tableViewData[indexPath.row]
-      let dummyRealmProduct = ProductRealm(name: productViewModel.name, category: "", carbo: productViewModel.carboIn100Grm, isFavorits: false)
+      let dummyRealmProduct = ProductRealm(
+        name: productViewModel.name,
+        category: "",
+        carboIn100Grm: productViewModel.carboIn100Grm,
+        isFavorits: false
+      )
       
       
       print("Удаление продукта")

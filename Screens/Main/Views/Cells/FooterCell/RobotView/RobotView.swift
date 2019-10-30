@@ -66,12 +66,14 @@ class RobotView: UIView {
   
   
   func handleTap() {
-    print("Attempting to animate stroke")
+    
     
     let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
     
     shapeLayer.strokeEnd += robotProgress
+    
     print(shapeLayer.strokeEnd)
+    
     if shapeLayer.strokeEnd > 0.95 {
       changeImageView()
     }
@@ -82,6 +84,7 @@ class RobotView: UIView {
     
     shapeLayer.add(basicAnimation, forKey: "urSoBasic")
   }
+  
   
   private func changeImageView() {
     UIView.animate(withDuration: 0.5) {

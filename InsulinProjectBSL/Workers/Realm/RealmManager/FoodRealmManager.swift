@@ -147,7 +147,12 @@ extension FoodRealmManager {
     let isFavorits = viewModel.isFavorit
     let massa = Int(viewModel.portion)!
     
-    return ProductRealm.init(name: name, category: category, carbo: carbo, isFavorits: isFavorits, portion:massa)
+    return ProductRealm.init(
+      name: name, category: category,
+      carboIn100Grm: carbo,
+      isFavorits: isFavorits,
+      portion:massa
+    )
   }
   
   private func addProduct(product: ProductRealm) {
@@ -189,7 +194,7 @@ extension FoodRealmManager {
       try realm.write {
         
         product.name = viewModel.name
-        product.carbo  = Int(viewModel.carbo)!
+        product.carboIn100grm  = Int(viewModel.carbo)!
         product.category  = viewModel.category
         product.isFavorits = viewModel.isFavorit
         product.portion =  Int(viewModel.portion)!

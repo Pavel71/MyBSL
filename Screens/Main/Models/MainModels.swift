@@ -40,6 +40,8 @@ enum Main {
         
         // Save View Model In Real // По факту нам нужен только Dinner
         case saveViewModel(viewModel: MainViewModel)
+        // Predict Insulin
+        case predictInsulinForProducts
       }
     }
     
@@ -72,7 +74,10 @@ enum Main {
         case deleteProductFromDinner(products: [ProductRealm])
         
         // After Save ViewModel In Realm
-        case doAfterSaveDinnerInRealm
+//        case doAfterSaveDinnerInRealm(realmData: [DinnerRealm])
+        
+        // PredictInsulinForProducts
+        case predictInsulinForProducts
         
       }
     }

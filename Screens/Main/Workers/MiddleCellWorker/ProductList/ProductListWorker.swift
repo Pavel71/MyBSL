@@ -30,7 +30,7 @@ class ProductListWorker {
   }
   // Get Product List View Model
   static private func getProductListViewModel(product:ProductRealm) -> ProductListViewModel {
-    let productListViewModel = ProductListViewModel(insulinValue: product.insulin, isFavorit: product.isFavorits, carboIn100Grm: product.carbo, category: product.category, name: product.name, portion: product.portion)
+    let productListViewModel = ProductListViewModel(insulinValue: product.insulin, isFavorit: product.isFavorits, carboIn100Grm: product.carboIn100grm, category: product.category, name: product.name, portion: product.portion)
     return productListViewModel
   }
   

@@ -70,7 +70,7 @@ class FoodTableViewPresenterWorker {
   // Cell View Model
   private static func cellViewModel(product: ProductRealm) -> FoodViewModel.Cell {
     
-    let carboString = "\(product.carbo)"
+    let carboString = "\(product.carboIn100grm)"
     let massaString = "\(product.portion)"
     
     return FoodViewModel.Cell.init(id: product.id, name: product.name, category: product.category, isFavorit: product.isFavorits, carbo: carboString, portion: massaString)

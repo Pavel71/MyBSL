@@ -15,13 +15,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   let items: [ProductRealm] = [
 
-    ProductRealm(name: "Яблоко", category: "Фрукты и овощи", carbo: 11, isFavorits: false),
-    ProductRealm(name: "Молоко", category: "Молочные продукты", carbo: 4, isFavorits: false),
-    ProductRealm(name: "Творог", category: "Молочные продукты", carbo: 3, isFavorits: false),
-    ProductRealm(name: "Апельсин", category: "Фрукты и овощи", carbo: 8, isFavorits: false),
-    ProductRealm(name: "Абрикос", category: "Фрукты и овощи", carbo: 11, isFavorits: false),
-    ProductRealm(name: "Мандарин", category: "Печенья", carbo: 11, isFavorits: false),
-    ProductRealm(name: "Бананы", category: "Сладости", carbo: 11, isFavorits: false),
+    ProductRealm(name: "Яблоко", category: "Фрукты и овощи", carboIn100Grm: 11, isFavorits: false),
+    ProductRealm(name: "Молоко", category: "Молочные продукты", carboIn100Grm: 4, isFavorits: false),
+    ProductRealm(name: "Творог", category: "Молочные продукты", carboIn100Grm: 3, isFavorits: false),
+    ProductRealm(name: "Апельсин", category: "Фрукты и овощи", carboIn100Grm: 8, isFavorits: false),
+    ProductRealm(name: "Абрикос", category: "Фрукты и овощи", carboIn100Grm: 11, isFavorits: false),
+    ProductRealm(name: "Мандарин", category: "Печенья", carboIn100Grm: 11, isFavorits: false),
+    ProductRealm(name: "Бананы", category: "Сладости", carboIn100Grm: 11, isFavorits: false),
 
   ]
   
@@ -42,15 +42,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     let meals1 = MealRealm(name: "Гречка с грибами",typeMeal: "Завтрак")
-    meals1.listProduct.append(ProductRealm(name: "Грибы", category:"Грибы", carbo: 2, isFavorits: false))
-    meals1.listProduct.append(ProductRealm(name: "Гречка", category:"Крупы", carbo: 65, isFavorits: false))
-    meals1.listProduct.append(ProductRealm(name: "Салат овощной", category:"Овощи", carbo: 2, isFavorits: false))
+    meals1.listProduct.append(ProductRealm(name: "Грибы", category:"Грибы", carboIn100Grm: 2, isFavorits: false))
+    meals1.listProduct.append(ProductRealm(name: "Гречка", category:"Крупы", carboIn100Grm: 65, isFavorits: false))
+    meals1.listProduct.append(ProductRealm(name: "Салат овощной", category:"Овощи", carboIn100Grm: 2, isFavorits: false))
     meals.append(meals1)
     let meals2 = MealRealm(name: "Омлет с горошком", typeMeal: "Обед")
-    meals2.listProduct.append(ProductRealm(name: "Омлет", category:"Молочные продукты", carbo: 2, isFavorits: false))
-    meals2.listProduct.append(ProductRealm(name: "Зеленый горошек", category:"Консервый", carbo: 7, isFavorits: false))
-    meals2.listProduct.append(ProductRealm(name: "Сыр", category:"Молочные продукты", carbo: 2, isFavorits: false))
-    meals2.listProduct.append(ProductRealm(name: "Сыр Капченный", category:"Молочные продукты", carbo: 2, isFavorits: false))
+    meals2.listProduct.append(ProductRealm(name: "Омлет", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
+    meals2.listProduct.append(ProductRealm(name: "Зеленый горошек", category:"Консервый", carboIn100Grm: 7, isFavorits: false))
+    meals2.listProduct.append(ProductRealm(name: "Сыр", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
+    meals2.listProduct.append(ProductRealm(name: "Сыр Капченный", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
     meals.append(meals2)
     
     breakFast.mealsData.append(meals1)
@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     initializeRealm()
     initMeals()
     
-    initDinners()
+//    initDinners()
     
     root()
     

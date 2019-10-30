@@ -81,7 +81,7 @@ class BaseProductListCell: UITableViewCell {
     
     let portionString = String(viewModel.portion)
     let carboInPortion = String(viewModel.carboInPortion)
-    
+
     nameLabel.text = viewModel.name
     portionTextField.text = portionString
     carboInPortionLabel.text = carboInPortion

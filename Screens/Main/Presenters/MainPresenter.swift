@@ -29,39 +29,41 @@ class MainPresenter: MainPresentationLogic {
   func presentData(response: Main.Model.Response.ResponseType) {
     
     
-    switch response {
-    case .prepareViewModel(let realmData):
-      // Тут под вопросом может быть просто сразу отсюда брать но не важно
-//      mainViewModel = data
-
-      prepareMainViewModel(realmData:realmData)
-      
-      passViewModelInViewController()
-      
-    case .doAfterSaveDinnerInRealm:
-      
-      print("Do after Save")
-      // Нам здесь нужно добавить в модельку думми обед и начать его заполнять
-//      let dummyDinner = getDummyDinner()
-//
-//      mainViewModel.dinnerCollectionViewModel[0].isPreviosDinner = true
-//      mainViewModel.dinnerCollectionViewModel.insert(dummyDinner, at: 0)
-//
-//      passViewModelInViewController()
-    default:break
-    }
-    
+    workWithMLRequests(response: response)
+    prepareViewModel(response: response)
     updateMainViewModel(response: response)
   }
   
   
+  // MARK: Requests Predict Insulin Work With MLWorker
+  private func workWithMLRequests(response: Main.Model.Response.ResponseType) {
+    
+    switch response {
+    case .predictInsulinForProducts:
+      print("Predict Insulin Presenter")
+      getPredictInsulin()
+    default:break
+    }
+    
+  }
+  
+  // MARK: Requests PrepareViewMdoel Form RealmData
+  
+  private func prepareViewModel(response: Main.Model.Response.ResponseType) {
+    
+    switch response {
+       case .prepareViewModel(let realmData):
 
+         prepareMainViewModel(realmData:realmData)
+         
+         passViewModelInViewController()
+
+
+       default:break
+       }
+  }
   
-  // Прикол в том что мы будем разрешать пользователю редактировать предыдущий обед!
-  // Для этого нужно учесть еще несколько полей для обеда кстати!
-  //  1. Фактическая дозировка инсулина
-  //  2. Правельная дозировка инсулина
-  
+  // MARK: Requests Update ViewModel
   private func updateMainViewModel(response: Main.Model.Response.ResponseType) {
     
     switch response {
@@ -79,7 +81,7 @@ class MainPresenter: MainPresentationLogic {
       
     case .setInsulinInProduct(let insulin,let rowProduct,let isPreviosDinner):
       
-      let dinnerNumber = isPreviosDinner ? indexNewDinner - 1:indexNewDinner
+      let dinnerNumber = isPreviosDinner ? indexNewDinner - 1 : indexNewDinner
       
       mainViewModel.dinnerCollectionViewModel[dinnerNumber].productListInDinnerViewModel.productsData[rowProduct].insulinValue = insulin
       
@@ -90,7 +92,7 @@ class MainPresenter: MainPresentationLogic {
     case .setPortionInProduct(let portion,let rowProduct):
       
 //      guard let portionFloat = Float(portion) else {return}
-      
+        
       mainViewModel.dinnerCollectionViewModel[indexNewDinner].productListInDinnerViewModel.productsData[rowProduct].portion = portion
       
       calculateResultViewModel()
@@ -103,15 +105,8 @@ class MainPresenter: MainPresentationLogic {
       passViewModelInViewController()
       
     case .setShugarBeforeValueAndTime(let time,let shugar):
-      // Set Shugar Before
-      mainViewModel.dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.shugarBeforeValue = shugar
       
-      // Set Time Shugar Set
-      mainViewModel.dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.timeBefore = time
-        
-      // Set Should Correct Insulin By SHugar
-      mainViewModel.dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.isNeedInsulinCorrectByShugar = ShugarCorrectorWorker.shared.getIsShowCorrectTextField(shugarValue: shugar)
-      
+      workWithShugarBefore(time: time,shugar:shugar)
       passViewModelInViewController()
       
     case .setCorrectionInsulinByShugar(let correction):
@@ -131,14 +126,25 @@ class MainPresenter: MainPresentationLogic {
     
     
   }
-  
-  
+
   private func passViewModelInViewController() {
     // Нужно поставить здесь обновление резулт view
     viewController?.displayData(viewModel: .setViewModel(viewModel: mainViewModel))
   }
 
   
+}
+
+// MARK: Work With ML
+
+extension MainPresenter {
+  
+  
+  private func getPredictInsulin() {
+    
+    MLWorker.getPredictInsulin(data: mainViewModel.dinnerCollectionViewModel)
+
+  }
 }
 
 // MARK: Get DummyDinner
@@ -196,9 +202,8 @@ extension MainPresenter {
     // Во ттакой план на эту функцию!
     // Так как я буду Сортирвоать по дате то мне нужно брать самый свежий
     
-    guard let lastDinner = realmData.first else {return}
-    
-    
+    guard let lastDinner = realmData.last else {return}
+
     let topViewModel = prepareTopViewModel(lastDinner: lastDinner)
     let middleViewModel = prepareMiddleViewModel(dinners: realmData)
     
@@ -216,9 +221,10 @@ extension MainPresenter {
   
   // TopViewModel
   private func prepareTopViewModel(lastDinner: DinnerRealm) -> MainHeaderViewModel {
-
+    HeaderCellWorker.shared.setLastInsulinIngections(insulin: lastDinner.totalInsulin)
     // Этот класс будет отвечать за всю логику по работе с запасом инсулина
     let supplyInsulin = HeaderCellWorker.shared.getSupplyValue()
+    
     
     return MainHeaderViewModel(lastInjectionValue: lastDinner.totalInsulin, lastTimeInjectionValue: lastDinner.timeShugarBefore, lastShugarValue: lastDinner.shugarBefore, insulinSupplyInPanValue: supplyInsulin)
   }
@@ -270,17 +276,28 @@ extension MainPresenter {
     
     let resultsViewModel = ProductListResultWorker.shared.getRusultViewModelByProducts(data: productsData)
     
-    return ProductListInDinnerViewModel(resultsViewModel: resultsViewModel, productsData: productsData, isPreviosDinner: dinner.isPreviosDinner)
+    return ProductListInDinnerViewModel(
+      resultsViewModel: resultsViewModel,
+      productsData: productsData,
+      isPreviosDinner: dinner.isPreviosDinner
+    )
   }
   
   private func createProductListViewModel(product:ProductRealm) -> ProductListViewModel {
     
-    return ProductListViewModel(insulinValue: product.insulin, isFavorit: product.isFavorits, carboIn100Grm: product.carbo, category: product.category, name: product.name, portion: product.portion)
+    return ProductListViewModel(
+      insulinValue: product.insulin,
+      isFavorit: product.isFavorits,
+      carboIn100Grm: product.carboIn100grm,
+      category: product.category,
+      name: product.name,
+      portion: product.portion
+    )
   }
   
 }
 
-// Add Product in Dinner or Delete Product
+// Add Product in Dinner or Delete Product ViewModel
 
 extension MainPresenter {
   
@@ -313,7 +330,7 @@ extension MainPresenter {
 }
 
 
-// MARK: Worker With ProductList In Dinner
+// MARK: Calculate Results ProductList In Dinner
 
 // When add New Product or delete we should calculate Again
 
@@ -358,5 +375,31 @@ extension MainPresenter {
 
 extension MainPresenter {
   
+  // Work With Shugar Before
+  
+  private func workWithShugarBefore(time: Date,shugar:Float) {
+    
+    // Set Shugar Before
+    mainViewModel.dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.shugarBeforeValue = shugar
+    
+    // Set Time Shugar Set
+    mainViewModel.dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.timeBefore = time
+      
+    // Set Should Correct Insulin By SHugar
+    mainViewModel.dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.isNeedInsulinCorrectByShugar = ShugarCorrectorWorker.shared.getIsShowCorrectTextField(shugarValue: shugar)
+    
+    // Set Shugar After in PreviosDinner
+    
+    if indexNewDinner > 0 {
+      // Херово что я делаю это в разных местах если честно!
+      // Этот запрос просто так не прокатит! Нужно лезть в реалм и менять там в предыдущем обеде
+      
+      
+      
+      print("Set Shugar After",shugar)
+      mainViewModel.dinnerCollectionViewModel[indexNewDinner - 1].shugarTopViewModel.shugarAfterValue = shugar
+    }
+    
+  }
   
 }

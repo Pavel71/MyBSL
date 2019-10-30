@@ -10,14 +10,7 @@ import UIKit
 
 class CalculateValueTextField {
   
-  // Carbo in Portion
-  
-//  static func calculateCarboInPortion(carboIn100grm: Int, portionSize: Int) -> Int {
-//    let carbo100grm = Float(carboIn100grm)
-//    let portion = Float(portionSize)
-//    return Int(carbo100grm * (portion / 100))
-//  }
-  
+
   static func calculateSumInsulin(insulin: Float,indexPath: IndexPath, tableViewData: inout [ProductListViewModel]) -> Float {
     
     tableViewData[indexPath.row].insulinValue = insulin
