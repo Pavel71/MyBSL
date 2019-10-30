@@ -40,8 +40,24 @@ class MainPresenter: MainPresentationLogic {
     
     switch response {
     case .predictInsulinForProducts:
+      
+      // Пока накидаю вывод так! Нет времени
+      
       print("Predict Insulin Presenter")
-      getPredictInsulin()
+      let insulins = getPredictInsulin()
+      
+      for (index,insulin) in insulins.enumerated() {
+        
+        mainViewModel.dinnerCollectionViewModel[indexNewDinner].productListInDinnerViewModel.productsData[index].insulinValue = Float((insulin * 100).rounded() / 100)
+        
+      }
+      
+      calculateResultViewModel()
+      calculateTotalInsulin()
+      passViewModelInViewController()
+      
+      
+      
     default:break
     }
     
@@ -140,9 +156,9 @@ class MainPresenter: MainPresentationLogic {
 extension MainPresenter {
   
   
-  private func getPredictInsulin() {
+  private func getPredictInsulin() -> [Double] {
     
-    MLWorker.getPredictInsulin(data: mainViewModel.dinnerCollectionViewModel)
+    return MLWorker.getPredictInsulin(data: mainViewModel.dinnerCollectionViewModel)
 
   }
 }

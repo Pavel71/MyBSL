@@ -194,8 +194,7 @@ class ShugarSetView: UIView {
   }
   
   private func workWithShugarAfter(viewModel:ShugarTopViewModelable) {
-    
-    print("Shugar After Value",viewModel.shugarAfterValue == 0,!viewModel.isPreviosDinner)
+
     stackViewShugarAfter.isHidden = !viewModel.isPreviosDinner
     shugarAfterValueTextField.text =  viewModel.shugarAfterValue == 0 ? "" : String(viewModel.shugarAfterValue)
   }

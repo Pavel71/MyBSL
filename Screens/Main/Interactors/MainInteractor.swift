@@ -52,8 +52,6 @@ class MainInteractor: MainBusinessLogic {
       
       let realmData = dinnerRealmManager.fetchAllData()
       
-      print(realmData)
-      
       // Пока вместо Реалма статичные данны
       presenter?.presentData(response: .prepareViewModel(realmData: realmData))
       
