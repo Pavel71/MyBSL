@@ -1,4 +1,6 @@
 ${PODS_ROOT}/Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL-frameworks.sh
+${BUILT_PRODUCTS_DIR}/MachineLearningKit/MachineLearningKit.framework
 ${BUILT_PRODUCTS_DIR}/ProgressHUD/ProgressHUD.framework
 ${BUILT_PRODUCTS_DIR}/Realm/Realm.framework
 ${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework
+${BUILT_PRODUCTS_DIR}/Upsurge/Upsurge.framework

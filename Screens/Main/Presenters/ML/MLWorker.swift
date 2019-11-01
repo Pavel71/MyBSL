@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreML
+import MachineLearningKit
 
 
 
@@ -31,15 +32,43 @@ class MLWorker {
     
     print(testData)
     
-    let dataCarbo = testData.productListInDinnerViewModel.productsData.map{Double($0.carboInPortion)}
+    let test = testData.productListInDinnerViewModel.productsData.map{Double($0.carboInPortion)}
     
-    print(dataCarbo)
+    
+    
+    
+//    let dataManager = MLDataManager
+//    dataManager
+//    NeuralNetwork
+    
+    
+    // Simple linear Model
+    
+    let train = getTrainDataCarbo(data: data)
+    let target = getTargetDataInsulin(data: data)
+    
+    print("Train and Targt",train,target,train.count,target.count)
+    
+    let simpleLiniear =  SimpleLinearRegression()
+    let weights = try! simpleLiniear.train(train, output: target)
+    
+    print("weights",weights)
+    let predict = simpleLiniear.predict(weights.0, intercept: weights.1, inputValue: Float(test[0]))
+    print("Simple Linear Predict",predict)
+    
+    // Это ошибка но уже видно что работать будет просто превосходно это то что мне нужно! Я могу на бэке обучать веса и сохранять их для модели потом в момент предикта просто их подставлять и через 2 обеда опять обновлять веса-это все можно будет хранить в юзердефолтсах!
+    
+    let rss = simpleLiniear.RSS(train, output: target, slope: weights.0, intercept: weights.1)
+    print("RSS",rss)
+    
+    
+    // XGB
     
     let xgbModel = XGBModel()
-    
-    for carbo in dataCarbo {
+
+    for carbo in test {
       let pred = try? xgbModel.prediction(f0: carbo)
-      print(pred?.target)
+      print("XGB predict",pred?.target)
     }
     
     
@@ -98,6 +127,28 @@ class MLWorker {
     
     
     
+  }
+  
+  // MARK: Prepare Data To Model
+  
+  private static func getTargetDataInsulin(data:[DinnerViewModel]) -> [Float] {
+    let target = data.dropLast().flatMap(getInsulinArray)
+       return target
+  }
+  
+  private static func getInsulinArray(dinner:DinnerViewModel) -> [Float] {
+    return dinner.productListInDinnerViewModel.productsData.map{Float($0.insulinValue!)}
+  }
+  
+  // Принимаем все данные которые есть -> Возвращаем Массив с Углеводами
+  private static func getTrainDataCarbo(data:[DinnerViewModel]) -> [Float] {
+    let train = data.dropLast().flatMap(getCarboArray)
+    return train
+  }
+  
+  private static func getCarboArray(dinner:DinnerViewModel) -> [Float] {
+    return dinner.productListInDinnerViewModel.productsData.map{Float($0.carboInPortion)}
+
   }
   
   

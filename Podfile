@@ -6,7 +6,8 @@ target 'InsulinProjectBSL' do
   use_frameworks!
 
   # Pods for InsulinProjectBSL
-  pod "RealmSwift"
+  pod 'RealmSwift'
   pod 'ProgressHUD'
+  pod 'MachineLearningKit'
 
 end
