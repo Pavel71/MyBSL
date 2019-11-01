@@ -20,6 +20,7 @@ class MLWorker {
   // Нам нужно 1вое это trainData
   // нам нужно testData
   
+  @available(iOS 13.0, *)
   static func getPredictInsulin(data:[DinnerViewModel]) -> [Double] {
     
     // Пока валдиацию не делаю из - за нехватки времени
@@ -30,11 +31,48 @@ class MLWorker {
     
     print(testData)
     
-    let data = testData.productListInDinnerViewModel.productsData.map{Double($0.carboInPortion)}
+    let dataCarbo = testData.productListInDinnerViewModel.productsData.map{Double($0.carboInPortion)}
+    
+    print(dataCarbo)
+    
+    let xgbModel = XGBModel()
+    
+    for carbo in dataCarbo {
+      let pred = try? xgbModel.prediction(f0: carbo)
+      print(pred?.target)
+    }
     
     
+    
+//    /coremlc: compiler error:  Encountered an error while compiling a neural network model: Espresso exception: "Unsupported configuration": inner product needs 2 inputs for gradients; given 1
+    
+//    if #available(iOS 13.0, *) {
+//      print("Multy Array",try? MLMultiArray(dataCarbo))
+//    }
+    //Failure verifying inputs.
     // Модель!
-    let model = InsulinModelTree()
+    if #available(iOS 13.0, *) {
+//      let model = SimpleInsulinUpdatable()
+//      let prediction = try? model.prediction(carbo: MLMultiArray(dataCarbo))
+//      print(prediction?.insulin)
+//      let prediction = try? model.prediction(features: MLMultiArray(dataCarbo))
+//      print(prediction)
+//        var predictionsInsulin:[Double] = []
+//
+//          for productCarbo in data {
+//
+//            print(productCarbo)
+//
+//            let prediction = try? model.prediction(carbo: MLMultiArray(data))
+//            guard let predInsulin = prediction?.Insulin else {return []}
+//            print(predInsulin)
+//            predictionsInsulin.append(predInsulin)
+//          }
+//          print("Prediction",predictionsInsulin)
+      
+    } else {
+      // Fallback on earlier versions
+    }
     
     // Нам нужно ее сначал обновить
     
@@ -43,16 +81,16 @@ class MLWorker {
     
     var predictionsInsulin:[Double] = []
     
-    for productCarbo in data {
-      
-      print(productCarbo)
-      
-      let prediction = try? model.prediction(Carbo: productCarbo)
-      guard let predInsulin = prediction?.Insulin else {return []}
-      print(predInsulin)
-      predictionsInsulin.append(predInsulin)
-    }
-    print("Prediction",predictionsInsulin)
+//    for productCarbo in data {
+//
+//      print(productCarbo)
+//
+////      let prediction = try? model.prediction(Carbo: productCarbo)
+////      guard let predInsulin = prediction?.Insulin else {return []}
+////      print(predInsulin)
+////      predictionsInsulin.append(predInsulin)
+//    }
+//    print("Prediction",predictionsInsulin)
     
     
     
@@ -63,6 +101,8 @@ class MLWorker {
   }
   
   
+  
+  
   private func updateModel() {
     
     // need
@@ -70,10 +110,10 @@ class MLWorker {
     // configuration
     //
     
-    let model = InsulinModelTree()
-    
-    let bundle = Bundle(for: InsulinModelTree.self)
-    let updateModelUrl = bundle.url(forResource: "InsulinModelTree", withExtension: ".mlmodel")
+//    let model = InsulinModelTree()
+//
+//    let bundle = Bundle(for: InsulinModelTree.self)
+//    let updateModelUrl = bundle.url(forResource: "InsulinModelTree", withExtension: ".mlmodel")
     
     
     

@@ -23,7 +23,6 @@
 		05515CFF236840B300A298AA /* TotalInsulinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05515CFE236840B300A298AA /* TotalInsulinView.swift */; };
 		05515D0123687F2400A298AA /* SettingsWorkerForML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05515D0023687F2400A298AA /* SettingsWorkerForML.swift */; };
 		05515D0423699D0800A298AA /* MLWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05515D0323699D0800A298AA /* MLWorker.swift */; };
-		05515D0C2369CDDF00A298AA /* InsulinModelTree.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 05515D0B2369CDDF00A298AA /* InsulinModelTree.mlmodel */; };
 		055A3A332355EB490080628C /* MainMenuProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A3A322355EB490080628C /* MainMenuProductListViewController.swift */; };
 		055A3A382355EBDE0080628C /* MainMenuProductListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A3A372355EBDE0080628C /* MainMenuProductListCell.swift */; };
 		055A3A3A2355ECB40080628C /* BaseProductListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A3A392355ECB40080628C /* BaseProductListCell.swift */; };
@@ -40,6 +39,8 @@
 		057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */; };
 		057B9841234F5054002EAD68 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9840234F5054002EAD68 /* ContainerController.swift */; };
 		057B9848234F6B4C002EAD68 /* PointSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9847234F6B4C002EAD68 /* PointSearcher.swift */; };
+		058335D5236C49B80032486E /* XGBModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 058335D4236C49B80032486E /* XGBModel.mlmodel */; };
+		058335D7236C4DF70032486E /* SimpleInsulin.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 058335D6236C4DF70032486E /* SimpleInsulin.mlmodel */; };
 		05952A4F233BB0FD00EE996E /* BaseProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A4E233BB0FD00EE996E /* BaseProductList.swift */; };
 		05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A51233BB22B00EE996E /* ProductListProtocol.swift */; };
 		05952A58233BB51600EE996E /* ProductListInDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */; };
@@ -174,7 +175,6 @@
 		05515CFE236840B300A298AA /* TotalInsulinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalInsulinView.swift; sourceTree = "<group>"; };
 		05515D0023687F2400A298AA /* SettingsWorkerForML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWorkerForML.swift; sourceTree = "<group>"; };
 		05515D0323699D0800A298AA /* MLWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLWorker.swift; sourceTree = "<group>"; };
-		05515D0B2369CDDF00A298AA /* InsulinModelTree.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = InsulinModelTree.mlmodel; sourceTree = "<group>"; };
 		055A3A322355EB490080628C /* MainMenuProductListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuProductListViewController.swift; sourceTree = "<group>"; };
 		055A3A372355EBDE0080628C /* MainMenuProductListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuProductListCell.swift; sourceTree = "<group>"; };
 		055A3A392355ECB40080628C /* BaseProductListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductListCell.swift; sourceTree = "<group>"; };
@@ -191,6 +191,8 @@
 		057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMenuAnimator.swift; sourceTree = "<group>"; };
 		057B9840234F5054002EAD68 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		057B9847234F6B4C002EAD68 /* PointSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointSearcher.swift; sourceTree = "<group>"; };
+		058335D4236C49B80032486E /* XGBModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = XGBModel.mlmodel; sourceTree = "<group>"; };
+		058335D6236C4DF70032486E /* SimpleInsulin.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = SimpleInsulin.mlmodel; sourceTree = "<group>"; };
 		05952A4E233BB0FD00EE996E /* BaseProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductList.swift; sourceTree = "<group>"; };
 		05952A51233BB22B00EE996E /* ProductListProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListProtocol.swift; sourceTree = "<group>"; };
 		05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInDinnerViewController.swift; sourceTree = "<group>"; };
@@ -492,7 +494,8 @@
 		05515D0223699CF000A298AA /* ML */ = {
 			isa = PBXGroup;
 			children = (
-				05515D0B2369CDDF00A298AA /* InsulinModelTree.mlmodel */,
+				058335D6236C4DF70032486E /* SimpleInsulin.mlmodel */,
+				058335D4236C49B80032486E /* XGBModel.mlmodel */,
 				05515D0323699D0800A298AA /* MLWorker.swift */,
 			);
 			path = ML;
@@ -1852,6 +1855,7 @@
 				F1E78CCB230D336B00592AB8 /* MainViewController.swift in Sources */,
 				F13B35212318DED40020AD26 /* MealRealmManager.swift in Sources */,
 				0537370D234B256700411C46 /* DinnerData.swift in Sources */,
+				058335D7236C4DF70032486E /* SimpleInsulin.mlmodel in Sources */,
 				0509FD06233FCA9700B04B30 /* DinnerRealm.swift in Sources */,
 				F150DBF22317DD2300380AE0 /* MealRouter.swift in Sources */,
 				F1E78D09230D54F500592AB8 /* Aliases.swift in Sources */,
@@ -1862,6 +1866,7 @@
 				F1E78CD9230D338A00592AB8 /* SettingsModels.swift in Sources */,
 				053BAB52233B56D60080359B /* Validatable.swift in Sources */,
 				F150DBF52317DD2300380AE0 /* MealInteractor.swift in Sources */,
+				058335D5236C49B80032486E /* XGBModel.mlmodel in Sources */,
 				F150DBF02317DD2300380AE0 /* MealPresenter.swift in Sources */,
 				F1EC85A0233104EB00E14D33 /* MenuModel.swift in Sources */,
 				F1E78D1C230D683A00592AB8 /* Path.swift in Sources */,
@@ -1894,7 +1899,6 @@
 				05D806142348C9CF00C19764 /* MainMenuViewController.swift in Sources */,
 				05A4F1AC2339FB3600DFE4D7 /* MainTableViewFooterCell.swift in Sources */,
 				05A4F1A82339FB1C00DFE4D7 /* MainTableViewHeaderCell.swift in Sources */,
-				05515D0C2369CDDF00A298AA /* InsulinModelTree.mlmodel in Sources */,
 				05A4F1AA2339FB2900DFE4D7 /* MainTableViewMiddleCell.swift in Sources */,
 				05A4F1942338B82B00DFE4D7 /* NewFoodViewWorker.swift in Sources */,
 				F1E78D03230D549E00592AB8 /* FoodAnimator.swift in Sources */,
@@ -2010,7 +2014,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2065,7 +2069,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

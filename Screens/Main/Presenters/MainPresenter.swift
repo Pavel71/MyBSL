@@ -158,7 +158,11 @@ extension MainPresenter {
   
   private func getPredictInsulin() -> [Double] {
     
-    return MLWorker.getPredictInsulin(data: mainViewModel.dinnerCollectionViewModel)
+    if #available(iOS 13.0, *) {
+      return MLWorker.getPredictInsulin(data: mainViewModel.dinnerCollectionViewModel)
+    } else {
+      return []
+    }
 
   }
 }
