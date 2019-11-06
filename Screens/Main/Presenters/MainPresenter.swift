@@ -15,6 +15,7 @@ protocol MainPresentationLogic {
 class MainPresenter: MainPresentationLogic {
   
   weak var viewController: MainDisplayLogic?
+  var mlWorker = MLWorker()
   
   var indexNewDinner: Int  {
     return mainViewModel.dinnerCollectionViewModel.count - 1
@@ -158,11 +159,11 @@ extension MainPresenter {
   
   private func getPredictInsulin() -> [Double] {
     
-    if #available(iOS 13.0, *) {
-      return MLWorker.getPredictInsulin(data: mainViewModel.dinnerCollectionViewModel)
-    } else {
-      return []
-    }
+    
+    // Data будет загруженна из реалма
+    
+    return mlWorker.getPredictInsulin(data: mainViewModel.dinnerCollectionViewModel)
+    
 
   }
 }
