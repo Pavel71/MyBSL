@@ -76,3 +76,32 @@ extension DinnerRealmManager {
   }
   
 }
+
+// MARK: ML Requests
+
+extension DinnerRealmManager {
+  
+  
+  func getSimpleTrainData() -> [Float]  {
+    
+    // Я пока шо то не пойму как взять нужную колонку отсюда! Нам также потребуется и таргет есче
+    
+    let realm = provider.realm
+    
+    let carbo = realm.objects(DinnerRealm.self).filter("isCompensassionSucces == %@",true).flatMap{$0.listProduct.map{$0.carboInPortion}}
+    
+    return Array(carbo)
+  }
+  
+  func getTargretData() -> [Float]  {
+    
+    // Я пока шо то не пойму как взять нужную колонку отсюда! Нам также потребуется и таргет есче
+    
+    let realm = provider.realm
+    
+    let carbo = realm.objects(DinnerRealm.self).filter("isCompensassionSucces == %@",true).flatMap{$0.listProduct.map{$0.insulin}}
+    
+    return Array(carbo)
+  }
+  
+}

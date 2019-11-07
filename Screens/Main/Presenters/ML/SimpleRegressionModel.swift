@@ -13,9 +13,10 @@ import Upsurge
 
 class SimpleRegresiionModel {
   
+  let linearModel = SimpleLinearRegression()
   
-  
-  
+  // Потом когда веса установленные можно сохранять их в юзерДефолтс
+  var weights:(Float,Float) = (0,0)
   
 }
 
@@ -24,24 +25,32 @@ class SimpleRegresiionModel {
 
 extension SimpleRegresiionModel {
   
-  static  func getPredictFromSimpleModel(train:[Float],target:[Float],test:[Float]) {
-     let simpleLiniear =  SimpleLinearRegression()
+  // Predict
+  func getPredict(test:[Float]) -> [Float] {
+    
+    return test.map(predict)
+    
+  }
+  
+  private func predict(test: Float) -> Float {
+    return linearModel.predict(weights.0, intercept: weights.1, inputValue: test)
+  }
+  
+ 
+}
+
+// MARK: Train
+
+extension SimpleRegresiionModel {
+  
+  func trainModelAndSetNewWeights(train:[Float],target:[Float]){
      
-     // Можно поработать с стохастическим спуском
-     let weights = try! simpleLiniear.train(train, output: target)
+     weights = try! linearModel.train(train, output: target)
+    
+    // Посмотреть на ошибку!
+    let rss = linearModel.RSS(train, output: target, slope: weights.0, intercept: weights.1)
+    print("Rss",rss)
      
-     print("weights",weights)
-     
-     
-     for pred in test {
-       let predict = simpleLiniear.predict(weights.0, intercept: weights.1, inputValue: pred)
-       print("Simple Linear Predict",predict)
-     }
-     
-     
-     
-     let rss = simpleLiniear.RSS(train, output: target, slope: weights.0, intercept: weights.1)
-     print("RSS Simple",rss)
    }
 }
 

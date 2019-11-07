@@ -17,6 +17,7 @@ class ShugarCorrectorWorker {
   private var higherShuagrLevel: Float
   
   var isNeedCorrectShugarByInsulin: Bool = false
+  // Этот бул для того надо ли показать текстфилд или нет
   private var isUserHaveToSetData: Bool = true
   
   var correctionInsulinByShugar: Float? 

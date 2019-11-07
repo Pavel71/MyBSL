@@ -698,14 +698,29 @@ extension MainViewController {
     middleCell.dinnerCollectionViewController.scrollCollectionToheRight()
   }
   
-  // Predict Insulin
+ 
   
-  private func predictInsulinByMLModel() {
-    
-    interactor?.makeRequest(request: .predictInsulinForProducts)
+  
+}
+
+// MARK: ML Requests
+extension MainViewController {
+  
+  // TrainModel
+  
+  // Теперь останется решить когда дергать этот метод и наши веса будут обновлятся после чего можно делать предсказания
+  
+  // В целом если я буду отбирать обеды по свойство compansasion то можно просто взять цикл каждые 2 обеда обновылять весса! Или сделать что каждый новый добавленный обед будет обновлять весса!
+  
+  private func trainModel() {
+    interactor?.makeRequest(request: .trainMLmodel)
   }
   
-  
+  // Predict Insulin
+   
+   private func predictInsulinByMLModel() {
+     interactor?.makeRequest(request: .predictInsulinForProducts)
+   }
 }
 
 

@@ -41,23 +41,25 @@ class MainPresenter: MainPresentationLogic {
     
     switch response {
     case .predictInsulinForProducts:
-      
-      // Пока накидаю вывод так! Нет времени
-      
-      print("Predict Insulin Presenter")
+
       let insulins = getPredictInsulin()
       
+      // Update MainViewModel
       for (index,insulin) in insulins.enumerated() {
         
-        mainViewModel.dinnerCollectionViewModel[indexNewDinner].productListInDinnerViewModel.productsData[index].insulinValue = Float((insulin * 100).rounded() / 100)
+        let insulin = (insulin * 100).rounded() / 100
+        updateInsulinFields(rowProduct: index, insulin: insulin, dinnerNumber: indexNewDinner)
+//        mainViewModel.dinnerCollectionViewModel[indexNewDinner].productListInDinnerViewModel.productsData[index].insulinValue = (insulin * 100).rounded() / 100
         
       }
-      
+
       calculateResultViewModel()
       calculateTotalInsulin()
       passViewModelInViewController()
       
       
+    case .trainMLmodel(let train,let target):
+      trainMLmodel(train: train, target: target)
       
     default:break
     }
@@ -100,10 +102,11 @@ class MainPresenter: MainPresentationLogic {
       
       let dinnerNumber = isPreviosDinner ? indexNewDinner - 1 : indexNewDinner
       
-      mainViewModel.dinnerCollectionViewModel[dinnerNumber].productListInDinnerViewModel.productsData[rowProduct].insulinValue = insulin
-      
+      updateInsulinFields(rowProduct: rowProduct, insulin: insulin, dinnerNumber: dinnerNumber)
+
       calculateResultViewModel()
       calculateTotalInsulin()
+      
       passViewModelInViewController()
       
     case .setPortionInProduct(let portion,let rowProduct):
@@ -156,14 +159,21 @@ class MainPresenter: MainPresentationLogic {
 
 extension MainPresenter {
   
+  // Train
+  private func trainMLmodel(train: [Float],target:[Float]) {
+    mlWorker.trainModelAndSetWeights(trainData: train, target: target)
+  }
   
-  private func getPredictInsulin() -> [Double] {
+  // Predict
+  private func getPredictInsulin() -> [Float] {
     
+    // Нужны отдельные метода на поулчение весов и на предсказание!
     
     // Data будет загруженна из реалма
+    guard let testDinner = mainViewModel.dinnerCollectionViewModel.last else {return []}
+    let testProduct = testDinner.productListInDinnerViewModel.productsData.map{Float($0.carboInPortion)}
     
-    return mlWorker.getPredictInsulin(data: mainViewModel.dinnerCollectionViewModel)
-    
+    return mlWorker.getPredictInsulinTest(testData: testProduct)
 
   }
 }
@@ -348,6 +358,14 @@ extension MainPresenter {
     calculateTotalInsulin()
   }
   
+  // Update InsulinFields
+  
+  private func updateInsulinFields(rowProduct:Int,insulin: Float,dinnerNumber:Int) {
+    
+    mainViewModel.dinnerCollectionViewModel[dinnerNumber].productListInDinnerViewModel.productsData[rowProduct].insulinValue = insulin
+    
+  }
+  
 }
 
 
@@ -371,9 +389,7 @@ extension MainPresenter {
   
   // May i'll create footer Worker Class
   private func calculateTotalInsulin() {
-    
-    
-    
+
     let sumInsulinByProduct = getNewDinnerViewModel().productListInDinnerViewModel.resultsViewModel.sumInsulinValue
     let correctionInsulin = getNewDinnerViewModel().shugarTopViewModel.correctInsulinByShugar
     let totalInsulin = correctionInsulin + (sumInsulinByProduct as NSString).floatValue

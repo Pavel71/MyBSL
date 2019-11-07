@@ -35,9 +35,19 @@ class MainInteractor: MainBusinessLogic {
   private func workWithML(request: Main.Model.Request.RequestType) {
     // Пока просто прокидываю в презентер
     switch request {
-    case .predictInsulinForProducts:
-      presenter?.presentData(response: .predictInsulinForProducts)
-    default:break
+      case .predictInsulinForProducts:
+        
+        // Идет Запрос на предсказание инсулина
+        presenter?.presentData(response: .predictInsulinForProducts)
+      
+      // Нужно решить как определять когда обучать модель опять! Это запрос должен идти от контроллера
+    case .trainMLmodel:
+      
+      let train = dinnerRealmManager.getSimpleTrainData()
+      let target = dinnerRealmManager.getTargretData()
+         
+      presenter?.presentData(response: .trainMLmodel(train: train, target: target))
+      default:break
     }
   }
   
@@ -65,7 +75,13 @@ class MainInteractor: MainBusinessLogic {
       dinnerRealmManager.saveDinner(dinner: dinnerRealm)
       
       let realmData = dinnerRealmManager.fetchAllData()
-
+      
+      
+      // Нужно запустить на бэкграундном потоке эту задачу!
+      
+      // Таким образом при каждом сохранение обеда будут обновлятся веса!
+      trainMlModelAsyncBackground()
+      
       presenter?.presentData(response: .prepareViewModel(realmData: realmData))
       
 //      presenter?.presentData(response: .doAfterSaveDinnerInRealm(realmData: realmData))
@@ -74,6 +90,20 @@ class MainInteractor: MainBusinessLogic {
       
     default: break
     }
+    
+    
+  }
+  
+  func trainMlModelAsyncBackground() {
+    
+    DispatchQueue.global().async {
+      let train = self.dinnerRealmManager.getSimpleTrainData()
+      let target = self.dinnerRealmManager.getTargretData()
+                   
+      self.presenter?.presentData(response: .trainMLmodel(train: train, target: target))
+    }
+   
+    
   }
   
   // MARK: Work with ViewModel

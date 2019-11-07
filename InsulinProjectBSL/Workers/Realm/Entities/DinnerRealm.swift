@@ -23,7 +23,12 @@ import RealmSwift
   dynamic var id: String = UUID().uuidString
   dynamic var isPreviosDinner: Bool = true
   dynamic var isNeedCorrectInsulinByShugar: Bool = false
+  
   dynamic var timeCreateDinner: Date?
+  
+  // ML Property
+  dynamic var isCompensassionSucces: Bool = true
+  
 
   // Top
   dynamic var shugarBefore: Float = 0
