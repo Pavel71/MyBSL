@@ -30,7 +30,7 @@ class MainInteractor: MainBusinessLogic {
     
   }
   
-  // MARK: Predict Inuslin
+  // MARK: ML Requests Predict Inuslin
   
   private func workWithML(request: Main.Model.Request.RequestType) {
     // Пока просто прокидываю в презентер
@@ -40,13 +40,6 @@ class MainInteractor: MainBusinessLogic {
         // Идет Запрос на предсказание инсулина
         presenter?.presentData(response: .predictInsulinForProducts)
       
-      // Нужно решить как определять когда обучать модель опять! Это запрос должен идти от контроллера
-    case .trainMLmodel:
-      
-      let train = dinnerRealmManager.getSimpleTrainData()
-      let target = dinnerRealmManager.getTargretData()
-         
-      presenter?.presentData(response: .trainMLmodel(train: train, target: target))
       default:break
     }
   }
@@ -94,17 +87,7 @@ class MainInteractor: MainBusinessLogic {
     
   }
   
-  func trainMlModelAsyncBackground() {
-    
-    DispatchQueue.global().async {
-      let train = self.dinnerRealmManager.getSimpleTrainData()
-      let target = self.dinnerRealmManager.getTargretData()
-                   
-      self.presenter?.presentData(response: .trainMLmodel(train: train, target: target))
-    }
-   
-    
-  }
+ 
   
   // MARK: Work with ViewModel
   
@@ -112,10 +95,12 @@ class MainInteractor: MainBusinessLogic {
     
     switch request {
       
-    case .setInsulinInProduct(let insulin, let rowProduct,let isPreviosDinner):
-      presenter?.presentData(response: .setInsulinInProduct(insulin: insulin, rowProduct: rowProduct,isPreviosDInner: isPreviosDinner))
+    case .setActualInsulinInProduct(let insulin, let rowProduct):
+      
+      presenter?.presentData(response: .setActualInsulinInProduct(insulin: insulin, rowProduct: rowProduct))
       
     case .setPortionInProduct(let portion, let row):
+      
       presenter?.presentData(response: .setPortionInProduct(portion: portion, rowProduct: row))
       
     case .setPlaceIngections(let place):
@@ -123,13 +108,21 @@ class MainInteractor: MainBusinessLogic {
       
     case .setShugarBeforeValueAndTime(let time,let shugar):
       
-      // Здесь нужно обращатся к предыдущему обеду
-      // Вообще это будет большой класс так как нам надо будет корректировать предыдущий обед как следует
+      // Здесь нужно выявить какими буду ряд полей
+      // 1. У предыдущего обеда хорошая компенсация?
+      // 2.
       
+      // Проблема в том что уже показал и сохранил в реалм хотя обед еще не сохранен может быть все изменистя и пользователь сменитьданные они конечно перезапишутся! Но обновлять предыдущий обед было бы правлеьно толкьо когда нажали сохранить!
       
-      updateShugarAfterInPreviosDinner(shugar: shugar)
+      // В целом это нормальный концепт мы сначала работает с текущим обедом потом когда нажали сохранить мы предлагаем Юзеру исправить ошибки предыдущего обеда! так как поля предыдущего обеда тоже обновятся
       
+      // Тоесть после того как юзер нажать сохранить мы вносим данные в предыдущий обед открываем там поля и предлагаем подправить предыдущий! Так и поступлю
       
+      // Да таким образом я четко разделяю работу с текущим обедом и предыдущим!
+      // Все идет последовательно и четко!
+
+      updateShugarAfterInPreviosDinnerInRealmAndInViewModel(shugar: shugar)
+
       presenter?.presentData(response: .setShugarBeforeValueAndTime(time: time, shugar: shugar))
 
       
@@ -153,6 +146,23 @@ class MainInteractor: MainBusinessLogic {
   
 }
 
+// MARK: ML Work
+
+extension MainInteractor {
+  
+  private func trainMlModelAsyncBackground() {
+     
+     DispatchQueue.global().async {
+       let train = self.dinnerRealmManager.getSimpleTrainData()
+       let target = self.dinnerRealmManager.getTargretData()
+                    
+       self.presenter?.presentData(response: .trainMLmodel(train: train, target: target))
+     }
+    
+     
+   }
+}
+
 
 // MARK: Work with Previos Dinner Update Data In Realm
 
@@ -160,9 +170,57 @@ extension MainInteractor {
   
   // как можно проще поступить достать этот обед из реалма изменить его и сохранить
   
-  func updateShugarAfterInPreviosDinner(shugar: Float) {
+  func updateShugarAfterInPreviosDinnerInRealmAndInViewModel(shugar: Float) {
     
     dinnerRealmManager.updateShugarAfterInPreviosDinner(shugar: shugar)
+    
+    let previosDinner = dinnerRealmManager.getPreviosDinner()
+    presenter?.presentData(response: .updatePreviosDinner(prevDinner: previosDinner))
+
+  }
+  
+  
+  // Метод отвечает за всю работу с предыдущим обедом в зависимости от входящего сахара!
+  
+  private func workWithPreviosDinner(shugarNow: Float) {
+    
+    // Set Shugar in Previos Dinner
+//    mainViewModel.setShugarAfterMeal(shugarNow: shugarNow)
+
+//    let isGoodCompansation = ShugarCorrectorWorker.shared.isPreviosDinnerSuccessCompansation(shugarValue: shugarNow)
+    
+    if true {
+      // Компенсация прошла успешно - теперь нужно переложить инсулин
+      
+      // Это мы обновляем только нашу ViewModel! А нам нужно сохранить эти изменениея в реалме в предыдущем обеде! проставить для него все флаги с этим связанные! и тогда не надо будет мучатся с моделькой
+      
+//      let actualInsulin = mainViewModel.getActualInsulinArray()
+//
+//      actualInsulin.enumerated().forEach({ (index,insulin) in
+//        mainViewModel.setGoodCompansationInsulinInProducts(goodComapnsationInsulin: insulin, rowProduct: index)
+//      })
+//
+      // Эти поля также должны быть в реалме
+      
+      // Для этого мне нужно новое поле в диннере successCompansationInsulin: Float
+      // isSuccesCompansation: Bool
+      
+    } else {
+      
+    }
+    
+    // 1. Засетить сахар после еды
+    // 2. Определить предыдущий обед коменсированн или нет
+    // 3. Если нет то предложить алертом внести корректировку в предыдущий обед
+    //    Первесети флаг successCompansation = false
+    //    Показать корректирующие поля
+    //    Подсветить шприц красным цветом
+    //     Показать есче 1 шприц который будет отвечать за правельный инсулин
+    
+    //    Если все норм
+    //    Переложить инсулин из актуал в goodCompansation
+    //    Подсвеитть шприц зеленым цветом
+    
   }
   
 }
@@ -212,7 +270,7 @@ extension MainInteractor {
         carboIn100Grm: prodViewModel.carboIn100Grm,
         isFavorits: prodViewModel.isFavorit,
         portion: prodViewModel.portion,
-        insulin: prodViewModel.insulinValue ?? 0
+        actualInsulin: prodViewModel.insulinValue ?? 0
       )
     }
   

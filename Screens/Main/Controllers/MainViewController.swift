@@ -435,7 +435,7 @@ extension MainViewController {
           [weak dinnerValidator,weak self] insulin,row in
           
       // MARK: TODO here Bag!
-          self?.interactor?.makeRequest(request: .setInsulinInProduct(insulin: insulin, rowProduct: row, isPreviosDInner: false))
+          self?.interactor?.makeRequest(request: .setActualInsulinInProduct(insulin: insulin, rowProduct: row))
 
           dinnerValidator?.insulinValue = String(insulin)
     }
@@ -712,9 +712,7 @@ extension MainViewController {
   
   // В целом если я буду отбирать обеды по свойство compansasion то можно просто взять цикл каждые 2 обеда обновылять весса! Или сделать что каждый новый добавленный обед будет обновлять весса!
   
-  private func trainModel() {
-    interactor?.makeRequest(request: .trainMLmodel)
-  }
+
   
   // Predict Insulin
    

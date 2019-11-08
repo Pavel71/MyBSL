@@ -36,6 +36,9 @@
 		055BE0D723448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D623448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift */; };
 		055BE0DA2344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */; };
 		055BE0DD2344DB290029D298 /* WillActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0DC2344DB290029D298 /* WillActiveView.swift */; };
+		0562D5322375597E0014A8F4 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D5312375597E0014A8F4 /* MainViewModel.swift */; };
+		0562D536237559D00014A8F4 /* MainHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D535237559D00014A8F4 /* MainHeaderViewModel.swift */; };
+		0562D53923759CE60014A8F4 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D53823759CE60014A8F4 /* DummyData.swift */; };
 		057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */; };
 		057B9841234F5054002EAD68 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9840234F5054002EAD68 /* ContainerController.swift */; };
 		057B9848234F6B4C002EAD68 /* PointSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9847234F6B4C002EAD68 /* PointSearcher.swift */; };
@@ -188,6 +191,9 @@
 		055BE0D623448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePlaceInjectionsRowView.swift; sourceTree = "<group>"; };
 		055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePlaceInjectionsViewAnimated.swift; sourceTree = "<group>"; };
 		055BE0DC2344DB290029D298 /* WillActiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillActiveView.swift; sourceTree = "<group>"; };
+		0562D5312375597E0014A8F4 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		0562D535237559D00014A8F4 /* MainHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderViewModel.swift; sourceTree = "<group>"; };
+		0562D53823759CE60014A8F4 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMenuAnimator.swift; sourceTree = "<group>"; };
 		057B9840234F5054002EAD68 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		057B9847234F6B4C002EAD68 /* PointSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointSearcher.swift; sourceTree = "<group>"; };
@@ -630,6 +636,31 @@
 			path = WillActivy;
 			sourceTree = "<group>";
 		};
+		0562D533237559980014A8F4 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				0562D5312375597E0014A8F4 /* MainViewModel.swift */,
+				0562D534237559B10014A8F4 /* HeaderViewModel */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		0562D534237559B10014A8F4 /* HeaderViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0562D535237559D00014A8F4 /* MainHeaderViewModel.swift */,
+			);
+			path = HeaderViewModel;
+			sourceTree = "<group>";
+		};
+		0562D53723759CD60014A8F4 /* DummyData */ = {
+			isa = PBXGroup;
+			children = (
+				0562D53823759CE60014A8F4 /* DummyData.swift */,
+			);
+			path = DummyData;
+			sourceTree = "<group>";
+		};
 		057B9845234F634C002EAD68 /* MenuView */ = {
 			isa = PBXGroup;
 			children = (
@@ -807,8 +838,9 @@
 		05A4F1992339EE5800DFE4D7 /* Presenters */ = {
 			isa = PBXGroup;
 			children = (
-				05515D0223699CF000A298AA /* ML */,
 				F1E78CC0230D336B00592AB8 /* MainPresenter.swift */,
+				0562D53723759CD60014A8F4 /* DummyData */,
+				05515D0223699CF000A298AA /* ML */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -816,8 +848,8 @@
 		05A4F19A2339EE6400DFE4D7 /* Interactors */ = {
 			isa = PBXGroup;
 			children = (
-				0537370E234B296E00411C46 /* Data */,
 				F1E78CC5230D336B00592AB8 /* MainInteractor.swift */,
+				0537370E234B296E00411C46 /* Data */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -826,6 +858,7 @@
 			isa = PBXGroup;
 			children = (
 				F1E78CC3230D336B00592AB8 /* MainModels.swift */,
+				0562D533237559980014A8F4 /* ViewModels */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1832,6 +1865,7 @@
 				05952A58233BB51600EE996E /* ProductListInDinnerViewController.swift in Sources */,
 				F1E78CFC230D358000592AB8 /* UIViewController+Extension.swift in Sources */,
 				F1EC859B2330EEA200E14D33 /* MenuInMealViewController.swift in Sources */,
+				0562D53923759CE60014A8F4 /* DummyData.swift in Sources */,
 				F1E78CBC230D334B00592AB8 /* FoodViewController.swift in Sources */,
 				F1E78CBB230D334B00592AB8 /* FoodModels.swift in Sources */,
 				F1E78D12230D570500592AB8 /* NewProductView.swift in Sources */,
@@ -1866,6 +1900,7 @@
 				053BAB52233B56D60080359B /* Validatable.swift in Sources */,
 				F150DBF52317DD2300380AE0 /* MealInteractor.swift in Sources */,
 				F150DBF02317DD2300380AE0 /* MealPresenter.swift in Sources */,
+				0562D536237559D00014A8F4 /* MainHeaderViewModel.swift in Sources */,
 				F1EC85A0233104EB00E14D33 /* MenuModel.swift in Sources */,
 				F1E78D1C230D683A00592AB8 /* Path.swift in Sources */,
 				F112845723278CDF00416AF4 /* AddNewElementView.swift in Sources */,
@@ -1913,6 +1948,7 @@
 				F13B352723192C6A0020AD26 /* MealCell.swift in Sources */,
 				F1E78CE5230D33AE00592AB8 /* StatsPresenter.swift in Sources */,
 				05952A4F233BB0FD00EE996E /* BaseProductList.swift in Sources */,
+				0562D5322375597E0014A8F4 /* MainViewModel.swift in Sources */,
 				F1103B59232A34EF009A338A /* ProductsTableViewInMealCellFooterView.swift in Sources */,
 				05A4F1C0233A371500DFE4D7 /* DinnerCollectionViewCell.swift in Sources */,
 				05373716234B2B4800411C46 /* SwipeView.swift in Sources */,

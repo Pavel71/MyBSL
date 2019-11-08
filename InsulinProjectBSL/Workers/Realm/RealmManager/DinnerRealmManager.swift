@@ -99,7 +99,7 @@ extension DinnerRealmManager {
     
     let realm = provider.realm
     
-    let carbo = realm.objects(DinnerRealm.self).filter("isCompensassionSucces == %@",true).flatMap{$0.listProduct.map{$0.insulin}}
+    let carbo = realm.objects(DinnerRealm.self).filter("isCompensassionSucces == %@",true).flatMap{$0.listProduct.map{$0.actualInsulin}}
     
     return Array(carbo)
   }

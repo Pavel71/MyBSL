@@ -25,11 +25,12 @@ import RealmSwift
     return (Float(carboIn100grm) * (Float(portion) / 100))
   }
   
-  dynamic var insulin: Float = 0
+  dynamic var actualInsulin: Float = 0
+  dynamic var goodCompansationinsulin: Float = 0
   
   dynamic var isFavorits: Bool = false
   
-  convenience init(name: String, category: String, carboIn100Grm: Int, isFavorits: Bool, portion: Int = 100,insulin: Float = 0) {
+  convenience init(name: String, category: String, carboIn100Grm: Int, isFavorits: Bool, portion: Int = 100, actualInsulin: Float = 0) {
     self.init()
     
     self.name = name
@@ -37,7 +38,7 @@ import RealmSwift
     self.carboIn100grm = carboIn100Grm
     self.portion = portion
     self.isFavorits = isFavorits
-    self.insulin = insulin
+    self.actualInsulin = actualInsulin
     
   }
   

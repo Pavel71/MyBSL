@@ -65,7 +65,7 @@ class ProductListInDinnerViewController: BaseProductList {
   }
   
   private func getProductListViewModelFromProductReal(product: ProductRealm) -> ProductListViewModel {
-    let productListViewModel = ProductListViewModel(insulinValue: product.insulin, isFavorit: product.isFavorits, carboIn100Grm: product.carboIn100grm, category: product.category, name: product.name, portion: product.portion)
+    let productListViewModel = ProductListViewModel(insulinValue: product.actualInsulin, isFavorit: product.isFavorits, carboIn100Grm: product.carboIn100grm, category: product.category, name: product.name, portion: product.portion)
     return productListViewModel
   }
 

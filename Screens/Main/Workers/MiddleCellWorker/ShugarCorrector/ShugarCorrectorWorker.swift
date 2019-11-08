@@ -46,7 +46,7 @@ class ShugarCorrectorWorker {
   
   
   
-  func getIsShowCorrectTextField(shugarValue: Float) -> Bool {
+  func isPreviosDinnerSuccessCompansation(shugarValue: Float) -> Bool {
     return shugarValue > higherShuagrLevel || shugarValue < bottomShugarLevel
   }
 
@@ -58,7 +58,7 @@ class ShugarCorrectorWorker {
     
 //    let valueFloat = (shugarValue as NSString).floatValue
 
-    isNeedCorrectShugarByInsulin =  getIsShowCorrectTextField(shugarValue: shugarValue)
+    isNeedCorrectShugarByInsulin =  isPreviosDinnerSuccessCompansation(shugarValue: shugarValue)
     
     
     if isNeedCorrectShugarByInsulin {
@@ -71,7 +71,7 @@ class ShugarCorrectorWorker {
       } else {
         
         // Здесь будет идти автоматический расчет дозировки инсулина
-        print("Считаем обеды по формуле")
+        print("Считаем Корректировку сахара с помощью Алгоритма")
         
       }
 

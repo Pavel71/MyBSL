@@ -310,7 +310,7 @@ extension ShugarSetView: UITextFieldDelegate {
     
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: {
 
-      self.isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection: ShugarCorrectorWorker.shared.getIsShowCorrectTextField(shugarValue: shugarFloat))
+      self.isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection: ShugarCorrectorWorker.shared.isPreviosDinnerSuccessCompansation(shugarValue: shugarFloat))
       
     }, completion: { _ in
       self.didSetShugarBeforeValueAndTimeClouser!(timeBefore,shugarFloat)

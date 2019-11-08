@@ -24,7 +24,7 @@ enum Main {
         
         // Update ViewModel Without Realm
         case setPortionInProduct(portion: Int, rowProduct: Int)
-        case setInsulinInProduct(insulin: Float, rowProduct:Int,isPreviosDInner: Bool)
+        case setActualInsulinInProduct(insulin: Float, rowProduct:Int)
 //        case setShugarBefore(shugarBefore: Float)
 //        case setShigarBeforeInTime(time: Date)
         
@@ -43,7 +43,7 @@ enum Main {
         
         // MLModel Request
         case predictInsulinForProducts
-        case trainMLmodel
+        
       }
     }
     
@@ -59,16 +59,17 @@ enum Main {
         // UPDateViewModel
         
         case setPortionInProduct(portion: Int, rowProduct: Int)
-        case setInsulinInProduct(insulin: Float, rowProduct:Int,isPreviosDInner:Bool)
+        case setActualInsulinInProduct(insulin: Float, rowProduct:Int)
         
 //        case setShugarBefore(shugarBefore: Float)
 //        case setShigarBeforeInTime(time: Date?)
         
         case setShugarBeforeValueAndTime(time: Date,shugar: Float)
-        
         case setPlaceIngections(place: String)
-        
         case setCorrectionInsulinByShugar(correction: Float)
+        
+        // UpdatePreviosDinnerInModel
+        case updatePreviosDinner(prevDinner:DinnerRealm)
         
         // Add Product
         case addProductInDinner(products:[ProductRealm])
@@ -99,51 +100,12 @@ enum Main {
 }
 
 
-struct MainViewModel {
-  
-  // Header Cell View Model
-  var headerViewModelCell: MainTableViewHeaderCellable
-  
-  // Middle Cell ViewModel
-  var dinnerCollectionViewModel: [DinnerViewModel]
-  // Footer Cell ViewModel
-//  var footerViewModel: MainFooterViewModel
-  
-}
 
-// Footer
-//struct MainFooterViewModel: MainTableViewFooterCellable {
-//  var totalInsulinValue: Float
-//
-//}
 
-// Header
 
-struct MainHeaderViewModel: MainTableViewHeaderCellable {
-  
-//  var isMenuViewControoler: Bool
-  
-  var lastInjectionValue: Float
-  
-  var lastTimeInjectionValue: Date?
-  
-  var lastShugarValue: Float
-  
-  var insulinSupplyInPanValue: Float
-  
-  init(lastInjectionValue: Float,lastTimeInjectionValue: Date?,lastShugarValue: Float,insulinSupplyInPanValue: Float) {
-    
-    self.lastInjectionValue = lastInjectionValue
-    self.lastTimeInjectionValue = lastTimeInjectionValue
-    self.lastShugarValue = lastShugarValue
-    self.insulinSupplyInPanValue = insulinSupplyInPanValue
-//    self.isMenuViewControoler = isMenuViewControoler
-  }
-  
-  
-}
 
-//struct MainDinnerViewModel {
-//
-//
-//}
+
+
+
+
+
