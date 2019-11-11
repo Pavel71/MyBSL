@@ -34,18 +34,6 @@ struct MainViewModel {
 
 }
 
-// MARK: Work with PreviosDinner
-extension MainViewModel {
-  
-  // в этом методе я просто перекладываю actualInsulin в goodCompansastion для предыдущего обеда
-//
-  mutating func updatePreviosDinner(prevDinner: DinnerViewModel) {
-    
-    dinnerCollectionViewModel[indexPreviosDinner] = prevDinner
-  }
-  
-  
-}
 
 
 // MARK: Get Function
@@ -74,10 +62,7 @@ extension MainViewModel {
 
 extension MainViewModel {
   
-  // Set Shugar After
-   mutating func setShugarAfterMeal(shugarNow: Float) {
-     dinnerCollectionViewModel[indexPreviosDinner].shugarTopViewModel.shugarAfterValue = shugarNow
-   }
+
    // Set Actual Insulin
    mutating func setActualInsulinInProducts(actualInsulin: Float,rowProduct:Int) {
      dinnerCollectionViewModel[indexNewDinner].productListInDinnerViewModel.productsData[rowProduct].insulinValue = actualInsulin
@@ -126,7 +111,22 @@ extension MainViewModel {
     dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.timeBefore = time
       
     // Set Should Correct Insulin By SHugar
-    dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.isNeedInsulinCorrectByShugar = ShugarCorrectorWorker.shared.isPreviosDinnerSuccessCompansation(shugarValue: shugarBefore)
+    dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.isNeedInsulinCorrectByShugar = ShugarCorrectorWorker.shared.isPreviosDinnerFalledCompansation(shugarValue: shugarBefore)
   }
+}
+
+// MARK: Set In PreviosDinner
+
+extension MainViewModel {
+  
+  // Set Shugar After
+//   mutating func setShugarAfterMeal(shugarNow: Float) {
+//     dinnerCollectionViewModel[indexPreviosDinner].shugarTopViewModel.shugarAfterValue = shugarNow
+//   }
+  
+  mutating func updatePreviosDinner(prevDinner: DinnerViewModel) {
+    dinnerCollectionViewModel[indexPreviosDinner] = prevDinner
+  }
+  
 }
 

@@ -91,6 +91,9 @@ extension ProductListInDinnerViewController {
     
     self.viewModel = viewModel
     setResultViewModel(resultViewModel:viewModel.resultsViewModel)
+    
+    // Отключаем работу таблицы если предыдущий обед
+    tableView.isUserInteractionEnabled = !viewModel.isPreviosDinner
   }
   
   private func setResultViewModel(resultViewModel:ProductListResultViewModelable ) {

@@ -46,7 +46,7 @@ class ShugarCorrectorWorker {
   
   
   
-  func isPreviosDinnerSuccessCompansation(shugarValue: Float) -> Bool {
+  func isPreviosDinnerFalledCompansation(shugarValue: Float) -> Bool {
     return shugarValue > higherShuagrLevel || shugarValue < bottomShugarLevel
   }
 
@@ -58,7 +58,7 @@ class ShugarCorrectorWorker {
     
 //    let valueFloat = (shugarValue as NSString).floatValue
 
-    isNeedCorrectShugarByInsulin =  isPreviosDinnerSuccessCompansation(shugarValue: shugarValue)
+    isNeedCorrectShugarByInsulin =  isPreviosDinnerFalledCompansation(shugarValue: shugarValue)
     
     
     if isNeedCorrectShugarByInsulin {

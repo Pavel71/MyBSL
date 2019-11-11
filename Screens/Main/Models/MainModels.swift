@@ -69,7 +69,7 @@ enum Main {
         case setCorrectionInsulinByShugar(correction: Float)
         
         // UpdatePreviosDinnerInModel
-        case updatePreviosDinner(prevDinner:DinnerRealm)
+        case updatePreviosDinnerInViewModel(prevDinner:DinnerRealm)
         
         // Add Product
         case addProductInDinner(products:[ProductRealm])

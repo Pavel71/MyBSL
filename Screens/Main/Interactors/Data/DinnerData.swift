@@ -45,19 +45,27 @@ class DinnerData {
 //  }
   
   // Задача функции возвращать пустую стандартную модель - заготовку для заполнения!
-  static func getDummyDinner() -> DinnerViewModel {
-    
-    let shugarViewModel1 = ShugarTopViewModel(isPreviosDinner: false, shugarBeforeValue: 0.0, shugarAfterValue: 0.0, timeBefore: nil, timeAfter: nil)
-    
-    let result = ProductListResultsViewModel(sumCarboValue: "", sumPortionValue: "", sumInsulinValue: "")
-    
-    let productListViewController1 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [], isPreviosDinner: false)
-    
-    let dinner1 = DinnerViewModel(isPreviosDinner: false, shugarTopViewModel: shugarViewModel1, productListInDinnerViewModel: productListViewController1, placeInjection: "", train: nil, totalInsulin: 0.0)
-    
-    return dinner1
-    
-  }
+//  static func getDummyDinner() -> DinnerViewModel {
+//    
+//    let shugarViewModel1 = ShugarTopViewModel(isPreviosDinner: false, shugarBeforeValue: 0.0, shugarAfterValue: 0.0, timeBefore: nil, timeAfter: nil)
+//    
+//    let result = ProductListResultsViewModel(sumCarboValue: "", sumPortionValue: "", sumInsulinValue: "")
+//    
+//    let productListViewController1 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [], isPreviosDinner: false)
+//    
+//    let dinner1 = DinnerViewModel(
+//      compansationFase: .dontSet,
+//      isPreviosDinner: false,
+//      shugarTopViewModel: shugarViewModel1,
+//      productListInDinnerViewModel: productListViewController1,
+//      placeInjection: "",
+//      train: nil,
+//      totalInsulin: 0.0
+//    )
+//    
+//    return dinner1
+//    
+//  }
   
   
 //  static func getMainViewModelDummy() -> MainViewModel {

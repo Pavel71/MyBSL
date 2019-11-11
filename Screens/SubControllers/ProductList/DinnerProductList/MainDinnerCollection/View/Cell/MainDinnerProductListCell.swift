@@ -91,11 +91,11 @@ class MainDinnerProductListCell: BaseProductListCell {
     
     super.setViewModel(viewModel: viewModel, withInsulinTextFields: withInsulinTextFields)
     
+     updateTextFieldIsPreviosDinner(textField: portionTextField, isPreviosDinner: isPreviosDinner)
     
-    
-    portionTextField.isUserInteractionEnabled = !isPreviosDinner
-    portionTextField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
-    
+//    portionTextField.isUserInteractionEnabled = !isPreviosDinner
+//    portionTextField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+//    
     // При сети данных из модели мы должны их прокинуть для валидатора
 //    didChangePortionFromPickerView!(portionTextField)
 //    didChangePortionFromPickerView!(insulinTextField)
@@ -105,6 +105,16 @@ class MainDinnerProductListCell: BaseProductListCell {
     
     let insuLinString = insulinValue == 0 ? "" : "\(insulinValue)"
     insulinTextField.text = insuLinString
+    
+    updateTextFieldIsPreviosDinner(textField: insulinTextField, isPreviosDinner: isPreviosDinner)
+//    insulinTextField.isUserInteractionEnabled = !isPreviosDinner
+//    insulinTextField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+    
+  }
+  
+  private func updateTextFieldIsPreviosDinner(textField: UITextField, isPreviosDinner: Bool) {
+    textField.isUserInteractionEnabled = !isPreviosDinner
+    textField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
   }
   
   required init?(coder aDecoder: NSCoder) {

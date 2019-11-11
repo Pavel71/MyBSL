@@ -26,7 +26,8 @@ class MainInteractor: MainBusinessLogic {
     
     workWithML(request: request)
     workWithRealm(request: request)
-    workWithViewModel(request: request)
+    workWithCurrentDinnerViewModel(request: request)
+    
     
   }
   
@@ -61,10 +62,14 @@ class MainInteractor: MainBusinessLogic {
       
     case .saveViewModel(let viewModel):
       
+      // Вот на этом этапе нам нужно засетить сахар после еды в предыдущий обед
+      
       // теперь нужно распаристь модельку в Объект DinnerRealm
       let newDinnerViewModel = viewModel.dinnerCollectionViewModel.last!
       
       let dinnerRealm = createDinnerRealmObject(viewModel: newDinnerViewModel)
+      
+      // в Этом методе можно обновить и поле предыдущего обеда
       dinnerRealmManager.saveDinner(dinner: dinnerRealm)
       
       let realmData = dinnerRealmManager.fetchAllData()
@@ -91,7 +96,7 @@ class MainInteractor: MainBusinessLogic {
   
   // MARK: Work with ViewModel
   
-  private func workWithViewModel(request: Main.Model.Request.RequestType) {
+  private func workWithCurrentDinnerViewModel(request: Main.Model.Request.RequestType) {
     
     switch request {
       
@@ -108,20 +113,7 @@ class MainInteractor: MainBusinessLogic {
       
     case .setShugarBeforeValueAndTime(let time,let shugar):
       
-      // Здесь нужно выявить какими буду ряд полей
-      // 1. У предыдущего обеда хорошая компенсация?
-      // 2.
-      
-      // Проблема в том что уже показал и сохранил в реалм хотя обед еще не сохранен может быть все изменистя и пользователь сменитьданные они конечно перезапишутся! Но обновлять предыдущий обед было бы правлеьно толкьо когда нажали сохранить!
-      
-      // В целом это нормальный концепт мы сначала работает с текущим обедом потом когда нажали сохранить мы предлагаем Юзеру исправить ошибки предыдущего обеда! так как поля предыдущего обеда тоже обновятся
-      
-      // Тоесть после того как юзер нажать сохранить мы вносим данные в предыдущий обед открываем там поля и предлагаем подправить предыдущий! Так и поступлю
-      
-      // Да таким образом я четко разделяю работу с текущим обедом и предыдущим!
-      // Все идет последовательно и четко!
-
-      updateShugarAfterInPreviosDinnerInRealmAndInViewModel(shugar: shugar)
+//      updateShugarAfterInPreviosDinnerInRealmAndInViewModel(shugar: shugar)
 
       presenter?.presentData(response: .setShugarBeforeValueAndTime(time: time, shugar: shugar))
 
@@ -153,10 +145,16 @@ extension MainInteractor {
   private func trainMlModelAsyncBackground() {
      
      DispatchQueue.global().async {
-       let train = self.dinnerRealmManager.getSimpleTrainData()
-       let target = self.dinnerRealmManager.getTargretData()
+      
+
+      if self.dinnerRealmManager.getCountTrainObjects() > 5 {
+        
+        let train = self.dinnerRealmManager.getSimpleTrainData()
+        let target = self.dinnerRealmManager.getTargretData()
+        self.presenter?.presentData(response: .trainMLmodel(train: train, target: target))
+      }
                     
-       self.presenter?.presentData(response: .trainMLmodel(train: train, target: target))
+       
      }
     
      
@@ -172,10 +170,12 @@ extension MainInteractor {
   
   func updateShugarAfterInPreviosDinnerInRealmAndInViewModel(shugar: Float) {
     
-    dinnerRealmManager.updateShugarAfterInPreviosDinner(shugar: shugar)
+    // По идеии это все не нужно! После нажатия сохранить! Я начинаю работать с предыдущим обедом, что то перенести туда из текущего обеда
     
+    dinnerRealmManager.updateShugarAfterInPreviosDinner(shugar: shugar)
     let previosDinner = dinnerRealmManager.getPreviosDinner()
-    presenter?.presentData(response: .updatePreviosDinner(prevDinner: previosDinner))
+    
+    presenter?.presentData(response: .updatePreviosDinnerInViewModel(prevDinner: previosDinner))
 
   }
   
@@ -241,12 +241,25 @@ extension MainInteractor {
       let totalInsulin = viewModel.totalInsulin
       let isNeedCorrectDinnerInsulinByShugasr = viewModel.shugarTopViewModel.isNeedInsulinCorrectByShugar
       
-      let products = viewModel.productListInDinnerViewModel.productsData
+//      let isGoodCompansation
       
+      
+      // Products
+      let products = viewModel.productListInDinnerViewModel.productsData
       let realmProducts = createProductForRealm(products: products)
       
       
-      let dinnerRealm = DinnerRealm(shugarBefore: shugarBefore, shugarAfter: shugarAfter, timeShugarBefore: timeShugarBefore, timeShugarAfter: timeShugarAfter, placeInjection: placeInjections, trainName: viewModel.train ?? "", correctionInsulin: correctionInsulin, totalInsulin: totalInsulin,isNeedCorrectInsulinByShugar: isNeedCorrectDinnerInsulinByShugasr)
+      let dinnerRealm = DinnerRealm(
+        shugarBefore: shugarBefore,
+        shugarAfter: shugarAfter,
+        timeShugarBefore: timeShugarBefore,
+        timeShugarAfter: timeShugarAfter,
+        placeInjection: placeInjections,
+        trainName: viewModel.train ?? "",
+        correctionInsulin: correctionInsulin,
+        totalInsulin: totalInsulin,
+        isNeedCorrectInsulinByShugar: isNeedCorrectDinnerInsulinByShugasr
+      )
       
       dinnerRealm.listProduct.append(objectsIn: realmProducts)
       

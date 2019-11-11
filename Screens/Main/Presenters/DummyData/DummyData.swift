@@ -20,7 +20,14 @@ class DummyData {
      
      let productListViewController1 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [], isPreviosDinner: false)
      
-     let dinner1 = DinnerViewModel(isPreviosDinner: false, shugarTopViewModel: shugarViewModel1, productListInDinnerViewModel: productListViewController1, placeInjection: "", train: nil, totalInsulin: 0.0)
+     let dinner1 = DinnerViewModel(
+      compansationFase: .dontSet,
+      isPreviosDinner: false,
+      shugarTopViewModel: shugarViewModel1,
+      productListInDinnerViewModel: productListViewController1,
+      placeInjection: "",
+      train: nil,
+      totalInsulin: 0.0)
      
      return dinner1
      

@@ -27,7 +27,7 @@ import RealmSwift
   dynamic var timeCreateDinner: Date?
   
   // ML Property
-  dynamic var isCompensassionSucces: Bool = true
+  dynamic var compansationFase: Int = 2
   
 
   // Top
@@ -55,7 +55,18 @@ import RealmSwift
   
   
   
-  convenience init(shugarBefore: Float,shugarAfter:Float,timeShugarBefore: Date?,timeShugarAfter: Date?,placeInjection: String, trainName: String,correctionInsulin:Float,totalInsulin: Float,isPreviosDinner:Bool = true,isNeedCorrectInsulinByShugar: Bool = false) {
+  convenience init(
+    shugarBefore: Float,
+    shugarAfter:Float,
+    timeShugarBefore: Date?,
+    timeShugarAfter: Date?,
+    placeInjection: String,
+    trainName: String,
+    correctionInsulin:Float,
+    totalInsulin: Float,
+    isPreviosDinner:Bool = true,
+    isNeedCorrectInsulinByShugar: Bool = false
+  ) {
     self.init()
     
     self.shugarBefore = shugarBefore
@@ -69,6 +80,7 @@ import RealmSwift
     self.timeCreateDinner = Date() // Время создания обеда
     self.isPreviosDinner = isPreviosDinner
     self.isNeedCorrectInsulinByShugar = isNeedCorrectInsulinByShugar
+//    self.isCompensationSucces = isGoodCompansation
 
   }
 

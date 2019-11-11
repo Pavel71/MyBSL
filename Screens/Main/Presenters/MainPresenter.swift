@@ -82,13 +82,12 @@ class MainPresenter: MainPresentationLogic {
   
   private func updatePreviosDinnerInViewModel(response: Main.Model.Response.ResponseType) {
     
-    switch response {
-    case .updatePreviosDinner(let prevDinner):
-      let prevDinViewModel = createDinnerViewModel(dinner: prevDinner)
-      mainViewModel.updatePreviosDinner(prevDinner: prevDinViewModel)
-      // обновляем но запрос дальше не кидаем!
-    default:break
-    }
+//    switch response {
+//    case .updatePreviosDinnerInViewModel(let prevDinner):
+//      updatePreviosDinner(dinner: prevDinner)
+//      // обновляем но запрос дальше не кидаем!
+//    default:break
+//    }
   }
   
   // MARK: Requests Update ViewModel
@@ -120,7 +119,6 @@ class MainPresenter: MainPresentationLogic {
       
       mainViewModel.setPortionInProducts(portion: portion, rowProduct: rowProduct)
 
-      
       calculateResultViewModel()
       // Похорошему во всех этих методах нужно изменять данные 
       
@@ -129,21 +127,19 @@ class MainPresenter: MainPresentationLogic {
     case .setPlaceIngections(let place):
       
       mainViewModel.setPlaceInjections(place: place)
-      
-
       passViewModelInViewController()
       
     case .setShugarBeforeValueAndTime(let time,let shugar):
       
       workWithShugarBefore(time: time,shugar:shugar)
-      
       passViewModelInViewController()
       
     case .setCorrectionInsulinByShugar(let correction):
+      
       mainViewModel.setCorrectionInsulinByShugar(correct: correction)
-
       calculateTotalInsulin()
       passViewModelInViewController()
+      
     default:break
     }
 
@@ -161,6 +157,17 @@ class MainPresenter: MainPresentationLogic {
     
   }
 
+  
+}
+
+// MARK: Update PreviosDinnerInViewModel
+
+extension MainPresenter {
+  
+//  private func updatePreviosDinner(dinner: DinnerRealm) {
+//    let prevDinViewModel = createDinnerViewModel(dinner: dinner)
+//    mainViewModel.updatePreviosDinner(prevDinner: prevDinViewModel)
+//  }
   
 }
 
@@ -185,6 +192,8 @@ extension MainPresenter {
     return mlWorker.getPredictInsulinTest(testData: testProduct)
 
   }
+  
+  
 }
 
 
@@ -241,9 +250,17 @@ extension MainPresenter {
     
     let productListViewModel = createProductListInDinnerViewModel(dinner: dinner)
     
-
+    let compansationFase = Compasation(rawValue: dinner.compansationFase)!
     
-    return DinnerViewModel(isPreviosDinner: dinner.isPreviosDinner, shugarTopViewModel: shugarViewModel, productListInDinnerViewModel: productListViewModel, placeInjection: dinner.placeInjection, train: dinner.trainName, totalInsulin: dinner.totalInsulin)
+    return DinnerViewModel(
+      compansationFase:             compansationFase,
+      isPreviosDinner:              dinner.isPreviosDinner,
+      shugarTopViewModel:           shugarViewModel,
+      productListInDinnerViewModel: productListViewModel,
+      placeInjection:               dinner.placeInjection,
+      train:                        dinner.trainName,
+      totalInsulin:                 dinner.totalInsulin
+    )
     
   }
   

@@ -145,6 +145,8 @@ class ShugarSetView: UIView {
     
     
     stackViewShugarAfter.distribution = .fill
+    // Он никогда не редактируется!
+    shugarAfterValueTextField.isEnabled = false
     
     let stackView = UIStackView(arrangedSubviews: [
       stackViewShugarBefore,stackViewShugarAfter,correctionShugarByInsulinStackView,spacingView
@@ -197,6 +199,7 @@ class ShugarSetView: UIView {
 
     stackViewShugarAfter.isHidden = !viewModel.isPreviosDinner
     shugarAfterValueTextField.text =  viewModel.shugarAfterValue == 0 ? "" : String(viewModel.shugarAfterValue)
+    
   }
   
   private func workWithCorrectInsulin(viewModel:ShugarTopViewModelable) {
@@ -310,7 +313,7 @@ extension ShugarSetView: UITextFieldDelegate {
     
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: {
 
-      self.isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection: ShugarCorrectorWorker.shared.isPreviosDinnerSuccessCompansation(shugarValue: shugarFloat))
+      self.isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection: ShugarCorrectorWorker.shared.isPreviosDinnerFalledCompansation(shugarValue: shugarFloat))
       
     }, completion: { _ in
       self.didSetShugarBeforeValueAndTimeClouser!(timeBefore,shugarFloat)

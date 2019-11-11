@@ -23,6 +23,8 @@ import Foundation
 // DinnerViewModelCellable
 struct DinnerViewModel: DinnerViewModelCellable {
   
+  var compansationFase: Compasation
+  
   var isPreviosDinner: Bool
   
   

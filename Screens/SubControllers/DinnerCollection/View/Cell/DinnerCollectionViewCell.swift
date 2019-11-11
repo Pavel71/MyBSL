@@ -9,13 +9,23 @@
 import UIKit
 
 
+enum Compasation: Int {
+  case good
+  case bad
+  case dontSet
+}
+
+
 protocol DinnerViewModelCellable {
 
   var shugarTopViewModel: ShugarTopViewModelable {get set}
   var productListInDinnerViewModel: ProductListInDinnerViewModel {get set}
   var placeInjection: String {get set}
   var train: String? {get set}
+  
   var isPreviosDinner: Bool {get set}
+  var compansationFase: Compasation {get set}
+  
   
 }
 
@@ -103,12 +113,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     let heightProductListView = CalculateHeightView.calculateProductListViewheight(countRow: countProducts,isPreviosDinner: isPreviosDinner)
 
     heightProductListConstraint.constant = heightProductListView
- 
-    
-    
-//    choosePlaceInjectionViewTopConstraint.constant = isPreviosDinner ? Constants.Main.DinnerCollectionView.topMarginBetweenView : 30
-    
-    
+
 
   }
   
@@ -201,7 +206,7 @@ extension DinnerCollectionViewCell {
     chooseRowView,totalInsulinView
     ])
     totalInsulinView.constrainWidth(constant: 100)
-//    stackView.distribution = .fillEqually
+
     stackView.spacing = 10
     addSubview(stackView)
     stackView.anchor(top: nil, leading: leadingAnchor, bottom: willActiveRow.topAnchor, trailing: trailingAnchor,padding: .init(top: 0, left: 8, bottom:10, right: 8))
@@ -209,20 +214,6 @@ extension DinnerCollectionViewCell {
   }
   
   
-  
-//  private func setUpChoosePlaceInjectionsRowView() {
-//
-//    // выводим врехний constraint  и регулируем его в зависимости от ситуацыии
-////    choosePlaceInjectionViewTopConstraint = chooseRowView.topAnchor.constraint(equalTo: productListViewController.view.bottomAnchor, constant: Constants.Main.DinnerCollectionView.topMarginBetweenView)
-//
-//    addSubview(chooseRowView)
-//    chooseRowView.anchor(top: nil, leading: leadingAnchor, bottom: willActiveRow.topAnchor, trailing: trailingAnchor,padding: .init(top: 0, left: 8, bottom:10, right: 8))
-//
-////    choosePlaceInjectionViewTopConstraint.isActive = true
-//
-//    chooseRowView.constrainHeight(constant: Constants.Main.DinnerCollectionView.choosePlaceInjectionsRowHeight)
-//
-//  }
   
   
   private func setUpWillActiveRow() {
@@ -255,21 +246,26 @@ extension DinnerCollectionViewCell {
 
   func setViewModel(viewModel: DinnerViewModel) {
     
+    
     setShugarViewModel(shugarTopViewModel: viewModel.shugarTopViewModel)
     setProductListViewModel(productListViewModel: viewModel.productListInDinnerViewModel)
     
     setTotalInsulinValue(totalInsulin: viewModel.totalInsulin)
     setChoosePlaceViewModel(placeInjections: viewModel.placeInjection)
     
-    addNewProductInMealButton.isHidden = viewModel.isPreviosDinner
+    updateDinnerCellIfPreviosDinner(isPreviosDinner: viewModel.isPreviosDinner,compansationFase: viewModel.compansationFase)
     
     // Здесь мне нужно будет учесть что если обед переходит в разряд прошлых то мы блокиреум ввод всего кроме скорректированного инсулина
     
     
   }
   
+
+  
   private func setTotalInsulinValue(totalInsulin: Float) {
     totalInsulinView.totalInsulinLabel.text = String(totalInsulin)
+    // Если самый первый обед то у него не будет это поле!
+
   }
   
   private func setChoosePlaceViewModel(placeInjections: String) {
@@ -294,13 +290,48 @@ extension DinnerCollectionViewCell {
     
     productListViewController.setViewModel(viewModel: productListViewModel)
     
-    
     let isPreviosDinner = productListViewModel.isPreviosDinner
-    
+
     setProductListViewHeight(countProducts:productListViewModel.productsData.count, isPreviosDinner: isPreviosDinner)
     
   }
   
   
+}
+
+// MARK: Update Previos Dinner Views
+ 
+extension DinnerCollectionViewCell {
+ 
+  private func updateDinnerCellIfPreviosDinner(
+    isPreviosDinner: Bool,
+    compansationFase: Compasation
+  ) {
+    
+    addNewProductInMealButton.isHidden = isPreviosDinner
+    chooseRowView.chooseButton.isEnabled = !isPreviosDinner
+
+    chooseRowView.chooseButton.backgroundColor = isPreviosDinner ? #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1) : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+    
+    setCompansationFase(compansation:compansationFase)
+    
+    
+  }
+  
+  private func setCompansationFase(compansation: Compasation) {
+
+    switch compansation {
+      case .good:
+        print("Good")
+      totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 0, green: 0.8886825442, blue: 0, alpha: 1)
+      case .bad:
+        print("Bad")
+      totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 0.9538820386, green: 0.06064923853, blue: 0.02890501916, alpha: 1)
+      case .dontSet:
+        print("Haven't set yet")
+      totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+
+      }
+  }
 }
 
