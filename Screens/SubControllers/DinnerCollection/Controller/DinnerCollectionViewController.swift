@@ -99,10 +99,13 @@ class DinnerCollectionViewController: UIViewController {
     dinnerViewModel = viewModel
   }
   
-  func scrollCollectionToheRight() {
+  func scrollCollectionToNewDinner() {
     collectionView.scrollToItem(at: IndexPath(item: dinnerViewModel.count - 1, section: 0), at: .right, animated: true)
   }
   
+  func scrollCollectionToPreviosDinner() {
+    collectionView.scrollToItem(at: IndexPath(item: dinnerViewModel.count - 3, section: 0), at: .left, animated: true)
+  }
   
 }
 

@@ -29,9 +29,7 @@ extension DinnerRealmManager {
   func saveDinner(dinner:DinnerRealm) {
     
     let realm = provider.realm
-    
-    // Когда сохраняем текущий обед обнови сахара в предыдущем
-    updateShugarAfterInPreviosDinner(shugar: dinner.shugarBefore)
+
     
     try! realm.write {
       realm.add(dinner)
@@ -67,13 +65,12 @@ extension DinnerRealmManager {
     return lastDinner
   }
   
-  func updateShugarAfterInPreviosDinner(shugar: Float) {
+  func updateShugarAfterInPreviosDinner(shugar: Float, isGoodCompansation: Bool) {
     
     let realm = provider.realm
     guard realm.objects(DinnerRealm.self).count > 0 else {return}
     // Хорошая ли компенсация у предыдущего обеда
-    let isGoodCompansation = !ShugarCorrectorWorker.shared.isPreviosDinnerFalledCompansation(shugarValue: shugar)
-  
+
     let lastDinner = getPreviosDinner()
     
     try! realm.write {
@@ -101,7 +98,7 @@ extension DinnerRealmManager {
     
     let realm = provider.realm
     
-    let carbo = realm.objects(DinnerRealm.self).filter("isCompensationSucces == %@",true).flatMap{$0.listProduct.map{$0.carboInPortion}}
+    let carbo = realm.objects(DinnerRealm.self).filter("compansationFase == %@",Compasation.good.rawValue).flatMap{$0.listProduct.map{$0.carboInPortion}}
     
     return Array(carbo)
   }
@@ -112,7 +109,7 @@ extension DinnerRealmManager {
     
     let realm = provider.realm
     
-    let carbo = realm.objects(DinnerRealm.self).filter("isCompensationSucces == %@",true).flatMap{$0.listProduct.map{$0.actualInsulin}}
+    let carbo = realm.objects(DinnerRealm.self).filter("compansationFase == %@",Compasation.good.rawValue).flatMap{$0.listProduct.map{$0.actualInsulin}}
     
     return Array(carbo)
   }

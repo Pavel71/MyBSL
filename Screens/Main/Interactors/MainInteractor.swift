@@ -66,24 +66,22 @@ class MainInteractor: MainBusinessLogic {
       
       // теперь нужно распаристь модельку в Объект DinnerRealm
       let newDinnerViewModel = viewModel.dinnerCollectionViewModel.last!
-      
       let dinnerRealm = createDinnerRealmObject(viewModel: newDinnerViewModel)
       
-      // в Этом методе можно обновить и поле предыдущего обеда
+      // Сначал внесем данные в предыдущий обед
+     
+      
+      updatePrevDinnerInRealmAndSendMessageIfNeed(shugar: dinnerRealm.shugarBefore)
+      // Потом сохраним новый обед
       dinnerRealmManager.saveDinner(dinner: dinnerRealm)
       
       let realmData = dinnerRealmManager.fetchAllData()
-      
-      
+ 
       // Нужно запустить на бэкграундном потоке эту задачу!
-      
       // Таким образом при каждом сохранение обеда будут обновлятся веса!
       trainMlModelAsyncBackground()
       
       presenter?.presentData(response: .prepareViewModel(realmData: realmData))
-      
-//      presenter?.presentData(response: .doAfterSaveDinnerInRealm(realmData: realmData))
-      
       
       
     default: break
@@ -112,8 +110,6 @@ class MainInteractor: MainBusinessLogic {
       presenter?.presentData(response: .setPlaceIngections(place: place))
       
     case .setShugarBeforeValueAndTime(let time,let shugar):
-      
-//      updateShugarAfterInPreviosDinnerInRealmAndInViewModel(shugar: shugar)
 
       presenter?.presentData(response: .setShugarBeforeValueAndTime(time: time, shugar: shugar))
 
@@ -168,14 +164,17 @@ extension MainInteractor {
   
   // как можно проще поступить достать этот обед из реалма изменить его и сохранить
   
-  func updateShugarAfterInPreviosDinnerInRealmAndInViewModel(shugar: Float) {
+  func updatePrevDinnerInRealmAndSendMessageIfNeed(shugar: Float) {
+
+    let isGoodCompansation = !ShugarCorrectorWorker.shared.isPreviosDinnerFalledCompansation(shugarValue: shugar)
+    dinnerRealmManager.updateShugarAfterInPreviosDinner(shugar: shugar, isGoodCompansation: isGoodCompansation)
     
-    // По идеии это все не нужно! После нажатия сохранить! Я начинаю работать с предыдущим обедом, что то перенести туда из текущего обеда
-    
-    dinnerRealmManager.updateShugarAfterInPreviosDinner(shugar: shugar)
-    let previosDinner = dinnerRealmManager.getPreviosDinner()
-    
-    presenter?.presentData(response: .updatePreviosDinnerInViewModel(prevDinner: previosDinner))
+    // Теперь останется отправить запрос на контроллер если надо чтобы показали алерт
+
+    if !isGoodCompansation {
+      presenter?.presentData(response: .showMessageAboutBadCompansation)
+    }
+
 
   }
   

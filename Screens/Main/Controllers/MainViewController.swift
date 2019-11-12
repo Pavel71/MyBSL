@@ -126,8 +126,16 @@ class MainViewController: UIViewController, MainDisplayLogic,MainControllerInCon
       mainViewModel = viewModel
       
       tableView.reloadData()
-
-    default:break
+      
+    case .showMessageAboutBadCompansation:
+      
+      AlertWorker.showAlertBadCompansation(viewController: self, goToPreviosDinnerComplatition: { [weak self](action) in
+        print("GO to prev Dinner")
+        self?.scrollDinnerCollectionViewToPreviosDinner()
+      }) { [weak self](action) in
+        print("Go to next dinner")
+        self?.scrollDinnerCollectionViewToNewDinner()
+      }
     }
     
     
@@ -434,7 +442,6 @@ extension MainViewController {
     cell.dinnerCollectionViewController.didInsulinTextFieldEndEditingToMain =  {
           [weak dinnerValidator,weak self] insulin,row in
           
-      // MARK: TODO here Bag!
           self?.interactor?.makeRequest(request: .setActualInsulinInProduct(insulin: insulin, rowProduct: row))
 
           dinnerValidator?.insulinValue = String(insulin)
@@ -686,16 +693,22 @@ extension MainViewController {
   private func tapFooterSaveButton() {
 
     interactor?.makeRequest(request: .saveViewModel(viewModel: mainViewModel))
-    
-    scrollDinnerCollectionViewToTheRight()
+
+    scrollDinnerCollectionViewToNewDinner()
     // Обнули валидацию
     dinnerValidator.setDefault()
 
   }
   
-  private func scrollDinnerCollectionViewToTheRight() {
+  // MARK: Scroll Dinner Collection View
+  
+  private func scrollDinnerCollectionViewToNewDinner() {
     let middleCell = getMainMiddleCell()
-    middleCell.dinnerCollectionViewController.scrollCollectionToheRight()
+    middleCell.dinnerCollectionViewController.scrollCollectionToNewDinner()
+  }
+  private func scrollDinnerCollectionViewToPreviosDinner() {
+    let middleCell = getMainMiddleCell()
+    middleCell.dinnerCollectionViewController.scrollCollectionToPreviosDinner()
   }
   
  
@@ -706,16 +719,7 @@ extension MainViewController {
 // MARK: ML Requests
 extension MainViewController {
   
-  // TrainModel
-  
-  // Теперь останется решить когда дергать этот метод и наши веса будут обновлятся после чего можно делать предсказания
-  
-  // В целом если я буду отбирать обеды по свойство compansasion то можно просто взять цикл каждые 2 обеда обновылять весса! Или сделать что каждый новый добавленный обед будет обновлять весса!
-  
 
-  
-  // Predict Insulin
-   
    private func predictInsulinByMLModel() {
      interactor?.makeRequest(request: .predictInsulinForProducts)
    }

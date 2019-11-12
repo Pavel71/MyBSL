@@ -83,6 +83,10 @@ enum Main {
         case predictInsulinForProducts
         case trainMLmodel(train: [Float],target:[Float])
         
+        // ALERT Message
+        
+        case showMessageAboutBadCompansation
+        
       }
     }
     
@@ -93,6 +97,7 @@ enum Main {
       enum ViewModelData {
         
         case setViewModel(viewModel: MainViewModel)
+        case showMessageAboutBadCompansation
       }
     }
   }

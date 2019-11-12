@@ -82,12 +82,11 @@ class MainPresenter: MainPresentationLogic {
   
   private func updatePreviosDinnerInViewModel(response: Main.Model.Response.ResponseType) {
     
-//    switch response {
-//    case .updatePreviosDinnerInViewModel(let prevDinner):
-//      updatePreviosDinner(dinner: prevDinner)
-//      // обновляем но запрос дальше не кидаем!
-//    default:break
-//    }
+    switch response {
+    case .showMessageAboutBadCompansation:
+      viewController?.displayData(viewModel: .showMessageAboutBadCompansation)
+    default:break
+    }
   }
   
   // MARK: Requests Update ViewModel
