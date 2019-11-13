@@ -18,13 +18,21 @@ protocol ProductListViewModalable {
 protocol ProductListInDinnerViewModalable: ProductListViewModalable {
   
   var isPreviosDinner: Bool {get set}
+  var isNeedCorrectInsulinIfActualInsulinWrong: Bool {get set}
 }
 
 
 struct ProductListViewModel: ProductListViewModelCell {
   
+  
+  // CorrectInsulinIfActualIsBad
+  var correctInsulinValue: Float?
+  
+  
+  // Actual Insulin
   var insulinValue: Float?
-  var goodCompansationInsulin: Float!
+  
+//  var goodCompansationInsulin: Float!
   
   var isFavorit: Bool
   var carboIn100Grm: Int

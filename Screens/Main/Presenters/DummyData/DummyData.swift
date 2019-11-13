@@ -13,15 +13,18 @@ class DummyData {
   
   static func getDummyDinner() -> DinnerViewModel {
      
+    let dinnerPosition: DinnerPosition = .newdinner
    
-     let shugarViewModel1 = ShugarTopViewModel(isPreviosDinner: false, shugarBeforeValue: 0.0, shugarAfterValue: 0.0, timeBefore: nil, timeAfter: nil)
+    let shugarViewModel1 = ShugarTopViewModel(shugarBeforeValue: 0.0, shugarAfterValue: 0.0, timeBefore: nil, timeAfter: nil)
      
      let result = ProductListResultsViewModel(sumCarboValue: "", sumPortionValue: "", sumInsulinValue: "")
      
      let productListViewController1 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [], isPreviosDinner: false)
      
      let dinner1 = DinnerViewModel(
-      compansationFase: .dontSet,
+      compansationFase: .new,
+      dinnerPosition: .newdinner,
+      correctInsulinByShugarPosition: .dontCorrect,
       isPreviosDinner: false,
       shugarTopViewModel: shugarViewModel1,
       productListInDinnerViewModel: productListViewController1,

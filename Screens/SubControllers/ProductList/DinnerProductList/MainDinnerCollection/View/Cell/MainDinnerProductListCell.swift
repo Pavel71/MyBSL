@@ -87,34 +87,59 @@ class MainDinnerProductListCell: BaseProductListCell {
   }
   
   
-  func setViewModel(viewModel: ProductListViewModelCell, withInsulinTextFields: Bool = true, isPreviosDinner: Bool) {
+  func setViewModel(viewModel: ProductListViewModelCell, withInsulinTextFields: Bool = true, isPreviosDinner: Bool, isNeedCorrectionInsulin: Bool) {
     
     super.setViewModel(viewModel: viewModel, withInsulinTextFields: withInsulinTextFields)
     
-     updateTextFieldIsPreviosDinner(textField: portionTextField, isPreviosDinner: isPreviosDinner)
-    
-//    portionTextField.isUserInteractionEnabled = !isPreviosDinner
-//    portionTextField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
-//    
-    // При сети данных из модели мы должны их прокинуть для валидатора
-//    didChangePortionFromPickerView!(portionTextField)
-//    didChangePortionFromPickerView!(insulinTextField)
-    
-    
-    guard let insulinValue = viewModel.insulinValue else {return}
-    
-    let insuLinString = insulinValue == 0 ? "" : "\(insulinValue)"
-    insulinTextField.text = insuLinString
-    
-    updateTextFieldIsPreviosDinner(textField: insulinTextField, isPreviosDinner: isPreviosDinner)
-//    insulinTextField.isUserInteractionEnabled = !isPreviosDinner
-//    insulinTextField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+     
+    workWithPortionTextField(isPreviosDinner: isPreviosDinner)
+    workWithActualInsulinFields(viewModel: viewModel,isPreviosDinner:isPreviosDinner)
+    workWithCorrectInsulinFields(isNeedCorrectionInsulin:isNeedCorrectionInsulin)
+
     
   }
   
-  private func updateTextFieldIsPreviosDinner(textField: UITextField, isPreviosDinner: Bool) {
+  // MARK: Work with CorrectInsulin
+  
+  // Здесь будет идти отработка появления коррекционного текст филда
+  private func workWithCorrectInsulinFields(isNeedCorrectionInsulin:Bool) {
+    
+    correctInsulinTextField.isHidden = !isNeedCorrectionInsulin
+    
+  }
+  
+  // MARK: Work with Portion TextFields
+  
+  private func workWithPortionTextField(isPreviosDinner:Bool) {
+    updateTextFieldIsPreviosDinner(
+      textField: portionTextField,
+      isPreviosDinner: isPreviosDinner
+    )
+    
+  }
+  
+  // MARK: Work With ActualInsulin Fields
+  
+  private func workWithActualInsulinFields(
+    viewModel:ProductListViewModelCell,
+    isPreviosDinner: Bool
+  ) {
+    
+    guard let insulinValue = viewModel.insulinValue else {return}
+    let insuLinString = insulinValue == 0 ? "" : "\(insulinValue)"
+    insulinTextField.text = insuLinString
+    updateTextFieldIsPreviosDinner(textField: insulinTextField, isPreviosDinner: isPreviosDinner)
+  }
+  
+  // MARK: Update TextFields in Previos DInner
+  private func updateTextFieldIsPreviosDinner(
+    textField: CustomValueTextField,
+    isPreviosDinner: Bool) {
+    
     textField.isUserInteractionEnabled = !isPreviosDinner
-    textField.textColor = isPreviosDinner ? .lightGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+    textField.textColor = isPreviosDinner ? .darkGray : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+    textField.withCornerLayer = !isPreviosDinner
+    
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -124,6 +149,8 @@ class MainDinnerProductListCell: BaseProductListCell {
   
   
 }
+
+// MARK: Picker View Methods
 
 extension MainDinnerProductListCell: UIPickerViewDelegate, UIPickerViewDataSource {
   
@@ -232,6 +259,8 @@ extension MainDinnerProductListCell: UIPickerViewDelegate, UIPickerViewDataSourc
   
   
 }
+
+// MARK: TextFields Delegate
 
 extension MainDinnerProductListCell: UITextFieldDelegate {
   

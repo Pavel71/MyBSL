@@ -119,7 +119,12 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: MainDinnerProductListCell.cellId, for: indexPath) as! MainDinnerProductListCell
     
     
-    cell.setViewModel(viewModel: tableViewData[indexPath.row], withInsulinTextFields: true, isPreviosDinner: viewModel.isPreviosDinner)
+    cell.setViewModel(
+      viewModel: tableViewData[indexPath.row],
+      withInsulinTextFields: true,
+      isPreviosDinner: viewModel.isPreviosDinner,
+      isNeedCorrectionInsulin: viewModel.isNeedCorrectInsulinIfActualInsulinWrong
+    )
     
     setCellClousers(cell: cell)
     

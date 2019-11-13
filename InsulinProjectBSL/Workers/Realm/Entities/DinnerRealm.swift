@@ -27,7 +27,7 @@ import RealmSwift
   dynamic var timeCreateDinner: Date?
   
   // ML Property
-  dynamic var compansationFase: Int = 2
+  dynamic var compansationFase: Int = CompansationPosition.new.rawValue
   
 
   // Top

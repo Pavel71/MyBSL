@@ -249,10 +249,18 @@ extension MainPresenter {
     
     let productListViewModel = createProductListInDinnerViewModel(dinner: dinner)
     
-    let compansationFase = Compasation(rawValue: dinner.compansationFase)!
+    // Position Dinner
+    
+    let compansationFase = CompansationPosition(rawValue: dinner.compansationFase)!
+    
+    let dinnerPosition: DinnerPosition = dinner.isPreviosDinner ? .previosdinner : .newdinner
+    let correctInsulinByShugarPosition: CorrectInsulinPosition = dinner.isNeedCorrectInsulinByShugar ? .needCorrect : .dontCorrect
     
     return DinnerViewModel(
       compansationFase:             compansationFase,
+      dinnerPosition:               dinnerPosition,
+      correctInsulinByShugarPosition: correctInsulinByShugarPosition,
+      
       isPreviosDinner:              dinner.isPreviosDinner,
       shugarTopViewModel:           shugarViewModel,
       productListInDinnerViewModel: productListViewModel,
@@ -268,13 +276,14 @@ extension MainPresenter {
 
     
     return ShugarTopViewModel(
-      isPreviosDinner: dinner.isPreviosDinner,
+      
+      
       shugarBeforeValue: dinner.shugarBefore,
       shugarAfterValue: dinner.shugarAfter,
       timeBefore: dinner.timeShugarBefore,
       timeAfter: dinner.timeShugarAfter,
-      correctInsulinByShugar: dinner.correctionInsulin,
-      isNeedInsulinCorrectByShugar: dinner.isNeedCorrectInsulinByShugar
+      correctInsulinByShugar: dinner.correctionInsulin
+      
     )
   }
   
@@ -286,22 +295,25 @@ extension MainPresenter {
     
     let resultsViewModel = ProductListResultWorker.shared.getRusultViewModelByProducts(data: productsData)
     
+    let isNeedCorrectionInsulinIfActualInsulinWrong = dinner.compansationFase == 1
+ 
     return ProductListInDinnerViewModel(
-      resultsViewModel: resultsViewModel,
-      productsData: productsData,
-      isPreviosDinner: dinner.isPreviosDinner
+      resultsViewModel:     resultsViewModel,
+      productsData:         productsData,
+      isPreviosDinner:      dinner.isPreviosDinner,
+      isNeedCorrectInsulin: isNeedCorrectionInsulinIfActualInsulinWrong
     )
   }
   
   private func createProductListViewModel(product:ProductRealm) -> ProductListViewModel {
     
     return ProductListViewModel(
-      insulinValue: product.actualInsulin,
-      isFavorit: product.isFavorits,
-      carboIn100Grm: product.carboIn100grm,
-      category: product.category,
-      name: product.name,
-      portion: product.portion
+      insulinValue:   product.actualInsulin,
+      isFavorit:      product.isFavorits,
+      carboIn100Grm:  product.carboIn100grm,
+      category:       product.category,
+      name:           product.name,
+      portion:        product.portion
     )
   }
   

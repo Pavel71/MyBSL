@@ -167,7 +167,8 @@ extension MainInteractor {
   func updatePrevDinnerInRealmAndSendMessageIfNeed(shugar: Float) {
 
     let isGoodCompansation = !ShugarCorrectorWorker.shared.isPreviosDinnerFalledCompansation(shugarValue: shugar)
-    dinnerRealmManager.updateShugarAfterInPreviosDinner(shugar: shugar, isGoodCompansation: isGoodCompansation)
+    let compansation: CompansationPosition = isGoodCompansation ? .good : .bad
+    dinnerRealmManager.updateShugarAfterInPreviosDinner(shugar: shugar, compansation: compansation)
     
     // Теперь останется отправить запрос на контроллер если надо чтобы показали алерт
 
@@ -231,14 +232,20 @@ extension MainInteractor {
 
     private func createDinnerRealmObject(viewModel: DinnerViewModel) -> DinnerRealm {
       
-      let placeInjections = viewModel.placeInjection
-      let shugarBefore = viewModel.shugarTopViewModel.shugarBeforeValue
-      let shugarAfter = viewModel.shugarTopViewModel.shugarAfterValue
+      let placeInjections =   viewModel.placeInjection
+      let shugarBefore =      viewModel.shugarTopViewModel.shugarBeforeValue
+      let shugarAfter =       viewModel.shugarTopViewModel.shugarAfterValue
       let correctionInsulin = viewModel.shugarTopViewModel.correctInsulinByShugar
-      let timeShugarBefore = viewModel.shugarTopViewModel.timeBefore
-      let timeShugarAfter = viewModel.shugarTopViewModel.timeAfter
-      let totalInsulin = viewModel.totalInsulin
-      let isNeedCorrectDinnerInsulinByShugasr = viewModel.shugarTopViewModel.isNeedInsulinCorrectByShugar
+      let timeShugarBefore =  viewModel.shugarTopViewModel.timeBefore
+      let timeShugarAfter =   viewModel.shugarTopViewModel.timeAfter
+      let totalInsulin =      viewModel.totalInsulin
+      let isNeedCorrectDinnerInsulinByShugasr =    viewModel.correctInsulinByShugarPosition == .needCorrect
+      
+//      viewModel.shugarTopViewModel.isNeedInsulinCorrectByShugar
+      
+      // Короче мне нужно разобратся с компенсация продуктов по признаку фаза компенсации она приходи и попадает к нам в карточку ячейки оттуда ее и надо будет взять!
+      
+      
       
 //      let isGoodCompansation
       

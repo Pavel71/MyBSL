@@ -8,11 +8,29 @@
 
 import UIKit
 
+enum CorrectInsulinPosition {
+  case needCorrect
+  case dontCorrect
+  
+  var toogle: CorrectInsulinPosition {
+    switch self {
+    case .needCorrect: return .dontCorrect
+    case .dontCorrect: return .needCorrect
+    }
+  }
+}
 
-enum Compasation: Int {
+
+enum CompansationPosition: Int {
   case good
   case bad
-  case dontSet
+  case progress
+  case new
+}
+
+enum DinnerPosition {
+  case newdinner
+  case previosdinner
 }
 
 
@@ -23,9 +41,14 @@ protocol DinnerViewModelCellable {
   var placeInjection: String {get set}
   var train: String? {get set}
   
-  var isPreviosDinner: Bool {get set}
-  var compansationFase: Compasation {get set}
+  var isPreviosDinner: Bool {get set} // Deprecated
   
+  
+  // Enum States
+  
+  var correctInsulinByShugarPosition: CorrectInsulinPosition {get set}
+  var dinnerPosition: DinnerPosition {get set}
+  var compansationFase: CompansationPosition {get set}
   
 }
 
@@ -34,6 +57,10 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   
   static let cellId = "DinnerCollectionViewCellId"
   
+  
+  var compasationPosition: CompansationPosition              = .new
+  var dinnerPosition: DinnerPosition                         = .newdinner
+  var correctInsulinByShugarPosition: CorrectInsulinPosition = .dontCorrect
   
   // Shugar View
   let shugarSetView = ShugarSetView()
@@ -83,26 +110,9 @@ class DinnerCollectionViewCell: UICollectionViewCell {
     super.init(frame: frame)
     
     backgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
-    
-    
-    
-    setUpShuagarView()
-    
-    setUpWillActiveRow()
-    setUpChoosePlaceInjectionsAndTotalInsulinView()
-//    setUpChoosePlaceInjectionsRowView()
-    
-    addSubview(touchesPassView)
-    touchesPassView.fillSuperview()
-    
-    setUpProductView()
-    setUpAddButton()
-    
-    
-    
-    
-    
-    
+
+    setUpViews()
+
   }
 
   // Height Product List
@@ -116,11 +126,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
 
 
   }
-  
-  
-  
-  
-  
+
   override func draw(_ rect: CGRect) {
     super.draw(rect)
     
@@ -151,6 +157,21 @@ extension DinnerCollectionViewCell {
 // MARK: Set UP Views
 
 extension DinnerCollectionViewCell {
+  
+  private func setUpViews() {
+    
+    setUpShuagarView()
+    
+    setUpWillActiveRow()
+    setUpChoosePlaceInjectionsAndTotalInsulinView()
+    //    setUpChoosePlaceInjectionsRowView()
+    
+    addSubview(touchesPassView)
+    touchesPassView.fillSuperview()
+    
+    setUpProductView()
+    setUpAddButton()
+  }
   
   
   // Set Up Shugar View
@@ -246,21 +267,78 @@ extension DinnerCollectionViewCell {
 
   func setViewModel(viewModel: DinnerViewModel) {
     
+    compasationPosition = viewModel.compansationFase
+    dinnerPosition = viewModel.dinnerPosition
+    correctInsulinByShugarPosition = viewModel.correctInsulinByShugarPosition
     
+    // Я так понимаю что здесь будут проблемы из за того что ячейки они обновляются постоянно и нельзя просто руками засетить флаги нужно и для нового обеда ставить свои флаги а это 2 раза больше кода но гораздо читаеме
+    
+    // Здесь до разделения должны идти методы которые засетят данные а уже изменение UI пускай идет в switch
+    
+    // Set Data
+    setViewModelsInCell(viewModel: viewModel)
+    
+    
+    // Set Views in Position
+    
+    switch viewModel.dinnerPosition {
+    case .newdinner:
+      print("Work With New Dinner")
+      
+      updateViewsNewDinner()
+    case .previosdinner:
+      print("Work with Prev Dinner")
+      
+      updateViewsPrevDinner()
+    }
+    
+    // Set Views in Compansation Fase
+    setCompansationFase()
+
+    
+  }
+  
+  // Set Data
+  
+  private func setViewModelsInCell(viewModel:DinnerViewModel) {
     setShugarViewModel(shugarTopViewModel: viewModel.shugarTopViewModel)
     setProductListViewModel(productListViewModel: viewModel.productListInDinnerViewModel)
     
     setTotalInsulinValue(totalInsulin: viewModel.totalInsulin)
     setChoosePlaceViewModel(placeInjections: viewModel.placeInjection)
-    
-    updateDinnerCellIfPreviosDinner(isPreviosDinner: viewModel.isPreviosDinner,compansationFase: viewModel.compansationFase)
-    
-    // Здесь мне нужно будет учесть что если обед переходит в разряд прошлых то мы блокиреум ввод всего кроме скорректированного инсулина
-    
-    
   }
-  
 
+  
+  // Set Compansation
+   
+   private func setCompansationFase() {
+
+     switch compasationPosition {
+       case .good:
+         print("Good")
+       totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 0, green: 0.8886825442, blue: 0, alpha: 1)
+       
+       case .bad:
+         print("Bad")
+       totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 0.9538820386, green: 0.06064923853, blue: 0.02890501916, alpha: 1)
+       case .progress:
+         print("In Progress")
+       totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 0.9173465967, green: 1, blue: 0.1846651733, alpha: 1)
+     case .new:
+      print("New Dinner")
+       totalInsulinView.totalInsulinImageView.tintColor = .white
+
+
+       }
+   }
+
+  
+}
+
+
+// MARK: Set View Models
+
+extension DinnerCollectionViewCell {
   
   private func setTotalInsulinValue(totalInsulin: Float) {
     totalInsulinView.totalInsulinLabel.text = String(totalInsulin)
@@ -278,15 +356,17 @@ extension DinnerCollectionViewCell {
   
   // Shugar ViewModle
   private func setShugarViewModel(shugarTopViewModel: ShugarTopViewModelable) {
-    
-    shugarSetView.setViewModel(viewModel: shugarTopViewModel)
-    
-    
+    shugarSetView.setViewModel(
+      viewModel: shugarTopViewModel,
+      dinnerPosition: dinnerPosition,
+      correctInsulinPosition: correctInsulinByShugarPosition)
   }
   
   // ProductListViewModel
   private func setProductListViewModel(productListViewModel: ProductListInDinnerViewModel) {
     
+    
+    print("Is Need Compansation Insulin",productListViewModel.isNeedCorrectInsulinIfActualInsulinWrong)
     
     productListViewController.setViewModel(viewModel: productListViewModel)
     
@@ -296,42 +376,32 @@ extension DinnerCollectionViewCell {
     
   }
   
+}
+
+// MARK: Update New Dinner Views
+
+extension DinnerCollectionViewCell {
   
+  private func updateViewsNewDinner() {
+     addNewProductInMealButton.isHidden = false
+     chooseRowView.chooseButton.isEnabled = true
+     
+     chooseRowView.chooseButton.backgroundColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+   }
 }
 
 // MARK: Update Previos Dinner Views
  
 extension DinnerCollectionViewCell {
- 
-  private func updateDinnerCellIfPreviosDinner(
-    isPreviosDinner: Bool,
-    compansationFase: Compasation
-  ) {
-    
-    addNewProductInMealButton.isHidden = isPreviosDinner
-    chooseRowView.chooseButton.isEnabled = !isPreviosDinner
+  
+  private func updateViewsPrevDinner() {
+    addNewProductInMealButton.isHidden = true
+    chooseRowView.chooseButton.isEnabled = false
 
-    chooseRowView.chooseButton.backgroundColor = isPreviosDinner ? #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1) : #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
-    
-    setCompansationFase(compansation:compansationFase)
-    
-    
+    chooseRowView.chooseButton.backgroundColor = .clear
   }
   
-  private func setCompansationFase(compansation: Compasation) {
-
-    switch compansation {
-      case .good:
-        print("Good")
-      totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 0, green: 0.8886825442, blue: 0, alpha: 1)
-      case .bad:
-        print("Bad")
-      totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 0.9538820386, green: 0.06064923853, blue: 0.02890501916, alpha: 1)
-      case .dontSet:
-        print("Haven't set yet")
-      totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-
-      }
-  }
+  
+ 
 }
 

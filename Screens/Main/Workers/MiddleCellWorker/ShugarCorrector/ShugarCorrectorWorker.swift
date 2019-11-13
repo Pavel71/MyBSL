@@ -16,6 +16,7 @@ class ShugarCorrectorWorker {
   private var bottomShugarLevel: Float
   private var higherShuagrLevel: Float
   
+  
   var isNeedCorrectShugarByInsulin: Bool = false
   // Этот бул для того надо ли показать текстфилд или нет
   private var isUserHaveToSetData: Bool = true
@@ -48,6 +49,12 @@ class ShugarCorrectorWorker {
   
   func isPreviosDinnerFalledCompansation(shugarValue: Float) -> Bool {
     return shugarValue > higherShuagrLevel || shugarValue < bottomShugarLevel
+  }
+  
+  func getCorrectInsulinBySugarPosition(sugar: Float) -> CorrectInsulinPosition {
+    
+    let isNeedCorrect = isPreviosDinnerFalledCompansation(shugarValue: sugar)
+    return isNeedCorrect ? .needCorrect : .dontCorrect
   }
 
   

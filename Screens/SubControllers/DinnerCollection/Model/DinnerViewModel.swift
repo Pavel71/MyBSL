@@ -10,22 +10,20 @@ import Foundation
 
 
 
-// Пока напишу здесь класс Валидатор
-
-
-
-
-
-
-
 
 
 // DinnerViewModelCellable
 struct DinnerViewModel: DinnerViewModelCellable {
   
-  var compansationFase: Compasation
   
-  var isPreviosDinner: Bool
+  // Dinner States
+  
+  var compansationFase: CompansationPosition
+  var dinnerPosition: DinnerPosition
+  var correctInsulinByShugarPosition: CorrectInsulinPosition
+  
+  
+  var isPreviosDinner: Bool // Deprecated
   
   
   var shugarTopViewModel: ShugarTopViewModelable
@@ -39,13 +37,18 @@ struct DinnerViewModel: DinnerViewModelCellable {
 
 
 struct ShugarTopViewModel: ShugarTopViewModelable {
+ 
   
-  
+
   // Корректирующий инсулин
-  var isNeedInsulinCorrectByShugar: Bool 
+ 
   var correctInsulinByShugar: Float
   
-  var isPreviosDinner: Bool
+//  var isNeedInsulinCorrectByShugar: Bool// Deprecated
+//  var correctInsulinPosition: CorrectInsulinPosition
+//
+//  var dinnerPosition: DinnerPosition
+//  var isPreviosDinner: Bool // Deprecateed
   
   var shugarBeforeValue: Float
   
@@ -55,14 +58,22 @@ struct ShugarTopViewModel: ShugarTopViewModelable {
   
   var timeAfter: Date?
   
-  init(isPreviosDinner: Bool,shugarBeforeValue: Float,shugarAfterValue: Float,timeBefore: Date?,timeAfter: Date?,correctInsulinByShugar: Float = 0.0,isNeedInsulinCorrectByShugar:Bool = false) {
-    self.isPreviosDinner = isPreviosDinner
-    self.shugarBeforeValue = shugarBeforeValue
-    self.shugarAfterValue = shugarAfterValue
-    self.timeBefore = timeBefore
-    self.timeAfter = timeAfter
-    self.correctInsulinByShugar = correctInsulinByShugar
-    self.isNeedInsulinCorrectByShugar = isNeedInsulinCorrectByShugar
+  init(
+  
+    shugarBeforeValue: Float,
+    shugarAfterValue: Float,
+    timeBefore: Date?,
+    timeAfter: Date?,
+    correctInsulinByShugar: Float = 0.0
+    
+  ) {
+
+    self.shugarBeforeValue            = shugarBeforeValue
+    self.shugarAfterValue             = shugarAfterValue
+    self.timeBefore                   = timeBefore
+    self.timeAfter                    = timeAfter
+    self.correctInsulinByShugar       = correctInsulinByShugar
+    
   }
   
   

@@ -69,7 +69,7 @@ extension MainViewModel {
    }
   
   mutating func setGoodCompansationInsulinInProducts(goodComapnsationInsulin: Float,rowProduct:Int) {
-    dinnerCollectionViewModel[indexNewDinner].productListInDinnerViewModel.productsData[rowProduct].goodCompansationInsulin = goodComapnsationInsulin
+    dinnerCollectionViewModel[indexNewDinner].productListInDinnerViewModel.productsData[rowProduct].correctInsulinValue = goodComapnsationInsulin
   }
    // Set Portion
    mutating func setPortionInProducts(portion: Int,rowProduct: Int) {
@@ -111,7 +111,8 @@ extension MainViewModel {
     dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.timeBefore = time
       
     // Set Should Correct Insulin By SHugar
-    dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.isNeedInsulinCorrectByShugar = ShugarCorrectorWorker.shared.isPreviosDinnerFalledCompansation(shugarValue: shugarBefore)
+    dinnerCollectionViewModel[indexNewDinner].correctInsulinByShugarPosition = ShugarCorrectorWorker.shared.getCorrectInsulinBySugarPosition(sugar: shugarBefore)
+//    dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.isNeedInsulinCorrectByShugar = ShugarCorrectorWorker.shared.isPreviosDinnerFalledCompansation(shugarValue: shugarBefore)
   }
 }
 

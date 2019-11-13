@@ -65,7 +65,7 @@ extension DinnerRealmManager {
     return lastDinner
   }
   
-  func updateShugarAfterInPreviosDinner(shugar: Float, isGoodCompansation: Bool) {
+  func updateShugarAfterInPreviosDinner(shugar: Float, compansation: CompansationPosition) {
     
     let realm = provider.realm
     guard realm.objects(DinnerRealm.self).count > 0 else {return}
@@ -74,7 +74,7 @@ extension DinnerRealmManager {
     let lastDinner = getPreviosDinner()
     
     try! realm.write {
-      lastDinner.compansationFase = isGoodCompansation ? 0 : 1
+      lastDinner.compansationFase = compansation.rawValue
       lastDinner.shugarAfter = shugar
     }
     
@@ -98,7 +98,7 @@ extension DinnerRealmManager {
     
     let realm = provider.realm
     
-    let carbo = realm.objects(DinnerRealm.self).filter("compansationFase == %@",Compasation.good.rawValue).flatMap{$0.listProduct.map{$0.carboInPortion}}
+    let carbo = realm.objects(DinnerRealm.self).filter("compansationFase == %@",CompansationPosition.good.rawValue).flatMap{$0.listProduct.map{$0.carboInPortion}}
     
     return Array(carbo)
   }
@@ -109,7 +109,9 @@ extension DinnerRealmManager {
     
     let realm = provider.realm
     
-    let carbo = realm.objects(DinnerRealm.self).filter("compansationFase == %@",Compasation.good.rawValue).flatMap{$0.listProduct.map{$0.actualInsulin}}
+    let carbo = realm.objects(DinnerRealm.self).filter("compansationFase == %@",CompansationPosition.good.rawValue).flatMap{$0.listProduct.map{$0.actualInsulin}}
+    
+    // Здесь нужно брать не актуал инсулин а скорректированный если коректировка не нужна то берется актуалИнсулин
     
     return Array(carbo)
   }

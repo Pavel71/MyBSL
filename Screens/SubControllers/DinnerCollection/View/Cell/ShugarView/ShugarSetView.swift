@@ -9,11 +9,15 @@
 import UIKit
 
 
+
+
 protocol ShugarTopViewModelable {
+//  var isNeedInsulinCorrectByShugar: Bool {get set} // Deprecated
+//  var isPreviosDinner: Bool {get set} // Deprecated
   
-  var isPreviosDinner: Bool {get set}
-  var isNeedInsulinCorrectByShugar: Bool {get set}
-  
+//  var dinnerPosition: DinnerPosition {get set}
+//  var correctInsulinPosition: CorrectInsulinPosition {get set}
+
   var correctInsulinByShugar: Float {get set}
   var shugarBeforeValue: Float {get set}
   var shugarAfterValue: Float {get set}
@@ -24,17 +28,45 @@ protocol ShugarTopViewModelable {
 
 class ShugarSetView: UIView {
   
+  // States
+  var correctInsulinPosition: CorrectInsulinPosition!
+  var dinnerPosition: DinnerPosition!
   
   // Shugar Before
   
   let shugarBeforeTitleLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Сахар до еды")
   
+  let sugarBeforeImageView: UIImageView = {
+    let iv = UIImageView(image: #imageLiteral(resourceName: "SugarBefore"))
+    iv.clipsToBounds = true
+    iv.layer.cornerRadius = 10
+    iv.contentMode = .scaleAspectFit
+    return iv
+  }()
+  
+  let sugarAfterImageView: UIImageView = {
+    let iv = UIImageView(image: #imageLiteral(resourceName: "SugarAfter"))
+    iv.clipsToBounds = true
+    iv.layer.cornerRadius = 10
+    iv.contentMode = .scaleAspectFit
+    return iv
+  }()
+  
+  let sugarCorrectImageView: UIImageView = {
+    let iv = UIImageView(image: #imageLiteral(resourceName: "SugarCorrect"))
+    iv.clipsToBounds = true
+    iv.layer.cornerRadius = 10
+    iv.contentMode = .scaleAspectFit
+    return iv
+  }()
+  
   let shugarBeforeValueTextField = CustomValueTextField(placeholder: "7.2", cornerRadius: 10)
+  
   
   
   // Shugar After
   
-  let shugarAfterTitleLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Сахар после еды")
+//  let shugarAfterTitleLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Сахар после еды")
   
   let shugarAfterValueTextField = CustomValueTextField(placeholder: "7.2", cornerRadius: 10)
   
@@ -50,12 +82,12 @@ class ShugarSetView: UIView {
   
   // Correct StackView
   let correctionShugarInsulinValueTextField = CustomValueTextField(placeholder: "1.0", cornerRadius: 10)
-  let correctionLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Компенсационный инсулин")
+//  let correctionLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Компенсационный инсулин")
   
   lazy var correctionShugarByInsulinStackView: UIStackView = {
     
     let stackView = UIStackView(arrangedSubviews: [
-      correctionLabel,correctionShugarInsulinValueTextField
+      sugarCorrectImageView,correctionShugarInsulinValueTextField
     ])
     correctionShugarInsulinValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
     stackView.spacing = 5
@@ -105,131 +137,125 @@ class ShugarSetView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    shugarBeforeValueTextField.addTarget(self, action: #selector(handleShugarBeforeTextChange), for: .editingChanged)
-    
-    shugarBeforeValueTextField.keyboardType = .decimalPad
-    shugarAfterValueTextField.keyboardType = .decimalPad
-    
-    shugarBeforeValueTextField.delegate = self
-    correctionShugarInsulinValueTextField.delegate = self
-    
-    correctionShugarInsulinValueTextField.inputView = pickerView
-    pickerView.delegate = self
-    pickerView.dataSource = self
-    
-    let stackViewBefore = UIStackView(arrangedSubviews: [
-      shugarBeforeTitleLabel,
-      timeBeforeLabel
-    ])
-    stackViewBefore.axis = .vertical
-    
-    let stackViewShugarBefore = UIStackView(arrangedSubviews: [
-      stackViewBefore,shugarBeforeValueTextField
-    ])
-    
-    stackViewShugarBefore.distribution = .fill
-    shugarBeforeValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
+    drawViews()
     
     
+  }
+  
+  func setViewModel(
+    viewModel: ShugarTopViewModelable,
+    dinnerPosition: DinnerPosition,
+    correctInsulinPosition: CorrectInsulinPosition
+  ) {
     
-    let stackViewAfter = UIStackView(arrangedSubviews: [
-      shugarAfterTitleLabel,
-      timeAfterLabel
-    ])
-    stackViewAfter.axis = .vertical
+    self.dinnerPosition = dinnerPosition
+    self.correctInsulinPosition = correctInsulinPosition
     
-    stackViewShugarAfter = UIStackView(arrangedSubviews: [
-      stackViewAfter,shugarAfterValueTextField
-    ])
-    shugarAfterValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
+    setViewModels(viewModel: viewModel)
     
     
-    stackViewShugarAfter.distribution = .fill
-    // Он никогда не редактируется!
-    shugarAfterValueTextField.isEnabled = false
+    // Здесь мне нужно запустить логику
     
-    let stackView = UIStackView(arrangedSubviews: [
-      stackViewShugarBefore,stackViewShugarAfter,correctionShugarByInsulinStackView,spacingView
-    ])
+    // 1. Проверить Обед предыдущий или нет
+    //
     
-    stackView.distribution = .fillEqually
-    stackView.spacing = 10
-    
-    addSubview(stackView)
-    stackView.fillSuperview()
-    
-    stackViewShugarAfter.isHidden = true
-    correctionShugarByInsulinStackView.isHidden = true
+    updateViewsFromCorrectInsulinBySugarPosition()
+    updateViewsFromDinnerPosition(sugarAfter: viewModel.shugarAfterValue)
     
     
     
   }
   
-  func setViewModel(viewModel:ShugarTopViewModelable) {
-    
-    workWithSugarBefore(viewModel: viewModel)
-    workWithShugarAfter(viewModel: viewModel)
-    workWithTime(viewModel: viewModel)
+  // MARK: Dinner Position
+  
+  private func updateViewsFromDinnerPosition(sugarAfter: Float) {
+    switch dinnerPosition {
+      case .newdinner:
+        print("Shugar New Dinner")
+        updateViewsNewDinner()
+      case .previosdinner:
+        print("Shugar Prev Dinner")
+        updateViewsPrevDinner(sugarAfter: sugarAfter)
 
-    workWithCorrectInsulin(viewModel: viewModel)
-    
-    configureIfisPreviosDinner(viewModel: viewModel)
-    
-    
-  }
-  
-  // MARK: Work With ViewModel
-  
-  private func workWithTime(viewModel:ShugarTopViewModelable) {
-    
-    timeBeforeLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeBefore)
-    
-    timeAfterLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeAfter)
-
-  }
-  
-  private func workWithSugarBefore(viewModel:ShugarTopViewModelable) {
-    let shugarBeforeString = viewModel.shugarBeforeValue == 0 ? "" : String(viewModel.shugarBeforeValue)
-       shugarBeforeValueTextField.text = shugarBeforeString
-    shugarBeforeValueTextField.isEnabled = !viewModel.isPreviosDinner
-    
-  }
-  
-  private func workWithShugarAfter(viewModel:ShugarTopViewModelable) {
-
-    stackViewShugarAfter.isHidden = !viewModel.isPreviosDinner
-    shugarAfterValueTextField.text =  viewModel.shugarAfterValue == 0 ? "" : String(viewModel.shugarAfterValue)
-    
-  }
-  
-  private func workWithCorrectInsulin(viewModel:ShugarTopViewModelable) {
-    
-    
-    let correctInsulinByShugarString = viewModel.correctInsulinByShugar == 0 ? "" : String(viewModel.correctInsulinByShugar)
-       correctionShugarInsulinValueTextField.text = correctInsulinByShugarString
-    isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection:viewModel.isNeedInsulinCorrectByShugar)
-  }
-  
-  
-  private func configureIfisPreviosDinner(viewModel: ShugarTopViewModelable) {
-    // Hidden right shugar StackView And S
-    
-    // Тут нужно дополнительное свойство не только предыдущий о бед но и то что мы засетили новый сахар его можно поместить уже туда
-    
-    
-    if viewModel.isPreviosDinner {
-      
-      stackViewShugarAfter.isHidden = viewModel.shugarAfterValue == 0
-      spacingView.isHidden = viewModel.shugarAfterValue != 0
-      self.correctionShugarByInsulinStackView.isHidden = !viewModel.isNeedInsulinCorrectByShugar
-
+    case .none:break
     }
+  }
+  
+  // MARK: Configure Views CorrectInsulin
+   
+   private func updateViewsFromCorrectInsulinBySugarPosition() {
+     
+     switch correctInsulinPosition {
+     case .needCorrect:
+       print("Need Correct Insulin")
+       
+       correctionShugarByInsulinStackView.isHidden = false
+       spacingView.isHidden = true
+      
+     case .dontCorrect:
+       print("Dont neeed Correct")
+       correctionShugarByInsulinStackView.isHidden = true
+       spacingView.isHidden = false
     
+     case .none:break
+    }
+   }
+
+  
+  // MARK: SetViewModels
+  
+  private func setViewModels(viewModel:ShugarTopViewModelable) {
     
+    setTime(viewModel: viewModel)
+    setSugarBefore(viewModel: viewModel)
+    setShugarAfter(viewModel: viewModel)
+    setCorrectInsulin(viewModel: viewModel)
 
     
+  }
+  
+  // MARK: Update Views NewDinner
+  
+  private func updateViewsNewDinner() {
+    
+    shugarBeforeValueTextField.isEnabled = true
+    stackViewShugarAfter.isHidden = true
+    
+    confirmeTextFieldsToNewDinner(textField: shugarBeforeValueTextField)
+    confirmeTextFieldsToNewDinner(textField: correctionShugarInsulinValueTextField)
+
     
   }
+  // MARK: Update Views PrevDinner
+  
+  private func updateViewsPrevDinner(sugarAfter: Float) {
+    
+    
+    shugarBeforeValueTextField.isEnabled = false
+
+    confirmeTextFieldsToPrevDinner(textField: shugarBeforeValueTextField)
+    confirmeTextFieldsToPrevDinner(textField: correctionShugarInsulinValueTextField)
+
+//    stackViewShugarAfter.alpha = sugarAfter == 0 ? 0 : 1
+    // Нам нужно скрывать эти поля пока не засетится новые значениея
+    stackViewShugarAfter.isHidden = sugarAfter == 0
+    spacingView.isHidden          = sugarAfter != 0
+  }
+  
+ 
+  private func confirmeTextFieldsToNewDinner(textField: CustomValueTextField) {
+    textField.backgroundColor =  .white
+    textField.textColor       = .black
+    textField.withCornerLayer = true
+  }
+  
+  private func confirmeTextFieldsToPrevDinner(textField: CustomValueTextField) {
+    textField.backgroundColor =  .clear
+    textField.textColor       = .white
+    textField.withCornerLayer = false
+  }
+  
+
   
   
   private func setTimeBeforTime() -> Date {
@@ -248,9 +274,10 @@ class ShugarSetView: UIView {
   }
 
 
-  private func isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection: Bool) {
-    self.correctionShugarByInsulinStackView.isHidden = !isHiddenCorrection
-    self.spacingView.isHidden = isHiddenCorrection
+  private func updateCorrectInsulinPositionByNewSugar(correctInsulinBySugarPosition: CorrectInsulinPosition) {
+    
+    correctInsulinPosition = correctInsulinBySugarPosition
+    updateViewsFromCorrectInsulinBySugarPosition()
 
   }
   
@@ -264,7 +291,123 @@ class ShugarSetView: UIView {
   
 }
 
+// MARK: Set View Models
 
+extension ShugarSetView {
+  
+   private func setTime(viewModel:ShugarTopViewModelable) {
+      
+      timeBeforeLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeBefore)
+      timeAfterLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeAfter)
+
+    }
+    
+    private func setSugarBefore(viewModel:ShugarTopViewModelable) {
+      
+      let shugarBeforeString = viewModel.shugarBeforeValue == 0 ? "" : String(viewModel.shugarBeforeValue)
+         shugarBeforeValueTextField.text = shugarBeforeString
+  
+      
+    }
+    
+    private func setShugarAfter(viewModel:ShugarTopViewModelable) {
+
+
+      shugarAfterValueTextField.text =  viewModel.shugarAfterValue == 0 ? "" : String(viewModel.shugarAfterValue)
+//      shugarAfterValueTextField.alpha = 0
+      confirmeTextFieldsToPrevDinner(textField: shugarAfterValueTextField)
+ 
+      
+    }
+    
+    private func setCorrectInsulin(viewModel:ShugarTopViewModelable) {
+
+      let correctInsulinByShugarString = viewModel.correctInsulinByShugar == 0 ? "" : String(viewModel.correctInsulinByShugar)
+      
+      correctionShugarInsulinValueTextField.text = correctInsulinByShugarString
+
+    }
+  
+}
+
+// MARK: Set Up Views
+
+extension ShugarSetView {
+  
+  private func drawViews() {
+    confirmViews()
+    setUpViews()
+  }
+  
+  
+  private func confirmViews() {
+    shugarBeforeValueTextField.addTarget(self, action: #selector(handleShugarBeforeTextChange), for: .editingChanged)
+    
+    shugarBeforeValueTextField.keyboardType = .decimalPad
+    shugarAfterValueTextField.keyboardType = .decimalPad
+    
+    shugarBeforeValueTextField.delegate = self
+    correctionShugarInsulinValueTextField.delegate = self
+    
+    correctionShugarInsulinValueTextField.inputView = pickerView
+    pickerView.delegate = self
+    pickerView.dataSource = self
+  }
+  
+  private func setUpViews() {
+       
+       
+       let stackViewBefore = UIStackView(arrangedSubviews: [
+         sugarBeforeImageView,
+         timeBeforeLabel
+       ])
+       stackViewBefore.axis = .vertical
+       
+       let stackViewShugarBefore = UIStackView(arrangedSubviews: [
+         stackViewBefore,shugarBeforeValueTextField
+       ])
+       
+       stackViewShugarBefore.distribution = .fill
+       shugarBeforeValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
+       
+       
+       
+       let stackViewAfter = UIStackView(arrangedSubviews: [
+         sugarAfterImageView,
+         timeAfterLabel
+       ])
+       stackViewAfter.axis = .vertical
+       
+       stackViewShugarAfter = UIStackView(arrangedSubviews: [
+         stackViewAfter,shugarAfterValueTextField
+       ])
+       shugarAfterValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
+       
+       
+       stackViewShugarAfter.distribution = .fill
+       // Он никогда не редактируется!
+       shugarAfterValueTextField.isEnabled = false
+       
+       let stackView = UIStackView(arrangedSubviews: [
+         stackViewShugarBefore,
+         correctionShugarByInsulinStackView,
+         stackViewShugarAfter,
+         spacingView
+       ])
+
+       stackView.distribution = .fillEqually
+       stackView.spacing = 10
+       
+       addSubview(stackView)
+       stackView.fillSuperview()
+       
+       stackViewShugarAfter.isHidden = true
+       correctionShugarByInsulinStackView.isHidden = true
+       
+  }
+}
+
+// MARK: TextField Delegate
 extension ShugarSetView: UITextFieldDelegate {
   
   @objc private func handleShugarBeforeTextChange(textField: UITextField) {
@@ -311,9 +454,11 @@ extension ShugarSetView: UITextFieldDelegate {
     
     let timeBefore = setTimeBeforTime()
     
+    let correctInsulinBySugarPosition = ShugarCorrectorWorker.shared.getCorrectInsulinBySugarPosition(sugar: shugarFloat)
+    
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: {
 
-      self.isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection: ShugarCorrectorWorker.shared.isPreviosDinnerFalledCompansation(shugarValue: shugarFloat))
+      self.updateCorrectInsulinPositionByNewSugar(correctInsulinBySugarPosition: correctInsulinBySugarPosition)
       
     }, completion: { _ in
       self.didSetShugarBeforeValueAndTimeClouser!(timeBefore,shugarFloat)
@@ -321,23 +466,13 @@ extension ShugarSetView: UITextFieldDelegate {
     
     
 
-    // если это значение будет приходить с viewModel   то можно оставить этот метода только в setViewModel
-    
-//    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: {
-//
-//      self.isHIddenCorrectionShugarByInsulinStackView(isHiddenCorrection: ShugarCorrectorWorker.shared.getIsShowCorrectTextField(shugarValue: shugarFloat))
-//
-//    }, completion: { _ in
-//      self.didSetShugarBeforeValueAndTimeClouser!(timeBefore,shugarFloat)
-//    })
-    
-    
   }
   
   
 }
 
 
+// MARK: PickerView Delegate
 
 extension ShugarSetView: UIPickerViewDelegate,UIPickerViewDataSource {
   
@@ -388,5 +523,8 @@ extension ShugarSetView: UIPickerViewDelegate,UIPickerViewDataSource {
   }
   
 }
+
+
+
 
 // Здесь нам нужен pickerView! с выбором направления коррекцитровки и вводлм самой корректирвоки

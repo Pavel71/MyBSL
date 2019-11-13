@@ -43,6 +43,10 @@ class CustomValueTextField: UITextField {
       
       clipsToBounds = true
       layer.cornerRadius = 10
+      
+      
+    } else {
+      layer.borderWidth = 0
     }
     
 
