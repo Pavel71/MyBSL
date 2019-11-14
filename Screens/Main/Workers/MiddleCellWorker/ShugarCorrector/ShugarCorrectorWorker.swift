@@ -48,7 +48,14 @@ class ShugarCorrectorWorker {
   
   
   func isPreviosDinnerFalledCompansation(shugarValue: Float) -> Bool {
-    return shugarValue > higherShuagrLevel || shugarValue < bottomShugarLevel
+    
+    if shugarValue == 0 {
+      return false
+    } else {
+      return shugarValue > higherShuagrLevel || shugarValue < bottomShugarLevel
+    }
+    
+    
   }
   
   func getCorrectInsulinBySugarPosition(sugar: Float) -> CorrectInsulinPosition {

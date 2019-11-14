@@ -35,30 +35,21 @@ class ShugarSetView: UIView {
   // Shugar Before
   
   let shugarBeforeTitleLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Сахар до еды")
+
   
-  let sugarBeforeImageView: UIImageView = {
-    let iv = UIImageView(image: #imageLiteral(resourceName: "SugarBefore"))
-    iv.clipsToBounds = true
-    iv.layer.cornerRadius = 10
-    iv.contentMode = .scaleAspectFit
-    return iv
-  }()
+  lazy var sugarBeforeImageView = createSugarImageView(image: #imageLiteral(resourceName: "SugarBefore"))
+  lazy var sugarAfterImageView = createSugarImageView(image: #imageLiteral(resourceName: "SugarAfter"))
+  lazy var sugarCorrectDownImageView = createSugarImageView(image: #imageLiteral(resourceName: "SugarCorrect"))
   
-  let sugarAfterImageView: UIImageView = {
-    let iv = UIImageView(image: #imageLiteral(resourceName: "SugarAfter"))
-    iv.clipsToBounds = true
-    iv.layer.cornerRadius = 10
-    iv.contentMode = .scaleAspectFit
-    return iv
-  }()
+
   
-  let sugarCorrectImageView: UIImageView = {
-    let iv = UIImageView(image: #imageLiteral(resourceName: "SugarCorrect"))
-    iv.clipsToBounds = true
-    iv.layer.cornerRadius = 10
-    iv.contentMode = .scaleAspectFit
+  func createSugarImageView(image: UIImage) -> UIImageView {
+    let iv = UIImageView(image: image)
+      iv.clipsToBounds = true
+      iv.layer.cornerRadius = 10
+      iv.contentMode = .scaleAspectFit
     return iv
-  }()
+  }
   
   let shugarBeforeValueTextField = CustomValueTextField(placeholder: "7.2", cornerRadius: 10)
   
@@ -82,12 +73,12 @@ class ShugarSetView: UIView {
   
   // Correct StackView
   let correctionShugarInsulinValueTextField = CustomValueTextField(placeholder: "1.0", cornerRadius: 10)
-//  let correctionLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Компенсационный инсулин")
+  let correctionLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Компенсационный инсулин")
   
   lazy var correctionShugarByInsulinStackView: UIStackView = {
     
     let stackView = UIStackView(arrangedSubviews: [
-      sugarCorrectImageView,correctionShugarInsulinValueTextField
+      correctionLabel,sugarCorrectDownImageView,correctionShugarInsulinValueTextField
     ])
     correctionShugarInsulinValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
     stackView.spacing = 5
@@ -179,6 +170,8 @@ class ShugarSetView: UIView {
 
     case .none:break
     }
+    
+    
   }
   
   // MARK: Configure Views CorrectInsulin
@@ -218,7 +211,11 @@ class ShugarSetView: UIView {
   
   private func updateViewsNewDinner() {
     
-    shugarBeforeValueTextField.isEnabled = true
+
+    switchLabelAndImageView(text: shugarBeforeValueTextField.text ?? "", imageView: sugarBeforeImageView, label: shugarBeforeTitleLabel)
+    
+    switchLabelAndImageView(text: correctionShugarInsulinValueTextField.text ?? "", imageView: sugarCorrectDownImageView, label: correctionLabel)
+    
     stackViewShugarAfter.isHidden = true
     
     confirmeTextFieldsToNewDinner(textField: shugarBeforeValueTextField)
@@ -230,13 +227,15 @@ class ShugarSetView: UIView {
   
   private func updateViewsPrevDinner(sugarAfter: Float) {
     
+//    switchSugarImageViewToLabel(imageView: sugarBeforeImageView, label: shugarBeforeTitleLabel)
     
-    shugarBeforeValueTextField.isEnabled = false
-
+    switchLabelAndImageView(text: shugarBeforeValueTextField.text!, imageView: sugarBeforeImageView, label: shugarBeforeTitleLabel)
+    
+    switchLabelAndImageView(text: correctionShugarInsulinValueTextField.text ?? "", imageView: sugarCorrectDownImageView, label: correctionLabel)
+    
+  
     confirmeTextFieldsToPrevDinner(textField: shugarBeforeValueTextField)
     confirmeTextFieldsToPrevDinner(textField: correctionShugarInsulinValueTextField)
-
-//    stackViewShugarAfter.alpha = sugarAfter == 0 ? 0 : 1
     // Нам нужно скрывать эти поля пока не засетится новые значениея
     stackViewShugarAfter.isHidden = sugarAfter == 0
     spacingView.isHidden          = sugarAfter != 0
@@ -244,12 +243,14 @@ class ShugarSetView: UIView {
   
  
   private func confirmeTextFieldsToNewDinner(textField: CustomValueTextField) {
+    textField.isEnabled = true
     textField.backgroundColor =  .white
     textField.textColor       = .black
     textField.withCornerLayer = true
   }
   
   private func confirmeTextFieldsToPrevDinner(textField: CustomValueTextField) {
+    textField.isEnabled = false
     textField.backgroundColor =  .clear
     textField.textColor       = .white
     textField.withCornerLayer = false
@@ -280,10 +281,7 @@ class ShugarSetView: UIView {
     updateViewsFromCorrectInsulinBySugarPosition()
 
   }
-  
-  
-  
-  
+
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -314,7 +312,7 @@ extension ShugarSetView {
 
 
       shugarAfterValueTextField.text =  viewModel.shugarAfterValue == 0 ? "" : String(viewModel.shugarAfterValue)
-//      shugarAfterValueTextField.alpha = 0
+
       confirmeTextFieldsToPrevDinner(textField: shugarAfterValueTextField)
  
       
@@ -327,6 +325,34 @@ extension ShugarSetView {
       correctionShugarInsulinValueTextField.text = correctInsulinByShugarString
 
     }
+  
+}
+
+  // MARK: Switch ImageView to Label
+extension ShugarSetView {
+  
+   private func switchLabelAndImageView(
+     text: String,
+     imageView: UIImageView,
+     label: UILabel
+   ) {
+    
+    if text.isEmpty {
+    self.switchSugarLabelToImageView(imageView: imageView, label: label)
+       } else {
+    self.switchSugarImageViewToLabel(imageView: imageView, label: label)
+       }
+
+   }
+   
+   private func switchSugarImageViewToLabel(imageView: UIImageView,label: UILabel) {
+     imageView.isHidden = false
+     label.isHidden = true
+   }
+   private func switchSugarLabelToImageView(imageView: UIImageView,label: UILabel) {
+     imageView.isHidden = true
+     label.isHidden = false
+   }
   
 }
 
@@ -354,13 +380,20 @@ extension ShugarSetView {
     pickerView.dataSource = self
   }
   
+  
+ 
+  
   private func setUpViews() {
        
+      sugarBeforeImageView.isHidden = true
+      sugarCorrectDownImageView.isHidden = true
        
        let stackViewBefore = UIStackView(arrangedSubviews: [
+         shugarBeforeTitleLabel,
          sugarBeforeImageView,
-         timeBeforeLabel
+         
        ])
+//    timeBeforeLabel
        stackViewBefore.axis = .vertical
        
        let stackViewShugarBefore = UIStackView(arrangedSubviews: [
@@ -429,9 +462,21 @@ extension ShugarSetView: UITextFieldDelegate {
     
     switch textField {
     case shugarBeforeValueTextField:
+      
+      UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: {
+        
+        self.switchLabelAndImageView(text: text, imageView: self.sugarBeforeImageView, label: self.shugarBeforeTitleLabel)
+      })
+ 
       didEndEdidtingShugarBefore(text: text)
       
     case correctionShugarInsulinValueTextField:
+      
+      UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: {
+        
+        self.switchLabelAndImageView(text: text, imageView: self.sugarCorrectDownImageView, label: self.correctionLabel)
+      })
+      
       didEndEditingCorrectionInsulinTextField(text:text)
       
     default:break
@@ -448,25 +493,28 @@ extension ShugarSetView: UITextFieldDelegate {
   
   // End Editing SHugar Before
   private func didEndEdidtingShugarBefore(text: String) {
-    
-    let shugarFloat = (text as NSString).floatValue
-    guard shugarFloat != 0 else {return}
-    
+  
     let timeBefore = setTimeBeforTime()
-    
+    let shugarFloat = (text as NSString).floatValue
+
     let correctInsulinBySugarPosition = ShugarCorrectorWorker.shared.getCorrectInsulinBySugarPosition(sugar: shugarFloat)
+    
+    animateShowCorrectInsulinFields(correctInsulinPosition: correctInsulinBySugarPosition) { (_) in
+      self.didSetShugarBeforeValueAndTimeClouser!(timeBefore,shugarFloat)
+      }
+
+  }
+  
+private func animateShowCorrectInsulinFields(correctInsulinPosition: CorrectInsulinPosition, complation: ((Bool) -> Void)? = nil){
     
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: {
 
-      self.updateCorrectInsulinPositionByNewSugar(correctInsulinBySugarPosition: correctInsulinBySugarPosition)
+      self.updateCorrectInsulinPositionByNewSugar(correctInsulinBySugarPosition: correctInsulinPosition)
       
-    }, completion: { _ in
-      self.didSetShugarBeforeValueAndTimeClouser!(timeBefore,shugarFloat)
-    })
-    
-    
-
+    }, completion: complation)
+  
   }
+
   
   
 }
