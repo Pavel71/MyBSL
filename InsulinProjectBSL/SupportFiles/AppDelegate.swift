@@ -117,8 +117,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let realm = RealmProvider.dinners.realm
 //    guard realm.isEmpty else { return }
 
-    let dummyDinner = DinnerRealm(shugarBefore: 0, shugarAfter: 0, timeShugarBefore: Date(), timeShugarAfter: nil, placeInjection: "", trainName: "", correctionInsulin: 0, totalInsulin: 0,isPreviosDinner: false)
-    dinners.append(dummyDinner)
+//    let dummyDinner = DinnerRealm(shugarBefore: 0, shugarAfter: 0, timeShugarBefore: Date(), timeShugarAfter: nil, placeInjection: "", trainName: "", correctionInsulin: 0, totalInsulin: 0,isPreviosDinner: false)
+//    dinners.append(dummyDinner)
     
     try! realm.write {
       realm.deleteAll()

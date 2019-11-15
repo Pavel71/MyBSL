@@ -84,7 +84,6 @@ class NewProductView: AddNewElementView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    print("init new Food View ")
     
     carboTextField.keyboardType = .numberPad
     massaTextField.keyboardType = .numberPad

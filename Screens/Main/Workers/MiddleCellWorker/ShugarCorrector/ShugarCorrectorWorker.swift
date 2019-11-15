@@ -63,6 +63,18 @@ class ShugarCorrectorWorker {
     let isNeedCorrect = isPreviosDinnerFalledCompansation(shugarValue: sugar)
     return isNeedCorrect ? .needCorrect : .dontCorrect
   }
+  
+  func getWayCorrectPosition(sugar: Float) -> CorrectInsulinPosition {
+    
+    if sugar < bottomShugarLevel {
+      return .correctUp
+      
+    } else if sugar > higherShuagrLevel {
+      return .correctDown
+    }
+
+    return .dontCorrect
+  }
 
   
   

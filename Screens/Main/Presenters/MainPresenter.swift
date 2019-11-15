@@ -405,56 +405,7 @@ extension MainPresenter {
   
   private func workWithShugarBefore(time: Date,shugar:Float) {
     mainViewModel.setShugarBeforeTimeIsNeedCorrect(shugarBefore: shugar, time: time)
-
-//    if mainViewModel.indexNewDinner > 0 {
-//
-//      workWithPreviosDinner(shugarNow: shugar)
-//
-//    }
     
   }
-  
-//  // MARK: Work With Previos Dinner When Set Shugar
-//  private func workWithPreviosDinner(shugarNow: Float) {
-//
-//    // Set Shugar in Previos Dinner
-//    mainViewModel.setShugarAfterMeal(shugarNow: shugarNow)
-//
-//    let isGoodCompansation = ShugarCorrectorWorker.shared.isPreviosDinnerSuccessCompansation(shugarValue: shugarNow)
-//
-//    if isGoodCompansation {
-//      // Компенсация прошла успешно - теперь нужно переложить инсулин
-//
-//      // Это мы обновляем только нашу ViewModel! А нам нужно сохранить эти изменениея в реалме в предыдущем обеде! проставить для него все флаги с этим связанные! и тогда не надо будет мучатся с моделькой
-//
-//      let actualInsulin = mainViewModel.getActualInsulinArray()
-//
-//      actualInsulin.enumerated().forEach({ (index,insulin) in
-//        mainViewModel.setGoodCompansationInsulinInProducts(goodComapnsationInsulin: insulin, rowProduct: index)
-//      })
-//
-//      // Эти поля также должны быть в реалме
-//
-//      // Для этого мне нужно новое поле в диннере successCompansationInsulin: Float
-//      // isSuccesCompansation: Bool
-//
-//    } else {
-//
-//    }
-//
-//    // 1. Засетить сахар после еды
-//    // 2. Определить предыдущий обед коменсированн или нет
-//    // 3. Если нет то предложить алертом внести корректировку в предыдущий обед
-//    //    Первесети флаг successCompansation = false
-//    //    Показать корректирующие поля
-//    //    Подсветить шприц красным цветом
-//    //     Показать есче 1 шприц который будет отвечать за правельный инсулин
-//
-//    //    Если все норм
-//    //    Переложить инсулин из актуал в goodCompansation
-//    //    Подсвеитть шприц зеленым цветом
-//
-//  }
-  
-  
+
 }

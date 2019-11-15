@@ -12,12 +12,11 @@ enum CorrectInsulinPosition {
   case needCorrect
   case dontCorrect
   
-  var toogle: CorrectInsulinPosition {
-    switch self {
-    case .needCorrect: return .dontCorrect
-    case .dontCorrect: return .needCorrect
-    }
-  }
+  // Way Correct Position Need to Set Right Image
+  
+  case correctUp
+  case correctDown
+  
 }
 
 
@@ -283,11 +282,10 @@ extension DinnerCollectionViewCell {
     
     switch viewModel.dinnerPosition {
     case .newdinner:
-      print("Work With New Dinner")
       
+
       updateViewsNewDinner()
     case .previosdinner:
-      print("Work with Prev Dinner")
       
       updateViewsPrevDinner()
     }
@@ -315,17 +313,17 @@ extension DinnerCollectionViewCell {
 
      switch compasationPosition {
        case .good:
-         print("Good")
+         
        totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 0, green: 0.8886825442, blue: 0, alpha: 1)
        
        case .bad:
-         print("Bad")
+         
        totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 0.9538820386, green: 0.06064923853, blue: 0.02890501916, alpha: 1)
        case .progress:
-         print("In Progress")
+         
        totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 0.9173465967, green: 1, blue: 0.1846651733, alpha: 1)
      case .new:
-      print("New Dinner")
+      
        totalInsulinView.totalInsulinImageView.tintColor = .white
 
 
@@ -364,9 +362,7 @@ extension DinnerCollectionViewCell {
   
   // ProductListViewModel
   private func setProductListViewModel(productListViewModel: ProductListInDinnerViewModel) {
-    
-    
-    print("Is Need Compansation Insulin",productListViewModel.isNeedCorrectInsulinIfActualInsulinWrong)
+
     
     productListViewController.setViewModel(viewModel: productListViewModel)
     

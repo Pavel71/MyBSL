@@ -42,8 +42,6 @@ class MainMenuViewController: UIViewController,MenuControllerInContainerProtocol
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    print("View Did Load Menu Dinner")
-    
     view.backgroundColor = .white
     setUpMenuDinnerView()
 

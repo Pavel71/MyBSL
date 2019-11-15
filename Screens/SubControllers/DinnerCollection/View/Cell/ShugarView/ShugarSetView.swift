@@ -39,7 +39,7 @@ class ShugarSetView: UIView {
   
   lazy var sugarBeforeImageView = createSugarImageView(image: #imageLiteral(resourceName: "SugarBefore"))
   lazy var sugarAfterImageView = createSugarImageView(image: #imageLiteral(resourceName: "SugarAfter"))
-  lazy var sugarCorrectDownImageView = createSugarImageView(image: #imageLiteral(resourceName: "SugarCorrect"))
+  lazy var sugarCorrectImageView = createSugarImageView(image: #imageLiteral(resourceName: "SugarCorrect"))
   
 
   
@@ -51,7 +51,10 @@ class ShugarSetView: UIView {
     return iv
   }
   
+  // Нужно заменять его лейблами чтобы текстфилд не мешался и был только в первой ячейке
   let shugarBeforeValueTextField = CustomValueTextField(placeholder: "7.2", cornerRadius: 10)
+  let shugatBeforeValuelabel = CustomLabels(font: UIFont.systemFont(ofSize: 18), text: "")
+  
   
   
   
@@ -78,7 +81,7 @@ class ShugarSetView: UIView {
   lazy var correctionShugarByInsulinStackView: UIStackView = {
     
     let stackView = UIStackView(arrangedSubviews: [
-      correctionLabel,sugarCorrectDownImageView,correctionShugarInsulinValueTextField
+      correctionLabel,sugarCorrectImageView,correctionShugarInsulinValueTextField
     ])
     correctionShugarInsulinValueTextField.constrainWidth(constant: Constants.numberValueTextFieldWidth)
     stackView.spacing = 5
@@ -95,7 +98,7 @@ class ShugarSetView: UIView {
     return pickerView
   }()
   
-  let pickerCorrectInsulin = [
+  var pickerCorrectInsulin = [
     ["+","-"],
     ["0.0","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0","5.0","5.5","6.0","6.5","7.0","7.5","8.0","8.5","9.0","9.5","10.0"],
     ["0.0","0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9"]
@@ -143,13 +146,7 @@ class ShugarSetView: UIView {
     self.correctInsulinPosition = correctInsulinPosition
     
     setViewModels(viewModel: viewModel)
-    
-    
-    // Здесь мне нужно запустить логику
-    
-    // 1. Проверить Обед предыдущий или нет
-    //
-    
+
     updateViewsFromCorrectInsulinBySugarPosition()
     updateViewsFromDinnerPosition(sugarAfter: viewModel.shugarAfterValue)
     
@@ -162,10 +159,10 @@ class ShugarSetView: UIView {
   private func updateViewsFromDinnerPosition(sugarAfter: Float) {
     switch dinnerPosition {
       case .newdinner:
-        print("Shugar New Dinner")
+        
         updateViewsNewDinner()
       case .previosdinner:
-        print("Shugar Prev Dinner")
+        
         updateViewsPrevDinner(sugarAfter: sugarAfter)
 
     case .none:break
@@ -180,41 +177,36 @@ class ShugarSetView: UIView {
      
      switch correctInsulinPosition {
      case .needCorrect:
-       print("Need Correct Insulin")
+       
        
        correctionShugarByInsulinStackView.isHidden = false
        spacingView.isHidden = true
       
      case .dontCorrect:
-       print("Dont neeed Correct")
+       
        correctionShugarByInsulinStackView.isHidden = true
        spacingView.isHidden = false
     
      case .none:break
+     default: break
     }
    }
 
   
-  // MARK: SetViewModels
   
-  private func setViewModels(viewModel:ShugarTopViewModelable) {
-    
-    setTime(viewModel: viewModel)
-    setSugarBefore(viewModel: viewModel)
-    setShugarAfter(viewModel: viewModel)
-    setCorrectInsulin(viewModel: viewModel)
-
-    
-  }
+  
+ 
   
   // MARK: Update Views NewDinner
   
   private func updateViewsNewDinner() {
     
+//    shugarBeforeValueTextField.isHidden = false
+//    shugatBeforeValuelabel.isHidden = true
 
     switchLabelAndImageView(text: shugarBeforeValueTextField.text ?? "", imageView: sugarBeforeImageView, label: shugarBeforeTitleLabel)
     
-    switchLabelAndImageView(text: correctionShugarInsulinValueTextField.text ?? "", imageView: sugarCorrectDownImageView, label: correctionLabel)
+    switchLabelAndImageView(text: correctionShugarInsulinValueTextField.text ?? "", imageView: sugarCorrectImageView, label: correctionLabel)
     
     stackViewShugarAfter.isHidden = true
     
@@ -227,11 +219,13 @@ class ShugarSetView: UIView {
   
   private func updateViewsPrevDinner(sugarAfter: Float) {
     
-//    switchSugarImageViewToLabel(imageView: sugarBeforeImageView, label: shugarBeforeTitleLabel)
+//    shugarBeforeValueTextField.isHidden = true
+//    shugatBeforeValuelabel.isHidden = false
     
+
     switchLabelAndImageView(text: shugarBeforeValueTextField.text!, imageView: sugarBeforeImageView, label: shugarBeforeTitleLabel)
     
-    switchLabelAndImageView(text: correctionShugarInsulinValueTextField.text ?? "", imageView: sugarCorrectDownImageView, label: correctionLabel)
+    switchLabelAndImageView(text: correctionShugarInsulinValueTextField.text ?? "", imageView: sugarCorrectImageView, label: correctionLabel)
     
   
     confirmeTextFieldsToPrevDinner(textField: shugarBeforeValueTextField)
@@ -243,17 +237,18 @@ class ShugarSetView: UIView {
   
  
   private func confirmeTextFieldsToNewDinner(textField: CustomValueTextField) {
-    textField.isEnabled = true
-    textField.backgroundColor =  .white
-    textField.textColor       = .black
-    textField.withCornerLayer = true
+    textField.isUserInteractionEnabled = true
+    textField.backgroundColor          =  .white
+    textField.textColor                = .black
+    textField.withCornerLayer          = true
   }
   
   private func confirmeTextFieldsToPrevDinner(textField: CustomValueTextField) {
-    textField.isEnabled = false
-    textField.backgroundColor =  .clear
-    textField.textColor       = .white
-    textField.withCornerLayer = false
+
+    textField.isUserInteractionEnabled = false
+    textField.backgroundColor          =  .clear
+    textField.textColor                = .white
+    textField.withCornerLayer          = false
   }
   
 
@@ -293,6 +288,43 @@ class ShugarSetView: UIView {
 
 extension ShugarSetView {
   
+  private func setViewModels(viewModel:ShugarTopViewModelable) {
+    
+     setCorrectionImageAndCorrectionSign(sugar: viewModel.shugarBeforeValue)
+     
+     setTime(viewModel: viewModel)
+     setSugarBefore(viewModel: viewModel)
+     setShugarAfter(viewModel: viewModel)
+     setCorrectInsulin(viewModel: viewModel)
+
+     print("Updates SugarViews Model")
+   }
+  
+  // Set CorrectionImage And Sign
+  
+  // здесь мне также нужно установить знак для моей компенсации! ЧТо бы было сразу понятно куда мы идем
+  private func setCorrectionImageAndCorrectionSign(sugar:Float) {
+    
+    let wayCorrectPosition = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugar)
+    
+    switch wayCorrectPosition {
+    case .correctDown:
+      sugarCorrectImageView.image = #imageLiteral(resourceName: "SugarCorrect")
+      pickerCorrectInsulin[0] = ["+"]
+      print("Correct Down",pickerCorrectInsulin[0])
+      
+    case .correctUp:
+      
+      sugarCorrectImageView.image = #imageLiteral(resourceName: "CorrectInsulinBySugarUp")
+      pickerCorrectInsulin[0] = ["-"]
+      
+    default: break
+    }
+    
+    pickerView.reloadAllComponents()
+    
+  }
+  
    private func setTime(viewModel:ShugarTopViewModelable) {
       
       timeBeforeLabel.text = DateWorker.shared.getTimeString(date: viewModel.timeBefore)
@@ -303,7 +335,9 @@ extension ShugarSetView {
     private func setSugarBefore(viewModel:ShugarTopViewModelable) {
       
       let shugarBeforeString = viewModel.shugarBeforeValue == 0 ? "" : String(viewModel.shugarBeforeValue)
+      
          shugarBeforeValueTextField.text = shugarBeforeString
+        
   
       
     }
@@ -386,7 +420,9 @@ extension ShugarSetView {
   private func setUpViews() {
        
       sugarBeforeImageView.isHidden = true
-      sugarCorrectDownImageView.isHidden = true
+      sugarCorrectImageView.isHidden = true
+    
+     
        
        let stackViewBefore = UIStackView(arrangedSubviews: [
          shugarBeforeTitleLabel,
@@ -453,6 +489,7 @@ extension ShugarSetView: UITextFieldDelegate {
   }
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
+    print("Начал использовать текст филд", textField)
     didBeginEditingShugarBeforeTextField!(textField)
   }
   
@@ -474,7 +511,7 @@ extension ShugarSetView: UITextFieldDelegate {
       
       UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: .curveEaseOut, animations: {
         
-        self.switchLabelAndImageView(text: text, imageView: self.sugarCorrectDownImageView, label: self.correctionLabel)
+        self.switchLabelAndImageView(text: text, imageView: self.sugarCorrectImageView, label: self.correctionLabel)
       })
       
       didEndEditingCorrectionInsulinTextField(text:text)
@@ -499,11 +536,22 @@ extension ShugarSetView: UITextFieldDelegate {
 
     let correctInsulinBySugarPosition = ShugarCorrectorWorker.shared.getCorrectInsulinBySugarPosition(sugar: shugarFloat)
     
+//    setCorrectionImage(sugar: shugarFloat)
+    
     animateShowCorrectInsulinFields(correctInsulinPosition: correctInsulinBySugarPosition) { (_) in
       self.didSetShugarBeforeValueAndTimeClouser!(timeBefore,shugarFloat)
+      
+      // Здесь нужно также обновить и коррекцию если мы не вводим сахар == 0.0
+      // то и коррекцию инсулина отменяем
+        if shugarFloat == 0 {
+          self.didEndEditingCorrectionInsulinTextField(text: "")
+        }
+      
       }
 
   }
+  
+  
   
 private func animateShowCorrectInsulinFields(correctInsulinPosition: CorrectInsulinPosition, complation: ((Bool) -> Void)? = nil){
     
@@ -526,8 +574,8 @@ extension ShugarSetView: UIPickerViewDelegate,UIPickerViewDataSource {
   
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     switch component {
-    case 0:
-      correctSign = pickerCorrectInsulin[component][row]
+//    case 0:
+//      correctSign = pickerCorrectInsulin[component][row]
     case 1:
       correctTens = (pickerCorrectInsulin[component][row] as NSString).floatValue
     case 2:
@@ -537,9 +585,13 @@ extension ShugarSetView: UIPickerViewDelegate,UIPickerViewDataSource {
     
     var valueResult = correctTens + correctDecimal
     
-    if correctSign == "-" {
+    if pickerCorrectInsulin[0][0] == "-" {
       valueResult *= -1
     }
+    
+//    if correctSign == "-" {
+//      valueResult *= -1
+//    }
     
     correctionShugarInsulinValueTextField.text = String(valueResult)
 //    ShugarCorrectorWorker.shared.setInsulinCorrectionByShugar(shugarValue: valueResult)

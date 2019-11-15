@@ -27,7 +27,7 @@ import RealmSwift
   dynamic var timeCreateDinner: Date?
   
   // ML Property
-  dynamic var compansationFase: Int = CompansationPosition.new.rawValue
+  dynamic var compansationFase: Int = 0
   
 
   // Top
@@ -64,8 +64,10 @@ import RealmSwift
     trainName: String,
     correctionInsulin:Float,
     totalInsulin: Float,
+    compansationFase: Int ,
     isPreviosDinner:Bool = true,
     isNeedCorrectInsulinByShugar: Bool = false
+    
   ) {
     self.init()
     
@@ -80,6 +82,7 @@ import RealmSwift
     self.timeCreateDinner = Date() // Время создания обеда
     self.isPreviosDinner = isPreviosDinner
     self.isNeedCorrectInsulinByShugar = isNeedCorrectInsulinByShugar
+    self.compansationFase = compansationFase
 //    self.isCompensationSucces = isGoodCompansation
 
   }

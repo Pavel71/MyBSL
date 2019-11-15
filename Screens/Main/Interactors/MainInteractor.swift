@@ -226,7 +226,7 @@ extension MainInteractor {
 }
 
 
-// MARK: Create RealmModel and Save Data in Realm
+// MARK: Save Dinner in Realm
 
 extension MainInteractor {
 
@@ -240,19 +240,13 @@ extension MainInteractor {
       let timeShugarAfter =   viewModel.shugarTopViewModel.timeAfter
       let totalInsulin =      viewModel.totalInsulin
       let isNeedCorrectDinnerInsulinByShugasr =    viewModel.correctInsulinByShugarPosition == .needCorrect
-      
-//      viewModel.shugarTopViewModel.isNeedInsulinCorrectByShugar
-      
-      // Короче мне нужно разобратся с компенсация продуктов по признаку фаза компенсации она приходи и попадает к нам в карточку ячейки оттуда ее и надо будет взять!
-      
-      
-      
-//      let isGoodCompansation
-      
+      let companastionFase = CompansationPosition.progress.rawValue
       
       // Products
       let products = viewModel.productListInDinnerViewModel.productsData
       let realmProducts = createProductForRealm(products: products)
+      
+      
       
       
       let dinnerRealm = DinnerRealm(
@@ -264,7 +258,9 @@ extension MainInteractor {
         trainName: viewModel.train ?? "",
         correctionInsulin: correctionInsulin,
         totalInsulin: totalInsulin,
+        compansationFase: companastionFase,
         isNeedCorrectInsulinByShugar: isNeedCorrectDinnerInsulinByShugasr
+        
       )
       
       dinnerRealm.listProduct.append(objectsIn: realmProducts)
