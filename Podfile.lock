@@ -1,4 +1,7 @@
 PODS:
+  - Charts (3.4.0):
+    - Charts/Core (= 3.4.0)
+  - Charts/Core (3.4.0)
   - MachineLearningKit (0.1.8):
     - Upsurge
   - ProgressHUD (2.60)
@@ -10,12 +13,14 @@ PODS:
   - Upsurge (0.10.2)
 
 DEPENDENCIES:
+  - Charts
   - MachineLearningKit
   - ProgressHUD
   - RealmSwift
 
 SPEC REPOS:
   trunk:
+    - Charts
     - MachineLearningKit
     - ProgressHUD
     - Realm
@@ -23,12 +28,13 @@ SPEC REPOS:
     - Upsurge
 
 SPEC CHECKSUMS:
+  Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
   MachineLearningKit: a2b08488977e79eb075c771c7154ef044f95d5f8
   ProgressHUD: 4e4efbaf4f5de8bd32e0c4c3b6644a90ea1a8c3e
   Realm: 995d585bcf699aaff226715886c849a29dd3d07f
   RealmSwift: 35f284a537989f2187b413e5917091948cb87a3f
   Upsurge: 5866beadc3da27f91c5df4ac795deb3f3238d678
 
-PODFILE CHECKSUM: 05dc4365a086f085cce526fe3e5f72f55d377b03
+PODFILE CHECKSUM: b2fa731fb7b8b20d071f595b7f60882d4476d600
 
 COCOAPODS: 1.8.3

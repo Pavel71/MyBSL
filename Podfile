@@ -9,5 +9,6 @@ target 'InsulinProjectBSL' do
   pod 'RealmSwift'
   pod 'ProgressHUD'
   pod 'MachineLearningKit'
+  pod 'Charts'
 
 end

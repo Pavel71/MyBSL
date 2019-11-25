@@ -15,8 +15,8 @@ class MainScreenView: UIView {
   
   // TopBar
   let navBar = MainCustomNavBar(frame: MainCustomNavBar.sizeBar)
-  let topView = MainScreenTopView()
-  let middleView = MainScreenMiddleView()
+  let churtView = ChartView()
+  let mealCollectionView = MealCollectionView()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -40,8 +40,8 @@ extension MainScreenView {
     
     
     let contentStackView = UIStackView(arrangedSubviews: [
-    topView,
-    middleView
+    churtView,
+    mealCollectionView
     ])
     contentStackView.axis = .vertical
     contentStackView.distribution = .fillEqually
