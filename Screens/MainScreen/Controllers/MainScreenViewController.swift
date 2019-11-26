@@ -33,6 +33,9 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
 //  var tableView = UITableView(frame: .zero, style: .plain)
   
   var mainScreenView = MainScreenView()
+  
+  
+  var mainScreenViewModel: MainScreenViewModelable!
 
   // MARK: Object lifecycle
   
@@ -67,13 +70,15 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-        setViews()
+    setViews()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = true
-
+    
+    // Сделаем запрос в реалм чтобы получить новые данные по ViewModel
+    interactor?.makeRequest(request: .getViewModel)
   }
   
   func displayData(viewModel: MainScreen.Model.ViewModel.ViewModelData) {

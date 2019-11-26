@@ -59,6 +59,18 @@ class RealmProvider {
     return RealmProvider.init(config: dinnerConfig)
   }()
   
+  // Days
+  
+  private static let dayConfig = Realm.Configuration(
+    fileURL: try! Path.inDocuments("day.realm"),
+    schemaVersion: 1,
+    deleteRealmIfMigrationNeeded: true, // Это для тестирования
+    objectTypes: [DayRealm.self,SugarRealm.self,DinnersRealm.self,ProductRealm.self])
+  
+  public static var day: RealmProvider = {
+    return RealmProvider.init(config: dayConfig)
+  }()
+  
 //  private static let sectionMealTypeConfig = Realm.Configuration(
 //    fileURL: try! Path.inDocuments("sectionMealType.realm"),
 //    schemaVersion: 1,

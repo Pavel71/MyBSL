@@ -11,6 +11,8 @@ import UIKit
 
 class ChartView: UIView {
   
+  // Возможно тут будут еще какие-нибудь модули
+  
   // Сделаю все через UIView Controlelr и все буду работать через него
   
   let chartVC = ChartViewController()
@@ -18,7 +20,8 @@ class ChartView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    
+    addSubview(chartVC.view)
+    chartVC.view.fillSuperview()
     
     backgroundColor = .red
   }

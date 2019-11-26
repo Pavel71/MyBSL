@@ -13,7 +13,7 @@ import Charts
 
 // Класс Отвечает за обработку данных для графика
 
-class ChatWorker {
+class ChartWorker {
   
   func getCurrentChurtEntry(data: ChartModable) -> ChartDataEntry {
     
@@ -43,7 +43,7 @@ class ChatWorker {
 
 // MARK: Prepare Chart Entry Model
 
-extension ChatWorker {
+extension ChartWorker {
   
   private func getSugarChartEntry(data: ChartSugarModel) -> ChartDataEntry {
       let time = convertTime(time: data.time)
@@ -84,7 +84,7 @@ extension ChatWorker {
 
 // MARK: Work with Time
 
-extension ChatWorker {
+extension ChartWorker {
   
   private func convertTime(time: Date) -> Double {
      print("Convert time")

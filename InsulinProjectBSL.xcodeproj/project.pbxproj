@@ -88,6 +88,11 @@
 		05B1DEB8237ECD0B0015E4E6 /* MainScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEB1237ECD0A0015E4E6 /* MainScreenViewController.swift */; };
 		05B1DEB9237ECD0B0015E4E6 /* MainScreenInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEB2237ECD0A0015E4E6 /* MainScreenInteractor.swift */; };
 		05B1DEC3237ECDED0015E4E6 /* MainScreenConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEC2237ECDED0015E4E6 /* MainScreenConstants.swift */; };
+		05C0C627238D3EC7001B2664 /* DayRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0C626238D3EC7001B2664 /* DayRealm.swift */; };
+		05C0C62A238D40E3001B2664 /* SugarRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0C629238D40E3001B2664 /* SugarRealm.swift */; };
+		05C0C62C238D40EF001B2664 /* Dinners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0C62B238D40EF001B2664 /* Dinners.swift */; };
+		05C0C62E238D43C6001B2664 /* Realm Task in Resources */ = {isa = PBXBuildFile; fileRef = 05C0C62D238D43C6001B2664 /* Realm Task */; };
+		05C0C630238D5331001B2664 /* DayRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0C62F238D5331001B2664 /* DayRealmManager.swift */; };
 		05C16D61233F23A800486CAE /* ProductListResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D60233F23A800486CAE /* ProductListResultView.swift */; };
 		05C16D66233F4E6100486CAE /* RobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D65233F4E6100486CAE /* RobotView.swift */; };
 		05C2DEF8237EBAE00023B39C /* TopViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C2DEF7237EBAE00023B39C /* TopViewCell.swift */; };
@@ -268,6 +273,11 @@
 		05B1DEB1237ECD0A0015E4E6 /* MainScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewController.swift; sourceTree = "<group>"; };
 		05B1DEB2237ECD0A0015E4E6 /* MainScreenInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenInteractor.swift; sourceTree = "<group>"; };
 		05B1DEC2237ECDED0015E4E6 /* MainScreenConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenConstants.swift; sourceTree = "<group>"; };
+		05C0C626238D3EC7001B2664 /* DayRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayRealm.swift; sourceTree = "<group>"; };
+		05C0C629238D40E3001B2664 /* SugarRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarRealm.swift; sourceTree = "<group>"; };
+		05C0C62B238D40EF001B2664 /* Dinners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dinners.swift; sourceTree = "<group>"; };
+		05C0C62D238D43C6001B2664 /* Realm Task */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Realm Task"; sourceTree = "<group>"; };
+		05C0C62F238D5331001B2664 /* DayRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayRealmManager.swift; sourceTree = "<group>"; };
 		05C16D60233F23A800486CAE /* ProductListResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListResultView.swift; sourceTree = "<group>"; };
 		05C16D65233F4E6100486CAE /* RobotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotView.swift; sourceTree = "<group>"; };
 		05C2DEF7237EBAE00023B39C /* TopViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewCell.swift; sourceTree = "<group>"; };
@@ -1321,6 +1331,17 @@
 			path = Routers;
 			sourceTree = "<group>";
 		};
+		05C0C628238D408A001B2664 /* Day */ = {
+			isa = PBXGroup;
+			children = (
+				05C0C62D238D43C6001B2664 /* Realm Task */,
+				05C0C626238D3EC7001B2664 /* DayRealm.swift */,
+				05C0C629238D40E3001B2664 /* SugarRealm.swift */,
+				05C0C62B238D40EF001B2664 /* Dinners.swift */,
+			);
+			path = Day;
+			sourceTree = "<group>";
+		};
 		05C16D62233F323A00486CAE /* ResultsView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1946,6 +1967,7 @@
 				F1E78D1D230D688900592AB8 /* FoodRealmManager.swift */,
 				F13B35202318DED40020AD26 /* MealRealmManager.swift */,
 				05D26A3D236093CB00155F31 /* DinnerRealmManager.swift */,
+				05C0C62F238D5331001B2664 /* DayRealmManager.swift */,
 			);
 			path = RealmManager;
 			sourceTree = "<group>";
@@ -1953,6 +1975,7 @@
 		F1E78CF0230D34AC00592AB8 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				05C0C628238D408A001B2664 /* Day */,
 				F1E78D1F230D68DC00592AB8 /* ProductRealm.swift */,
 				F13B351E2318D8170020AD26 /* MealRealm.swift */,
 				F1116324231D3478000C79FA /* SectionMealTypeRealm.swift */,
@@ -2180,6 +2203,7 @@
 				055A3A502357044F0080628C /* Readme in Resources */,
 				059D7E7A23505C3A00286E57 /* Tasks in Resources */,
 				05373718234B2F5500411C46 /* Tasks in Resources */,
+				05C0C62E238D43C6001B2664 /* Realm Task in Resources */,
 				05A7CAE923827C070075D04E /* Tasks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2233,6 +2257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05C0C62C238D40EF001B2664 /* Dinners.swift in Sources */,
 				05B1DEB5237ECD0B0015E4E6 /* MainScreenWorker.swift in Sources */,
 				F1E78CD7230D338A00592AB8 /* SettingsWorker.swift in Sources */,
 				F1932B42231FB009003DC351 /* UITableView + Extension.swift in Sources */,
@@ -2253,6 +2278,7 @@
 				F13B351F2318D8170020AD26 /* MealRealm.swift in Sources */,
 				05D26A3923605D9200155F31 /* TotalView.swift in Sources */,
 				055BE0DD2344DB290029D298 /* WillActiveView.swift in Sources */,
+				05C0C630238D5331001B2664 /* DayRealmManager.swift in Sources */,
 				F1E78CD8230D338A00592AB8 /* SettingsRouter.swift in Sources */,
 				052B4E8D2355D09E00464A6C /* MenuMealListCell.swift in Sources */,
 				055A3A382355EBDE0080628C /* MainMenuProductListCell.swift in Sources */,
@@ -2261,6 +2287,7 @@
 				05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */,
 				F1E78D16230D57FA00592AB8 /* FoodCell.swift in Sources */,
 				05952A58233BB51600EE996E /* ProductListInDinnerViewController.swift in Sources */,
+				05C0C627238D3EC7001B2664 /* DayRealm.swift in Sources */,
 				F1E78CFC230D358000592AB8 /* UIViewController+Extension.swift in Sources */,
 				F1EC859B2330EEA200E14D33 /* MenuInMealViewController.swift in Sources */,
 				05AAFF14238C0169002AE3D9 /* ChartViewController.swift in Sources */,
@@ -2390,6 +2417,7 @@
 				057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */,
 				05373713234B2B1700411C46 /* MenuView.swift in Sources */,
 				05B1DEB8237ECD0B0015E4E6 /* MainScreenViewController.swift in Sources */,
+				05C0C62A238D40E3001B2664 /* SugarRealm.swift in Sources */,
 				05AAFF01238BFA68002AE3D9 /* MealCollectionView.swift in Sources */,
 				05A4F19F2339EF6A00DFE4D7 /* MainView.swift in Sources */,
 				F1E78CBD230D334B00592AB8 /* FoodInteractor.swift in Sources */,

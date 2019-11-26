@@ -15,12 +15,29 @@ protocol MainScreenBusinessLogic {
 class MainScreenInteractor: MainScreenBusinessLogic {
 
   var presenter: MainScreenPresentationLogic?
-  var service: MainScreenService?
+  
   
   func makeRequest(request: MainScreen.Model.Request.RequestType) {
-    if service == nil {
-      service = MainScreenService()
-    }
+
+    catchViewModelRequests(request: request)
+    
   }
   
+  
+  
+}
+
+
+// MARK: Work With VIew Model
+
+extension MainScreenInteractor {
+  
+  private func catchViewModelRequests(request: MainScreen.Model.Request.RequestType) {
+    
+    switch request {
+    case .getViewModel:
+      print("Нужно загрузить данные из реалма!")
+    default:break
+    }
+  }
 }

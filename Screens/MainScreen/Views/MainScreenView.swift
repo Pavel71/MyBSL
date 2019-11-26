@@ -11,17 +11,30 @@ import UIKit
 
 // Class Отвечает за версту View
 
+protocol MainScreenViewModelable {
+  
+  var chartViewModel: ChartViewModel {get set}
+//  var mealCollectionViewModel: String {get set}
+  
+}
+
 class MainScreenView: UIView {
   
   // TopBar
   let navBar = MainCustomNavBar(frame: MainCustomNavBar.sizeBar)
-  let churtView = ChartView()
+  let chartView = ChartView()
   let mealCollectionView = MealCollectionView()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
  
     setUpViews()
+  }
+  
+  
+  private func setViewModel(viewModel: MainScreenViewModelable) {
+    
+    chartView.chartVC.setViewModel(viewModel: viewModel.chartViewModel)
   }
   
   required init?(coder: NSCoder) {
@@ -40,7 +53,7 @@ extension MainScreenView {
     
     
     let contentStackView = UIStackView(arrangedSubviews: [
-    churtView,
+    chartView,
     mealCollectionView
     ])
     contentStackView.axis = .vertical

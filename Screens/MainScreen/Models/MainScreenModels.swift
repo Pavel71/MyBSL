@@ -8,24 +8,36 @@
 
 import UIKit
 
+// MARK: Main Screen Road Map
+
 enum MainScreen {
    
   enum Model {
+    
     struct Request {
       enum RequestType {
-        case some
+        case getViewModel
       }
     }
+    
     struct Response {
       enum ResponseType {
-        case some
+        case prepareViewModel
       }
     }
     struct ViewModel {
       enum ViewModelData {
-        case some
+        case setViewModel
       }
     }
   }
   
+}
+
+// MARK: Main Screen ViewModel
+
+struct MainScreenViewModel: MainScreenViewModelable {
+  
+  var chartViewModel: ChartViewModel
+
 }

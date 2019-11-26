@@ -89,7 +89,7 @@ import RealmSwift
 
 
   override static func primaryKey() -> String? {
-    return ProductRealm.Property.id.rawValue
+    return DinnerRealm.Property.id.rawValue
   }
   
 }

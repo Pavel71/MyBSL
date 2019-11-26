@@ -19,9 +19,16 @@ enum ChartDataCase {
 
 protocol ChartModable {
   
-  var dataCase: ChartDataCase { get set }
-  var sugar: Double {get set}
-  var time: Date {get set}
+  var dataCase : ChartDataCase { get set }
+  var sugar    : Double        {get set}
+  var time     : Date          {get set}
+  
+}
+
+
+struct ChartViewModel {
+  
+  var chartEntryModels: [ChartModable]
   
 }
 
@@ -31,9 +38,9 @@ protocol ChartModable {
 // Only Sugar
 struct ChartSugarModel:ChartModable {
   
-  var sugar: Double
-  var time: Date
-  var dataCase: ChartDataCase
+  var sugar    : Double
+  var time     : Date
+  var dataCase : ChartDataCase
 
 }
 
@@ -41,13 +48,13 @@ struct ChartSugarModel:ChartModable {
 // Meal Chart
 struct ChartMealModel: ChartModable {
   
-  var dataCase: ChartDataCase
+  var dataCase     : ChartDataCase
 
-  var sugar: Double
-  var time: Date
+  var sugar        : Double
+  var time         : Date
   
-  var totalCarbo: Double
-  var totalInsulin: Double
+  var totalCarbo   : Double
+  var totalInsulin : Double
   
 }
 
@@ -56,11 +63,11 @@ struct ChartMealModel: ChartModable {
 struct ChartCorrectInsulinModel: ChartModable{
   var dataCase: ChartDataCase
   
-  var sugar: Double
+  var sugar          : Double
   
-  var time: Date
+  var time           : Date
   
-  var correctInsulin: Double
+  var correctInsulin : Double
 }
 
 
