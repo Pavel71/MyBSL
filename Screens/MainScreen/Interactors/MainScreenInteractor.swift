@@ -16,6 +16,8 @@ class MainScreenInteractor: MainScreenBusinessLogic {
 
   var presenter: MainScreenPresentationLogic?
   
+  let dayRealmManager = DayRealmManager()
+  
   
   func makeRequest(request: MainScreen.Model.Request.RequestType) {
 
@@ -37,6 +39,9 @@ extension MainScreenInteractor {
     switch request {
     case .getViewModel:
       print("Нужно загрузить данные из реалма!")
+      let data = dayRealmManager.getDummyRealmData()
+      presenter?.presentData(response: .prepareViewModel(realmData: data))
+      
     default:break
     }
   }

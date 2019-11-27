@@ -17,6 +17,12 @@ class DateWorker {
     return df
   }()
   
+  private let dateFormatterDayMonthYear:DateFormatter = {
+    let df = DateFormatter()
+    df.dateFormat = "dd.MM.yy"
+    return df
+  }()
+  
   private let dateFormatterClock:DateFormatter = {
     let df = DateFormatter()
     df.dateFormat = "HH:mm"
@@ -44,6 +50,10 @@ class DateWorker {
     }
     return ""
     
+  }
+  
+  func getDayMonthYear(date: Date) -> String {
+    return dateFormatterDayMonthYear.string(from: date)
   }
   
 }

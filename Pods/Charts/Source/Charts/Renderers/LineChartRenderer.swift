@@ -562,6 +562,9 @@ open class LineChartRenderer: LineRadarRenderer
 
         for i in 0 ..< dataSets.count
         {
+          
+          // I will correct it to draw only last Circle i
+          
             guard let dataSet = lineData.getDataSetByIndex(i) as? ILineChartDataSet else { continue }
             
             if !dataSet.isVisible || dataSet.entryCount == 0
@@ -588,7 +591,9 @@ open class LineChartRenderer: LineRadarRenderer
             
             for j in _xBounds
             {
-                guard let e = dataSet.entryForIndex(j) else { break }
+              // MARK: Only last Circle Draw
+              // Заменим j на последний элемент
+              guard let e = dataSet.entryForIndex(_xBounds.max) else { break }
 
                 pt.x = CGFloat(e.x)
                 pt.y = CGFloat(e.y * phaseY)
@@ -629,7 +634,7 @@ open class LineChartRenderer: LineRadarRenderer
                 {
                     continue
                 }
-
+                // Заменим на последни
                 context.setFillColor(dataSet.getCircleColor(atIndex: j)!.cgColor)
 
                 rect.origin.x = pt.x - circleRadius
@@ -672,6 +677,8 @@ open class LineChartRenderer: LineRadarRenderer
                 }
             }
         }
+        
+      
         
         context.restoreGState()
 

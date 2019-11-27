@@ -33,31 +33,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   ]
   
-  var sectionType: [SectionMealTypeRealm] = []
+//  var sectionType: [SectionMealTypeRealm] = []
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
-    let breakFast = SectionMealTypeRealm(name: "Завтраки")
-    let launch = SectionMealTypeRealm(name: "Обеды")
-    
-    
-    let meals1 = MealRealm(name: "Гречка с грибами",typeMeal: "Завтрак")
-    meals1.listProduct.append(ProductRealm(name: "Грибы", category:"Грибы", carboIn100Grm: 2, isFavorits: false))
-    meals1.listProduct.append(ProductRealm(name: "Гречка", category:"Крупы", carboIn100Grm: 65, isFavorits: false))
-    meals1.listProduct.append(ProductRealm(name: "Салат овощной", category:"Овощи", carboIn100Grm: 2, isFavorits: false))
-    meals.append(meals1)
-    let meals2 = MealRealm(name: "Омлет с горошком", typeMeal: "Обед")
-    meals2.listProduct.append(ProductRealm(name: "Омлет", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
-    meals2.listProduct.append(ProductRealm(name: "Зеленый горошек", category:"Консервый", carboIn100Grm: 7, isFavorits: false))
-    meals2.listProduct.append(ProductRealm(name: "Сыр", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
-    meals2.listProduct.append(ProductRealm(name: "Сыр Капченный", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
-    meals.append(meals2)
-    
-    breakFast.mealsData.append(meals1)
-    launch.mealsData.append(meals2)
-    
-    sectionType.append(breakFast)
-    sectionType.append(launch)
+//    let breakFast = SectionMealTypeRealm(name: "Завтраки")
+//    let launch = SectionMealTypeRealm(name: "Обеды")
+//
+//
+//    let meals1 = MealRealm(name: "Гречка с грибами",typeMeal: "Завтрак")
+//    meals1.listProduct.append(ProductRealm(name: "Грибы", category:"Грибы", carboIn100Grm: 2, isFavorits: false))
+//    meals1.listProduct.append(ProductRealm(name: "Гречка", category:"Крупы", carboIn100Grm: 65, isFavorits: false))
+//    meals1.listProduct.append(ProductRealm(name: "Салат овощной", category:"Овощи", carboIn100Grm: 2, isFavorits: false))
+//    meals.append(meals1)
+//    let meals2 = MealRealm(name: "Омлет с горошком", typeMeal: "Обед")
+//    meals2.listProduct.append(ProductRealm(name: "Омлет", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
+//    meals2.listProduct.append(ProductRealm(name: "Зеленый горошек", category:"Консервый", carboIn100Grm: 7, isFavorits: false))
+//    meals2.listProduct.append(ProductRealm(name: "Сыр", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
+//    meals2.listProduct.append(ProductRealm(name: "Сыр Капченный", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
+//    meals.append(meals2)
+//
+//    breakFast.mealsData.append(meals1)
+//    launch.mealsData.append(meals2)
+//
+//    sectionType.append(breakFast)
+//    sectionType.append(launch)
     
     
     initializeRealm()

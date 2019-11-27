@@ -23,6 +23,7 @@ import RealmSwift
   
   dynamic var time             : Date?
   dynamic var compansationFase : Int = 0
+  
   var listProduct                    = List<ProductRealm>()
   
   convenience init(

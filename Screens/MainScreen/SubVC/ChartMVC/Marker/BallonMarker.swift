@@ -149,7 +149,8 @@ extension BalloonMarker {
   private func configureLabelMarker(entry:ChartDataEntry) -> String {
     let hour = Int(entry.x)
     let minutes = Int((entry.x - Double(hour)) * 100)
-    let time = "\(hour):\(minutes)"
+    let minutesString = minutes == 0 ? "00" : "\(minutes)"
+    let time = "\(hour):\(minutesString)"
     
     var markerText: String = "Сахар: \(entry.y) \n Время: \(time)"
     

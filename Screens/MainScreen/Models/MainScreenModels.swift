@@ -22,12 +22,12 @@ enum MainScreen {
     
     struct Response {
       enum ResponseType {
-        case prepareViewModel
+        case prepareViewModel(realmData:DayRealm)
       }
     }
     struct ViewModel {
       enum ViewModelData {
-        case setViewModel
+        case setViewModel(viewModel: MainScreenViewModel)
       }
     }
   }
@@ -37,6 +37,7 @@ enum MainScreen {
 // MARK: Main Screen ViewModel
 
 struct MainScreenViewModel: MainScreenViewModelable {
+  
   
   var chartViewModel: ChartViewModel
 

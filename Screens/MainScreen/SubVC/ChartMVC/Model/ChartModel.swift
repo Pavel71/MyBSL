@@ -11,7 +11,12 @@
 import Foundation
 
 
-enum ChartDataCase {
+enum ChartDataKey: String {
+  case insulin = "Инсулин"
+  case carbos = "Углеводы"
+}
+
+enum ChartDataCase: Int {
   case sugarData
   case correctInsulinData
   case mealData
@@ -19,16 +24,32 @@ enum ChartDataCase {
 
 protocol ChartModable {
   
-  var dataCase : ChartDataCase { get set }
-  var sugar    : Double        {get set}
-  var time     : Date          {get set}
+  
+  
+  var insulin  : Double?         {get set}
+  var carbo    : Double?         {get set}
+  var dataCase : ChartDataCase   {get set}
+  var sugar    : Double          {get set}
+  var time     : Date            {get set}
   
 }
 
 
 struct ChartViewModel {
   
-  var chartEntryModels: [ChartModable]
+  var chartEntryModels: [SugarViewModel]
+  
+}
+
+struct SugarViewModel: ChartModable {
+  
+  var insulin  : Double?
+  var carbo    : Double?
+
+  var dataCase : ChartDataCase
+  var sugar    : Double
+  var time     : Date
+  
   
 }
 
@@ -36,39 +57,39 @@ struct ChartViewModel {
 // Или сделать что она может содержать 3 модели
 
 // Only Sugar
-struct ChartSugarModel:ChartModable {
-  
-  var sugar    : Double
-  var time     : Date
-  var dataCase : ChartDataCase
-
-}
-
-
-// Meal Chart
-struct ChartMealModel: ChartModable {
-  
-  var dataCase     : ChartDataCase
-
-  var sugar        : Double
-  var time         : Date
-  
-  var totalCarbo   : Double
-  var totalInsulin : Double
-  
-}
-
-// COrrectInsulinChart
-
-struct ChartCorrectInsulinModel: ChartModable{
-  var dataCase: ChartDataCase
-  
-  var sugar          : Double
-  
-  var time           : Date
-  
-  var correctInsulin : Double
-}
+//struct ChartSugarModel:ChartModable {
+//
+//  var sugar    : Double
+//  var time     : Date
+//  var dataCase : ChartDataCase
+//
+//}
+//
+//
+//// Meal Chart
+//struct ChartMealModel: ChartModable {
+//
+//  var dataCase     : ChartDataCase
+//
+//  var sugar        : Double
+//  var time         : Date
+//
+//  var totalCarbo   : Double
+//  var totalInsulin : Double
+//
+//}
+//
+//// COrrectInsulinChart
+//
+//struct ChartCorrectInsulinModel: ChartModable{
+//  var dataCase: ChartDataCase
+//
+//  var sugar          : Double
+//
+//  var time           : Date
+//
+//  var correctInsulin : Double
+//}
 
 
 

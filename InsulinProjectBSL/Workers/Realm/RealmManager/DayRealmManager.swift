@@ -20,10 +20,73 @@ class DayRealmManager {
   
 }
 
-// MARK: Do
+// MARK: Dummy Data
 
 extension DayRealmManager {
   
   // Пока задача будет такой! нужно вернуть 1 день и псмотреть шо из этого получится! Мазафака!
+  
+  func getDummyRealmData() -> DayRealm {
+    
+    let testDay = DayRealm(date: Date())
+
+    let dinners = getDummyDInner()
+    testDay.listDinners.append(dinners)
+    
+    let sugars = getSugars()
+    testDay.listSugar.append(objectsIn: sugars)
+    
+    return testDay
+  }
+  
+  // Sugars
+  
+  private func getSugars() -> [SugarRealm] {
+    
+    let sugarMeal = SugarRealm(
+      time       : Date(timeIntervalSince1970: 1574838000),
+      sugar      : 6.0,
+      dataCase   : ChartDataCase.mealData.rawValue,
+      insulin    : 0.5,
+      totalCarbo : 5
+    )
+    
+    let simpleSugar = SugarRealm(
+      time       : Date(timeIntervalSince1970: 1574841600),
+      sugar      : 7.5,
+      dataCase   : ChartDataCase.sugarData.rawValue,
+      insulin    : 0,
+      totalCarbo : 0
+    )
+    
+    let correctInsulinSugar = SugarRealm(
+      time       : Date(timeIntervalSince1970: 1574845200),
+      sugar      : 12.5,
+      dataCase   : ChartDataCase.correctInsulinData.rawValue,
+      insulin    : 0.5,
+      totalCarbo : 0
+    )
+    
+    return [sugarMeal,simpleSugar,correctInsulinSugar]
+    
+  }
+  
+  
+  // Dinner
+  
+  private func getDummyDInner() -> DinnersRealm {
+    let dinner = DinnersRealm(
+         compansationFase: 0,
+         time: Date(timeIntervalSince1970: 1574838000)
+       )
+       let product = ProductRealm(
+         name          : "Молоко",
+         category      : "Молочные продукты",
+         carboIn100Grm : 5,
+         isFavorits    : false)
+       
+       dinner.listProduct.append(product)
+    return dinner
+  }
   
 }
