@@ -11,13 +11,13 @@ import UIKit
 
 class MealCollectionView: UIView {
   
-  let collectionViewController = MealCollectionVC()
+  let collectionVC = MealCollectionVC()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    addSubview(collectionViewController.view)
-    collectionViewController.view.fillSuperview()
+    addSubview(collectionVC.view)
+    collectionVC.view.fillSuperview()
     
   }
   

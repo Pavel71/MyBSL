@@ -14,18 +14,18 @@ import UIKit
 
 protocol ProductListResultViewModelable {
   
-  var sumCarboValue: String {get}
-  var sumPortionValue: String {get}
-  var sumInsulinValue: String {get}
+  var sumCarboValue   : String {get}
+  var sumPortionValue : String {get}
+  var sumInsulinValue : String {get}
   
 }
 
 class ProductListResultView: UIView {
   
 
-  lazy var resultTitle = createResultLabel(name: "Всего:",fontSize: 18)
+  lazy var resultTitle        = createResultLabel(name: "Всего:",fontSize: 18)
   
-  lazy var carboResultLabel = createResultLabel(name: nil, fontSize: 16)
+  lazy var carboResultLabel   = createResultLabel(name: nil, fontSize: 16)
   lazy var portionResultLabel = createResultLabel(name: nil, fontSize: 16)
   lazy var insulinResultLabel = createResultLabel(name: nil, fontSize: 16)
   

@@ -25,7 +25,6 @@ enum ChartDataCase: Int {
 protocol ChartModable {
   
   
-  
   var insulin  : Double?         {get set}
   var carbo    : Double?         {get set}
   var dataCase : ChartDataCase   {get set}
@@ -35,7 +34,7 @@ protocol ChartModable {
 }
 
 
-struct ChartViewModel {
+struct ChartVCViewModel {
   
   var chartEntryModels: [SugarViewModel]
   

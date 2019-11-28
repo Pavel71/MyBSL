@@ -30,12 +30,31 @@ class MealCollectionVC: UIViewController {
     }()
   
   
+  var dinners : [MainScreenMealViewModel] = [] {
+    
+    didSet {collectionView.reloadData()}
+  }
+  
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     setUpCollectionView()
   }
+  
+}
+
+// MARK: Set View Models
+
+extension MealCollectionVC {
+  
+  func setViewModel(viewModel: MealCollectionVCViewModel) {
+    
+    dinners = viewModel.cells
+    
+  }
+  
   
 }
 
@@ -64,11 +83,14 @@ extension MealCollectionVC {
 extension MealCollectionVC:  UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 10
+    return dinners.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCollectionCell.cellId, for: indexPath) as! MealCollectionCell
+    
+    cell.setViewModel(viewModel: dinners[indexPath.item])
     
     return cell
   }

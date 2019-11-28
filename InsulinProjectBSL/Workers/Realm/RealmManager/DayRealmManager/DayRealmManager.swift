@@ -75,15 +75,23 @@ extension DayRealmManager {
   // Dinner
   
   private func getDummyDInner() -> DinnersRealm {
+    
     let dinner = DinnersRealm(
-         compansationFase: 0,
-         time: Date(timeIntervalSince1970: 1574838000)
+      compansationFase    : CompansationPosition.progress.rawValue,
+         timeEating       : Date(timeIntervalSince1970: 1574838000),
+         sugarBefore      : 6.0,
+         totalCarbo       : 5,
+         totalInsulin     : 0.5,
+         totalPortion     : 100
+         
+         
        )
        let product = ProductRealm(
          name          : "Молоко",
          category      : "Молочные продукты",
-         carboIn100Grm : 5,
-         isFavorits    : false)
+         carboIn100Grm : 5,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+         isFavorits    : false,
+         actualInsulin : 0.5)
        
        dinner.listProduct.append(product)
     return dinner

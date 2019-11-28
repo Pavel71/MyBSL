@@ -36,7 +36,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   var mainScreenViewModel: MainScreenViewModelable! {
     
     didSet {
-      mainScreenView.chartView.chartVC.setViewModel(viewModel: mainScreenViewModel.chartViewModel)
+      mainScreenView.setViewModel(viewModel: mainScreenViewModel)
     }
   }
 

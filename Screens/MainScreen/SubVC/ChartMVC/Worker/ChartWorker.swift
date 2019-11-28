@@ -16,33 +16,15 @@ import Charts
 class ChartWorker {
   
   func getEntryies(data: [ChartModable]) -> [ChartDataEntry] {
-
-    return data.map(getCurrentChurtEntry)
+    return data.map(prepareEntry)
   }
   
-  private func getCurrentChurtEntry(data: ChartModable) -> ChartDataEntry {
+  private func prepareEntry(data: ChartModable) -> ChartDataEntry {
     
     return getChartEntry(data: data)
-    
-//    switch data.dataCase {
-//    case .sugarData:
-//      let data = data as! ChartSugarModel
-//      return getSugarChartEntry(data: data)
-//    case .mealData:
-//      let data = data as! ChartMealModel
-//      return getMealChartEntryData(data: data)
-//
-//    case .correctInsulinData:
-//      let data = data as! ChartCorrectInsulinModel
-//      return getCorrectInsulinChartEntryData(data: data)
-//    }
-    
+
   }
 
-  
-  private func configureDataInChartEntry(data: Any) {
-    
-  }
 }
   
   
@@ -53,54 +35,20 @@ class ChartWorker {
 extension ChartWorker {
   
   private func getChartEntry(data: ChartModable) -> ChartDataEntry {
-    let time  = convertTime(time: data.time)
     
+    let time  = convertTime(time: data.time)
     let entry = ChartDataEntry(
-    x    : time,
-    y    : data.sugar,
-    icon : getImage(imageCase: data.dataCase),
-    data : getData(dataCase: data.dataCase, insulin: data.insulin, carbo: data.carbo )
+      x    : time,
+      y    : data.sugar,
+      icon : getImage(imageCase : data.dataCase),
+      data : getData(dataCase  : data.dataCase,
+                      insulin   : data.insulin,
+                      carbo     : data.carbo)
     )
 
-    
     return entry
   }
   
-
-  
-//  private func getSugarChartEntry(data: ChartSugarModel) -> ChartDataEntry {
-//      let time = convertTime(time: data.time)
-//      return ChartDataEntry(x: time, y: data.sugar)
-//    }
-//
-//    private func getMealChartEntryData(data: ChartMealModel) -> ChartDataEntry {
-//
-//      let time = convertTime(time: data.time)
-//      // здесь кстати также может быть и коррекционный инсулин!
-//      let mealData = [
-//        "Углеводы": data.totalCarbo,
-//        "Инсулин": data.totalInsulin
-//      ]
-//
-//      return ChartDataEntry(
-//        x: time,
-//        y: data.sugar,
-//        icon: #imageLiteral(resourceName: "food"),
-//        data: mealData)
-//
-//    }
-//
-//    private func getCorrectInsulinChartEntryData(data: ChartCorrectInsulinModel) -> ChartDataEntry {
-//      let time = convertTime(time: data.time)
-//      let correctData = [
-//        "Корр. инсулин": data.correctInsulin
-//      ]
-//      return ChartDataEntry(
-//        x: time,
-//        y: data.sugar,
-//        icon: #imageLiteral(resourceName: "anesthesia"),
-//        data: correctData)
-//    }
   
 }
 

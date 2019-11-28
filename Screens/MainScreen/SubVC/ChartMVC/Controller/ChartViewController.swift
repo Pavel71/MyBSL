@@ -41,7 +41,7 @@ class ChartViewController: UIViewController {
   }
   
   // Возможно это надо будет переписать
-  func setViewModel(viewModel:ChartViewModel) {
+  func setViewModel(viewModel : ChartVCViewModel) {
     
     // Теперь нет картники
     
@@ -231,9 +231,8 @@ extension ChartViewController {
 //    lineChartDataSets.fillColor = .brown
 //    lineChartDataSets.fill = fill
 //
-//    lineChartDataSets.lineWidth = 2
     
-    
+    lineChartDataSets.lineWidth = 3
     lineChartDataSets.drawValuesEnabled     = false // не показывать переданные значения
     //    lineChartDataSets.valueTextColor = .green
     //    lineChartDataSets.valueFont = .systemFont(ofSize: 16)

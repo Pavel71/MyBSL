@@ -9,6 +9,14 @@
 import UIKit
 
 
+protocol MealCollectionCellable {
+  
+  var mealProductVCViewModel : MealProductsVCViewModel {get set}
+  var compansationFase       : CompansationPosition   {get set}
+  
+}
+
+
 class MealCollectionCell: UICollectionViewCell {
   
   static let cellId = "InsulinInjectionsCollectionViewCell"
@@ -16,6 +24,9 @@ class MealCollectionCell: UICollectionViewCell {
   let topButtonView = TopButtonView()
   let productTableViewController = MealProductsVC()
 //  let resultView = ProductListResultView()
+  
+  
+  var mealCompansation: CompansationPosition = .new
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -38,6 +49,18 @@ class MealCollectionCell: UICollectionViewCell {
   
 }
 
+// MARK: Set View Model
+
+extension MealCollectionCell {
+  
+  func setViewModel(viewModel: MealCollectionCellable) {
+    
+    mealCompansation = viewModel.compansationFase
+    productTableViewController.setViewModel(viewModel: viewModel.mealProductVCViewModel)
+  }
+  
+}
+
 
 // MARK: Set UP Views
 
@@ -49,7 +72,7 @@ extension MealCollectionCell {
     topButtonView,
     productTableViewController.view,
     ])
-    topButtonView.constrainHeight(constant: 40)
+    topButtonView.constrainHeight(constant: 35)
     
     
     stackView.axis = .vertical

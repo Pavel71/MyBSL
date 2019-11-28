@@ -38,7 +38,8 @@ enum MainScreen {
 
 struct MainScreenViewModel: MainScreenViewModelable {
   
+  var mealVCVM  : MealCollectionVCViewModel
+  var chartVCVM : ChartVCViewModel
   
-  var chartViewModel: ChartViewModel
 
 }
