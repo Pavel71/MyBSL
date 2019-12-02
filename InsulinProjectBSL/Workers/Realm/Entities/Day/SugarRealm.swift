@@ -28,6 +28,7 @@ import Realm
    
   dynamic var insulin    : Double?
   dynamic var totalCarbo : Double?
+  dynamic var mealId     : String?
 //  dynamic var data      : [Double]? // Не разрешает хранить словарь!
   
   
@@ -38,7 +39,8 @@ import Realm
     sugar      : Double,
     dataCase   : Int,
     insulin    : Double?,
-    totalCarbo : Double?
+    totalCarbo : Double?,
+    mealId     : String?
     
     ) {
       self.init()
@@ -47,8 +49,8 @@ import Realm
     self.dataCase   = dataCase
     self.insulin    = insulin
     self.totalCarbo = totalCarbo
-    
-   
+    self.mealId     = mealId
+
     }
   
   

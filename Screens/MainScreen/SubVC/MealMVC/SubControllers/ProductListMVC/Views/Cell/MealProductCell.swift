@@ -12,8 +12,8 @@ import UIKit
 protocol MealProductCellable {
   
   var name           : String {get set}
-  var carboInPortion : Float {get set}
-  var portion        : Int  {get set}
+  var carboInPortion : Float  {get set}
+  var portion        : Int    {get set}
   var factInsulin    : Float  {get set}
   
 }

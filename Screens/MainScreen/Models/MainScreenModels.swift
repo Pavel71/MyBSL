@@ -38,8 +38,14 @@ enum MainScreen {
 
 struct MainScreenViewModel: MainScreenViewModelable {
   
-  var mealVCVM  : MealCollectionVCViewModel
-  var chartVCVM : ChartVCViewModel
-  
+  var mealVCVM        : MealCollectionVCViewModel
+  var chartVCVM       : ChartVCViewModel
+  var insulinSupplyVM : InsulinSupplyViewModel
 
+}
+
+
+struct InsulinSupplyViewModel:InsulinSupplyViewModable {
+  var insulinSupply: Float
+  
 }

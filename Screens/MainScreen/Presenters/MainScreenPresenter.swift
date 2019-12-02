@@ -61,10 +61,16 @@ extension MainScreenPresenter {
       cells: realmData.listDinners.map(getMealViewModel)
     )
     
+    // InsulinSupply
+    
+    // По идеи я буду это брать юзер дефолтсе так как в реалме сохранять это бессмысленно!
+    let insulinSupplyVM = InsulinSupplyViewModel(insulinSupply: 300)
+    
     
     return MainScreenViewModel(
-      mealVCVM  : mealCollectionViewModel,
-      chartVCVM : chartViewModel
+      mealVCVM        : mealCollectionViewModel,
+      chartVCVM       : chartViewModel,
+      insulinSupplyVM : insulinSupplyVM
     )
   }
   
@@ -72,15 +78,19 @@ extension MainScreenPresenter {
   
   private func getMealViewModel(dinner: DinnersRealm) -> MainScreenMealViewModel {
     
+    let resultVM = ProductListResultsViewModel(
+    sumCarboValue   : String(dinner.totalCarbo),
+    sumPortionValue : String(dinner.totalPortion),
+    sumInsulinValue : String(dinner.totalInsulin))
+    
     let mealProdVcViewModel = MealProductsVCViewModel(
       cells    : dinner.listProduct.map(getProductViewModel),
-      resultVM : ProductListResultsViewModel(
-        sumCarboValue   : String(dinner.totalCarbo),
-        sumPortionValue : String(dinner.totalPortion),
-        sumInsulinValue : String(dinner.totalInsulin))
+      resultVM : resultVM
     )
     
     return MainScreenMealViewModel(
+      mealId                 : dinner.id,
+      productResultViewModel : resultVM,
       mealProductVCViewModel : mealProdVcViewModel,
       compansationFase       : CompansationPosition(rawValue: dinner.compansationFase)!
     )
@@ -98,14 +108,16 @@ extension MainScreenPresenter {
   // Chart View Model
   
   private func getChartViewModel(sugarRealm: SugarRealm) -> SugarViewModel {
-    
+ 
     let sugarViewModel = SugarViewModel(
       
       insulin  : sugarRealm.insulin,
       carbo    : sugarRealm.totalCarbo,
+      mealId   : sugarRealm.mealId,
       dataCase : ChartDataCase(rawValue: sugarRealm.dataCase)!,
       sugar    : sugarRealm.sugar,
       time     : sugarRealm.time
+      
     )
     
    return sugarViewModel

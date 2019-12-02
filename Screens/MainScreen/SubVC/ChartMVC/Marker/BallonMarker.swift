@@ -147,26 +147,32 @@ extension BalloonMarker {
   // MARK: Configure Label
   
   private func configureLabelMarker(entry:ChartDataEntry) -> String {
-    let hour = Int(entry.x)
-    let minutes = Int((entry.x - Double(hour)) * 100)
+    
+    let hour = entry.x.rounded(.down)
+
+    let minutes = Int(((entry.x - hour) * 100).rounded(.up))
+    
     let minutesString = minutes == 0 ? "00" : "\(minutes)"
-    let time = "\(hour):\(minutesString)"
+    let minutesZero = minutesString.count == 1 ? "0" : ""
+    let time = "\(Int(hour)):\(minutesZero)\(minutesString)"
     
     var markerText: String = "Сахар: \(entry.y) \n Время: \(time)"
     
-    if let data = entry.data {
-      
-      let dictData = data as! [String: Double]
-      var text = dictData.map { (arg0) -> String in
-        let (key, value) = arg0
-        return "\(key): \(value)"
-      }
-      text.insert("Время: \(time)", at: 0)
-      text.insert("Сахар: \(entry.y)", at: 0)
-
-      markerText = text.joined(separator: "\n")
-       
-    }
+    // Посмотрю скорре всего нет особо смысла выводить дату! Тогда нодо будет это все подчистить! Хотя только здеьс в маркере там то нам можт и пригодится
+    
+//    if let data = entry.data {
+//      
+//      let dictData = data as! [String: Any]
+//      var text = dictData.map { (arg0) -> String in
+//        let (key, value) = arg0
+//        return "\(key): \(value)"
+//      }
+//      text.insert("Время: \(time)", at: 0)
+//      text.insert("Сахар: \(entry.y)", at: 0)
+//
+//      markerText = text.joined(separator: "\n")
+//       
+//    }
     
     return markerText
   }
@@ -174,7 +180,7 @@ extension BalloonMarker {
   // MARK: Get Current Offset
   
   private func getCurrentPointByIcon(isIcon: Bool) -> CGPoint {
-    let y = isIcon ? -25 : -3
+    let y = isIcon ? -25 : -5
     return CGPoint(x: 0, y: y)
   }
   

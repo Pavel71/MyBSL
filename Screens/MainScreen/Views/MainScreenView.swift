@@ -13,16 +13,18 @@ import UIKit
 
 protocol MainScreenViewModelable {
   
-  var chartVCVM : ChartVCViewModel          {get set}
-  var mealVCVM  : MealCollectionVCViewModel {get set}
+  var chartVCVM       : ChartVCViewModel          {get set}
+  var mealVCVM        : MealCollectionVCViewModel {get set}
+  var insulinSupplyVM : InsulinSupplyViewModel    {get set}
   
 }
 
 class MainScreenView: UIView {
   
   // TopBar
-  let navBar = MainCustomNavBar(frame: MainCustomNavBar.sizeBar)
-  let chartView = ChartView()
+  let navBar             = MainCustomNavBar(frame: MainCustomNavBar.sizeBar)
+  let insulinSupplyView  = InsulinSupplyView()
+  let chartView          = ChartView()
   let mealCollectionView = MealCollectionView()
   
   override init(frame: CGRect) {
@@ -53,9 +55,19 @@ extension MainScreenView {
   
   private func setUpViews() {
     
+    let chartAndSupplyStack = UIStackView(arrangedSubviews: [
+    chartView,
+    insulinSupplyView
+    ])
+    insulinSupplyView.constrainHeight(constant: 30)
+    chartAndSupplyStack.axis = .vertical
+    chartAndSupplyStack.spacing = 5
+    
+    
+    
     
     let contentStackView = UIStackView(arrangedSubviews: [
-    chartView,
+    chartAndSupplyStack,
     mealCollectionView
     ])
     contentStackView.axis = .vertical
@@ -75,7 +87,7 @@ extension MainScreenView {
 
   
      addSubview(stackView)
-     stackView.fillSuperview()
+    stackView.fillSuperview()
   }
   
 }

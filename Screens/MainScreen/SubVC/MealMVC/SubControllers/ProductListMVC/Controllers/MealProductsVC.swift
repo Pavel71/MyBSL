@@ -13,7 +13,7 @@ class MealProductsVC: UIViewController {
   
   
   let tableView = UITableView(frame: .zero, style: .plain)
-  var footerView = MealProductsFooterView()
+  var footerView = MealProductsFooterView(frame: .init(x: 0, y: 0, width: 0, height: Constants.ProductList.TableFooterView.footerHeight))
   
   
   var products: [MealProductViewModel] = [] {
@@ -52,8 +52,22 @@ extension MealProductsVC {
   
   private func setUpTableView() {
     
-    view.addSubview(tableView)
-    tableView.fillSuperview()
+    let headerView = MealProductsHeaderInSection()
+    headerView.backgroundColor = .white
+    
+    let stackView = UIStackView(arrangedSubviews: [
+    headerView,
+    tableView
+    ])
+    headerView.constrainHeight(constant: 36)
+    stackView.axis = .vertical
+    
+    
+    view.addSubview(stackView)
+    stackView.fillSuperview()
+    
+//    view.addSubview(tableView)
+//    tableView.fillSuperview()
     configureTableView()
     
   }
@@ -69,7 +83,7 @@ extension MealProductsVC {
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 30
     
-//    tableView.tableFooterView = footerView
+    tableView.tableFooterView = UIView()
 
     
   }
@@ -101,23 +115,23 @@ extension MealProductsVC {
   
   // Header
   
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let header = MealProductsHeaderInSection()
-    return header
-  }
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 36
-  }
+//  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//    let header = MealProductsHeaderInSection()
+//    return header
+//  }
+//  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//    return 36
+//  }
   
   // Footer
   
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return footerView
-  }
-  
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return Constants.ProductList.TableFooterView.footerHeight
-  }
+//  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//    return footerView
+//  }
+//
+//  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//    return Constants.ProductList.TableFooterView.footerHeight
+//  }
   
 }
 

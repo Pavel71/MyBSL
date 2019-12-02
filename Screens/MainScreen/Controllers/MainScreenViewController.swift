@@ -32,6 +32,10 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   
 //  var tableView = UITableView(frame: .zero, style: .plain)
   
+  var chartVC           : ChartViewController!
+  var mealCollectionVC  : MealCollectionVC!
+  var insulinSupplyView : InsulinSupplyView!
+  
   var mainScreenView = MainScreenView()
   var mainScreenViewModel: MainScreenViewModelable! {
     
@@ -105,12 +109,91 @@ extension MainScreenViewController {
   
    private func setViews() {
     
+    chartVC           = mainScreenView.chartView.chartVC
+    mealCollectionVC  = mainScreenView.mealCollectionView.collectionVC
+    insulinSupplyView = mainScreenView.insulinSupplyView
+    
     view.addSubview(mainScreenView)
     mainScreenView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
-//    mainScreenView.fillSuperview()
+
+    setClousers()
+  }
+  
+  // MARK: Set Clousers From Views
+  
+  private func setClousers() {
+    setChartVCClousers()
+    
+    setMealVCClousers()
+    
+    setInsulinSupplyClousers()
     
   }
+  // ChartVC Clousers
+  private func setChartVCClousers() {
+    chartVC.passMealIdCLouser = { [weak self] mealId in
+      self?.catchMealIdFromChart(mealId: mealId)
+    }
+  }
+  // MealVC Clousers
+  private func setMealVCClousers() {
+    mealCollectionVC.passMealIdItemThanContinueScroll = {[weak self] mealId in
+      self?.catchMealIDFromMealVCThanScrolled(mealId: mealId)
+    }
+  }
+  
+  private func setInsulinSupplyClousers() {
+    insulinSupplyView.passSiganlLowSupplyLevel  = {[weak self] in
+      self?.catchInsulinViewSupplyLevelLow()
+    }
+    
+    insulinSupplyView.passSignalShowSupplyLevel = {[weak self] in
+      self?.catchInsulinViewShowSupplyLevel()
+    }
+  }
 }
+
+
+// MARK: Catch Clousers From Views
+
+extension MainScreenViewController {
+  
+  // Catch Meal Id Than Selected in Chart
+  
+  private func catchMealIdFromChart(mealId: String) {
+    
+    // теперь мне нужно поймать ячейку с этим Id и показать ее юзеру
+    let rowMealById = mealCollectionVC.dinners.firstIndex{$0.mealId == mealId}
+    guard let indexRow = rowMealById else {return}
+    
+
+    mealCollectionVC.collectionView.scrollToItem(at: IndexPath(item: indexRow, section: 0), at: .centeredHorizontally, animated: true)
+    
+  }
+  
+  // CatchMealVC CLousers
+  
+  private func catchMealIDFromMealVCThanScrolled(mealId: String) {
+    // теперь мне нужно подсветить entry по mealId
+    chartVC.highlitedEntryByMealId(mealId: mealId)
+  }
+  
+  // Catch InsulinSupplyView
+  
+  private func catchInsulinViewSupplyLevelLow() {
+    self.showAlertController(title: "Низкий запас инсулина!", message: "Замените картридж с инсулином!")
+  }
+  
+  private func catchInsulinViewShowSupplyLevel() {
+    
+    let supplyLevel = mainScreenViewModel.insulinSupplyVM.insulinSupply
+    self.showAlertController(title: "Инсулина в картридже.", message: "\(supplyLevel)ед.")
+  }
+  
+}
+
+
+
 
 
 

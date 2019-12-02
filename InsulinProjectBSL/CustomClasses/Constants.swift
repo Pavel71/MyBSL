@@ -33,8 +33,8 @@ struct Constants {
   }
   
   struct Font {
-    static let textFont = UIFont(name: "DINCondensed-Bold", size: 20)
-    static let valueFont = UIFont(name: "DINCondensed-Bold", size: 18)
+    static let textFont  = UIFont(name: "DINCondensed-Bold", size: 18)
+    static let valueFont = UIFont(name: "DINCondensed-Bold", size: 16)
   }
   
   static let cellMargin = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)

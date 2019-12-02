@@ -14,13 +14,13 @@ class MealProductsFooterView : UIView {
   lazy var insulinLabel : UILabel = createLabel(text: "")
   lazy var portionLabel : UILabel = createLabel(text: "")
   lazy var carboLabel   : UILabel = createLabel(text: "")
-  lazy var totalLabel   : UILabel = createLabel(text: "Всего")
+  lazy var totalLabel   : UILabel = createLabel(text: "Всего:")
 
   func createLabel(text: String) -> UILabel {
     let label = UILabel()
       label.font = UIFont(name: "DINCondensed-Bold", size: 18)
       label.text = text
-//      label.textColor = UIColor.lightGray
+      label.textColor = .white
       label.textAlignment = .center
       return label
   }

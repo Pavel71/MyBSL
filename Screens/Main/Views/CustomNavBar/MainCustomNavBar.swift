@@ -21,6 +21,20 @@ class MainCustomNavBar: UIView {
     return label
   }()
   
+  let addNewDinnerButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.setImage(#imageLiteral(resourceName: "plus").withRenderingMode(.alwaysTemplate), for: .normal)
+    button.addTarget(self, action: #selector(handleAddNewDinner), for: .touchUpInside)
+    return button
+  }()
+  
+  let robotButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.setImage(#imageLiteral(resourceName: "robot32").withRenderingMode(.alwaysOriginal), for: .normal)
+    button.addTarget(self, action: #selector(handleRobotMenu), for: .touchUpInside)
+    return button
+  }()
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
@@ -31,8 +45,26 @@ class MainCustomNavBar: UIView {
   }
   
   private func setUpTitleLabel() {
-    addSubview(titleLabel)
-    titleLabel.fillSuperview(padding: .init(top: 0, left: 0, bottom: 10, right: 0))
+    
+    let stackView = UIStackView(arrangedSubviews: [
+    robotButton, titleLabel , addNewDinnerButton
+    ])
+    
+    
+    stackView.distribution = .equalCentering
+    
+    addSubview(stackView)
+    stackView.fillSuperview(padding: .init(top: 10, left: 10, bottom: 10, right: 10))
+  }
+  
+  // Add New Dinner
+  @objc private func handleAddNewDinner() {
+    print("Add new Dinner")
+  }
+  
+  // Robot
+  @objc private func handleRobotMenu() {
+    print("Hi iam a robot!")
   }
   
  

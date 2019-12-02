@@ -11,10 +11,7 @@
 import Foundation
 
 
-enum ChartDataKey: String {
-  case insulin = "Инсулин"
-  case carbos = "Углеводы"
-}
+
 
 enum ChartDataCase: Int {
   case sugarData
@@ -27,6 +24,7 @@ protocol ChartModable {
   
   var insulin  : Double?         {get set}
   var carbo    : Double?         {get set}
+  var mealId   : String?         {get set}
   var dataCase : ChartDataCase   {get set}
   var sugar    : Double          {get set}
   var time     : Date            {get set}
@@ -44,6 +42,7 @@ struct SugarViewModel: ChartModable {
   
   var insulin  : Double?
   var carbo    : Double?
+  var mealId   : String?
 
   var dataCase : ChartDataCase
   var sugar    : Double

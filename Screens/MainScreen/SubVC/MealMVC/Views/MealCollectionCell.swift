@@ -11,9 +11,10 @@ import UIKit
 
 protocol MealCollectionCellable {
   
-  var mealProductVCViewModel : MealProductsVCViewModel {get set}
-  var compansationFase       : CompansationPosition   {get set}
-  
+  var mealId                 : String                      {get}
+  var mealProductVCViewModel : MealProductsVCViewModel     {get set}
+  var compansationFase       : CompansationPosition        {get set}
+  var productResultViewModel : ProductListResultsViewModel {get set}
 }
 
 
@@ -23,10 +24,11 @@ class MealCollectionCell: UICollectionViewCell {
   
   let topButtonView = TopButtonView()
   let productTableViewController = MealProductsVC()
-//  let resultView = ProductListResultView()
+  let resultView = MealProductsFooterView(frame: .init(x: 0, y: 0, width: 0, height: Constants.ProductList.TableFooterView.footerHeight))
   
   
   var mealCompansation: CompansationPosition = .new
+  var mealId: String!
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -55,7 +57,13 @@ extension MealCollectionCell {
   
   func setViewModel(viewModel: MealCollectionCellable) {
     
+    mealId           = viewModel.mealId
     mealCompansation = viewModel.compansationFase
+    
+    // ResultsViewModel
+    resultView.setViewModel(viewModel: viewModel.productResultViewModel)
+    
+    // Products ViewModel
     productTableViewController.setViewModel(viewModel: viewModel.mealProductVCViewModel)
   }
   
@@ -68,12 +76,14 @@ extension MealCollectionCell {
   
   private func setUpViews() {
     
+    // topButtonView,
     let stackView = UIStackView(arrangedSubviews: [
     topButtonView,
     productTableViewController.view,
+    resultView
     ])
-    topButtonView.constrainHeight(constant: 35)
-    
+    topButtonView.constrainHeight(constant: 25)
+    resultView.constrainHeight(constant: 40)
     
     stackView.axis = .vertical
     stackView.spacing = 5

@@ -27,8 +27,12 @@ class ChartViewController: UIViewController {
   let highLimitLevel: Double = 7.5
   let lowLimittLevel: Double = 4.5
   
+  var entryies: [ChartDataEntry] = []
+  
   // Chart Data
   //  var entryies: [ChartDataEntry] = []
+  
+  var passMealIdCLouser: StringPassClouser?
   
   
   override func viewDidLoad() {
@@ -45,8 +49,8 @@ class ChartViewController: UIViewController {
     
     // Теперь нет картники
     
-    let entryies   =  chartWorker.getEntryies(data: viewModel.chartEntryModels)
-    let lineSet    = getChartDataSets(entryies: entryies)
+    entryies          =  chartWorker.getEntryies(data: viewModel.chartEntryModels)
+    let lineSet       = getChartDataSets(entryies: entryies)
     
     let lineChartData = LineChartData(dataSet: lineSet)
     
@@ -56,6 +60,28 @@ class ChartViewController: UIViewController {
     )
     lineChartView.data = lineChartData
     
+  }
+  
+  // MARK: Highlited Value
+  
+  func highlitedEntryByMealId(mealId: String) {
+//    let highLight = Highlight(
+//    lineChartView.highlightValue(<#T##highlight: Highlight?##Highlight?#>)
+    let matchEntry = entryies.first { (entry) -> Bool in
+      let data = entry.data as? [String: Any]
+      let mealIdEntry = data?[ChartDataKey.mealId.rawValue] as? String
+      return mealIdEntry == mealId
+    }
+    guard let mealEntry = matchEntry else {return}
+    
+    print("Highlited Marker")
+    let highlited = Highlight(x: mealEntry.x, y: mealEntry.y, dataSetIndex: 0)
+    lineChartView.highlightValue(highlited)
+    
+//    lineChartView.marker?.refreshContent(entry: mealEntry, highlight: Highlight())
+    
+//    let position = lineChartView.getPosition(entry: mealEntry, axis: .left)
+    // Короче надо найти как посветить Маркер !по данным! Это не сложно сто процентов!
   }
   
   
@@ -68,7 +94,7 @@ extension ChartViewController {
   
   private func setUpChartView() {
     view.addSubview(lineChartView)
-    lineChartView.fillSuperview()
+    lineChartView.fillSuperview(padding: .init(top: 0, left: 5, bottom: 0, right: 5))
     configureChart()
   }
   
@@ -145,7 +171,7 @@ extension ChartViewController {
     leftAxis.drawZeroLineEnabled = true
 
     leftAxis.spaceTop    = 0.2
-//    leftAxis.xOffset = 10
+    
     leftAxis.axisMinimum = 0
     leftAxis.labelFont   = UIFont.systemFont(ofSize: 12)
     
@@ -158,9 +184,10 @@ extension ChartViewController {
     lineChartView.xAxis.valueFormatter = MyAxisFormater()
     lineChartView.xAxis.labelFont      = UIFont.systemFont(ofSize: 12)
     //    lineChartView?.xAxis.granularity = 1
-     lineChartView.xAxis.labelPosition = .bottom // Ось снизу
+    lineChartView.xAxis.labelPosition = .bottom // Ось снизу
     lineChartView.xAxis.spaceMin       = 1
     lineChartView.xAxis.spaceMax       = 1
+    
     
 
     
@@ -288,7 +315,16 @@ extension ChartViewController : ChartViewDelegate {
   }
   
   func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-    print(entry.data)
+    
+    let data = entry.data as? [String: Any]
+    
+    if let mealID = data?[ChartDataKey.mealId.rawValue] as? String {
+//      print(mealID)
+      // Получили mealId - теперь можно перематывать коллекцию зная какая ячейка мне нужна! Посмотрим!
+      passMealIdCLouser!(mealID)
+      // Потом нужен обратный эффект если матаем обеды нужно выделять их на графике!
+    }
+    
   }
   
 }

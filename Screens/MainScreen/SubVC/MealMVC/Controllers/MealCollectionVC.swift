@@ -19,7 +19,7 @@ class MealCollectionVC: UIViewController {
       
       let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
       
-      collectionView.contentInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+      collectionView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
       collectionView.showsHorizontalScrollIndicator = false
       collectionView.decelerationRate = .fast
       collectionView.backgroundColor = .white
@@ -34,6 +34,10 @@ class MealCollectionVC: UIViewController {
     
     didSet {collectionView.reloadData()}
   }
+  
+  // CLousers
+  
+  var passMealIdItemThanContinueScroll: StringPassClouser?
   
   
   
@@ -108,8 +112,31 @@ extension MealCollectionVC:  UICollectionViewDelegateFlowLayout, UICollectionVie
     
     let collectionViewHeight = collectionView.frame.height
     
-    return .init(width: UIScreen.main.bounds.width - 40, height: collectionViewHeight - 40)
+    return .init(width: UIScreen.main.bounds.width - 20, height: collectionViewHeight - 20)
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    return .init(top: 0, left: 0, bottom: 0, right: 10)
   }
   
   
+}
+
+
+// MARK: Scroll Delegate
+extension MealCollectionVC: UIScrollViewDelegate {
+  
+  // Задача определять какая ячейка сейчас на экране у пользователя
+  
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    print("End Decelarating")
+    let indexPathfirst = collectionView.indexPathsForVisibleItems.first
+    guard let indextPath = indexPathfirst else {return}
+    let mealId = dinners[indextPath.row].mealId
+    
+    passMealIdItemThanContinueScroll!(mealId)
+    
+    
+  }
+
 }

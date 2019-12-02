@@ -11,9 +11,19 @@ import Foundation
 import Charts
 
 
+
+
 // Класс Отвечает за обработку данных для графика
 
+enum ChartDataKey: String {
+   case insulin = "Инсулин"
+   case carbos  = "Углеводы"
+   case mealId  = "mealId"
+ }
+
 class ChartWorker {
+  
+ 
   
   func getEntryies(data: [ChartModable]) -> [ChartDataEntry] {
     return data.map(prepareEntry)
@@ -41,9 +51,10 @@ extension ChartWorker {
       x    : time,
       y    : data.sugar,
       icon : getImage(imageCase : data.dataCase),
-      data : getData(dataCase  : data.dataCase,
+      data : getData(dataCase   : data.dataCase,
                       insulin   : data.insulin,
-                      carbo     : data.carbo)
+                      carbo     : data.carbo,
+                      mealId    : data.mealId)
     )
 
     return entry
@@ -102,8 +113,9 @@ extension ChartWorker {
   private func getData(
     dataCase : ChartDataCase,
     insulin  : Double?,
-    carbo    : Double?
-  ) -> [String: Double]? {
+    carbo    : Double?,
+    mealId   : String?
+  ) -> [String: Any]? {
 
       switch dataCase {
         case .correctInsulinData:
@@ -111,7 +123,8 @@ extension ChartWorker {
         case .mealData:
           return [
             ChartDataKey.insulin.rawValue : insulin!,
-            ChartDataKey.carbos.rawValue  : carbo!
+            ChartDataKey.carbos.rawValue  : carbo!,
+            ChartDataKey.mealId.rawValue  : mealId!
         ]
         case.sugarData:
         return nil

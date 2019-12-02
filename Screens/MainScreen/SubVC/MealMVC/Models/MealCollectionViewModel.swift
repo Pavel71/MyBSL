@@ -22,6 +22,9 @@ struct MealCollectionVCViewModel {
 
 struct MainScreenMealViewModel : MealCollectionCellable  {
   
-  var mealProductVCViewModel: MealProductsVCViewModel
-  var compansationFase : CompansationPosition
+  var mealId                 : String
+  var productResultViewModel : ProductListResultsViewModel
+  
+  var mealProductVCViewModel : MealProductsVCViewModel
+  var compansationFase       : CompansationPosition
 }
