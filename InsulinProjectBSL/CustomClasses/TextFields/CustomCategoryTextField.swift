@@ -11,19 +11,19 @@ import UIKit
 
 class CustomCategoryTextField: CustomTextField {
   
-  let listButton: UIButton = {
+  let rightButton: UIButton = {
     let button = UIButton(type: .system)
-    button.setImage(#imageLiteral(resourceName: "list"), for: .normal)
-
     return button
   }()
   
   let rightViewSize: CGRect = .init(x: 0, y: 0, width: 20, height: 20)
   
-  override init(padding: CGFloat, placeholder: String, cornerRaduis: CGFloat) {
+  init(padding: CGFloat, placeholder: String, cornerRaduis: CGFloat,imageButton: UIImage) {
     super.init(padding: padding, placeholder: placeholder, cornerRaduis: cornerRaduis)
     
-    rightView = listButton
+    textAlignment = .center
+    rightButton.setImage(imageButton, for: .normal)
+    rightView = rightButton
     rightView?.frame = rightViewSize
     rightViewMode = .always
     

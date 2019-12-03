@@ -269,7 +269,7 @@ extension MealViewController {
     
     newMealView.okButton.addTarget(self, action: #selector(didTapSaveNewMealButton), for: .touchUpInside)
     
-    newMealView.categoryWithButtonTextFiled.listButton.addTarget(self, action: #selector(didTapShowTypeOfMealsButton), for: .touchUpInside)
+    newMealView.categoryWithButtonTextFiled.rightButton.addTarget(self, action: #selector(didTapShowTypeOfMealsButton), for: .touchUpInside)
     
     newMealView.mealValidator.isValidCallBack = { [weak self] (isSave) in
       self?.textFiledsValidateCanSave(isCanSave: isSave)

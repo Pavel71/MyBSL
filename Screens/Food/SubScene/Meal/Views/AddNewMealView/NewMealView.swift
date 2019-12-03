@@ -45,7 +45,12 @@ class NewMealView: AddNewElementView {
   let typeMealLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Тип обеда:")
   
   lazy var categoryWithButtonTextFiled: CustomCategoryTextField = {
-    let textField = CustomCategoryTextField(padding: 5, placeholder: "Завтраки",cornerRaduis: 10)
+    let textField = CustomCategoryTextField(
+      padding: 5,
+      placeholder: "Завтраки",
+      cornerRaduis: 10,
+      imageButton: #imageLiteral(resourceName: "list")
+    )
     textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
     textField.delegate = self
     return textField

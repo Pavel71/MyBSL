@@ -29,7 +29,12 @@ class WillActiveView: UIView {
     return st
   }()
   
-  let trainTextField = CustomCategoryTextField(padding: 5, placeholder: "Бассейн", cornerRaduis: 10)
+  let trainTextField = CustomCategoryTextField(
+    padding: 5,
+    placeholder: "Бассейн",
+    cornerRaduis: 10,
+    imageButton: #imageLiteral(resourceName: "list")
+  )
   
   
   // Clousers

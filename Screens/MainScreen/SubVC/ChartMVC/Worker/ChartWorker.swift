@@ -53,7 +53,6 @@ extension ChartWorker {
       icon : getImage(imageCase : data.dataCase),
       data : getData(dataCase   : data.dataCase,
                       insulin   : data.insulin,
-                      carbo     : data.carbo,
                       mealId    : data.mealId)
     )
 
@@ -113,7 +112,6 @@ extension ChartWorker {
   private func getData(
     dataCase : ChartDataCase,
     insulin  : Double?,
-    carbo    : Double?,
     mealId   : String?
   ) -> [String: Any]? {
 
@@ -121,9 +119,8 @@ extension ChartWorker {
         case .correctInsulinData:
           return [ChartDataKey.insulin.rawValue : insulin!]
         case .mealData:
+
           return [
-            ChartDataKey.insulin.rawValue : insulin!,
-            ChartDataKey.carbos.rawValue  : carbo!,
             ChartDataKey.mealId.rawValue  : mealId!
         ]
         case.sugarData:

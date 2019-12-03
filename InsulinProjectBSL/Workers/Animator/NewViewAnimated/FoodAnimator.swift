@@ -12,7 +12,7 @@ import UIKit
 
 class AddNewElementViewAnimated {
   
-  static func showOrDismissNewView(newElementView: UIView, blurView: UIVisualEffectView,customNavBar: CustomNavBar, tabbarController: UITabBarController, isShow: Bool) {
+  static func showOrDismissNewView(newElementView: UIView, blurView: UIVisualEffectView,customNavBar: UIView, tabbarController: UITabBarController, isShow: Bool) {
     
 //    guard let view = newElementView.superview else {return}
 //    UIStatusBarManager

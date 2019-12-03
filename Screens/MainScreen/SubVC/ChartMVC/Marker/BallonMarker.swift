@@ -112,6 +112,7 @@ open class BalloonMarker: MarkerImage
       // My Configure
       offset = getCurrentPointByIcon(isIcon: entry.icon != nil)
       let text = configureLabelMarker(entry: entry)
+      
       setLabel(text)
     }
   
@@ -157,22 +158,21 @@ extension BalloonMarker {
     let time = "\(Int(hour)):\(minutesZero)\(minutesString)"
     
     var markerText: String = "Сахар: \(entry.y) \n Время: \(time)"
+
     
-    // Посмотрю скорре всего нет особо смысла выводить дату! Тогда нодо будет это все подчистить! Хотя только здеьс в маркере там то нам можт и пригодится
-    
-//    if let data = entry.data {
-//      
-//      let dictData = data as! [String: Any]
-//      var text = dictData.map { (arg0) -> String in
-//        let (key, value) = arg0
-//        return "\(key): \(value)"
-//      }
-//      text.insert("Время: \(time)", at: 0)
-//      text.insert("Сахар: \(entry.y)", at: 0)
-//
-//      markerText = text.joined(separator: "\n")
-//       
-//    }
+    // Если идет компенсационны инсулин
+    if let data = entry.data {
+      
+      let dictData = data as! [String: Any]
+      
+      guard let correctInsulin = dictData[ChartDataKey.insulin.rawValue] as? Double else {
+        // Если инсулин не пришел то вернем обычные показатели
+        return markerText
+      }
+      
+      markerText += "\n \(ChartDataKey.insulin.rawValue): \(correctInsulin)"
+   
+    }
     
     return markerText
   }

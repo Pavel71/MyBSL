@@ -256,7 +256,7 @@ extension FoodViewController {
     
     newProductView.cancelButton.addTarget(self, action: #selector(didCancelNewProduct), for: .touchUpInside)
     
-    newProductView.categoryWithButtonTextFiled.listButton.addTarget(self, action: #selector(didTapShowListCategory), for: .touchUpInside)
+    newProductView.categoryWithButtonTextFiled.rightButton.addTarget(self, action: #selector(didTapShowListCategory), for: .touchUpInside)
     
     newProductView.didTapSaveButton = {[weak self] alertString, newFoodViewModel in self?.didSaveNewProduct(alertString: alertString, newProductViewModel: newFoodViewModel) }
     

@@ -31,12 +31,14 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   // Properties
   
 //  var tableView = UITableView(frame: .zero, style: .plain)
-  
+  var mainScreenView    : MainScreenView!
+  var navBarView        : MainCustomNavBar!
   var chartVC           : ChartViewController!
   var mealCollectionVC  : MealCollectionVC!
   var insulinSupplyView : InsulinSupplyView!
+  var newSugarDataView  : NewSugarDataView!
   
-  var mainScreenView = MainScreenView()
+  
   var mainScreenViewModel: MainScreenViewModelable! {
     
     didSet {
@@ -108,14 +110,18 @@ extension MainScreenViewController {
   
   
    private func setViews() {
-    
+    mainScreenView    = MainScreenView()
+    navBarView        = mainScreenView.navBar
     chartVC           = mainScreenView.chartView.chartVC
     mealCollectionVC  = mainScreenView.mealCollectionView.collectionVC
     insulinSupplyView = mainScreenView.insulinSupplyView
+    newSugarDataView  = mainScreenView.newSugarView
+    
     
     view.addSubview(mainScreenView)
-    mainScreenView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
+    mainScreenView.fillSuperview()
 
+    
     setClousers()
   }
   
@@ -127,6 +133,10 @@ extension MainScreenViewController {
     setMealVCClousers()
     
     setInsulinSupplyClousers()
+    
+    setNavBarClousers()
+    
+    setNewSugarDataViewClousers()
     
   }
   // ChartVC Clousers
@@ -141,7 +151,7 @@ extension MainScreenViewController {
       self?.catchMealIDFromMealVCThanScrolled(mealId: mealId)
     }
   }
-  
+  // InsulinSupplyView Clousers
   private func setInsulinSupplyClousers() {
     insulinSupplyView.passSiganlLowSupplyLevel  = {[weak self] in
       self?.catchInsulinViewSupplyLevelLow()
@@ -151,6 +161,28 @@ extension MainScreenViewController {
       self?.catchInsulinViewShowSupplyLevel()
     }
   }
+  // NavBarClousers
+  private func setNavBarClousers() {
+    navBarView.didTapAddNewDataClouser = {[weak self] in
+      self?.addNewData()
+    }
+    navBarView.didTapRobotMenuClouser = {[weak self] in
+      self?.showRobotMenu()
+    }
+  }
+  
+  // NewSugarView Clousers
+  
+  private func setNewSugarDataViewClousers() {
+    newSugarDataView.didTapSaveButtonClouser = { [weak self] in
+      self?.catchTapedSaveButton()
+    }
+    
+    newSugarDataView.didTapCancelButtonCLouser = { [weak self] in
+      self?.catchTapedCancelButton()
+    }
+  }
+  
 }
 
 
@@ -166,7 +198,6 @@ extension MainScreenViewController {
     let rowMealById = mealCollectionVC.dinners.firstIndex{$0.mealId == mealId}
     guard let indexRow = rowMealById else {return}
     
-
     mealCollectionVC.collectionView.scrollToItem(at: IndexPath(item: indexRow, section: 0), at: .centeredHorizontally, animated: true)
     
   }
@@ -178,18 +209,102 @@ extension MainScreenViewController {
     chartVC.highlitedEntryByMealId(mealId: mealId)
   }
   
-  // Catch InsulinSupplyView
+ 
   
-  private func catchInsulinViewSupplyLevelLow() {
-    self.showAlertController(title: "Низкий запас инсулина!", message: "Замените картридж с инсулином!")
-  }
+  // Catch NavBarClousers
   
-  private func catchInsulinViewShowSupplyLevel() {
+  // MARK: Show NewSugarDataView And Go to New Screen
+  
+  private func addNewData() {
+    showSheetControllerAddSugarOrMeal(title: "Добавить данные!",
+     sugarCallBack: { action in
+      
+      AddNewElementViewAnimated.showOrDismissNewView(newElementView: self.newSugarDataView, blurView: self.mainScreenView.blurView, customNavBar: self.navBarView, tabbarController: self.tabBarController!, isShow: true)
+      
+      // Запускаю Анимацию Sugar View
+      
+      // Также мне нужно прокинуть сюда сигналы от нажатия на кнопки!
+      
+      // Вообщем здесь нужно запускать анимацию появления newSugarDataView! - Все должно соответсвовать тому же как я добавляю новые продукты! Дизайн и анимация должны быть такими же
+      // View - содержит Title
+      // Сахар сейчас - TextField с точкой
+      // Если сахар вне норм то анимированно показать еще текствилд
+      // Компенсация - текстфилд - Тут нужно подумать что если мы у нижней границе то нам желательно показать картинкой конфетку! в числах же юзера нужно попрасить ввести данные эквивалентные инсулину- Это конечно тяжело объяснить но проще наверно будет написать углеводы! а самомоу потом подсчитать насколько нужно было бы уменьшить дозировку! Пока я делаю так чтобы юзер все понял! Дальше уже девелопер пускай разбирается!
+      
+      print("Sugar Callback")
+    },mealCallback: { action in
+      print("MealCallback")
+    })
     
-    let supplyLevel = mainScreenViewModel.insulinSupplyVM.insulinSupply
-    self.showAlertController(title: "Инсулина в картридже.", message: "\(supplyLevel)ед.")
   }
   
+  
+  
+  
+  
+  private func showRobotMenu() {
+    
+  }
+  
+}
+
+// MARK: Catch InsulinSupplyView
+
+extension MainScreenViewController {
+  
+   
+   private func catchInsulinViewSupplyLevelLow() {
+     self.showAlertController(title: "Низкий запас инсулина!", message: "Замените картридж с инсулином!")
+   }
+   
+   private func catchInsulinViewShowSupplyLevel() {
+     
+     let supplyLevel = mainScreenViewModel.insulinSupplyVM.insulinSupply
+     self.showAlertController(title: "Инсулина в картридже.", message: "\(supplyLevel)ед.")
+   }
+}
+
+
+// MARK: Catch NewSugarVew Clousers
+
+extension MainScreenViewController {
+  
+  private func catchTapedSaveButton() {
+    
+  }
+  
+  private func catchTapedCancelButton() {
+    
+    AddNewElementViewAnimated.showOrDismissNewView(newElementView: self.newSugarDataView, blurView: self.mainScreenView.blurView, customNavBar: self.navBarView, tabbarController: self.tabBarController!, isShow: false)
+    
+  }
+  
+}
+
+
+// MARK: Show Sheet AlertController
+extension MainScreenViewController {
+  
+  func showSheetControllerAddSugarOrMeal(
+    title         : String,
+    sugarCallBack : ((UIAlertAction) -> Void)?,
+    mealCallback  : ((UIAlertAction) -> Void)?
+  ){
+    
+    // Нужно подумать как бы мне сюда впихнуть CallBack
+    
+     let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+    
+        let sugarAction    = UIAlertAction(title: "Передать сахар", style: .default, handler: sugarCallBack)
+        let mealDataAction = UIAlertAction(title: "Добавить обед", style: .default, handler: mealCallback)
+        let cancelAction = UIAlertAction(title: "Отмена", style: .destructive, handler: nil)
+        
+        alertController.addAction(sugarAction)
+        alertController.addAction(mealDataAction)
+        alertController.addAction(cancelAction)
+    
+        present(alertController, animated: true, completion: nil)
+  }
 }
 
 

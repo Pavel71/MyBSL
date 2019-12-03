@@ -49,7 +49,12 @@ class NewProductView: AddNewElementView {
   lazy var massaTextField = createTextField(padding: 5, placeholder: "150",cornerRaduis: 10)
   
   lazy var categoryWithButtonTextFiled: CustomCategoryTextField = {
-    let textField = CustomCategoryTextField(padding: 5, placeholder: "Фрукты",cornerRaduis: 10)
+    let textField = CustomCategoryTextField(
+      padding: 5,
+      placeholder: "Фрукты",
+      cornerRaduis: 10,
+      imageButton: #imageLiteral(resourceName: "list")
+      )
     textField.addTarget(self, action: #selector(textDidChanged(textField:)), for: .editingChanged)
     textField.delegate = self
     return textField

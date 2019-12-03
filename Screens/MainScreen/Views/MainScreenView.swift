@@ -26,10 +26,18 @@ class MainScreenView: UIView {
   let insulinSupplyView  = InsulinSupplyView()
   let chartView          = ChartView()
   let mealCollectionView = MealCollectionView()
+  let newSugarView       = NewSugarDataView(frame: NewSugarDataView.sizeView)
+  
+  var blurView: UIVisualEffectView = {
+    let blurEffect = UIBlurEffect(style: .light)
+    let blurView = UIVisualEffectView(effect: blurEffect)
+    blurView.alpha = 0
+    return blurView
+  }()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
- 
+    
     setUpViews()
   }
   
@@ -55,39 +63,64 @@ extension MainScreenView {
   
   private func setUpViews() {
     
+    setUpStackViews()
+    
+    setUpBlurEffect()
+    setNewSugarDataView()
+  }
+  
+  
+  
+  private func setUpStackViews() {
+    
     let chartAndSupplyStack = UIStackView(arrangedSubviews: [
-    chartView,
-    insulinSupplyView
+      chartView,
+      insulinSupplyView
     ])
     insulinSupplyView.constrainHeight(constant: 30)
     chartAndSupplyStack.axis = .vertical
     chartAndSupplyStack.spacing = 5
-    
-    
-    
-    
+
     let contentStackView = UIStackView(arrangedSubviews: [
-    chartAndSupplyStack,
-    mealCollectionView
+      chartAndSupplyStack,
+      mealCollectionView
     ])
     contentStackView.axis = .vertical
     contentStackView.distribution = .fillEqually
     
-     let stackView = UIStackView(arrangedSubviews: [
-     navBar,
-     contentStackView
-     ])
-//    navBar.constrainWidth(constant: <#T##CGFloat#>)
+    let stackView = UIStackView(arrangedSubviews: [
+      navBar,
+      contentStackView
+    ])
     
-
-//     topView.constrainHeight(constant: MainScreenConstants.TopView.height)
-     
-     stackView.axis = .vertical
-     stackView.spacing = 5
-
+    stackView.axis = .vertical
+    stackView.spacing = 5
+    
+    
+    addSubview(stackView)
+    stackView.anchor(top: safeAreaLayoutGuide.topAnchor, leading: leadingAnchor, bottom: safeAreaLayoutGuide.bottomAnchor, trailing: trailingAnchor)
+  }
   
-     addSubview(stackView)
-    stackView.fillSuperview()
+  
+  // Set UP NewSugar View
+  private func setNewSugarDataView() {
+    addSubview(newSugarView)
+    newSugarView.centerInSuperview()
+    
+    // Убираем вправый угол!
+    newSugarView.hideViewOnTheRightCorner()
+  }
+  
+  // Set Up Blur
+  private func setUpBlurEffect() {
+     addSubview(blurView)
+    blurView.fillSuperview()
+
+     blurView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnBlur)))
+   }
+  
+  @objc private func didTapOnBlur() {
+    self.superview?.endEditing(true)
   }
   
 }

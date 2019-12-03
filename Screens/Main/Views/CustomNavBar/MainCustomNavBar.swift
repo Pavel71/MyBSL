@@ -35,6 +35,11 @@ class MainCustomNavBar: UIView {
     return button
   }()
   
+  // Clousers
+  
+  var didTapAddNewDataClouser : EmptyClouser?
+  var didTapRobotMenuClouser  : EmptyClouser?
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
@@ -60,11 +65,13 @@ class MainCustomNavBar: UIView {
   // Add New Dinner
   @objc private func handleAddNewDinner() {
     print("Add new Dinner")
+    didTapAddNewDataClouser!()
   }
   
   // Robot
   @objc private func handleRobotMenu() {
     print("Hi iam a robot!")
+    didTapRobotMenuClouser!()
   }
   
  

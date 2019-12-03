@@ -46,11 +46,15 @@ class AddNewElementView: UIView, UITextFieldDelegate, AddNewElemetnView {
     return button
   }()
   
+
+
+  
   // CreateTextField
   func createTextField(padding: CGFloat, placeholder: String,cornerRaduis: CGFloat, selector: Selector) -> CustomTextField {
     let textField = CustomTextField(padding: padding, placeholder: placeholder,cornerRaduis: cornerRaduis)
     textField.addTarget(self, action: selector, for: .editingChanged)
     textField.delegate = self
+    textField.textAlignment = .center
     return textField
   }
 
@@ -96,6 +100,22 @@ class AddNewElementView: UIView, UITextFieldDelegate, AddNewElemetnView {
     fatalError("init(coder:) has not been implemented")
   }
  
+}
+
+// MARK: Views
+
+extension AddNewElementView {
+  
+  func getBottomButtonStackView() -> UIStackView {
+    
+    let buttonsStackView = UIStackView(arrangedSubviews: [
+      okButton,
+      cancelButton
+      ])
+    buttonsStackView.distribution = .fillEqually
+    buttonsStackView.spacing      = 5
+    return buttonsStackView
+  }
 }
 
 
