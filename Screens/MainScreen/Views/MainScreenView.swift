@@ -13,9 +13,9 @@ import UIKit
 
 protocol MainScreenViewModelable {
   
-  var chartVCVM       : ChartVCViewModel          {get set}
-  var mealVCVM        : MealCollectionVCViewModel {get set}
-  var insulinSupplyVM : InsulinSupplyViewModel    {get set}
+  var chartVCVM       : ChartVCViewModel             {get set}
+  var collectionVCVM  : CollectionVCVM {get set}
+  var insulinSupplyVM : InsulinSupplyViewModel       {get set}
   
 }
 
@@ -45,7 +45,7 @@ class MainScreenView: UIView {
   func setViewModel(viewModel: MainScreenViewModelable) {
     
     chartView.chartVC.setViewModel(viewModel               : viewModel.chartVCVM)
-    mealCollectionView.collectionVC.setViewModel(viewModel : viewModel.mealVCVM)
+    mealCollectionView.collectionVC.setViewModel(viewModel : viewModel.collectionVCVM)
     
   }
   

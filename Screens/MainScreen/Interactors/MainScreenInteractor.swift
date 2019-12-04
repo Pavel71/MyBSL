@@ -20,13 +20,30 @@ class MainScreenInteractor: MainScreenBusinessLogic {
   
   
   func makeRequest(request: MainScreen.Model.Request.RequestType) {
-
+    
+    catchRealmRequests(request: request)
     catchViewModelRequests(request: request)
     
   }
   
   
   
+}
+
+// MARK: Work With Realm DB
+
+extension MainScreenInteractor {
+  
+  private func catchRealmRequests(request: MainScreen.Model.Request.RequestType) {
+    
+    switch request {
+    case .setSugarVM(let sugarViewModel):
+      // пришла моделька задача сохранить ее в реалме взять обновленные значения из реалма и отправить их в презентер дальше преобразовать их и вывести в View Controller!
+      print(sugarViewModel, "Сохранить в Реалме")
+      
+    default:break
+    }
+  }
 }
 
 

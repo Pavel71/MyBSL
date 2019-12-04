@@ -17,6 +17,9 @@ enum MainScreen {
     struct Request {
       enum RequestType {
         case getViewModel
+        
+        // Set Data to Realm
+        case setSugarVM(sugarViewModel: SugarViewModel)
       }
     }
     
@@ -37,15 +40,49 @@ enum MainScreen {
 // MARK: Main Screen ViewModel
 
 struct MainScreenViewModel: MainScreenViewModelable {
-  
-  var mealVCVM        : MealCollectionVCViewModel
+
+  // Для коллекции должны идти данные содержащие не только обеды!
+  var collectionVCVM  : CollectionVCVM
   var chartVCVM       : ChartVCViewModel
   var insulinSupplyVM : InsulinSupplyViewModel
 
 }
 
+// MARK: Insulin Supply VM
 
 struct InsulinSupplyViewModel:InsulinSupplyViewModable {
   var insulinSupply: Float
   
 }
+
+protocol CompansationObjactable {
+  var id   : String                 {get}
+  var type : TypeCompansationObject {get}
+}
+
+struct CollectionVCVM {
+  
+  var cells : [CompansationObjactable]
+  
+}
+
+
+enum TypeCompansationObject {
+  case mealObject            // Мы кушаем обед
+  case correctSugarByInsulin // Мы компенсируем выскоий сахар инсулином
+  case correctSugarByCarbo   // Мы компенсируем низкий сахар углеводами
+  
+}
+
+
+
+
+
+// У нас будет 3 ячейки
+
+// 1. Ячейка с обедом! Она готова
+    // Она должна содержать в себе
+    // Сахар до еды
+    // Сахар после - ЭХто берется когда мы получаем новый компенсационный объект
+    // ID обеда
+    //

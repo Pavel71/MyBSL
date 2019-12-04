@@ -157,7 +157,7 @@ class ProductListCell: UITableViewCell {
   var resultComDrob: Float = 0
 }
 
-
+// MARK: PickerView Delegate
 extension ProductListCell: UIPickerViewDelegate, UIPickerViewDataSource {
   
   func numberOfComponents(in pickerView: UIPickerView) -> Int {

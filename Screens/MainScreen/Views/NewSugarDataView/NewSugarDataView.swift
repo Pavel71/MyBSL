@@ -14,77 +14,70 @@ class NewSugarDataView: AddNewElementView {
   
   
   
-   static let sizeView : CGRect = .init(x: 0, y: 0, width: UIScreen.main.bounds.width - 30, height: 160)
-    
-    // Labels
-    
-    
-    
-    let sugarLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Сахар:")
-    let correctionLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Коррекция:")
- 
-    // TextFields
-    lazy var sugarTextField = createTextField(
-      padding      : 5,
-      placeholder  : "7.4",
-      cornerRaduis : 10,
-      selector     : #selector(textDidChanged))
-  
-
-  
-  let correctionTextFieldWithButton = CustomCategoryTextField(
-    padding: 5,
-    placeholder: "0.5",
-    cornerRaduis: 10,
-    imageButton: #imageLiteral(resourceName: "robot32").withRenderingMode(.alwaysOriginal)
-  )
-  
-
   
   
-  // Switch
-  let activeOn: UISwitch = {
-     let st = UISwitch()
-     st.isOn        = false
-     st.tintColor   = Constants.Color.lightBlueBackgroundColor
-     st.onTintColor = Constants.Color.darKBlueBackgroundColor
-     st.addTarget(self, action: #selector(handleSwitchActive), for: .valueChanged)
-     return st
-   }()
-   
-
+  static let sizeView : CGRect = .init(x: 0, y: 0, width: UIScreen.main.bounds.width - 30, height: 160)
   
-  var didTapSaveButtonClouser   : EmptyClouser?
+  // Labels
+  
+  
+  
+  let sugarLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Сахар:")
+  
+  // TextFields
+  lazy var sugarTextField = createTextField(
+    padding      : 5,
+    placeholder  : "7.4",
+    cornerRaduis : 10,
+    selector     : nil)
+  
+  
+  
+  
+  // CLousers
+  var didTapSaveButtonClouser   : ((SugarViewModel) -> Void)?
   var didTapCancelButtonCLouser : EmptyClouser?
+  
+  // Validator
+  var newSugarViewValidator = NewSugarViewValidator()
+  
+  // Custom Picker View
+  let sugarPickerView = SugarPickerView(frame: .init(x: 0, y: 0, width: 0, height: 200))
   
   // MARK: Init
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
+    
+    setValidatorClouser()
     configureTextFields()
-    
-  
-//    correctionTextField.rightView        = robotButton
-//    correctionTextField.rightView?.frame = .init(x: 0, y: 0, width: 20, height: 20)
-//    correctionTextField.rightViewMode    = .always
-    
+    configurePickerView()
     setUpViews()
     
   }
   
+  private func setValidatorClouser() {
+    newSugarViewValidator.isValidCallBack = {[weak self] isCanSave in
+      self?.validateSugarTextField(isCanSave:isCanSave)
+      
+    }
+  }
+  
+  // Configure PickerView
+  private func configurePickerView() {
+    sugarTextField.inputView    = sugarPickerView
+    // Set Clouser
+    sugarPickerView.passValueFromPickerView = {[weak self] sugar in
+      self?.catchValueFromPickerView(value: sugar)
+       }
+  }
+  // Configure TextFields
   private func configureTextFields() {
     
-    sugarTextField.keyboardType                 = .decimalPad
+    sugarTextField.keyboardType   = .decimalPad
     sugarTextField.addDoneButtonOnKeyboard()
-    
-    correctionTextFieldWithButton.keyboardType  = .decimalPad
-    correctionTextFieldWithButton.addDoneButtonOnKeyboard()
-    correctionTextFieldWithButton.addTarget(self, action: #selector(textDidChanged), for: .editingChanged)
-    correctionTextFieldWithButton.rightButton.addTarget(self, action: #selector(handleRobotButton), for: .touchUpInside)
-    
-    correctionTextFieldWithButton.isHidden = true
-    correctionTextFieldWithButton.alpha    = 0
+   
     
   }
   
@@ -96,16 +89,31 @@ class NewSugarDataView: AddNewElementView {
   
   // MARK: Handle Save and Cancel Button
   override func handleSaveButton() {
-     didTapSaveButtonClouser!()
-   }
-   
-   override func handleCancelButton() {
-     self.superview?.endEditing(true)
-     clearAllFieldsInView()
-     didTapCancelButtonCLouser!()
-   }
+    
+    
+    
+    let sugarVM = getSugarViewModel()
+    // очищаем поля они больше не нужны
+    clearAllFieldsInView()
+    // Здесь мне нужно собрать моделичку и отправить е в контроллер для передачи данных
+    didTapSaveButtonClouser!(sugarVM)
+  }
   
-
+  override func handleCancelButton() {
+    self.superview?.endEditing(true)
+    clearAllFieldsInView()
+    didTapCancelButtonCLouser!()
+  }
+  
+  // MARK: Get ViewModel
+  
+  private func getSugarViewModel() -> SugarViewModel {
+    let sugarFloat = (sugarTextField.text! as NSString).doubleValue
+    
+    return SugarViewModel(dataCase: .sugarData, sugar: sugarFloat, time: Date())
+  }
+  
+  
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -124,28 +132,16 @@ extension NewSugarDataView {
   private func setUpViews() {
     
     let titleStackView = UIStackView(arrangedSubviews: [
-    sugarLabel,
-    correctionLabel
+      sugarLabel,
+      
     ])
     titleStackView.spacing      = 5
     titleStackView.distribution = .fillEqually
     titleStackView.axis         = .vertical
     
-//    let containerView = UIView()
-//    containerView.addSubview(activeOn)
-//    activeOn.centerInSuperview()
-    
-    let activeteCorrectTextFieldStackView = UIStackView(arrangedSubviews: [
-    activeOn,correctionTextFieldWithButton
-    ])
-    
-    activeteCorrectTextFieldStackView.spacing   = 5
-    activeteCorrectTextFieldStackView.alignment = .center
-    
     
     let textFieldStackView = UIStackView(arrangedSubviews: [
-    sugarTextField,
-    activeteCorrectTextFieldStackView
+      sugarTextField,
     ])
     
     textFieldStackView.spacing      = 5
@@ -153,7 +149,7 @@ extension NewSugarDataView {
     textFieldStackView.axis         = .vertical
     
     let middleStackView = UIStackView(arrangedSubviews: [
-    titleStackView,textFieldStackView
+      titleStackView,textFieldStackView
     ])
     middleStackView.spacing      = 5
     middleStackView.distribution = .fillEqually
@@ -161,9 +157,9 @@ extension NewSugarDataView {
     let buttonStackView = getBottomButtonStackView()
     
     let overAllStackView = UIStackView(arrangedSubviews: [
-    titleLabel,
-    middleStackView,
-    buttonStackView
+      titleLabel,
+      middleStackView,
+      buttonStackView
     ])
     overAllStackView.spacing = 5
     overAllStackView.axis = .vertical
@@ -174,7 +170,7 @@ extension NewSugarDataView {
     addSubview(overAllStackView)
     overAllStackView.fillSuperview(padding: .init(top: 10, left: 10, bottom: 10, right: 10))
     
-   
+    
     
   }
   
@@ -183,48 +179,60 @@ extension NewSugarDataView {
 }
 
 
-// MARK: Handle RobotButton
+
+
+// MARK: Validate TextField
+
 extension NewSugarDataView {
   
-  @objc private func handleRobotButton() {
-    print("Robot Button")
+  private func validateSugarTextField(isCanSave: Bool) {
+    
+    okButton.isEnabled         = isCanSave
+    
+    if isCanSave {
+      okButton.backgroundColor =  #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+      okButton.setTitleColor(.white, for: .normal)
+    } else {
+      okButton.backgroundColor =  .lightGray
+      okButton.setTitleColor(.black, for: .disabled)
+    }
   }
   
 }
 
-// MARK:Handle  Switch
-
+// MARK: Picker View Value Catch
 extension NewSugarDataView {
   
-  @objc private func handleSwitchActive(activatSwitch: UISwitch) {
+  private func catchValueFromPickerView(value: Double) {
     
-    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
-      self.correctionTextFieldWithButton.isHidden = !activatSwitch.isOn
-      self.correctionTextFieldWithButton.alpha    =  activatSwitch.isOn ? 1 : 0
-    }, completion: nil)
+    if  value != 0 {
+      newSugarViewValidator.sugar = String(value)
+      sugarTextField.text         = String(value)
+    } else {
+      newSugarViewValidator.sugar = ""
+      sugarTextField.text         = ""
+    }
     
   }
   
 }
 
-// MARK: TextField Delegate
 
-extension NewSugarDataView {
-  // MARK: Text Did Change
-   
-   @objc private func  textDidChanged(textField: UITextField) {
-     
-     guard let text = textField.text else {return}
-     // Передаем в модельку данные
-     switch textField {
-       
-     case sugarTextField:
-       print("TextField Change")
-       
-     default: break
-     }
-     
-     
-     
-   }
-}
+
+
+
+
+
+
+
+//       let correctionPosition = newSugarViewValidator.getWayCompansation()
+//
+//       switch correctionPosition {
+//         case .correctDown:
+//          print("Показать коррекцию с шприцом и текстфилдом с роботом для вводва коррекции инсулина")
+//         case .correctUp:
+//          print("Показать Коррекцию и картинку с продуктом + кнопку переход к добавлению обеда")
+//         case .dontCorrect:
+//          print("ничего не делаем! просто подтверждаем валидацию и разрешаем сохранить")
+//         default: break
+//      }

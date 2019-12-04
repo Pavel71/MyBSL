@@ -30,7 +30,7 @@ class MealCollectionVC: UIViewController {
     }()
   
   
-  var dinners : [MainScreenMealViewModel] = [] {
+  var dinners : [CompansationObjactable] = [] {
     
     didSet {collectionView.reloadData()}
   }
@@ -53,7 +53,7 @@ class MealCollectionVC: UIViewController {
 
 extension MealCollectionVC {
   
-  func setViewModel(viewModel: MealCollectionVCViewModel) {
+  func setViewModel(viewModel: CollectionVCVM) {
     
     dinners = viewModel.cells
     
@@ -77,6 +77,8 @@ extension MealCollectionVC {
      
      collectionView.delegate = self
      collectionView.dataSource = self
+    
+    
      
      collectionView.register(MealCollectionCell.self, forCellWithReuseIdentifier: MealCollectionCell.cellId)
    }
@@ -92,11 +94,27 @@ extension MealCollectionVC:  UICollectionViewDelegateFlowLayout, UICollectionVie
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
+    switch dinners[indexPath.item].type {
+      case .mealObject:
+        return getMealCell(indexPath: indexPath)
+      case .correctSugarByCarbo:
+        return UICollectionViewCell() // здесь еще будет идти обработка и возврат нужных ячеек
+      case .correctSugarByInsulin:
+        return UICollectionViewCell()
+    }
+
+  }
+  
+  // MARK: COnfigure Meal Cell
+  private func getMealCell(indexPath: IndexPath) -> MealCollectionCell {
+    
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCollectionCell.cellId, for: indexPath) as! MealCollectionCell
     
-    cell.setViewModel(viewModel: dinners[indexPath.item])
+    let mealCellVM = dinners[indexPath.item] as! MainScreenMealViewModel
+    cell.setViewModel(viewModel: mealCellVM)
     
     return cell
+    
   }
   
   // Select
@@ -132,7 +150,7 @@ extension MealCollectionVC: UIScrollViewDelegate {
     print("End Decelarating")
     let indexPathfirst = collectionView.indexPathsForVisibleItems.first
     guard let indextPath = indexPathfirst else {return}
-    let mealId = dinners[indextPath.row].mealId
+    let mealId = dinners[indextPath.row].id
     
     passMealIdItemThanContinueScroll!(mealId)
     

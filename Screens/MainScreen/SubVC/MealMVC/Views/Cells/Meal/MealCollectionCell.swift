@@ -11,7 +11,7 @@ import UIKit
 
 protocol MealCollectionCellable {
   
-  var mealId                 : String                      {get}
+  var id                     : String                      {get}
   var mealProductVCViewModel : MealProductsVCViewModel     {get set}
   var compansationFase       : CompansationPosition        {get set}
   var productResultViewModel : ProductListResultsViewModel {get set}
@@ -57,7 +57,7 @@ extension MealCollectionCell {
   
   func setViewModel(viewModel: MealCollectionCellable) {
     
-    mealId           = viewModel.mealId
+    mealId           = viewModel.id
     mealCompansation = viewModel.compansationFase
     
     // ResultsViewModel

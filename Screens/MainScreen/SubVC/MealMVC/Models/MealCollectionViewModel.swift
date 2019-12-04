@@ -11,18 +11,12 @@ import Foundation
 
 
 
-
-
-struct MealCollectionVCViewModel {
+struct MainScreenMealViewModel : MealCollectionCellable,CompansationObjactable  {
   
-  var cells: [MainScreenMealViewModel]
-  
-}
+  var type                   : TypeCompansationObject
 
+  var id                     : String
 
-struct MainScreenMealViewModel : MealCollectionCellable  {
-  
-  var mealId                 : String
   var productResultViewModel : ProductListResultsViewModel
   
   var mealProductVCViewModel : MealProductsVCViewModel

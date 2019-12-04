@@ -50,11 +50,19 @@ class AddNewElementView: UIView, UITextFieldDelegate, AddNewElemetnView {
 
   
   // CreateTextField
-  func createTextField(padding: CGFloat, placeholder: String,cornerRaduis: CGFloat, selector: Selector) -> CustomTextField {
+  func createTextField(
+    padding: CGFloat,
+    placeholder: String,
+    cornerRaduis: CGFloat,
+    selector: Selector?) -> CustomTextField {
+    
     let textField = CustomTextField(padding: padding, placeholder: placeholder,cornerRaduis: cornerRaduis)
-    textField.addTarget(self, action: selector, for: .editingChanged)
     textField.delegate = self
     textField.textAlignment = .center
+    
+    guard let selector = selector else {return textField}
+    textField.addTarget(self, action: selector, for: .editingChanged)
+    
     return textField
   }
 

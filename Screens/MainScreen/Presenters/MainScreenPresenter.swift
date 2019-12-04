@@ -57,10 +57,12 @@ extension MainScreenPresenter {
     
     
     // Dinners
-    let mealCollectionViewModel = MealCollectionVCViewModel(
-      cells: realmData.listDinners.map(getMealViewModel)
-    )
+//    let mealCollectionViewModel = MealCollectionVCViewModel(
+//      cells: realmData.listDinners.map(getMealViewModel)
+//    )
     
+    let collectionVCVM = CollectionVCVM(
+      cells: realmData.listDinners.map(getMealViewModel))
     // InsulinSupply
     
     // По идеи я буду это брать юзер дефолтсе так как в реалме сохранять это бессмысленно!
@@ -68,7 +70,7 @@ extension MainScreenPresenter {
     
     
     return MainScreenViewModel(
-      mealVCVM        : mealCollectionViewModel,
+      collectionVCVM  : collectionVCVM,
       chartVCVM       : chartViewModel,
       insulinSupplyVM : insulinSupplyVM
     )
@@ -89,7 +91,8 @@ extension MainScreenPresenter {
     )
     
     return MainScreenMealViewModel(
-      mealId                 : dinner.id,
+      type                   : .mealObject,
+      id                 : dinner.id,
       productResultViewModel : resultVM,
       mealProductVCViewModel : mealProdVcViewModel,
       compansationFase       : CompansationPosition(rawValue: dinner.compansationFase)!

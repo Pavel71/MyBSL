@@ -38,6 +38,9 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   var insulinSupplyView : InsulinSupplyView!
   var newSugarDataView  : NewSugarDataView!
   
+  // For KeyboardNotification
+  var newSugarViewPointY: CGFloat!
+  
   
   var mainScreenViewModel: MainScreenViewModelable! {
     
@@ -88,8 +91,15 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     print("View Will Appear Main Screeen")
     navigationController?.navigationBar.isHidden = true
     
+    setKeyboardNotification()
     // Сделаем запрос в реалм чтобы получить новые данные по ViewModel
     interactor?.makeRequest(request: .getViewModel)
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+  
+    NotificationCenter.default.removeObserver(self)
   }
   
   func displayData(viewModel: MainScreen.Model.ViewModel.ViewModelData) {
@@ -174,8 +184,8 @@ extension MainScreenViewController {
   // NewSugarView Clousers
   
   private func setNewSugarDataViewClousers() {
-    newSugarDataView.didTapSaveButtonClouser = { [weak self] in
-      self?.catchTapedSaveButton()
+    newSugarDataView.didTapSaveButtonClouser = { [weak self] sugarVM in
+      self?.catchTapedSaveButton(sugarViewModel: sugarVM)
     }
     
     newSugarDataView.didTapCancelButtonCLouser = { [weak self] in
@@ -195,7 +205,7 @@ extension MainScreenViewController {
   private func catchMealIdFromChart(mealId: String) {
     
     // теперь мне нужно поймать ячейку с этим Id и показать ее юзеру
-    let rowMealById = mealCollectionVC.dinners.firstIndex{$0.mealId == mealId}
+    let rowMealById = mealCollectionVC.dinners.firstIndex{$0.id == mealId}
     guard let indexRow = rowMealById else {return}
     
     mealCollectionVC.collectionView.scrollToItem(at: IndexPath(item: indexRow, section: 0), at: .centeredHorizontally, animated: true)
@@ -220,16 +230,6 @@ extension MainScreenViewController {
      sugarCallBack: { action in
       
       AddNewElementViewAnimated.showOrDismissNewView(newElementView: self.newSugarDataView, blurView: self.mainScreenView.blurView, customNavBar: self.navBarView, tabbarController: self.tabBarController!, isShow: true)
-      
-      // Запускаю Анимацию Sugar View
-      
-      // Также мне нужно прокинуть сюда сигналы от нажатия на кнопки!
-      
-      // Вообщем здесь нужно запускать анимацию появления newSugarDataView! - Все должно соответсвовать тому же как я добавляю новые продукты! Дизайн и анимация должны быть такими же
-      // View - содержит Title
-      // Сахар сейчас - TextField с точкой
-      // Если сахар вне норм то анимированно показать еще текствилд
-      // Компенсация - текстфилд - Тут нужно подумать что если мы у нижней границе то нам желательно показать картинкой конфетку! в числах же юзера нужно попрасить ввести данные эквивалентные инсулину- Это конечно тяжело объяснить но проще наверно будет написать углеводы! а самомоу потом подсчитать насколько нужно было бы уменьшить дозировку! Пока я делаю так чтобы юзер все понял! Дальше уже девелопер пускай разбирается!
       
       print("Sugar Callback")
     },mealCallback: { action in
@@ -265,12 +265,13 @@ extension MainScreenViewController {
 }
 
 
-// MARK: Catch NewSugarVew Clousers
+// MARK: Catch Save And Cancel Button From NewSugarView
 
 extension MainScreenViewController {
   
-  private func catchTapedSaveButton() {
-    
+  private func catchTapedSaveButton(sugarViewModel: SugarViewModel) {
+  
+    interactor?.makeRequest(request: .setSugarVM(sugarViewModel: sugarViewModel))
   }
   
   private func catchTapedCancelButton() {
@@ -281,6 +282,44 @@ extension MainScreenViewController {
   
 }
 
+// MARK: Keyboard Notififcation
+
+extension MainScreenViewController {
+  
+
+  private func setKeyboardNotification() {
+    NotificationCenter.default.addObserver(self, selector: #selector(handleKeyBoardWillUP), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDismiss), name: UIResponder.keyboardWillHideNotification, object: nil)
+  }
+  
+  
+  // Will UP Keyboard
+  @objc private func handleKeyBoardWillUP(notification: Notification) {
+    
+    guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
+    let keyBoardFrame = value.cgRectValue
+    
+    // Нужно засетить точку 1 раз И потом она не будет изменятся!
+    if newSugarViewPointY == nil {
+      newSugarViewPointY = newSugarDataView.frame.origin.y
+    }
+    
+    
+    let diff = keyBoardFrame.height + 10 - newSugarViewPointY
+    UIView.animate(withDuration: 0.5) {
+      self.newSugarDataView.transform = CGAffineTransform(translationX: 0, y: -diff)
+    }
+    
+  }
+  // Will Hide
+  @objc private func handleKeyboardDismiss(notification: Notification) {
+    UIView.animate(withDuration: 0.5) {
+      self.newSugarDataView.transform = .identity
+    }
+  }
+  
+  
+}
 
 // MARK: Show Sheet AlertController
 extension MainScreenViewController {
@@ -296,7 +335,7 @@ extension MainScreenViewController {
      let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
     
         let sugarAction    = UIAlertAction(title: "Передать сахар", style: .default, handler: sugarCallBack)
-        let mealDataAction = UIAlertAction(title: "Добавить обед", style: .default, handler: mealCallback)
+        let mealDataAction = UIAlertAction(title: "Компенсация сахара", style: .default, handler: mealCallback)
         let cancelAction = UIAlertAction(title: "Отмена", style: .destructive, handler: nil)
         
         alertController.addAction(sugarAction)
@@ -306,6 +345,9 @@ extension MainScreenViewController {
         present(alertController, animated: true, completion: nil)
   }
 }
+
+
+
 
 
 

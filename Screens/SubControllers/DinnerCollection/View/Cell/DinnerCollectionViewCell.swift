@@ -8,6 +8,9 @@
 
 import UIKit
 
+
+// MARK: Enums
+
 enum CorrectInsulinPosition {
   case needCorrect
   case dontCorrect
