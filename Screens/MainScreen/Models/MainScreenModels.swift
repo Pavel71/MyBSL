@@ -67,7 +67,7 @@ struct CollectionVCVM {
 }
 
 
-enum TypeCompansationObject {
+enum TypeCompansationObject: Int {
   case mealObject            // Мы кушаем обед
   case correctSugarByInsulin // Мы компенсируем выскоий сахар инсулином
   case correctSugarByCarbo   // Мы компенсируем низкий сахар углеводами

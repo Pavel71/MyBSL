@@ -29,7 +29,7 @@ import RealmSwift
   
   dynamic var date: Date = Date() // Дата будет создаватся при создание объекта
   var listSugar          = List<SugarRealm>()
-  var listDinners        = List<DinnersRealm>()
+  var listDinners        = List<CompansationObjectRelam>()
   
   convenience  init(
     date: Date

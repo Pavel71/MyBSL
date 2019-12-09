@@ -151,7 +151,7 @@ extension MainScreenViewController {
   }
   // ChartVC Clousers
   private func setChartVCClousers() {
-    chartVC.passMealIdCLouser = { [weak self] mealId in
+    chartVC.passCompansationObjectId = { [weak self] mealId in
       self?.catchMealIdFromChart(mealId: mealId)
     }
   }

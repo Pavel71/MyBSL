@@ -14,42 +14,38 @@ import Realm
 
 @objcMembers class SugarRealm: Object {
   
-  enum Property          : String {case id}
-   
-   
-  dynamic var id         : String = UUID().uuidString
-   
-   
+  enum Property                    : String {case id}
+             
+             
+  dynamic var id                   : String = UUID().uuidString
+             
+             
   // Propertyies
-  dynamic var sugar      : Double = 0  // Сами показатели сахара
-  dynamic var time       : Date = Date()       // Время когда установленн сахар
+  dynamic var sugar                : Double = 0  // Сами показатели сахара
+  dynamic var time                 : Date = Date()       // Время когда установленн сахар
+             
+  dynamic var dataCase             : Int = 0     // Тип данных которые приходят в график
    
-  dynamic var dataCase   : Int = 0     // Тип данных которые приходят в график
-   
-  dynamic var insulin    : Double?
-  dynamic var totalCarbo : Double?
-  dynamic var mealId     : String?
+//  dynamic var insulin    : Double?
+//  dynamic var totalCarbo : Double?
+  dynamic var compansationObjectId : String?
 //  dynamic var data      : [Double]? // Не разрешает хранить словарь!
   
   
   // Здесь какая идея сейчас у мнея эти данные разнятся! тоесть они не свзянна сахара и обеды! а можно сделать так что обед всегда содержит сахар тоесть там будут данные какой сахар до еды каким стал после еды!
   
   convenience init(
-    time       : Date,
-    sugar      : Double,
-    dataCase   : Int,
-    insulin    : Double?,
-    totalCarbo : Double?,
-    mealId     : String?
+    time                 : Date,
+    sugar                : Double,
+    dataCase             : Int,
+    compansationObjectId : String?
     
     ) {
       self.init()
-    self.sugar      = sugar
-    self.time       = time
-    self.dataCase   = dataCase
-    self.insulin    = insulin
-    self.totalCarbo = totalCarbo
-    self.mealId     = mealId
+    self.sugar                = sugar
+    self.time                 = time
+    self.dataCase             = dataCase
+    self.compansationObjectId = compansationObjectId
 
     }
   

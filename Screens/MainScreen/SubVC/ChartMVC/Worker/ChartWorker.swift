@@ -18,7 +18,7 @@ import Charts
 enum ChartDataKey: String {
    case insulin = "Инсулин"
    case carbos  = "Углеводы"
-   case mealId  = "mealId"
+   case compansationObjectId  = "mealId"
  }
 
 class ChartWorker {
@@ -47,13 +47,17 @@ extension ChartWorker {
   private func getChartEntry(data: ChartModable) -> ChartDataEntry {
     
     let time  = convertTime(time: data.time)
+    
+    let dataObject = getData(
+                      dataCase: data.dataCase,
+                      compansationObjectId  : data.compansationObjectId
+                         )
+                    
     let entry = ChartDataEntry(
       x    : time,
       y    : data.sugar,
-      icon : getImage(imageCase : data.dataCase),
-      data : getData(dataCase   : data.dataCase,
-                      insulin   : data.insulin,
-                      mealId    : data.mealId)
+      icon : getImage(imageCase: data.dataCase),
+      data : dataObject
     )
 
     return entry
@@ -97,8 +101,10 @@ extension ChartWorker {
           return #imageLiteral(resourceName: "anesthesia")
         case .mealData:
           return #imageLiteral(resourceName: "food")
+        case .correctCarboData:
+          return #imageLiteral(resourceName: "candy")
         case.sugarData:
-        return nil
+          return nil
       }
       
   }
@@ -110,22 +116,28 @@ extension ChartWorker {
 extension ChartWorker {
   
   private func getData(
-    dataCase : ChartDataCase,
-    insulin  : Double?,
-    mealId   : String?
+    dataCase               : ChartDataCase,
+    compansationObjectId   : String?
   ) -> [String: Any]? {
+    
+    guard compansationObjectId != nil else {return nil}
+    
+    // Нам нужно вернуть только Id Objecta 
+    return [
+        ChartDataKey.compansationObjectId.rawValue  : compansationObjectId!
+    ]
 
-      switch dataCase {
-        case .correctInsulinData:
-          return [ChartDataKey.insulin.rawValue : insulin!]
-        case .mealData:
-
-          return [
-            ChartDataKey.mealId.rawValue  : mealId!
-        ]
-        case.sugarData:
-        return nil
-      }
+//      switch dataCase {
+//        case .correctInsulinData:
+//          return [ChartDataKey.insulin.rawValue : insulin!]
+//        case .mealData:
+//
+//          return [
+//            ChartDataKey.compansationObjectId.rawValue  : compansationObjectId!
+//        ]
+//        case.sugarData:
+//        return nil
+//      }
       
   }
   

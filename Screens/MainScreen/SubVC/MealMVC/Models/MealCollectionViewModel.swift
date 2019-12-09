@@ -11,8 +11,9 @@ import Foundation
 
 
 
-struct MainScreenMealViewModel : MealCollectionCellable,CompansationObjactable  {
+struct MealTypeCompansationObjectVM : MealCollectionCellable,CompansationObjactable  {
   
+  var topButtonVM            : TopButtonViewModalable
   var type                   : TypeCompansationObject
 
   var id                     : String
@@ -21,4 +22,10 @@ struct MainScreenMealViewModel : MealCollectionCellable,CompansationObjactable  
   
   var mealProductVCViewModel : MealProductsVCViewModel
   var compansationFase       : CompansationPosition
+}
+
+
+struct TopButtonViewModel : TopButtonViewModalable {
+  var type: TypeCompansationObject
+
 }

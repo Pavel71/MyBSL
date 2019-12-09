@@ -110,7 +110,7 @@ extension MealCollectionVC:  UICollectionViewDelegateFlowLayout, UICollectionVie
     
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCollectionCell.cellId, for: indexPath) as! MealCollectionCell
     
-    let mealCellVM = dinners[indexPath.item] as! MainScreenMealViewModel
+    let mealCellVM = dinners[indexPath.item] as! MealTypeCompansationObjectVM
     cell.setViewModel(viewModel: mealCellVM)
     
     return cell

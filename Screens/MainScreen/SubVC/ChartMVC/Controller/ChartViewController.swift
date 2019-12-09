@@ -32,7 +32,7 @@ class ChartViewController: UIViewController {
   // Chart Data
   //  var entryies: [ChartDataEntry] = []
   
-  var passMealIdCLouser: StringPassClouser?
+  var passCompansationObjectId: StringPassClouser?
   
   
   override func viewDidLoad() {
@@ -69,7 +69,7 @@ class ChartViewController: UIViewController {
 //    lineChartView.highlightValue(<#T##highlight: Highlight?##Highlight?#>)
     let matchEntry = entryies.first { (entry) -> Bool in
       let data = entry.data as? [String: Any]
-      let mealIdEntry = data?[ChartDataKey.mealId.rawValue] as? String
+      let mealIdEntry = data?[ChartDataKey.compansationObjectId.rawValue] as? String
       return mealIdEntry == mealId
     }
     guard let mealEntry = matchEntry else {return}
@@ -318,10 +318,10 @@ extension ChartViewController : ChartViewDelegate {
     
     let data = entry.data as? [String: Any]
     
-    if let mealID = data?[ChartDataKey.mealId.rawValue] as? String {
+    if let compansastionObjectId = data?[ChartDataKey.compansationObjectId.rawValue] as? String {
 //      print(mealID)
       // Получили mealId - теперь можно перематывать коллекцию зная какая ячейка мне нужна! Посмотрим!
-      passMealIdCLouser!(mealID)
+      passCompansationObjectId!(compansastionObjectId)
       // Потом нужен обратный эффект если матаем обеды нужно выделять их на графике!
     }
     

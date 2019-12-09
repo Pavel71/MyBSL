@@ -16,18 +16,17 @@ import Foundation
 enum ChartDataCase: Int {
   case sugarData
   case correctInsulinData
+  case correctCarboData
   case mealData
 }
 
 protocol ChartModable {
   
-  
-  var insulin  : Double?         {get set}
-  var carbo    : Double?         {get set}
-  var mealId   : String?         {get set}
-  var dataCase : ChartDataCase   {get set}
-  var sugar    : Double          {get set}
-  var time     : Date            {get set}
+
+  var compansationObjectId : String?         {get set}
+  var dataCase             : ChartDataCase   {get set}
+  var sugar                : Double          {get set}
+  var time                 : Date            {get set}
   
 }
 
@@ -40,9 +39,8 @@ struct ChartVCViewModel {
 
 struct SugarViewModel: ChartModable {
   
-  var insulin  : Double?
-  var carbo    : Double?
-  var mealId   : String?
+
+  var compansationObjectId   : String?
 
   var dataCase : ChartDataCase
   var sugar    : Double

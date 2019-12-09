@@ -12,8 +12,10 @@ import UIKit
 protocol MealCollectionCellable {
   
   var id                     : String                      {get}
+  var topButtonVM            : TopButtonViewModalable      {get}
   var mealProductVCViewModel : MealProductsVCViewModel     {get set}
   var compansationFase       : CompansationPosition        {get set}
+  // Это нужно запехнуть в продукт лист и убрать снизу из ячейки!
   var productResultViewModel : ProductListResultsViewModel {get set}
 }
 
@@ -56,6 +58,8 @@ class MealCollectionCell: UICollectionViewCell {
 extension MealCollectionCell {
   
   func setViewModel(viewModel: MealCollectionCellable) {
+    
+    topButtonView.setViewModel(viewModel: viewModel.topButtonVM)
     
     mealId           = viewModel.id
     mealCompansation = viewModel.compansationFase

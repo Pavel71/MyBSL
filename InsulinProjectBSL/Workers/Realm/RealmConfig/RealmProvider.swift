@@ -65,7 +65,7 @@ class RealmProvider {
     fileURL: try! Path.inDocuments("day.realm"),
     schemaVersion: 1,
     deleteRealmIfMigrationNeeded: true, // Это для тестирования
-    objectTypes: [DayRealm.self,SugarRealm.self,DinnersRealm.self,ProductRealm.self])
+    objectTypes: [DayRealm.self,SugarRealm.self,CompansationObjectRelam.self,ProductRealm.self])
   
   public static var day: RealmProvider = {
     return RealmProvider.init(config: dayConfig)

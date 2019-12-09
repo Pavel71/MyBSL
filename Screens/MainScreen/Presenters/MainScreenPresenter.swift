@@ -78,24 +78,29 @@ extension MainScreenPresenter {
   
   // Meal View Model
   
-  private func getMealViewModel(dinner: DinnersRealm) -> MainScreenMealViewModel {
+  private func getMealViewModel(compObject: CompansationObjectRelam) -> MealTypeCompansationObjectVM {
     
     let resultVM = ProductListResultsViewModel(
-    sumCarboValue   : String(dinner.totalCarbo),
-    sumPortionValue : String(dinner.totalPortion),
-    sumInsulinValue : String(dinner.totalInsulin))
+    sumCarboValue   : "Замена",
+    sumPortionValue : "Замена",
+    sumInsulinValue : "Замена")
     
     let mealProdVcViewModel = MealProductsVCViewModel(
-      cells    : dinner.listProduct.map(getProductViewModel),
+      cells    : compObject.listProduct.map(getProductViewModel),
       resultVM : resultVM
     )
     
-    return MainScreenMealViewModel(
+    // Нужно переименовывать объект который будем хранить в реалме не как диннер а как SugarDependencyObject
+    let topButtonVM = TopButtonViewModel(type: TypeCompansationObject(rawValue: compObject.typeObject)!) // Заглушка
+    
+    // Так как здесь у меня именно меал то можно проставить руками но это о разджел нужно переисать чтобы обрабатывалиьс все 3 объекта
+    return MealTypeCompansationObjectVM(
+      topButtonVM            : topButtonVM,
       type                   : .mealObject,
-      id                 : dinner.id,
+      id                     : compObject.id,
       productResultViewModel : resultVM,
       mealProductVCViewModel : mealProdVcViewModel,
-      compansationFase       : CompansationPosition(rawValue: dinner.compansationFase)!
+      compansationFase       : CompansationPosition(rawValue: compObject.compansationFase)!
     )
   }
   
@@ -114,12 +119,10 @@ extension MainScreenPresenter {
  
     let sugarViewModel = SugarViewModel(
       
-      insulin  : sugarRealm.insulin,
-      carbo    : sugarRealm.totalCarbo,
-      mealId   : sugarRealm.mealId,
-      dataCase : ChartDataCase(rawValue: sugarRealm.dataCase)!,
-      sugar    : sugarRealm.sugar,
-      time     : sugarRealm.time
+      compansationObjectId : sugarRealm.compansationObjectId,
+      dataCase             : ChartDataCase(rawValue: sugarRealm.dataCase)!,
+      sugar                : sugarRealm.sugar,
+      time                 : sugarRealm.time
       
     )
     
