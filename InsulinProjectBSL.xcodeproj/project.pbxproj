@@ -109,6 +109,7 @@
 		05C16D61233F23A800486CAE /* ProductListResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D60233F23A800486CAE /* ProductListResultView.swift */; };
 		05C16D66233F4E6100486CAE /* RobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D65233F4E6100486CAE /* RobotView.swift */; };
 		05C2DEF8237EBAE00023B39C /* TopViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C2DEF7237EBAE00023B39C /* TopViewCell.swift */; };
+		05CBEB9423A12C74001D9EEA /* ResultViewWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CBEB9323A12C74001D9EEA /* ResultViewWorker.swift */; };
 		05CFE0D0237EC3DD006FDC87 /* SomeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CFE0CF237EC3DD006FDC87 /* SomeConstants.swift */; };
 		05D1469823979E0C00E6E6EA /* NewSugarTask in Resources */ = {isa = PBXBuildFile; fileRef = 05D1469723979E0C00E6E6EA /* NewSugarTask */; };
 		05D1469A2397A7D600E6E6EA /* NewSugarViewValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D146992397A7D600E6E6EA /* NewSugarViewValidator.swift */; };
@@ -309,6 +310,7 @@
 		05C16D60233F23A800486CAE /* ProductListResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListResultView.swift; sourceTree = "<group>"; };
 		05C16D65233F4E6100486CAE /* RobotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotView.swift; sourceTree = "<group>"; };
 		05C2DEF7237EBAE00023B39C /* TopViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewCell.swift; sourceTree = "<group>"; };
+		05CBEB9323A12C74001D9EEA /* ResultViewWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewWorker.swift; sourceTree = "<group>"; };
 		05CFE0CF237EC3DD006FDC87 /* SomeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomeConstants.swift; sourceTree = "<group>"; };
 		05D1469723979E0C00E6E6EA /* NewSugarTask */ = {isa = PBXFileReference; lastKnownFileType = text; path = NewSugarTask; sourceTree = "<group>"; };
 		05D146992397A7D600E6E6EA /* NewSugarViewValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSugarViewValidator.swift; sourceTree = "<group>"; };
@@ -1245,6 +1247,7 @@
 		05A7CAF02382A34B0075D04E /* ProductListMVC */ = {
 			isa = PBXGroup;
 			children = (
+				05CBEB9223A12C51001D9EEA /* Workers */,
 				05A7CAF32382A3760075D04E /* Controllers */,
 				05A7CAF22382A3700075D04E /* Models */,
 				05A7CAF12382A36A0075D04E /* Views */,
@@ -1622,6 +1625,14 @@
 				05C2DEF5237EBA920023B39C /* TopView */,
 			);
 			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		05CBEB9223A12C51001D9EEA /* Workers */ = {
+			isa = PBXGroup;
+			children = (
+				05CBEB9323A12C74001D9EEA /* ResultViewWorker.swift */,
+			);
+			path = Workers;
 			sourceTree = "<group>";
 		};
 		05CFE0D2237EC8E9006FDC87 /* MainScreen */ = {
@@ -2564,6 +2575,7 @@
 				05952A5F233E873E00EE996E /* TouchesPassView.swift in Sources */,
 				05D26A3E236093CB00155F31 /* DinnerRealmManager.swift in Sources */,
 				F1E78C9C230D31E600592AB8 /* AppDelegate.swift in Sources */,
+				05CBEB9423A12C74001D9EEA /* ResultViewWorker.swift in Sources */,
 				F1103B63232A735D009A338A /* NewMealViewWorker.swift in Sources */,
 				F1E78CB8230D334B00592AB8 /* FoodPresenter.swift in Sources */,
 				05515D0423699D0800A298AA /* MLWorker.swift in Sources */,

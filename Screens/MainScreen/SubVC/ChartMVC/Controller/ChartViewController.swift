@@ -65,8 +65,8 @@ class ChartViewController: UIViewController {
   // MARK: Highlited Value
   
   func highlitedEntryByMealId(mealId: String) {
-//    let highLight = Highlight(
-//    lineChartView.highlightValue(<#T##highlight: Highlight?##Highlight?#>)
+
+    
     let matchEntry = entryies.first { (entry) -> Bool in
       let data = entry.data as? [String: Any]
       let mealIdEntry = data?[ChartDataKey.compansationObjectId.rawValue] as? String
@@ -74,14 +74,11 @@ class ChartViewController: UIViewController {
     }
     guard let mealEntry = matchEntry else {return}
     
-    print("Highlited Marker")
+    
     let highlited = Highlight(x: mealEntry.x, y: mealEntry.y, dataSetIndex: 0)
     lineChartView.highlightValue(highlited)
     
-//    lineChartView.marker?.refreshContent(entry: mealEntry, highlight: Highlight())
-    
-//    let position = lineChartView.getPosition(entry: mealEntry, axis: .left)
-    // Короче надо найти как посветить Маркер !по данным! Это не сложно сто процентов!
+
   }
   
   

@@ -27,11 +27,18 @@ class CompansationByInsulinCell: CompansationCVBaseCell {
   static let cellId = "CorrectionInsulinCell"
   
   
+  var imageView: UIImageView = {
+    let iv = UIImageView(image: #imageLiteral(resourceName: "down-arrow"))
+    iv.contentMode = .scaleAspectFit
+    iv.tintColor = UIColor(white: 0.9, alpha: 0.6)
+    return iv
+  }()
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
+
     setUpViews()
-    // Чтобы здесь разместить? в Целом кроме TopButtonView мне тут ничего не надобно
+    
     
   }
   
@@ -48,13 +55,19 @@ class CompansationByInsulinCell: CompansationCVBaseCell {
 extension CompansationByInsulinCell {
   
   func setUpViews() {
+    
     let stackView = UIStackView(arrangedSubviews: [
       topButtonView,
-      UIView()
+      imageView
     ])
+    topButtonView.constrainHeight(constant: 20)
+    stackView.axis         = .vertical
+    stackView.distribution = .fill
+    stackView.spacing      = 5
     
     addSubview(stackView)
     stackView.fillSuperview(padding: MainScreenConstants.CollectionView.contentInCellPadding)
+//    stackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: 10, left: 10, bottom: 0, right: 10))
   }
   
 }
@@ -65,9 +78,8 @@ extension CompansationByInsulinCell {
   
   func setViewModel(viewModel: CompansationByInsuliCellable) {
     
-    objectId = viewModel.id
+    objectId     = viewModel.id
     topButtonView.setViewModel(viewModel: viewModel.topButtonVM)
-    
     
   }
 }

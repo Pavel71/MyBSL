@@ -18,7 +18,9 @@ import UIKit
 
 protocol TopButtonViewModalable {
   
-  var type : TypeCompansationObject {get}
+  var type    : TypeCompansationObject {get}
+  var carbo   : Double {get}
+  var insulin : Double {get}
   
 }
 
@@ -41,14 +43,13 @@ class TopButtonView: UIView {
   func createButton(image: UIImage) -> UIButton {
     let button = UIButton(type: .system)
     button.setImage(image.withRenderingMode(.alwaysOriginal), for: .normal)
-//    button.tintColor = UIColor.white
     button.addTarget(self, action: #selector(handleButtonAction), for: .touchUpInside)
     return button
   }
   
-  var injectionResultLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "6.0")
-  var carboInMealLabel           = CustomLabels(font: .systemFont(ofSize: 16), text: "25.0")
-  var carboCorrectionLabel           = CustomLabels(font: .systemFont(ofSize: 16), text: "5.0")
+  var injectionResultLabel  = CustomLabels(font: .systemFont(ofSize: 16), text: "6.0")
+  var carboInMealLabel      = CustomLabels(font: .systemFont(ofSize: 16), text: "25.0")
+  var carboCorrectionLabel  = CustomLabels(font: .systemFont(ofSize: 16), text: "5.0")
   
   
   var cellDataStackView = UIStackView()
@@ -59,23 +60,15 @@ class TopButtonView: UIView {
   
 
   
-  // Injections Stack
-  
-//  let injectionImageView: UIImageView = {
-//    let iv = UIImageView(image: #imageLiteral(resourceName: "anesthesia").withRenderingMode(.alwaysTemplate))
-//    iv.tintColor = .white
-//    iv.contentMode = .scaleAspectFit
-//    iv.clipsToBounds = true
-//    return iv
-//  }()
-  
-  
   
   
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-
+    
+    self.layer.cornerRadius = 10
+    self.clipsToBounds      = true
+    
     setUpViews()
     
   }
@@ -110,19 +103,27 @@ extension TopButtonView {
     case .correctSugarByCarbo:
       print("PЗдесь я устанавливаю стек вью с конфеткой")
       
+      carboCorrectionLabel.text               = "\(viewModel.carbo)"
+      
       correctSugarByInsulinStackView.isHidden = true
       correctSugarByCarboStackView.isHidden   = false
       mealObjectStackView.isHidden            = true
       
     case .correctSugarByInsulin:
       print("Здесь я устанавливаю стек вью с шприцом")
+      
+      injectionResultLabel.text               = "\(viewModel.insulin)"
+      
       correctSugarByInsulinStackView.isHidden = false
       correctSugarByCarboStackView.isHidden   = true
       mealObjectStackView.isHidden            = true
 
     case .mealObject:
       print("Тут у меня картиночка с обедом и шприц с инсулином!")
-
+      
+      carboInMealLabel.text                   = "\(viewModel.carbo)"
+      injectionResultLabel.text               = "\(viewModel.insulin)"
+      
       correctSugarByInsulinStackView.isHidden = false
       correctSugarByCarboStackView.isHidden   = true
       mealObjectStackView.isHidden            = false

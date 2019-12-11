@@ -53,6 +53,10 @@ struct CompansationMealVM : CompansationByMealCellable,CompansationObjactable  {
 
 // Сюда нужно положить еще если будут углеводы и инсулин!
 struct TopButtonViewModel : TopButtonViewModalable {
-  var type: TypeCompansationObject
+  
+  var carbo   : Double
+  var insulin : Double
+  
+  var type    : TypeCompansationObject
 
 }

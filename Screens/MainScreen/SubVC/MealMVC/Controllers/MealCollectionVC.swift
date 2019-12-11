@@ -18,11 +18,11 @@ class MealCollectionVC: UIViewController {
       layout.scrollDirection = .horizontal
       
       let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-      
+      collectionView.contentMode  = .top
       collectionView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
       collectionView.showsHorizontalScrollIndicator = false
       collectionView.decelerationRate = .fast
-      collectionView.backgroundColor = .white
+      collectionView.backgroundColor  = .white
 //      collectionView.allowsSelection = false // Убераем выбор ячейка
       
       return collectionView
@@ -88,7 +88,7 @@ extension MealCollectionVC {
 
 // MARK: CollectionView Delegate
 
-extension MealCollectionVC:  UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,UICollectionViewDelegate {
+extension MealCollectionVC:  UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return dinners.count
@@ -119,21 +119,44 @@ extension MealCollectionVC:  UICollectionViewDelegateFlowLayout, UICollectionVie
   }
   
   
+  
+  
+  
+}
+
+// MARK: Size Cell
+
+extension MealCollectionVC: UICollectionViewDelegate {
+  
   // Size
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     
     let collectionViewHeight = collectionView.frame.height
+    let width                = UIScreen.main.bounds.width - 20
     
-    return .init(width: UIScreen.main.bounds.width - 20, height: collectionViewHeight - 20)
+//    let compansationObj      = dinners[indexPath.row]
+//    
+//    switch compansationObj.type {
+//    case .mealObject:
+//      return .init(width: width, height: collectionViewHeight - 20)
+//    case .correctSugarByCarbo:
+//      return .init(width: width, height: 100)
+//    case .correctSugarByInsulin:
+//      return .init(width: width, height: 100)
+//
+//    }
+    
+    return .init(width: width, height: collectionViewHeight - 20)
+    
+    
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
     return .init(top: 0, left: 0, bottom: 0, right: 10)
   }
-  
-  
 }
+
 
 // MARK: COnfigure  Cell
 extension MealCollectionVC {
@@ -181,7 +204,7 @@ extension MealCollectionVC: UIScrollViewDelegate {
   // Задача определять какая ячейка сейчас на экране у пользователя
   
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    print("End Decelarating")
+
     let indexPathfirst = collectionView.indexPathsForVisibleItems.first
     guard let indextPath = indexPathfirst else {return}
     let mealId = dinners[indextPath.row].id

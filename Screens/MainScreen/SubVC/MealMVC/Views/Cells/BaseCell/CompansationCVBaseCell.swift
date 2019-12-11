@@ -21,10 +21,11 @@ class CompansationCVBaseCell: UICollectionViewCell {
   let topButtonView = TopButtonView()
   var objectId: String!
   
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    
+    backgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
   }
   
   override func draw(_ rect: CGRect) {
@@ -41,11 +42,11 @@ class CompansationCVBaseCell: UICollectionViewCell {
 }
 
 // MARK: Set ViewModels
-extension CompansationCVBaseCell {
-  
-  func setViewModel(viewModel:CompansationCVBaseCellable ) {
-    objectId      = viewModel.id
-    topButtonView.setViewModel(viewModel: viewModel.topButtonVM)
-  }
-  
-}
+//extension CompansationCVBaseCell {
+//  
+//  func setViewModel(viewModel:CompansationCVBaseCellable ) {
+//    objectId      = viewModel.id
+//    topButtonView.setViewModel(viewModel: viewModel.topButtonVM)
+//  }
+//  
+//}

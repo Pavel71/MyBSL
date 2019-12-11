@@ -42,6 +42,8 @@ extension CompansationObjCollectionWorker {
   static private func getCompansationObjectByCarboVM(compObject:CompansationObjectRelam ) -> ComapsnationByCarboVM {
     
     let topButtonVM = TopButtonViewModel(
+      carbo: compObject.carbo ?? 0,
+      insulin: compObject.insulin ?? 0,
       type: TypeCompansationObject(rawValue: compObject.typeObject)!
     )
     
@@ -60,6 +62,8 @@ extension CompansationObjCollectionWorker {
   static private func getCompansationObjectVMByInsulin(compObject: CompansationObjectRelam) -> CompansationByInsulinVM {
     
     let topButtonVM = TopButtonViewModel(
+      carbo: compObject.carbo ?? 0,
+      insulin: compObject.insulin ?? 0,
       type: TypeCompansationObject(rawValue: compObject.typeObject)!
     )
     
@@ -77,20 +81,26 @@ extension CompansationObjCollectionWorker {
 extension CompansationObjCollectionWorker {
   
   static private func getMealCell(compObject: CompansationObjectRelam) -> CompansationMealVM {
+
+    // Products
+    
+    let productsVM = Array(compObject.listProduct.map(getProductViewModel))
     
     let resultVM = ProductListResultsViewModel(
-       sumCarboValue   : "12",
-       sumPortionValue : "200",
-       sumInsulinValue : "2.5")
+      sumCarboValue   : "\(ResultViewWorker.getSumCarbo(products: productsVM))",
+    sumPortionValue   : "\(ResultViewWorker.getSumPortion(products: productsVM))",
+    sumInsulinValue   : "\(ResultViewWorker.getSumInsulin(products: productsVM))")
        
        let mealProdVcViewModel = MealProductsVCViewModel(
-         cells    : compObject.listProduct.map(getProductViewModel),
+         cells    : productsVM,
          resultVM : resultVM
        )
        
        // Нужно переименовывать объект который будем хранить в реалме не как диннер а как SugarDependencyObject
        let topButtonVM = TopButtonViewModel(
-         type: TypeCompansationObject(rawValue: compObject.typeObject)!
+        carbo   : compObject.carbo ?? 0,
+        insulin : compObject.insulin ?? 0,
+        type    : TypeCompansationObject(rawValue: compObject.typeObject)!
        ) // Заглушка
        
        // Так как здесь у меня именно меал то можно проставить руками но это о разджел нужно переисать чтобы обрабатывалиьс все 3 объекта
