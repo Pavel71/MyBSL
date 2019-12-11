@@ -9,18 +9,18 @@
 import UIKit
 
 
-protocol MealCollectionCellable {
+protocol CompansationByMealCellable {
   
   var id                     : String                      {get}
   var topButtonVM            : TopButtonViewModalable      {get}
   var mealProductVCViewModel : MealProductsVCViewModel     {get set}
   var compansationFase       : CompansationPosition        {get set}
   // Это нужно запехнуть в продукт лист и убрать снизу из ячейки!
-  var productResultViewModel : ProductListResultsViewModel {get set}
+//  var productResultViewModel : ProductListResultsViewModel {get set}
 }
 
 
-class MealCollectionCell: UICollectionViewCell {
+class CompansationByMealCell: UICollectionViewCell {
   
   static let cellId = "InsulinInjectionsCollectionViewCell"
   
@@ -55,9 +55,9 @@ class MealCollectionCell: UICollectionViewCell {
 
 // MARK: Set View Model
 
-extension MealCollectionCell {
+extension CompansationByMealCell {
   
-  func setViewModel(viewModel: MealCollectionCellable) {
+  func setViewModel(viewModel: CompansationByMealCellable) {
     
     topButtonView.setViewModel(viewModel: viewModel.topButtonVM)
     
@@ -65,7 +65,7 @@ extension MealCollectionCell {
     mealCompansation = viewModel.compansationFase
     
     // ResultsViewModel
-    resultView.setViewModel(viewModel: viewModel.productResultViewModel)
+//    resultView.setViewModel(viewModel: viewModel.productResultViewModel)
     
     // Products ViewModel
     productTableViewController.setViewModel(viewModel: viewModel.mealProductVCViewModel)
@@ -76,18 +76,18 @@ extension MealCollectionCell {
 
 // MARK: Set UP Views
 
-extension MealCollectionCell {
+extension CompansationByMealCell {
   
   private func setUpViews() {
     
     // topButtonView,
     let stackView = UIStackView(arrangedSubviews: [
     topButtonView,
-    productTableViewController.view,
-    resultView
+    productTableViewController.view
+//    resultView
     ])
     topButtonView.constrainHeight(constant: 25)
-    resultView.constrainHeight(constant: 40)
+//    resultView.constrainHeight(constant: 40)
     
     stackView.axis = .vertical
     stackView.spacing = 5

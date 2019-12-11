@@ -31,8 +31,8 @@ extension DayRealmManager {
     let meal1Id = "111"
     let meal2Id = "222"
     let meal3Id = "333"
-    
     let insulinCOmpansationObjectID = "444"
+    let carboCompansationObjectID = "555"
     
     let testDay = DayRealm(date: Date())
 
@@ -40,6 +40,8 @@ extension DayRealmManager {
     dinners1.id  = meal1Id
     let dinners2 = getDummyDInner2()
     dinners2.id  = meal2Id
+    
+    // Insulin Compansation
     
     let insulinCopmansationObject = CompansationObjectRelam(
       typeObject: TypeCompansationObject.correctSugarByInsulin.rawValue,
@@ -51,10 +53,23 @@ extension DayRealmManager {
       insulin: 1.0)
     insulinCopmansationObject.id = insulinCOmpansationObjectID
     
+    // Carbo Compansation
+    
+    let carboCompansationObject = CompansationObjectRelam(
+      typeObject: TypeCompansationObject.correctSugarByCarbo.rawValue,
+      sugarBefore: 2.5,
+      sugarAfter: 0,
+      timeCreate: Date(timeIntervalSince1970: 1574841600),
+      compansationFase: CompansationPosition.progress.rawValue,
+      carbo: 5.0,
+      insulin: 0)
+    carboCompansationObject.id  = carboCompansationObjectID
+    // Тут я также могу добавить еще и продукт который был употребленн!
+    
     let dinner3  = getDummyDInner()
     dinner3.id   = meal3Id
     
-    testDay.listDinners.append(objectsIn: [dinners1,insulinCopmansationObject,dinners2,dinner3])
+    testDay.listDinners.append(objectsIn: [dinners1,carboCompansationObject,insulinCopmansationObject,dinners2,dinner3])
     
     let sugars = getSugars()
   
@@ -80,7 +95,7 @@ extension DayRealmManager {
       time       : Date(timeIntervalSince1970: 1574841600),
       sugar      : 2.5,
       dataCase   : ChartDataCase.correctCarboData.rawValue,
-      compansationObjectId  : nil
+      compansationObjectId  : "555"
     )
     
     let simpleSugar = SugarRealm(

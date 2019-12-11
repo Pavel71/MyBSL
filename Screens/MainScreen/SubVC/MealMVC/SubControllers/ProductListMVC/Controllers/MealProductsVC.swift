@@ -34,9 +34,10 @@ class MealProductsVC: UIViewController {
 extension MealProductsVC {
   
   func setViewModel(viewModel: MealProductsVCViewModel) {
-    products = viewModel.cells
+    
     footerView.setViewModel(viewModel: viewModel.resultVM)
-    // Здесь также нужна модель резалт вью
+    products = viewModel.cells
+
   }
 }
 
@@ -83,7 +84,7 @@ extension MealProductsVC {
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 30
     
-    tableView.tableFooterView = UIView()
+    tableView.tableFooterView = footerView
 
     
   }

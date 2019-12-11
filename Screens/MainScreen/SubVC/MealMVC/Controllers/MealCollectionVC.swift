@@ -80,7 +80,9 @@ extension MealCollectionVC {
     
     
      
-     collectionView.register(MealCollectionCell.self, forCellWithReuseIdentifier: MealCollectionCell.cellId)
+     collectionView.register(CompansationByMealCell.self, forCellWithReuseIdentifier: CompansationByMealCell.cellId)
+    collectionView.register(CompansationByInsulinCell.self, forCellWithReuseIdentifier: CompansationByInsulinCell.cellId)
+    collectionView.register(CompansationByCarboCell.self, forCellWithReuseIdentifier: CompansationByCarboCell.cellId)
    }
 }
 
@@ -94,28 +96,21 @@ extension MealCollectionVC:  UICollectionViewDelegateFlowLayout, UICollectionVie
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
+    // Теперь мне нужно определится! Делать еще 2 ячейки для каждого типа объектов! Тогда будет все понятнее!
+    
     switch dinners[indexPath.item].type {
       case .mealObject:
         return getMealCell(indexPath: indexPath)
       case .correctSugarByCarbo:
-        return UICollectionViewCell() // здесь еще будет идти обработка и возврат нужных ячеек
+        return getCompansationByCarboCell(indexPath: indexPath)
       case .correctSugarByInsulin:
-        return UICollectionViewCell()
+        return getCompansationByInsulinCell(indexPath: indexPath)
     }
 
   }
   
-  // MARK: COnfigure Meal Cell
-  private func getMealCell(indexPath: IndexPath) -> MealCollectionCell {
-    
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCollectionCell.cellId, for: indexPath) as! MealCollectionCell
-    
-    let mealCellVM = dinners[indexPath.item] as! MealTypeCompansationObjectVM
-    cell.setViewModel(viewModel: mealCellVM)
-    
-    return cell
-    
-  }
+
+  
   
   // Select
   
@@ -137,6 +132,45 @@ extension MealCollectionVC:  UICollectionViewDelegateFlowLayout, UICollectionVie
     return .init(top: 0, left: 0, bottom: 0, right: 10)
   }
   
+  
+}
+
+// MARK: COnfigure  Cell
+extension MealCollectionVC {
+  
+  // Compansation By Carbo Cell
+  
+  private func getCompansationByCarboCell(indexPath: IndexPath) -> CompansationByCarboCell {
+    
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CompansationByCarboCell.cellId, for: indexPath) as! CompansationByCarboCell
+       
+       let carboCellVm = dinners[indexPath.item] as! ComapsnationByCarboVM
+       cell.setViewModel(viewModel: carboCellVm)
+       
+       return cell
+    
+  }
+  
+  // Meal Cell
+  private func getMealCell(indexPath: IndexPath) -> CompansationByMealCell {
+    
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CompansationByMealCell.cellId, for: indexPath) as! CompansationByMealCell
+    
+    let mealCellVM = dinners[indexPath.item] as! CompansationMealVM
+    cell.setViewModel(viewModel: mealCellVM)
+    
+    return cell
+    
+  }
+  
+  // Compansation By Insulin Cell
+  private func getCompansationByInsulinCell(indexPath: IndexPath) -> CompansationByInsulinCell {
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CompansationByInsulinCell.cellId, for: indexPath) as! CompansationByInsulinCell
+    
+    let compansationByInsulinVM = dinners[indexPath.item] as! CompansationByInsulinVM
+    cell.setViewModel(viewModel: compansationByInsulinVM)
+    return cell
+  }
   
 }
 

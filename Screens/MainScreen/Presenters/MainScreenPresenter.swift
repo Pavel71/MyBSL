@@ -52,7 +52,7 @@ extension MainScreenPresenter {
     
     // Charts
     let chartViewModel = ChartVCViewModel(
-      chartEntryModels : realmData.listSugar.map(getChartViewModel)
+      chartEntryModels : realmData.listSugar.map(ChartVMWorker.getChartViewModel)
     )
     
     
@@ -61,8 +61,10 @@ extension MainScreenPresenter {
 //      cells: realmData.listDinners.map(getMealViewModel)
 //    )
     
+    
+    
     let collectionVCVM = CollectionVCVM(
-      cells: realmData.listDinners.map(getMealViewModel))
+      cells: realmData.listDinners.map(CompansationObjCollectionWorker.getCellViewModel))
     // InsulinSupply
     
     // По идеи я буду это брать юзер дефолтсе так как в реалме сохранять это бессмысленно!
@@ -76,58 +78,9 @@ extension MainScreenPresenter {
     )
   }
   
-  // Meal View Model
   
-  private func getMealViewModel(compObject: CompansationObjectRelam) -> MealTypeCompansationObjectVM {
-    
-    let resultVM = ProductListResultsViewModel(
-    sumCarboValue   : "Замена",
-    sumPortionValue : "Замена",
-    sumInsulinValue : "Замена")
-    
-    let mealProdVcViewModel = MealProductsVCViewModel(
-      cells    : compObject.listProduct.map(getProductViewModel),
-      resultVM : resultVM
-    )
-    
-    // Нужно переименовывать объект который будем хранить в реалме не как диннер а как SugarDependencyObject
-    let topButtonVM = TopButtonViewModel(type: TypeCompansationObject(rawValue: compObject.typeObject)!) // Заглушка
-    
-    // Так как здесь у меня именно меал то можно проставить руками но это о разджел нужно переисать чтобы обрабатывалиьс все 3 объекта
-    return MealTypeCompansationObjectVM(
-      topButtonVM            : topButtonVM,
-      type                   : .mealObject,
-      id                     : compObject.id,
-      productResultViewModel : resultVM,
-      mealProductVCViewModel : mealProdVcViewModel,
-      compansationFase       : CompansationPosition(rawValue: compObject.compansationFase)!
-    )
-  }
   
-  private func getProductViewModel(product: ProductRealm) -> MealProductViewModel  {
-    
-    return MealProductViewModel(
-      name           : product.name,
-      carboInPortion : product.carboInPortion,
-      portion        : product.portion,
-      factInsulin    : product.actualInsulin)
-  }
-  
-  // Chart View Model
-  
-  private func getChartViewModel(sugarRealm: SugarRealm) -> SugarViewModel {
  
-    let sugarViewModel = SugarViewModel(
-      
-      compansationObjectId : sugarRealm.compansationObjectId,
-      dataCase             : ChartDataCase(rawValue: sugarRealm.dataCase)!,
-      sugar                : sugarRealm.sugar,
-      time                 : sugarRealm.time
-      
-    )
-    
-   return sugarViewModel
-  }
   
   
   
