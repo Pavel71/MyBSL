@@ -24,7 +24,19 @@ class CompObjScreenNavBar: UIView {
     return button
   }()
   
+  var saveButtonCLouser: EmptyClouser?
+   
+   let saveButton: UIButton = {
+    let button = UIButton(type: .system)
+    
+    button.setTitle("Сохранить", for: .normal)
+    button.addTarget(self, action: #selector(handleSave), for: .touchUpInside)
+    button.isEnabled = false
+     return button
+   }()
+  
   override init(frame: CGRect) {
+    
     super.init(frame: frame)
     backgroundColor = .white
     setUpViews()
@@ -33,10 +45,11 @@ class CompObjScreenNavBar: UIView {
   
   
   override func draw(_ rect: CGRect) {
-    layer.shadowColor = UIColor.black.cgColor
+    
+    layer.shadowColor   = UIColor.black.cgColor
     layer.shadowOffset  = .init(width: 0, height: 3)
     layer.shadowOpacity = 0.7
-    layer.shadowRadius = 2
+    layer.shadowRadius  = 2
     
   }
   
@@ -50,8 +63,11 @@ class CompObjScreenNavBar: UIView {
 extension CompObjScreenNavBar {
   
   @objc private func handleBack() {
-    print("Dismiss VC")
     backButtonCLouser!()
+  }
+  
+  @objc private func handleSave() {
+    saveButtonCLouser!()
   }
   
 }
@@ -61,8 +77,15 @@ extension CompObjScreenNavBar {
   
   private func setUpViews() {
     
-    addSubview(backButton)
-    backButton.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: nil,padding: .init(top: 5, left: 10, bottom: 5, right: 0))
+    let stckView = UIStackView(arrangedSubviews: [
+    backButton, UIView(), saveButton
+    ])
+    
+    stckView.spacing = 5
+    stckView.distribution = .equalCentering
+    
+    addSubview(stckView)
+    stckView.fillSuperview(padding: .init(top: 5, left: 10, bottom: 5, right: 10))
     
   }
   

@@ -92,10 +92,18 @@ extension NewCompansationObjectScreenViewController {
   
   private func confugireTableView() {
     
+    tableView.keyboardDismissMode  = .interactive
+//    tableView.alwaysBounceVertical = false
+    tableView.delegate             = self
+    tableView.dataSource           = self
+    tableView.tableFooterView      = UIView()
     
     
-    tableView.tableFooterView = UIView()
-    
+    registerCell()
+  }
+  
+  private func registerCell() {
+    tableView.register(SugarCell.self, forCellReuseIdentifier: SugarCell.cellId)
   }
   
   
@@ -106,9 +114,15 @@ extension NewCompansationObjectScreenViewController {
 extension NewCompansationObjectScreenViewController {
   
   private func setViewClousers() {
+    
     navBar.backButtonCLouser = {[weak self] in
       self?.didTapNavBarBackButton()
     }
+    navBar.saveButtonCLouser = {[weak self] in
+      self?.didTapNavBarSaveButton()
+    }
+    
+    
   }
   
   
@@ -121,6 +135,70 @@ extension NewCompansationObjectScreenViewController {
   // NAV Bar Clouser
   private func didTapNavBarBackButton() {
     navigationController?.popViewController(animated: true)
+  }
+  
+  private func didTapNavBarSaveButton() {
+    
+    print("Собрать модель и сохранить и сделать дисмисс ")
+  }
+  
+  // SUgarTextField RightButton
+  
+  private func didTapSugarTextFieldButton(text: String) {
+    
+    // пришел сахар и нужно проверить! В норме он или нет! Значит мы должны взять сервис и проверить! Он нам вернет 3 позиции выше нормы норма и инже нормы!
+    
+    
+    navBar.saveButton.isEnabled = true
+    view.endEditing(true)
+  }
+  
+  private func checkSugar(sugar: String) {
+    let sugarFloat = (sugar as NSString).floatValue
+    let wayCorrectPosition = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat)
+    
+    switch wayCorrectPosition {
+    case .dontCorrect:
+      print("Сахар в норме можно показывать ячейку с продуктами")
+    case .correctDown:
+      print("Высокий сахар нужно скорректировать доп инсулином и показываем продукты")
+    case .correctUp:
+      print("Сахар ниже нормы Показываем возможность добавить продукты")
+    default:break
+    }
+  }
+  
+}
+
+// MARK: TableView DataSource and Delegate
+extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 1
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+    let cell = tableView.dequeueReusableCell(withIdentifier: SugarCell.cellId, for: indexPath) as!  SugarCell
+    setCellClouser(cell: cell)
+    return cell
+  }
+  
+  private func setCellClouser(cell:SugarCell ) {
+    cell.didTapSugarTextFieldButton = {[weak self] text in
+      self?.didTapSugarTextFieldButton(text:text)
+    }
+  }
+  
+  // Height
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    
+    switch indexPath.row {
+    case 0:
+      return 100
+    default:
+      return 400
+    }
+    
   }
   
   
