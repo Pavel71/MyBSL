@@ -9,7 +9,8 @@
 import UIKit
 
 protocol MainScreenRoutingLogic {
-
+  
+  func goToNewCompansationObjectScreen()
 }
 
 class MainScreenRouter: NSObject, MainScreenRoutingLogic {
@@ -17,5 +18,12 @@ class MainScreenRouter: NSObject, MainScreenRoutingLogic {
   weak var viewController: MainScreenViewController?
   
   // MARK: Routing
+  
+  func goToNewCompansationObjectScreen() {
+    
+    let newVC = NewCompansationObjectScreenViewController()
+    
+    viewController?.navigationController?.pushViewController(newVC, animated: true)
+  }
   
 }

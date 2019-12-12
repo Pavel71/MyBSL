@@ -223,7 +223,7 @@ extension MainScreenViewController {
   
   // Catch NavBarClousers
   
-  // MARK: Show NewSugarDataView And Go to New Screen
+  // MARK: Show NewSugarDataView
   
   private func addNewData() {
     showSheetControllerAddSugarOrMeal(title: "Добавить данные!",
@@ -233,7 +233,10 @@ extension MainScreenViewController {
       
       print("Sugar Callback")
     },mealCallback: { action in
-      print("MealCallback")
+      
+      // MARK: Go to New ComObj Screen
+      
+      self.router!.goToNewCompansationObjectScreen()
     })
     
   }

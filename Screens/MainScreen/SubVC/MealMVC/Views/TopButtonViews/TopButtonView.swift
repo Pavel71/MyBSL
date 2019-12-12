@@ -73,6 +73,8 @@ class TopButtonView: UIView {
     
   }
   
+  // MARK: Handle Button Action
+  
   @objc private func handleButtonAction(button: UIButton) {
     
     switch button {
@@ -82,6 +84,10 @@ class TopButtonView: UIView {
       print("Update Clouser")
     case injectionResultButton:
       print("Show Short Stat by Injections")
+    case carboMealResultButton:
+      print("Show Message that it it a Meak Carbo")
+    case sugarCorrectByCarboButton :
+      print("Show That it is a correction Carbo")
 
     default:break
     }

@@ -23,7 +23,7 @@ class MealCollectionVC: UIViewController {
       collectionView.showsHorizontalScrollIndicator = false
       collectionView.decelerationRate = .fast
       collectionView.backgroundColor  = .white
-//      collectionView.allowsSelection = false // Убераем выбор ячейка
+      collectionView.allowsSelection = false // Убераем выбор ячейка
       
       return collectionView
       
@@ -114,9 +114,9 @@ extension MealCollectionVC:  UICollectionViewDelegateFlowLayout, UICollectionVie
   
   // Select
   
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    print("Select Item",indexPath.row)
-  }
+//  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//    print("Select Item",indexPath.row)
+//  }
   
   
   

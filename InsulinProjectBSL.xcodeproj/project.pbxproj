@@ -110,6 +110,15 @@
 		05C16D66233F4E6100486CAE /* RobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C16D65233F4E6100486CAE /* RobotView.swift */; };
 		05C2DEF8237EBAE00023B39C /* TopViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C2DEF7237EBAE00023B39C /* TopViewCell.swift */; };
 		05CBEB9423A12C74001D9EEA /* ResultViewWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CBEB9323A12C74001D9EEA /* ResultViewWorker.swift */; };
+		05CBEBA323A21FD9001D9EEA /* NewCompansationObjectScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CBEB9C23A21FD9001D9EEA /* NewCompansationObjectScreenPresenter.swift */; };
+		05CBEBA423A21FD9001D9EEA /* NewCompansationObjectScreenWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CBEB9D23A21FD9001D9EEA /* NewCompansationObjectScreenWorker.swift */; };
+		05CBEBA523A21FD9001D9EEA /* NewCompansationObjectScreenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CBEB9E23A21FD9001D9EEA /* NewCompansationObjectScreenRouter.swift */; };
+		05CBEBA623A21FD9001D9EEA /* NewCompansationObjectScreenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CBEB9F23A21FD9001D9EEA /* NewCompansationObjectScreenModels.swift */; };
+		05CBEBA723A21FD9001D9EEA /* NewCompansationObjectScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CBEBA023A21FD9001D9EEA /* NewCompansationObjectScreenViewController.swift */; };
+		05CBEBA823A21FD9001D9EEA /* NewCompansationObjectScreenInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CBEBA123A21FD9001D9EEA /* NewCompansationObjectScreenInteractor.swift */; };
+		05CBEBAB23A21FF2001D9EEA /* NewCompObjScreenTasks in Resources */ = {isa = PBXBuildFile; fileRef = 05CBEBAA23A21FF2001D9EEA /* NewCompObjScreenTasks */; };
+		05CBEBB423A22595001D9EEA /* CompansationObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CBEBB323A22595001D9EEA /* CompansationObjectView.swift */; };
+		05CBEBB723A22651001D9EEA /* CompObjScreenNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CBEBB623A22651001D9EEA /* CompObjScreenNavBar.swift */; };
 		05CFE0D0237EC3DD006FDC87 /* SomeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CFE0CF237EC3DD006FDC87 /* SomeConstants.swift */; };
 		05D1469823979E0C00E6E6EA /* NewSugarTask in Resources */ = {isa = PBXBuildFile; fileRef = 05D1469723979E0C00E6E6EA /* NewSugarTask */; };
 		05D1469A2397A7D600E6E6EA /* NewSugarViewValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D146992397A7D600E6E6EA /* NewSugarViewValidator.swift */; };
@@ -311,6 +320,15 @@
 		05C16D65233F4E6100486CAE /* RobotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotView.swift; sourceTree = "<group>"; };
 		05C2DEF7237EBAE00023B39C /* TopViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewCell.swift; sourceTree = "<group>"; };
 		05CBEB9323A12C74001D9EEA /* ResultViewWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewWorker.swift; sourceTree = "<group>"; };
+		05CBEB9C23A21FD9001D9EEA /* NewCompansationObjectScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjectScreenPresenter.swift; sourceTree = "<group>"; };
+		05CBEB9D23A21FD9001D9EEA /* NewCompansationObjectScreenWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjectScreenWorker.swift; sourceTree = "<group>"; };
+		05CBEB9E23A21FD9001D9EEA /* NewCompansationObjectScreenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjectScreenRouter.swift; sourceTree = "<group>"; };
+		05CBEB9F23A21FD9001D9EEA /* NewCompansationObjectScreenModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjectScreenModels.swift; sourceTree = "<group>"; };
+		05CBEBA023A21FD9001D9EEA /* NewCompansationObjectScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjectScreenViewController.swift; sourceTree = "<group>"; };
+		05CBEBA123A21FD9001D9EEA /* NewCompansationObjectScreenInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjectScreenInteractor.swift; sourceTree = "<group>"; };
+		05CBEBAA23A21FF2001D9EEA /* NewCompObjScreenTasks */ = {isa = PBXFileReference; lastKnownFileType = text; path = NewCompObjScreenTasks; sourceTree = "<group>"; };
+		05CBEBB323A22595001D9EEA /* CompansationObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompansationObjectView.swift; sourceTree = "<group>"; };
+		05CBEBB623A22651001D9EEA /* CompObjScreenNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompObjScreenNavBar.swift; sourceTree = "<group>"; };
 		05CFE0CF237EC3DD006FDC87 /* SomeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomeConstants.swift; sourceTree = "<group>"; };
 		05D1469723979E0C00E6E6EA /* NewSugarTask */ = {isa = PBXFileReference; lastKnownFileType = text; path = NewSugarTask; sourceTree = "<group>"; };
 		05D146992397A7D600E6E6EA /* NewSugarViewValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSugarViewValidator.swift; sourceTree = "<group>"; };
@@ -1065,7 +1083,6 @@
 				05A4F19E2339EF6A00DFE4D7 /* MainView.swift */,
 				052EDE15234C78F7009C6EAC /* ChoosePlaceInjectionView */,
 				05A4F1A32339FA8700DFE4D7 /* Cells */,
-				05A4F1A02339F29100DFE4D7 /* CustomNavBar */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1411,6 +1428,7 @@
 			isa = PBXGroup;
 			children = (
 				05A7CAEA23827C8E0075D04E /* MainScreenView.swift */,
+				05A4F1A02339F29100DFE4D7 /* CustomNavBar */,
 				0544720C239653320020C0DC /* NewSugarDataView */,
 				054471BD239521280020C0DC /* InsulinSupplyView */,
 				05AAFF05238BFFD8002AE3D9 /* MealView */,
@@ -1635,10 +1653,91 @@
 			path = Workers;
 			sourceTree = "<group>";
 		};
+		05CBEB9B23A21F9B001D9EEA /* NewCompObjScreen */ = {
+			isa = PBXGroup;
+			children = (
+				05CBEBAA23A21FF2001D9EEA /* NewCompObjScreenTasks */,
+				05CBEBAD23A222F0001D9EEA /* Views */,
+				05CBEBAC23A222AD001D9EEA /* Controller */,
+				05CBEBAE23A222FB001D9EEA /* Intercator */,
+				05CBEBAF23A22309001D9EEA /* Presenter */,
+				05CBEBB123A22342001D9EEA /* Models */,
+				05CBEBB223A22356001D9EEA /* Routers */,
+				05CBEBB023A22316001D9EEA /* Workers */,
+			);
+			path = NewCompObjScreen;
+			sourceTree = "<group>";
+		};
+		05CBEBAC23A222AD001D9EEA /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				05CBEBA023A21FD9001D9EEA /* NewCompansationObjectScreenViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		05CBEBAD23A222F0001D9EEA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				05CBEBB323A22595001D9EEA /* CompansationObjectView.swift */,
+				05CBEBB523A22632001D9EEA /* NavBar */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		05CBEBAE23A222FB001D9EEA /* Intercator */ = {
+			isa = PBXGroup;
+			children = (
+				05CBEBA123A21FD9001D9EEA /* NewCompansationObjectScreenInteractor.swift */,
+			);
+			path = Intercator;
+			sourceTree = "<group>";
+		};
+		05CBEBAF23A22309001D9EEA /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				05CBEB9C23A21FD9001D9EEA /* NewCompansationObjectScreenPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		05CBEBB023A22316001D9EEA /* Workers */ = {
+			isa = PBXGroup;
+			children = (
+				05CBEB9D23A21FD9001D9EEA /* NewCompansationObjectScreenWorker.swift */,
+			);
+			path = Workers;
+			sourceTree = "<group>";
+		};
+		05CBEBB123A22342001D9EEA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				05CBEB9F23A21FD9001D9EEA /* NewCompansationObjectScreenModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		05CBEBB223A22356001D9EEA /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				05CBEB9E23A21FD9001D9EEA /* NewCompansationObjectScreenRouter.swift */,
+			);
+			path = Routers;
+			sourceTree = "<group>";
+		};
+		05CBEBB523A22632001D9EEA /* NavBar */ = {
+			isa = PBXGroup;
+			children = (
+				05CBEBB623A22651001D9EEA /* CompObjScreenNavBar.swift */,
+			);
+			path = NavBar;
+			sourceTree = "<group>";
+		};
 		05CFE0D2237EC8E9006FDC87 /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
 				05A7CAE823827C070075D04E /* Tasks */,
+				05CBEB9B23A21F9B001D9EEA /* NewCompObjScreen */,
 				05AAFF0A238C007D002AE3D9 /* SubVC */,
 				05AAFF03238BFD55002AE3D9 /* Constants */,
 				05B1DEBC237ECD320015E4E6 /* Views */,
@@ -2423,6 +2522,7 @@
 			files = (
 				F1E78CA6230D31E900592AB8 /* LaunchScreen.storyboard in Resources */,
 				F1E78CA3230D31E900592AB8 /* Assets.xcassets in Resources */,
+				05CBEBAB23A21FF2001D9EEA /* NewCompObjScreenTasks in Resources */,
 				F1E78D22230D811700592AB8 /* Tasks in Resources */,
 				05D1469823979E0C00E6E6EA /* NewSugarTask in Resources */,
 				055A3A502357044F0080628C /* Readme in Resources */,
@@ -2482,6 +2582,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05CBEBB723A22651001D9EEA /* CompObjScreenNavBar.swift in Sources */,
 				05C0C62C238D40EF001B2664 /* DinnersRealm.swift in Sources */,
 				05B1DEB5237ECD0B0015E4E6 /* MainScreenWorker.swift in Sources */,
 				F1E78CD7230D338A00592AB8 /* SettingsWorker.swift in Sources */,
@@ -2527,12 +2628,14 @@
 				F1E78CE9230D33AE00592AB8 /* StatsViewController.swift in Sources */,
 				F1E78CE6230D33AE00592AB8 /* StatsWorker.swift in Sources */,
 				F13B352923193E480020AD26 /* MealHeaderInSectionView.swift in Sources */,
+				05CBEBA323A21FD9001D9EEA /* NewCompansationObjectScreenPresenter.swift in Sources */,
 				057B9841234F5054002EAD68 /* ContainerController.swift in Sources */,
 				05A0E46D23A0FCC3005476DD /* CompansationCVBaseCell.swift in Sources */,
 				05D26A35236041FE00155F31 /* ProductListWorker.swift in Sources */,
 				055BE0CD2340A69C0029D298 /* ContainerDinnerViewController.swift in Sources */,
 				05A7CAED23827ECA0075D04E /* MainScreenTopView.swift in Sources */,
 				052F05C5239E4EA100A614B3 /* CompansationByInsulinCell.swift in Sources */,
+				05CBEBA523A21FD9001D9EEA /* NewCompansationObjectScreenRouter.swift in Sources */,
 				F1E78CFA230D355F00592AB8 /* UITextField+Extension.swift in Sources */,
 				F1E78CC9230D336B00592AB8 /* MainRouter.swift in Sources */,
 				05AAFF07238BFFFF002AE3D9 /* BallonMarker.swift in Sources */,
@@ -2563,6 +2666,7 @@
 				053BAB52233B56D60080359B /* Validatable.swift in Sources */,
 				F150DBF52317DD2300380AE0 /* MealInteractor.swift in Sources */,
 				05A7CAEF23827F9F0075D04E /* MainScreenMiddleView.swift in Sources */,
+				05CBEBB423A22595001D9EEA /* CompansationObjectView.swift in Sources */,
 				05A7CAFA2382B0510075D04E /* TopButtonView.swift in Sources */,
 				F150DBF02317DD2300380AE0 /* MealPresenter.swift in Sources */,
 				0562D536237559D00014A8F4 /* MainHeaderViewModel.swift in Sources */,
@@ -2595,6 +2699,7 @@
 				F13C34782333676B003A618B /* SlideMenuAnimated.swift in Sources */,
 				05A4F1B8233A0CDE00DFE4D7 /* BetterSnapingLayout.swift in Sources */,
 				F150DBF32317DD2300380AE0 /* MealModels.swift in Sources */,
+				05CBEBA623A21FD9001D9EEA /* NewCompansationObjectScreenModels.swift in Sources */,
 				05A4F1C2233A3D1500DFE4D7 /* CustomValueTextField.swift in Sources */,
 				0552E63D237EC19A00499168 /* MiddleCell.swift in Sources */,
 				055BE0D2234359680029D298 /* ForceGestureRecogniser.swift in Sources */,
@@ -2617,6 +2722,7 @@
 				F1E78CB0230D325600592AB8 /* BaseTabBarController.swift in Sources */,
 				05C16D66233F4E6100486CAE /* RobotView.swift in Sources */,
 				05C0C638238FBFD9001B2664 /* MealCollectionViewModel.swift in Sources */,
+				05CBEBA823A21FD9001D9EEA /* NewCompansationObjectScreenInteractor.swift in Sources */,
 				05D1469E2397CE2100E6E6EA /* SugarPickerView.swift in Sources */,
 				05D26A30235DC31C00155F31 /* ShugarCorrectorWorker.swift in Sources */,
 				F1E78D3E231425E600592AB8 /* FoodValidator.swift in Sources */,
@@ -2652,6 +2758,7 @@
 				F1EC85A8233251AD00E14D33 /* UiImageView + Extension.swift in Sources */,
 				F1E78CCA230D336B00592AB8 /* MainModels.swift in Sources */,
 				F1116329231D555F000C79FA /* ProductListCell.swift in Sources */,
+				05CBEBA723A21FD9001D9EEA /* NewCompansationObjectScreenViewController.swift in Sources */,
 				F1103B60232A726F009A338A /* MealTableViewPresenterWorker.swift in Sources */,
 				0544720E2396536E0020C0DC /* NewSugarDataView.swift in Sources */,
 				057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */,
@@ -2660,6 +2767,7 @@
 				05C0C62A238D40E3001B2664 /* SugarRealm.swift in Sources */,
 				05AAFF01238BFA68002AE3D9 /* MealCollectionView.swift in Sources */,
 				05A4F19F2339EF6A00DFE4D7 /* MainView.swift in Sources */,
+				05CBEBA423A21FD9001D9EEA /* NewCompansationObjectScreenWorker.swift in Sources */,
 				F1E78CBD230D334B00592AB8 /* FoodInteractor.swift in Sources */,
 				05A4F1A22339F2AC00DFE4D7 /* MainCustomNavBar.swift in Sources */,
 				055BE0DA2344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift in Sources */,

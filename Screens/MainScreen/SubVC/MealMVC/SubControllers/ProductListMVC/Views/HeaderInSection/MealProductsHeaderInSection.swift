@@ -46,7 +46,7 @@ extension MealProductsHeaderInSection {
     let rightStackWidth = CGFloat(cellWidth * 1.5) / 3
     
     let valueStackView = UIStackView(arrangedSubviews: [
-      carboLabel,portionLabel,insulinLabel
+      portionLabel,carboLabel,insulinLabel
     ])
     valueStackView.constrainWidth(constant: rightStackWidth)
     valueStackView.distribution = .fillEqually

@@ -73,7 +73,7 @@ extension MealProductCell {
     let rightStackWidth = CGFloat(cellWidth * 1.5) / 3
     
     let valueStackView = UIStackView(arrangedSubviews: [
-      carboInPortionLabel,portionLabel,insulinLabel
+      portionLabel,carboInPortionLabel,insulinLabel
     ])
     valueStackView.constrainWidth(constant: rightStackWidth)
     valueStackView.distribution = .fillEqually

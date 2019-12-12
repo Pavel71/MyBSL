@@ -66,7 +66,7 @@ extension MealProductsFooterView {
     
 
     let valueStackView = UIStackView(arrangedSubviews: [
-      carboLabel,portionLabel,insulinLabel
+      portionLabel,carboLabel,insulinLabel
     ])
     valueStackView.constrainWidth(constant: rightStackWidth)
     valueStackView.distribution = .fillEqually
