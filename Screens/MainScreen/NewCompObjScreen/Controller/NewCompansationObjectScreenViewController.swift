@@ -8,6 +8,12 @@
 
 import UIKit
 
+
+enum NewCompansationVCCellsCase: Int,CaseIterable {
+  case sugarCell
+  case addMealCell
+}
+
 protocol NewCompansationObjectScreenDisplayLogic: class {
   func displayData(viewModel: NewCompansationObjectScreen.Model.ViewModel.ViewModelData)
 }
@@ -25,6 +31,10 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   var navBar    : CompObjScreenNavBar!
   var tableView : UITableView!
   
+  
+  // Flags
+  
+  var sugarCellISBigger = false
 
   // MARK: Object lifecycle
   
@@ -92,8 +102,10 @@ extension NewCompansationObjectScreenViewController {
   
   private func confugireTableView() {
     
+    tableView.allowsSelection      = false
+//    tableView.rowHeight            = UITableView.automaticDimension
+//    tableView.estimatedRowHeight   = 50
     tableView.keyboardDismissMode  = .interactive
-//    tableView.alwaysBounceVertical = false
     tableView.delegate             = self
     tableView.dataSource           = self
     tableView.tableFooterView      = UIView()
@@ -104,6 +116,7 @@ extension NewCompansationObjectScreenViewController {
   
   private func registerCell() {
     tableView.register(SugarCell.self, forCellReuseIdentifier: SugarCell.cellId)
+    tableView.register(AddMealCell.self, forCellReuseIdentifier: AddMealCell.cellId)
   }
   
   
@@ -148,57 +161,81 @@ extension NewCompansationObjectScreenViewController {
     
     // пришел сахар и нужно проверить! В норме он или нет! Значит мы должны взять сервис и проверить! Он нам вернет 3 позиции выше нормы норма и инже нормы!
     
+    // Перезаг
+
+    sugarCellISBigger = true
     
     navBar.saveButton.isEnabled = true
     view.endEditing(true)
+    
+    tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
   }
   
-  private func checkSugar(sugar: String) {
-    let sugarFloat = (sugar as NSString).floatValue
-    let wayCorrectPosition = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat)
-    
-    switch wayCorrectPosition {
-    case .dontCorrect:
-      print("Сахар в норме можно показывать ячейку с продуктами")
-    case .correctDown:
-      print("Высокий сахар нужно скорректировать доп инсулином и показываем продукты")
-    case .correctUp:
-      print("Сахар ниже нормы Показываем возможность добавить продукты")
-    default:break
-    }
-  }
+
   
 }
 
 // MARK: TableView DataSource and Delegate
 extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 1
+    return NewCompansationVCCellsCase.allCases.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
+    switch NewCompansationVCCellsCase(rawValue: indexPath.row) {
+    case .sugarCell:
+      return configureSugarCell(indexPath: indexPath)
+    case .addMealCell:
+      return configureAddMealCell(indexPath: indexPath)
+    case .none: return UITableViewCell()
+    }
+    
+  }
+  
+  // AddMealCell
+  
+  private func configureAddMealCell(indexPath: IndexPath) -> AddMealCell {
+    
+    let cell = tableView.dequeueReusableCell(withIdentifier: AddMealCell.cellId, for: indexPath) as! AddMealCell
+    
+    return cell
+    
+  }
+  
+  // Sugar Cell
+  private func configureSugarCell(indexPath: IndexPath) -> SugarCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: SugarCell.cellId, for: indexPath) as!  SugarCell
-    setCellClouser(cell: cell)
+    setSugarCellClouser(cell: cell)
+    cell.configureCell(isCompansationLabelHidden: !sugarCellISBigger)
     return cell
   }
   
-  private func setCellClouser(cell:SugarCell ) {
+  private func setSugarCellClouser(cell:SugarCell ) {
     cell.didTapSugarTextFieldButton = {[weak self] text in
       self?.didTapSugarTextFieldButton(text:text)
     }
   }
   
-  // Height
+  // MARK: Height
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
     switch indexPath.row {
     case 0:
-      return 100
+      return getSugarCellHeight()
     default:
-      return 400
+      return 100
     }
     
+  }
+  
+  private func getSugarCellHeight() -> CGFloat {
+    
+    if sugarCellISBigger {
+      return 130
+    }
+    
+    return 90
   }
   
   

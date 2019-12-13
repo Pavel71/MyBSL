@@ -54,6 +54,8 @@
 		057B9841234F5054002EAD68 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9840234F5054002EAD68 /* ContainerController.swift */; };
 		057B9848234F6B4C002EAD68 /* PointSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9847234F6B4C002EAD68 /* PointSearcher.swift */; };
 		058F5F4A23A2492A00717042 /* SugarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F4923A2492A00717042 /* SugarCell.swift */; };
+		058F5F9123A39CB300717042 /* AddMealCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9023A39CB300717042 /* AddMealCell.swift */; };
+		058F5F9323A3A16E00717042 /* NewCompansationObjConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */; };
 		05952A4F233BB0FD00EE996E /* BaseProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A4E233BB0FD00EE996E /* BaseProductList.swift */; };
 		05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A51233BB22B00EE996E /* ProductListProtocol.swift */; };
 		05952A58233BB51600EE996E /* ProductListInDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */; };
@@ -265,6 +267,8 @@
 		057B9840234F5054002EAD68 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		057B9847234F6B4C002EAD68 /* PointSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointSearcher.swift; sourceTree = "<group>"; };
 		058F5F4923A2492A00717042 /* SugarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarCell.swift; sourceTree = "<group>"; };
+		058F5F9023A39CB300717042 /* AddMealCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMealCell.swift; sourceTree = "<group>"; };
+		058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjConstants.swift; sourceTree = "<group>"; };
 		05952A4E233BB0FD00EE996E /* BaseProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductList.swift; sourceTree = "<group>"; };
 		05952A51233BB22B00EE996E /* ProductListProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListProtocol.swift; sourceTree = "<group>"; };
 		05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInDinnerViewController.swift; sourceTree = "<group>"; };
@@ -895,6 +899,7 @@
 			isa = PBXGroup;
 			children = (
 				058F5F4923A2492A00717042 /* SugarCell.swift */,
+				058F5F9023A39CB300717042 /* AddMealCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1666,6 +1671,7 @@
 		05CBEB9B23A21F9B001D9EEA /* NewCompObjScreen */ = {
 			isa = PBXGroup;
 			children = (
+				058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */,
 				05CBEBAA23A21FF2001D9EEA /* NewCompObjScreenTasks */,
 				05CBEBAD23A222F0001D9EEA /* Views */,
 				05CBEBAC23A222AD001D9EEA /* Controller */,
@@ -2632,6 +2638,7 @@
 				05C2DEF8237EBAE00023B39C /* TopViewCell.swift in Sources */,
 				0562D53923759CE60014A8F4 /* DummyData.swift in Sources */,
 				F1E78CBC230D334B00592AB8 /* FoodViewController.swift in Sources */,
+				058F5F9323A3A16E00717042 /* NewCompansationObjConstants.swift in Sources */,
 				F1E78CBB230D334B00592AB8 /* FoodModels.swift in Sources */,
 				F1E78D12230D570500592AB8 /* NewProductView.swift in Sources */,
 				05A7CAEB23827C8E0075D04E /* MainScreenView.swift in Sources */,
@@ -2785,6 +2792,7 @@
 				055BE0DA2344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift in Sources */,
 				05E1C3312372B77C00007463 /* SimpleRegressionModel.swift in Sources */,
 				F1CC2D64232F77F100EF7D18 /* TableHeaderView.swift in Sources */,
+				058F5F9123A39CB300717042 /* AddMealCell.swift in Sources */,
 				F1EC85A323320FE400E14D33 /* MenuFoodListheaderInSectionView.swift in Sources */,
 				F1E78D10230D568100592AB8 /* Constants.swift in Sources */,
 				05A4F1C4233A3E8000DFE4D7 /* ShugarSetView.swift in Sources */,
