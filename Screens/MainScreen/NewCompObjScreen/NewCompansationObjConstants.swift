@@ -18,8 +18,8 @@ struct NewCompansationObjConstants {
     
     struct SugarCell {
       
-      static let sugarDataStackViewHeigth: CGFloat     = 40
-      static let sugarCompansationLabelheight: CGFloat = 20
+      static let valueHeigth: CGFloat     = 40
+      static let titleHeight: CGFloat = 20
     }
   }
   

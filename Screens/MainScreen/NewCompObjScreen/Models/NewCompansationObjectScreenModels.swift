@@ -13,19 +13,62 @@ enum NewCompansationObjectScreen {
   enum Model {
     struct Request {
       enum RequestType {
-        case some
+        case getBlankViewModel
+        case passCurrentSugar(sugar: String)
       }
     }
     struct Response {
       enum ResponseType {
-        case some
+        case getBlankViewModel
+        case updateCurrentSugarInVM(sugar: String)
       }
     }
     struct ViewModel {
       enum ViewModelData {
-        case some
+        case setViewModel(viewModel: NewCompObjViewModel)
+        
       }
     }
   }
+  
+}
+
+
+// MARK: ViewController View Model
+
+struct NewCompObjViewModel {
+  
+  var sugarCellVM: SugarCellModel
+  
+  // meal Cell VM
+}
+
+
+// MARK: Sugar Cell VM
+
+struct SugarCellModel: SugarCellable {
+  
+
+  var cellState            : SugarCellState
+  
+  var compansationString   : String?
+
+  var currentSugar         : Double?
+  
+  var correctionSugarKoeff : Double?
+  
+  init(
+       currentSugar         : Double? = nil,
+       correctionSugarKoeff : Double? = nil,
+       compansationString   : String? = nil,
+       cellState            : SugarCellState = .currentLayer
+  ) {
+    
+    self.cellState            = cellState
+    self.currentSugar         = currentSugar
+    self.correctionSugarKoeff = correctionSugarKoeff
+    self.compansationString   = compansationString
+  }
+  
   
 }

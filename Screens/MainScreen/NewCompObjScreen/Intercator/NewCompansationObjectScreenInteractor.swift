@@ -15,12 +15,38 @@ protocol NewCompansationObjectScreenBusinessLogic {
 class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusinessLogic {
 
   var presenter: NewCompansationObjectScreenPresentationLogic?
-  var service: NewCompansationObjectScreenService?
+//  var service: NewCompansationObjectScreenService?
   
   func makeRequest(request: NewCompansationObjectScreen.Model.Request.RequestType) {
-    if service == nil {
-      service = NewCompansationObjectScreenService()
-    }
+//    if service == nil {
+//      service = NewCompansationObjectScreenService()
+//    }
+    
+    catchViewModelRequest(request: request)
   }
   
 }
+
+// MARK: Catch View Model Requests
+
+extension NewCompansationObjectScreenInteractor {
+  
+  private func catchViewModelRequest(request: NewCompansationObjectScreen.Model.Request.RequestType) {
+    
+    switch request {
+    case .getBlankViewModel:
+      presenter?.presentData(response: .getBlankViewModel)
+      
+    case .passCurrentSugar(let sugar):
+      presenter?.presentData(response: .updateCurrentSugarInVM(sugar: sugar))
+    default:break
+    }
+    
+  }
+  
+  
+  
+  
+}
+
+

@@ -32,9 +32,9 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   var tableView : UITableView!
   
   
-  // Flags
+  // ViewModel
   
-  var sugarCellISBigger = false
+  var viewModel: NewCompObjViewModel! //{didSet{tableView.reloadData()}}
 
   // MARK: Object lifecycle
   
@@ -73,12 +73,21 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpViews()
-//    view.backgroundColor = .purple
+    
+    interactor?.makeRequest(request: .getBlankViewModel)
     
   }
   
+  // MARK: Display Data
+  
   func displayData(viewModel: NewCompansationObjectScreen.Model.ViewModel.ViewModelData) {
-
+    
+    switch viewModel {
+    case .setViewModel(let viewModel):
+      self.viewModel = viewModel
+      
+    default:break
+    }
   }
   
 }
@@ -157,18 +166,12 @@ extension NewCompansationObjectScreenViewController {
   
   // SUgarTextField RightButton
   
-  private func didTapSugarTextFieldButton(text: String) {
+  private func catchCurrentSugarString(text: String) {
     
-    // пришел сахар и нужно проверить! В норме он или нет! Значит мы должны взять сервис и проверить! Он нам вернет 3 позиции выше нормы норма и инже нормы!
-    
-    // Перезаг
-
-    sugarCellISBigger = true
-    
-    navBar.saveButton.isEnabled = true
-    view.endEditing(true)
-    
-    tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+    print(text)
+    interactor?.makeRequest(request: .passCurrentSugar(sugar: text))
+//    view.endEditing(true)
+    tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
   }
   
 
@@ -206,36 +209,49 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
   // Sugar Cell
   private func configureSugarCell(indexPath: IndexPath) -> SugarCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: SugarCell.cellId, for: indexPath) as!  SugarCell
+    
+    cell.setViewModel(viewModel: viewModel.sugarCellVM)
     setSugarCellClouser(cell: cell)
-    cell.configureCell(isCompansationLabelHidden: !sugarCellISBigger)
+    
     return cell
   }
   
   private func setSugarCellClouser(cell:SugarCell ) {
-    cell.didTapSugarTextFieldButton = {[weak self] text in
-      self?.didTapSugarTextFieldButton(text:text)
+    cell.passCurrentSugarClouser = {[weak self] text in
+      self?.catchCurrentSugarString(text:text)
     }
   }
   
   // MARK: Height
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
-    switch indexPath.row {
-    case 0:
-      return getSugarCellHeight()
-    default:
+    switch NewCompansationVCCellsCase(rawValue: indexPath.row) {
+    case .sugarCell:
+        
+      return getSugarCellHeight(cellState: viewModel.sugarCellVM.cellState)
+      
+    case .addMealCell:
       return 100
+
+    case .none: return 100
     }
     
   }
   
-  private func getSugarCellHeight() -> CGFloat {
+  private func getSugarCellHeight(cellState: SugarCellState) -> CGFloat {
     
-    if sugarCellISBigger {
-      return 130
+    let cellHeight: CGFloat
+    
+    switch cellState {
+    case .currentLayer:
+      cellHeight = SugarCellHeightWorker.getDefaultHeight()
+    case .currentLayerAndCorrectionLabel:
+      cellHeight = SugarCellHeightWorker.getCurrentSugarLayerAndCOrrectionLabelHeight()
+    case .currentLayerAndCorrectionLayer:
+      cellHeight = SugarCellHeightWorker.getCurrentSugarLayerAndComapnsationLayerHeight()
     }
     
-    return 90
+    return cellHeight
   }
   
   

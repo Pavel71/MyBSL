@@ -56,6 +56,7 @@
 		058F5F4A23A2492A00717042 /* SugarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F4923A2492A00717042 /* SugarCell.swift */; };
 		058F5F9123A39CB300717042 /* AddMealCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9023A39CB300717042 /* AddMealCell.swift */; };
 		058F5F9323A3A16E00717042 /* NewCompansationObjConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */; };
+		058F5F9523A76B5100717042 /* SugarCellHeightWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9423A76B5100717042 /* SugarCellHeightWorker.swift */; };
 		05952A4F233BB0FD00EE996E /* BaseProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A4E233BB0FD00EE996E /* BaseProductList.swift */; };
 		05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A51233BB22B00EE996E /* ProductListProtocol.swift */; };
 		05952A58233BB51600EE996E /* ProductListInDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */; };
@@ -269,6 +270,7 @@
 		058F5F4923A2492A00717042 /* SugarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarCell.swift; sourceTree = "<group>"; };
 		058F5F9023A39CB300717042 /* AddMealCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMealCell.swift; sourceTree = "<group>"; };
 		058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjConstants.swift; sourceTree = "<group>"; };
+		058F5F9423A76B5100717042 /* SugarCellHeightWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarCellHeightWorker.swift; sourceTree = "<group>"; };
 		05952A4E233BB0FD00EE996E /* BaseProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductList.swift; sourceTree = "<group>"; };
 		05952A51233BB22B00EE996E /* ProductListProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListProtocol.swift; sourceTree = "<group>"; };
 		05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInDinnerViewController.swift; sourceTree = "<group>"; };
@@ -1671,8 +1673,8 @@
 		05CBEB9B23A21F9B001D9EEA /* NewCompObjScreen */ = {
 			isa = PBXGroup;
 			children = (
-				058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */,
 				05CBEBAA23A21FF2001D9EEA /* NewCompObjScreenTasks */,
+				058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */,
 				05CBEBAD23A222F0001D9EEA /* Views */,
 				05CBEBAC23A222AD001D9EEA /* Controller */,
 				05CBEBAE23A222FB001D9EEA /* Intercator */,
@@ -1721,6 +1723,7 @@
 		05CBEBB023A22316001D9EEA /* Workers */ = {
 			isa = PBXGroup;
 			children = (
+				058F5F9423A76B5100717042 /* SugarCellHeightWorker.swift */,
 				05CBEB9D23A21FD9001D9EEA /* NewCompansationObjectScreenWorker.swift */,
 			);
 			path = Workers;
@@ -2786,6 +2789,7 @@
 				05C0C62A238D40E3001B2664 /* SugarRealm.swift in Sources */,
 				05AAFF01238BFA68002AE3D9 /* MealCollectionView.swift in Sources */,
 				05A4F19F2339EF6A00DFE4D7 /* MainView.swift in Sources */,
+				058F5F9523A76B5100717042 /* SugarCellHeightWorker.swift in Sources */,
 				05CBEBA423A21FD9001D9EEA /* NewCompansationObjectScreenWorker.swift in Sources */,
 				F1E78CBD230D334B00592AB8 /* FoodInteractor.swift in Sources */,
 				05A4F1A22339F2AC00DFE4D7 /* MainCustomNavBar.swift in Sources */,
