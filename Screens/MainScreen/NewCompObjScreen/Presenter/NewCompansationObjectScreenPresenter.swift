@@ -84,6 +84,7 @@ extension NewCompansationObjectScreenPresenter {
     guard sugar.isEmpty == false else {
       viewModel.sugarCellVM.cellState          = .currentLayer
       viewModel.sugarCellVM.compansationString = nil
+      viewModel.sugarCellVM.correctionImage    = nil
       return
     }
         
@@ -94,12 +95,15 @@ extension NewCompansationObjectScreenPresenter {
     case .dontCorrect:
       viewModel.sugarCellVM.compansationString = "Сахар в норме"
       viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLabel
+      viewModel.sugarCellVM.correctionImage    = nil
     case .correctDown:
       viewModel.sugarCellVM.compansationString = "Сахар выше нормы! нужна коррекция инсулином!"
       viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLayer
+      viewModel.sugarCellVM.correctionImage    = #imageLiteral(resourceName: "anesthesia")
     case .correctUp:
       viewModel.sugarCellVM.compansationString = "Сахар ниже нормы! нужна коррекция углеводами!"
       viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLayer
+      viewModel.sugarCellVM.correctionImage    = #imageLiteral(resourceName: "candy")
     default:break
     }
     

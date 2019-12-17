@@ -49,6 +49,7 @@ class NewSugarDataView: AddNewElementView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
+    backgroundColor = .orange
     
     setValidatorClouser()
     configureTextFields()

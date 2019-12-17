@@ -48,6 +48,7 @@ struct NewCompObjViewModel {
 
 struct SugarCellModel: SugarCellable {
   
+  var correctionImage      : UIImage?
 
   var cellState            : SugarCellState
   
@@ -58,16 +59,18 @@ struct SugarCellModel: SugarCellable {
   var correctionSugarKoeff : Double?
   
   init(
-       currentSugar         : Double? = nil,
-       correctionSugarKoeff : Double? = nil,
-       compansationString   : String? = nil,
-       cellState            : SugarCellState = .currentLayer
+    correctionImage      : UIImage? = nil,
+    currentSugar         : Double? = nil,
+    correctionSugarKoeff : Double? = nil,
+    compansationString   : String? = nil,
+    cellState            : SugarCellState = .currentLayer
   ) {
     
     self.cellState            = cellState
     self.currentSugar         = currentSugar
     self.correctionSugarKoeff = correctionSugarKoeff
     self.compansationString   = compansationString
+    self.correctionImage      = correctionImage
   }
   
   

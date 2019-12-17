@@ -231,7 +231,7 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
       return getSugarCellHeight(cellState: viewModel.sugarCellVM.cellState)
       
     case .addMealCell:
-      return 100
+      return 300
 
     case .none: return 100
     }

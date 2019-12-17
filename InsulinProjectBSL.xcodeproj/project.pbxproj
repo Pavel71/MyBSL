@@ -40,6 +40,9 @@
 		055A3A412356EFB60080628C /* FoodMealProductListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A3A402356EFB60080628C /* FoodMealProductListCell.swift */; };
 		055A3A452356F2E80080628C /* MainDinnerProductListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A3A442356F2E80080628C /* MainDinnerProductListCell.swift */; };
 		055A3A502357044F0080628C /* Readme in Resources */ = {isa = PBXBuildFile; fileRef = 055A3A4F2357044F0080628C /* Readme */; };
+		055A726623A8C3E4002CA9A7 /* ProductListCellHeightWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A726523A8C3E4002CA9A7 /* ProductListCellHeightWorker.swift */; };
+		055A726A23A8CA2B002CA9A7 /* NewProductListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A726923A8CA2B002CA9A7 /* NewProductListVC.swift */; };
+		055A727123A8CC75002CA9A7 /* NewProductListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055A727023A8CC75002CA9A7 /* NewProductListCell.swift */; };
 		055BE0CD2340A69C0029D298 /* ContainerDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */; };
 		055BE0CF23434AEE0029D298 /* CalculateValueTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0CE23434AEE0029D298 /* CalculateValueTextField.swift */; };
 		055BE0D2234359680029D298 /* ForceGestureRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D1234359680029D298 /* ForceGestureRecogniser.swift */; };
@@ -254,6 +257,9 @@
 		055A3A402356EFB60080628C /* FoodMealProductListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodMealProductListCell.swift; sourceTree = "<group>"; };
 		055A3A442356F2E80080628C /* MainDinnerProductListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDinnerProductListCell.swift; sourceTree = "<group>"; };
 		055A3A4F2357044F0080628C /* Readme */ = {isa = PBXFileReference; lastKnownFileType = text; path = Readme; sourceTree = "<group>"; };
+		055A726523A8C3E4002CA9A7 /* ProductListCellHeightWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCellHeightWorker.swift; sourceTree = "<group>"; };
+		055A726923A8CA2B002CA9A7 /* NewProductListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProductListVC.swift; sourceTree = "<group>"; };
+		055A727023A8CC75002CA9A7 /* NewProductListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProductListCell.swift; sourceTree = "<group>"; };
 		055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContainerDinnerViewController.swift; path = ../ContainerDinnerViewController.swift; sourceTree = "<group>"; };
 		055BE0CE23434AEE0029D298 /* CalculateValueTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateValueTextField.swift; sourceTree = "<group>"; };
 		055BE0D1234359680029D298 /* ForceGestureRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceGestureRecogniser.swift; sourceTree = "<group>"; };
@@ -823,6 +829,94 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		055A726123A8C329002CA9A7 /* SugarCell */ = {
+			isa = PBXGroup;
+			children = (
+				058F5F4923A2492A00717042 /* SugarCell.swift */,
+			);
+			path = SugarCell;
+			sourceTree = "<group>";
+		};
+		055A726223A8C337002CA9A7 /* ProductListCell */ = {
+			isa = PBXGroup;
+			children = (
+				058F5F9023A39CB300717042 /* AddMealCell.swift */,
+			);
+			path = ProductListCell;
+			sourceTree = "<group>";
+		};
+		055A726323A8C3C3002CA9A7 /* SugarCellWorker */ = {
+			isa = PBXGroup;
+			children = (
+				058F5F9423A76B5100717042 /* SugarCellHeightWorker.swift */,
+			);
+			path = SugarCellWorker;
+			sourceTree = "<group>";
+		};
+		055A726423A8C3CD002CA9A7 /* ProductListWorker */ = {
+			isa = PBXGroup;
+			children = (
+				055A726523A8C3E4002CA9A7 /* ProductListCellHeightWorker.swift */,
+			);
+			path = ProductListWorker;
+			sourceTree = "<group>";
+		};
+		055A726723A8C66D002CA9A7 /* SubVC */ = {
+			isa = PBXGroup;
+			children = (
+				055A726823A8C9E9002CA9A7 /* ProductListVC */,
+			);
+			path = SubVC;
+			sourceTree = "<group>";
+		};
+		055A726823A8C9E9002CA9A7 /* ProductListVC */ = {
+			isa = PBXGroup;
+			children = (
+				055A726D23A8CA3D002CA9A7 /* View */,
+				055A726C23A8CA36002CA9A7 /* Controller */,
+				055A726B23A8CA2F002CA9A7 /* Model */,
+			);
+			path = ProductListVC;
+			sourceTree = "<group>";
+		};
+		055A726B23A8CA2F002CA9A7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		055A726C23A8CA36002CA9A7 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				055A726923A8CA2B002CA9A7 /* NewProductListVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		055A726D23A8CA3D002CA9A7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				055A727023A8CC75002CA9A7 /* NewProductListCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		055A726E23A8CAAD002CA9A7 /* ParentsClasses */ = {
+			isa = PBXGroup;
+			children = (
+				055A726F23A8CAC4002CA9A7 /* BaseProductList */,
+			);
+			path = ParentsClasses;
+			sourceTree = "<group>";
+		};
+		055A726F23A8CAC4002CA9A7 /* BaseProductList */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = BaseProductList;
+			sourceTree = "<group>";
+		};
 		055BE0D0234359520029D298 /* UIRecogniser */ = {
 			isa = PBXGroup;
 			children = (
@@ -900,8 +994,8 @@
 		058F5F4823A2490700717042 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				058F5F4923A2492A00717042 /* SugarCell.swift */,
-				058F5F9023A39CB300717042 /* AddMealCell.swift */,
+				055A726123A8C329002CA9A7 /* SugarCell */,
+				055A726223A8C337002CA9A7 /* ProductListCell */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1673,6 +1767,7 @@
 		05CBEB9B23A21F9B001D9EEA /* NewCompObjScreen */ = {
 			isa = PBXGroup;
 			children = (
+				055A726723A8C66D002CA9A7 /* SubVC */,
 				05CBEBAA23A21FF2001D9EEA /* NewCompObjScreenTasks */,
 				058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */,
 				05CBEBAD23A222F0001D9EEA /* Views */,
@@ -1723,7 +1818,8 @@
 		05CBEBB023A22316001D9EEA /* Workers */ = {
 			isa = PBXGroup;
 			children = (
-				058F5F9423A76B5100717042 /* SugarCellHeightWorker.swift */,
+				055A726423A8C3CD002CA9A7 /* ProductListWorker */,
+				055A726323A8C3C3002CA9A7 /* SugarCellWorker */,
 				05CBEB9D23A21FD9001D9EEA /* NewCompansationObjectScreenWorker.swift */,
 			);
 			path = Workers;
@@ -2201,6 +2297,7 @@
 				F1E78D00230D546500592AB8 /* Workers */,
 				F1E78CF5230D34F500592AB8 /* HelpFiles */,
 				F1E78CFD230D542E00592AB8 /* CustomClasses */,
+				055A726E23A8CAAD002CA9A7 /* ParentsClasses */,
 				05952A47233B766A00EE996E /* Screens */,
 			);
 			path = InsulinProjectBSL;
@@ -2607,8 +2704,10 @@
 				05B1DEB5237ECD0B0015E4E6 /* MainScreenWorker.swift in Sources */,
 				F1E78CD7230D338A00592AB8 /* SettingsWorker.swift in Sources */,
 				F1932B42231FB009003DC351 /* UITableView + Extension.swift in Sources */,
+				055A727123A8CC75002CA9A7 /* NewProductListCell.swift in Sources */,
 				058F5F4A23A2492A00717042 /* SugarCell.swift in Sources */,
 				0509FD00233F9DBC00B04B30 /* ProductListResultWorker.swift in Sources */,
+				055A726A23A8CA2B002CA9A7 /* NewProductListVC.swift in Sources */,
 				0550B801234636E500D88732 /* ListTrainsViewController.swift in Sources */,
 				05C16D61233F23A800486CAE /* ProductListResultView.swift in Sources */,
 				F1E78D1A230D67FF00592AB8 /* RealmProvider.swift in Sources */,
@@ -2699,6 +2798,7 @@
 				055BE0D723448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift in Sources */,
 				F1E78CFF230D544C00592AB8 /* CustomLabels.swift in Sources */,
 				05952A5F233E873E00EE996E /* TouchesPassView.swift in Sources */,
+				055A726623A8C3E4002CA9A7 /* ProductListCellHeightWorker.swift in Sources */,
 				05D26A3E236093CB00155F31 /* DinnerRealmManager.swift in Sources */,
 				F1E78C9C230D31E600592AB8 /* AppDelegate.swift in Sources */,
 				05CBEB9423A12C74001D9EEA /* ResultViewWorker.swift in Sources */,

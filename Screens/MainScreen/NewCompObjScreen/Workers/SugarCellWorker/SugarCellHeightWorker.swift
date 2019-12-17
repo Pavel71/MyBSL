@@ -39,7 +39,7 @@ class SugarCellHeightWorker {
   
   static func getCurrentSugarLayerAndComapnsationLayerHeight() -> CGFloat {
     
-    return getCurrentSugarLayerAndCOrrectionLabelHeight() + valueHeight 
+    return getCurrentSugarLayerAndCOrrectionLabelHeight() + valueHeight
   }
   
 }

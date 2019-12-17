@@ -13,6 +13,7 @@ protocol SugarCellable {
   
   
   var cellState            : SugarCellState {get set}
+  var correctionImage      : UIImage? {get set}
   var compansationString   : String? {get set}
   var currentSugar         : Double? {get set}
   var correctionSugarKoeff : Double? {get set} // Свойство которое будет заполнятся если сахар вне нормы
@@ -58,7 +59,12 @@ class SugarCell: UITableViewCell {
   
   let compansationSugarLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Сахар в норме")
   let correctionLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Коррекция:")
-  let correctionTextField = CustomCategoryTextField(padding: 5, placeholder: "0.5", cornerRaduis: 10, imageButton: #imageLiteral(resourceName: "robot32").withRenderingMode(.alwaysOriginal))
+  let correctionImageView: UIImageView = {
+    let iv = UIImageView()
+    iv.contentMode = .scaleAspectFit
+    return iv
+  }()
+  let correctionTextField = CustomCategoryTextField(padding: 5, placeholder: "", cornerRaduis: 10, imageButton: #imageLiteral(resourceName: "robot32").withRenderingMode(.alwaysOriginal))
   
   // MARK: Init
   
@@ -100,18 +106,23 @@ class SugarCell: UITableViewCell {
     compansationSugarLabel.isHidden      = true
     correctionTextField.isHidden         = true
     correctionLabel.isHidden             = true
+    correctionImageView.isHidden         = true
   }
   
   private func correctionStackViewHidden() {
     compansationSugarLabel.isHidden      = false
     correctionTextField.isHidden         = true
     correctionLabel.isHidden             = true
+    correctionImageView.isHidden         = true
+
   }
   
   private func comapsnationLayerDontHidden() {
     compansationSugarLabel.isHidden      = false
     correctionTextField.isHidden         = false
     correctionLabel.isHidden             = false
+    correctionImageView.isHidden         = false
+
   }
   
   
@@ -175,13 +186,20 @@ extension SugarCell {
   
   private func getCorrectionStackView() -> UIStackView {
     
+    let leftStackView = UIStackView(arrangedSubviews: [
+    correctionLabel,correctionImageView
+    ])
+
+    leftStackView.distribution = .fillEqually
+    correctionLabel.constrainHeight(constant: SugarCellHeightWorker.valueHeight)
+    
     let correctionStackView = UIStackView(arrangedSubviews: [
-      correctionLabel, correctionTextField
+      leftStackView, correctionTextField
     ])
     correctionStackView.spacing      = 5
     correctionStackView.distribution = .fillEqually
     
-    correctionLabel.constrainHeight(constant: SugarCellHeightWorker.valueHeight)
+    
     
     let overAllStackView = UIStackView(arrangedSubviews: [
       
@@ -192,7 +210,7 @@ extension SugarCell {
     
     compansationSugarLabel.constrainHeight(constant: SugarCellHeightWorker.compansationTitleHeight)
     
-    overAllStackView.spacing      = SugarCellHeightWorker.spacing
+    overAllStackView.spacing      = SugarCellHeightWorker.spacing * 2
     overAllStackView.distribution = .fill
     overAllStackView.axis         = .vertical
     
@@ -216,8 +234,12 @@ extension SugarCell {
     let correctionKoeff = viewModel.correctionSugarKoeff != nil ? "\(viewModel.correctionSugarKoeff!)": ""
     correctionTextField.text   = correctionKoeff
     
+    correctionImageView.image  = viewModel.correctionImage
+    
     let compansationString = viewModel.compansationString != nil ? viewModel.compansationString! : ""
     compansationSugarLabel.text = compansationString
+    
+    
     
     cellState = viewModel.cellState
     
@@ -230,8 +252,10 @@ extension SugarCell {
     
     switch cellState {
     case .currentLayer:
+    
       compansationLayerHidden()
     case .currentLayerAndCorrectionLabel:
+      
       correctionStackViewHidden()
     case .currentLayerAndCorrectionLayer:
       comapsnationLayerDontHidden()

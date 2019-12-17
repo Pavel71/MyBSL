@@ -80,7 +80,9 @@ extension ProductListInDinnerViewController {
  
   
   private func configureTableView() {
-    tableView.dataSource = self
+    
+    tableView.tableHeaderView = headerView
+    tableView.dataSource      = self
     tableView.register(MainDinnerProductListCell.self, forCellReuseIdentifier: MainDinnerProductListCell.cellId)
     tableView.keyboardDismissMode = .interactive
   }
