@@ -21,6 +21,7 @@ class BaseProductList: UIViewController,BaseProductListViewControllerable {
   var footerView = ProductsTableViewInMealCellFooterView(frame: .init(x: 0, y: 0, width: 0, height: Constants.ProductList.TableFooterView.footerHeight))
 
   var tableView = UITableView(frame: .zero, style: .plain)
+  
   var headerView = ProductListTableHeaderView(frame: .init(x: 0, y: 0, width: 0, height: ProductListTableHeaderView.height))
 
   

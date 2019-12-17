@@ -13,10 +13,27 @@ import UIKit
 
 class ProductListCellHeightWorker {
   
-  static let spacing                 : CGFloat = 5
-  static let valueHeight             : CGFloat = 30
-  static let titleHeight             : CGFloat = 20
-  static let compansationTitleHeight : CGFloat = 40
-  static let padding                 : UIEdgeInsets = .init(top: 10, left: 10, bottom: 25, right: 10)
+  static  let spacing                : CGFloat = 5
+  static  let valueHeight            : CGFloat = 30
+  static  let titleHeight            : CGFloat = 20
+  static  let padding                : UIEdgeInsets = .init(top: 10, left: 10, bottom: 25, right: 10)
   
+  static  let addButtonHeight        : CGFloat = 45
+  static  let blankProductListHeight : CGFloat = 90
+  
+  static  let productRowHeight       : CGFloat = 44
+}
+
+
+extension ProductListCellHeightWorker {
+  
+  
+  static func getDefaultHeightCell() -> CGFloat {
+    return valueHeight + titleHeight + (spacing * 2) + padding.top + padding.bottom
+  }
+  
+  
+  static func getWithProductListCellHeight() -> CGFloat {
+    return getDefaultHeightCell() + blankProductListHeight
+  }
 }

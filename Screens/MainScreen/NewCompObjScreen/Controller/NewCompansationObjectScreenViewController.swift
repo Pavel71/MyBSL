@@ -150,7 +150,7 @@ extension NewCompansationObjectScreenViewController {
   
 }
 
-// MARK: Cath Views Clousers
+// MARK: Catch  Clousers
 
 extension NewCompansationObjectScreenViewController {
   
@@ -172,6 +172,13 @@ extension NewCompansationObjectScreenViewController {
     interactor?.makeRequest(request: .passCurrentSugar(sugar: text))
 //    view.endEditing(true)
     tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+  }
+  
+  private func catchAddMealCellSwitcherValue(isOn: Bool) {
+    // Здесь я посылаю сигнал нужно ли мне показывать модель с продукт листом?
+    
+    interactor?.makeRequest(request: .passIsNeedProductList(isNeed: isOn))
+    tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
   }
   
 
@@ -202,6 +209,8 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
     
     let cell = tableView.dequeueReusableCell(withIdentifier: AddMealCell.cellId, for: indexPath) as! AddMealCell
     
+    cell.setViewModel(viewModel: viewModel.addMealCellVM)
+    setAddMealCellClouser(cell: cell)
     return cell
     
   }
@@ -216,13 +225,26 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
     return cell
   }
   
+  // MARK: Set Cell Clouser
   private func setSugarCellClouser(cell:SugarCell ) {
     cell.passCurrentSugarClouser = {[weak self] text in
       self?.catchCurrentSugarString(text:text)
     }
   }
   
+  private func setAddMealCellClouser(cell: AddMealCell) {
+    cell.didPassSwitcherValueClouser = { [weak self] isOn in
+      self?.catchAddMealCellSwitcherValue(isOn: isOn)
+    }
+    
+  }
+  
+
+}
+
   // MARK: Height
+extension NewCompansationObjectScreenViewController {
+
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
     switch NewCompansationVCCellsCase(rawValue: indexPath.row) {
@@ -231,13 +253,26 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
       return getSugarCellHeight(cellState: viewModel.sugarCellVM.cellState)
       
     case .addMealCell:
-      return 300
+      return getAddmealCellHeight()
 
     case .none: return 100
     }
     
   }
   
+  private func getAddmealCellHeight() -> CGFloat {
+    
+    switch viewModel.addMealCellVM.cellState {
+    case .defaultState:
+      return ProductListCellHeightWorker.getDefaultHeightCell()
+    case .productListState:
+      return ProductListCellHeightWorker.getWithProductListCellHeight()
+    }
+    
+    
+  }
+  
+  // MARK: SugsrCellheight
   private func getSugarCellHeight(cellState: SugarCellState) -> CGFloat {
     
     let cellHeight: CGFloat
@@ -253,6 +288,4 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
     
     return cellHeight
   }
-  
-  
 }

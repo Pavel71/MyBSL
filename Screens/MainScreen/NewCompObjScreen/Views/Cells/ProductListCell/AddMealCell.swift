@@ -9,6 +9,19 @@
 import UIKit
 
 
+protocol AddMealCellable {
+  
+  var cellState     : AddMealCellState        {get set}
+  var productListVM : NewProductListViewModel {get set}
+}
+
+
+enum AddMealCellState {
+  case defaultState
+  case productListState
+}
+
+
 class AddMealCell: UITableViewCell {
   
   static let cellId = "AddMealCell"
@@ -27,13 +40,15 @@ class AddMealCell: UITableViewCell {
   // Switcher Stack
   let needMealLable = CustomLabels(font: .systemFont(ofSize: 16), text: "Добавьте обед:")
   
+  
+  var didPassSwitcherValueClouser: ((Bool) -> Void)?
   var mealSwitcher: UISwitch = {
     let switcher = UISwitch()
     switcher.isOn               = false
     switcher.tintColor          = .red
     switcher.backgroundColor    = .red
     switcher.layer.cornerRadius = 16
-//    switcher.onTintColor     = .red
+    
     return switcher
   }()
   
@@ -51,24 +66,58 @@ class AddMealCell: UITableViewCell {
     return button
   }()
   
+  // Properties
+  var switcherStackView: UIStackView!
+//  var cellState: AddMealCellState = .defaultState
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     backgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
-    
+    mealSwitcher.addTarget(self, action: #selector(handleSwitcher), for: .valueChanged)
     needMealLable.textAlignment = .left
     
     setUpViews()
-    
+    setProductListHidden(isHidden: true)
   }
+  
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
-  var switcherStackView: UIStackView!
+  
   
 }
+
+// MARK: Set ViewModels
+
+extension AddMealCell {
+  
+  func setViewModel(viewModel: AddMealCellable) {
+    
+    switch viewModel.cellState {
+      
+    case .defaultState:
+      setProductListHidden(isHidden: true)
+      mealSwitcher.isOn = false
+      
+    case .productListState:
+      setProductListHidden(isHidden: false)
+      mealSwitcher.isOn = true
+
+    }
+ 
+  }
+  
+  private func setProductListHidden(isHidden: Bool) {
+    productListViewController.view.isHidden = isHidden
+    addNewProductInMealButton.isHidden      = isHidden
+  }
+
+}
+
+
 
 // MARK: Set Up Views
 
@@ -89,7 +138,7 @@ extension AddMealCell {
     addNewProductInMealButton.addTarget(self, action: #selector(handleAddNewProduct), for: .touchUpInside)
     
     addNewProductInMealButton.clipsToBounds = true
-    addNewProductInMealButton.layer.cornerRadius = Constants.ProductList.TableFooterView.addButtonHeight / 2
+    addNewProductInMealButton.layer.cornerRadius = ProductListCellHeightWorker.addButtonHeight / 2
     
     addSubview(addNewProductInMealButton)
     addNewProductInMealButton.anchor(top: productListViewController.view.bottomAnchor, leading: nil, bottom: nil, trailing: nil,padding: .init(top: -25, left: 0, bottom: 0, right: 0))
@@ -108,6 +157,8 @@ extension AddMealCell {
     productListViewController.view
     ])
     titleLabel.constrainHeight(constant: ProductListCellHeightWorker.titleHeight)
+//    productListViewController.view.constrainHeight(constant: ProductListCellHeightWorker.productListHeight)
+    
     overAllStackView.distribution = .fill
     overAllStackView.axis         = .vertical
     overAllStackView.spacing      = 15
@@ -135,10 +186,15 @@ extension AddMealCell {
   }
 }
 
-// Catch Signals
+//MARK:  Catch Signals
 extension AddMealCell {
   
   @objc private func handleAddNewProduct() {
     print("Add new Product")
+  }
+  
+  @objc private func handleSwitcher(switcher: UISwitch) {
+    
+    didPassSwitcherValueClouser!(switcher.isOn)
   }
 }

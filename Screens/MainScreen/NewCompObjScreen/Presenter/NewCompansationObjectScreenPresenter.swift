@@ -15,6 +15,8 @@ protocol NewCompansationObjectScreenPresentationLogic {
 class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPresentationLogic {
   weak var viewController: NewCompansationObjectScreenDisplayLogic?
   
+  
+  // ViewModel
   var viewModel: NewCompObjViewModel!
   
   func presentData(response: NewCompansationObjectScreen.Model.Response.ResponseType) {
@@ -39,7 +41,11 @@ extension NewCompansationObjectScreenPresenter {
       throwViewModelToVC()
       
     case .updateCurrentSugarInVM(let sugar):
-      updateCurrentSugarVM(sugar: sugar)
+      SugarCellVMWorker.updateCurrentSugarVM(sugar: sugar, viewModel: &viewModel)
+      throwViewModelToVC()
+      
+    case .updateAddMealStateInVM(let isNeed):
+      AddMealVMWorker.changeNeedProductList(isNeed: isNeed, viewModel: &viewModel)
       throwViewModelToVC()
     default:break
     }
@@ -52,60 +58,36 @@ extension NewCompansationObjectScreenPresenter {
 }
 
 
-//MARK: Work with ViewModel
+//MARK: Get Blank ViewModel
 
 extension NewCompansationObjectScreenPresenter {
   
   private func getBlankViewModel() -> NewCompObjViewModel {
     
-    let sugarCellVM = getDefaultCellVM()
-    return NewCompObjViewModel(sugarCellVM: sugarCellVM)
+    let sugarCellVM   = getDefaultSugarCellVM()
+    let addMealCellVM = getDefaultAddmealCellVM()
+    return NewCompObjViewModel(sugarCellVM   : sugarCellVM,
+                               addMealCellVM : addMealCellVM)
   }
   
-  private func getDefaultCellVM() -> SugarCellModel {
+  private func getDefaultAddmealCellVM() -> AddMealCellModel {
+    
+    let productListVM = NewProductListViewModel(
+      cells: [])
+    
+    return AddMealCellModel(cellState     : .defaultState,
+                            productListVM : productListVM)
+  }
+  
+  private func getDefaultSugarCellVM() -> SugarCellModel {
     
     return SugarCellModel()
   }
   
   
-  // MARK: Update VM
   
-  private func updateCurrentSugarVM(sugar: String) {
-    
-    viewModel.sugarCellVM.currentSugar = sugar == "" ? nil : (sugar as NSString).doubleValue
-    
-    updateCompansationLabelAndCellState(sugar: sugar)
-    
-  }
   
-  private func updateCompansationLabelAndCellState(sugar: String) {
-        
-    // Если пришла пустая строка то ставим ячейку по дефолту
-    guard sugar.isEmpty == false else {
-      viewModel.sugarCellVM.cellState          = .currentLayer
-      viewModel.sugarCellVM.compansationString = nil
-      viewModel.sugarCellVM.correctionImage    = nil
-      return
-    }
-        
-    let sugarFloat = (sugar as NSString).floatValue
-    let wayCorrectPosition = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat)
-    
-    switch wayCorrectPosition {
-    case .dontCorrect:
-      viewModel.sugarCellVM.compansationString = "Сахар в норме"
-      viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLabel
-      viewModel.sugarCellVM.correctionImage    = nil
-    case .correctDown:
-      viewModel.sugarCellVM.compansationString = "Сахар выше нормы! нужна коррекция инсулином!"
-      viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLayer
-      viewModel.sugarCellVM.correctionImage    = #imageLiteral(resourceName: "anesthesia")
-    case .correctUp:
-      viewModel.sugarCellVM.compansationString = "Сахар ниже нормы! нужна коррекция углеводами!"
-      viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLayer
-      viewModel.sugarCellVM.correctionImage    = #imageLiteral(resourceName: "candy")
-    default:break
-    }
-    
-  }
+  
 }
+
+

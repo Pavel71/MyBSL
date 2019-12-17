@@ -39,6 +39,8 @@ extension NewCompansationObjectScreenInteractor {
       
     case .passCurrentSugar(let sugar):
       presenter?.presentData(response: .updateCurrentSugarInVM(sugar: sugar))
+    case .passIsNeedProductList(let isNeed):
+      presenter?.presentData(response: .updateAddMealStateInVM(isNeed: isNeed))
     default:break
     }
     

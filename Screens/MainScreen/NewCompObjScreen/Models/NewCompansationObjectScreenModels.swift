@@ -15,12 +15,14 @@ enum NewCompansationObjectScreen {
       enum RequestType {
         case getBlankViewModel
         case passCurrentSugar(sugar: String)
+        case passIsNeedProductList(isNeed: Bool)
       }
     }
     struct Response {
       enum ResponseType {
         case getBlankViewModel
         case updateCurrentSugarInVM(sugar: String)
+        case updateAddMealStateInVM(isNeed: Bool)
       }
     }
     struct ViewModel {
@@ -38,9 +40,10 @@ enum NewCompansationObjectScreen {
 
 struct NewCompObjViewModel {
   
-  var sugarCellVM: SugarCellModel
+  var sugarCellVM   : SugarCellModel
   
   // meal Cell VM
+  var addMealCellVM : AddMealCellModel
 }
 
 
@@ -73,5 +76,15 @@ struct SugarCellModel: SugarCellable {
     self.correctionImage      = correctionImage
   }
   
+  
+}
+
+// MARK: Add Meal Cell VM
+
+struct AddMealCellModel: AddMealCellable {
+  
+  var cellState: AddMealCellState
+  
+  var productListVM: NewProductListViewModel
   
 }

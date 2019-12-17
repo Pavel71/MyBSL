@@ -82,6 +82,8 @@ class ProductListResultView: UIView {
     insulinResultLabel.textColor = color
   }
   
+  // MARK: Set View Model
+  
   func setViewModel(viewModel:ProductListResultViewModelable, withInsulin: Bool = true) {
     
     

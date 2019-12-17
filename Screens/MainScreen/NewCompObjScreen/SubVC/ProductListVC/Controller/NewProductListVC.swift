@@ -39,6 +39,8 @@ extension NewProductListVC {
     tableView.dataSource      = self
     tableView.register(NewProductListCell.self, forCellReuseIdentifier: NewProductListCell.cellId)
     tableView.keyboardDismissMode = .interactive
+    
+    tableView.tableFooterView = tableData.isEmpty ? UIView() : footerView
   }
 }
 
