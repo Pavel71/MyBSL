@@ -50,6 +50,14 @@ struct ProductListViewModel: ProductListViewModelCell {
   
 }
 
+// MARK: Equtable Viewmodel by Name
+
+extension ProductListViewModel: Equatable {
+  static func == (lhs: ProductListViewModel, rhs: ProductListViewModel) -> Bool {
+    return lhs.name == rhs.name
+  }
+}
+
 
 
 struct ProductListResultsViewModel: ProductListResultViewModelable {

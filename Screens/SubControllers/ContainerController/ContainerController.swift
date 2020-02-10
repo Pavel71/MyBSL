@@ -9,7 +9,7 @@
 import UIKit
 
 
-protocol MainControllerInContainerProtocol: UIViewController, ShowMenuAnimatable {
+protocol MainControllerInContainerProtocol: ShowMenuAnimatable {
   
   var didShowMenuProductsListViewControllerClouser: ((CGFloat) -> Void)? {get set}
   var didPanGestureValueChange: ((UIPanGestureRecognizer) -> Void)? {get set}

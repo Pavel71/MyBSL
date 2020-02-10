@@ -16,6 +16,9 @@ enum NewCompansationObjectScreen {
         case getBlankViewModel
         case passCurrentSugar(sugar: String)
         case passIsNeedProductList(isNeed: Bool)
+        
+        case addProductsInProductList(products: [ProductRealm])
+        case deleteProductsFromProductList(products: [ProductRealm])
       }
     }
     struct Response {
@@ -23,6 +26,9 @@ enum NewCompansationObjectScreen {
         case getBlankViewModel
         case updateCurrentSugarInVM(sugar: String)
         case updateAddMealStateInVM(isNeed: Bool)
+        
+        case addProductsInProductListVM(products: [ProductRealm])
+        case deleteProductsInProductListVM(products: [ProductRealm])
       }
     }
     struct ViewModel {
@@ -82,9 +88,12 @@ struct SugarCellModel: SugarCellable {
 // MARK: Add Meal Cell VM
 
 struct AddMealCellModel: AddMealCellable {
+//  var productListVM: NewProductListViewModel
+  
   
   var cellState: AddMealCellState
   
-  var productListVM: NewProductListViewModel
+//  var productListVM: NewProductListViewModel
+  var dinnerProductListVM: ProductListInDinnerViewModel
   
 }

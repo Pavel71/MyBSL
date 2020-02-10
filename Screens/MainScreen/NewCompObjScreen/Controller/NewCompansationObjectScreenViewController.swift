@@ -19,9 +19,18 @@ protocol NewCompansationObjectScreenDisplayLogic: class {
 }
 
 class NewCompansationObjectScreenViewController: UIViewController, NewCompansationObjectScreenDisplayLogic {
-
+  
   var interactor: NewCompansationObjectScreenBusinessLogic?
   var router: (NSObjectProtocol & NewCompansationObjectScreenRoutingLogic)?
+  
+  
+  
+  // Menu Protocols Property
+  
+  var slideMenuPanGestureRecogniser: UIPanGestureRecognizer!
+  var menuState: State = .closed
+  var didPanGestureValueChange: ((UIPanGestureRecognizer) -> Void)?
+  var didShowMenuProductsListViewControllerClouser: ((CGFloat) -> Void)?
   
   
   
@@ -35,15 +44,16 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   // ViewModel
   
   var viewModel: NewCompObjViewModel! //{didSet{tableView.reloadData()}}
-
+  
   // MARK: Object lifecycle
   
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     setup()
+    
   }
-
+  
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     setup()
@@ -66,7 +76,7 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   // MARK: Routing
   
   
-
+  
   
   // MARK: View lifecycle
   
@@ -112,8 +122,6 @@ extension NewCompansationObjectScreenViewController {
   private func confugireTableView() {
     
     tableView.allowsSelection      = false
-//    tableView.rowHeight            = UITableView.automaticDimension
-//    tableView.estimatedRowHeight   = 50
     tableView.keyboardDismissMode  = .interactive
     tableView.delegate             = self
     tableView.dataSource           = self
@@ -168,9 +176,8 @@ extension NewCompansationObjectScreenViewController {
   
   private func catchCurrentSugarString(text: String) {
     
-    print(text)
     interactor?.makeRequest(request: .passCurrentSugar(sugar: text))
-//    view.endEditing(true)
+    //    view.endEditing(true)
     tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
   }
   
@@ -181,7 +188,7 @@ extension NewCompansationObjectScreenViewController {
     tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
   }
   
-
+  
   
 }
 
@@ -236,25 +243,54 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
     cell.didPassSwitcherValueClouser = { [weak self] isOn in
       self?.catchAddMealCellSwitcherValue(isOn: isOn)
     }
+    cell.showMenuController = {[weak self] in
+      self?.showMenuController()
+    }
+    
+    
+    setProductListControllerCLousers(productListVC: cell.productListViewController)
     
   }
   
-
+  private func setProductListControllerCLousers(productListVC: ProductListInDinnerViewController) {
+    
+    productListVC.didSelectTextFieldCellClouser = {[weak self] textfield in
+      self?.didSelectTextFieldInProductList()
+    }
+    
+    productListVC.didPortionTextFieldEndEditingToDinnerController = {[weak self] portion, index in
+      // Нужно сделать Update в Viewmodel
+      print(portion, index, "Portion End")
+    }
+      
+    productListVC.didInsulinTextFieldEndEditingToDinnerController = {[weak self] insulin,index in
+      print(insulin, index, "Insulin End")
+    }
+    
+    productListVC.didDeleteProductClouser = {[weak self] products in
+      self?.deleteProducts(products: products)
+    }
+    
+  }
+  
+  
 }
 
-  // MARK: Height
+// MARK: Height
 extension NewCompansationObjectScreenViewController {
-
+  
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
     switch NewCompansationVCCellsCase(rawValue: indexPath.row) {
     case .sugarCell:
-        
+      
       return getSugarCellHeight(cellState: viewModel.sugarCellVM.cellState)
       
+      
     case .addMealCell:
+      
       return getAddmealCellHeight()
-
+      
     case .none: return 100
     }
     
@@ -266,7 +302,10 @@ extension NewCompansationObjectScreenViewController {
     case .defaultState:
       return ProductListCellHeightWorker.getDefaultHeightCell()
     case .productListState:
-      return ProductListCellHeightWorker.getWithProductListCellHeight()
+      
+      
+      
+      return ProductListCellHeightWorker.getWithProductListCellHeight(countProduct: viewModel.addMealCellVM.dinnerProductListVM.productsData.count)
     }
     
     
@@ -287,5 +326,89 @@ extension NewCompansationObjectScreenViewController {
     }
     
     return cellHeight
+  }
+}
+
+
+// MARK: ProductListTextField  Selected
+
+extension NewCompansationObjectScreenViewController {
+  
+  private func didSelectTextFieldInProductList() {
+    // MARK: TODO
+    if menuState == .open {
+      // Закрыть меню!
+      didShowMenuProductsListViewControllerClouser!(0)
+      
+    }
+    // Нужно настроить смещение экарана
+  }
+  
+}
+
+
+
+// MARK: Menu Controller Clousers
+
+extension NewCompansationObjectScreenViewController : MainControllerInContainerProtocol {
+  
+  func showMenuController() {
+    
+    let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0))!
+    
+    let mealViewOffsetY = CalculateDistance.calculateDistanceMealCellToMenuController(cellY: cell.frame.origin.y - 10)
+    
+    menuState = menuState.opposite
+    // теперь здесь мне нужно прокинуть координаты
+    didShowMenuProductsListViewControllerClouser!(mealViewOffsetY)
+    
+  }
+  
+  // Теперь мне нужно добавить данные в Product List и удалять их оттуда
+  // MARK: Add
+  func addProducts(products: [ProductRealm]) {
+    
+    interactor?.makeRequest(request: .addProductsInProductList(products: products))
+    tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+    
+    
+  }
+  // MARK: Delete
+  func deleteProducts(products: [ProductRealm]) {
+    
+    interactor?.makeRequest(request: .deleteProductsFromProductList(products: products))
+    tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+    
+  }
+  
+  
+  
+}
+
+// MARK: Menu Gesture
+extension NewCompansationObjectScreenViewController: UIGestureRecognizerDelegate {
+  
+  //  работает! Но если бы я не знад что так можно хз было бы!
+  // Поэтому прохождение курсов очень важная особенность! Нужно постоянно что то мониторить или собирать полезный код
+  
+  func setUppanGestureRecogniser() {
+    slideMenuPanGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(handleSwipeMenu))
+    slideMenuPanGestureRecogniser.delegate = self
+    view.addGestureRecognizer(slideMenuPanGestureRecogniser)
+  }
+  
+  func removeGestureRecogniser() {
+    view.removeGestureRecognizer(slideMenuPanGestureRecogniser)
+  }
+  
+  @objc private func handleSwipeMenu(gesture: UIPanGestureRecognizer) {
+    didPanGestureValueChange!(gesture)
+    
+  }
+  
+  
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    // Вообщем если стоим на месте то отключи горизонтальное прокручивание
+    return abs((slideMenuPanGestureRecogniser.velocity(in: slideMenuPanGestureRecogniser.view)).y) > abs((slideMenuPanGestureRecogniser.velocity(in: slideMenuPanGestureRecogniser.view)).x)
   }
 }

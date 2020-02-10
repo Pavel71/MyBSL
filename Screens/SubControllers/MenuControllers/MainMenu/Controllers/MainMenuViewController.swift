@@ -87,7 +87,7 @@ extension MainMenuViewController {
     
     // Пока вынужден использовать  view так опустить вниз весь функционал и вызывать опускать вьюшку на половниу экрана
     
-    menuDinnerView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor,padding: .init(top: 0, left: 10, bottom: 0, right: 10))
+    menuDinnerView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor,padding: .init(top: 0, left: 10, bottom: 5, right: 10))
     
     menuDinnerView.constrainHeight(constant: Constants.screenHeight / 2)
     

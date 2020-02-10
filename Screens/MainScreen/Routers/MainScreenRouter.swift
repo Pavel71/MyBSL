@@ -23,7 +23,9 @@ class MainScreenRouter: NSObject, MainScreenRoutingLogic {
     
     let newVC = NewCompansationObjectScreenViewController()
     
-    viewController?.navigationController?.pushViewController(newVC, animated: true)
+    let containerController = ContainerController(mainController: newVC, menuController: MainMenuViewController())
+    
+    viewController?.navigationController?.pushViewController(containerController, animated: true)
   }
   
 }

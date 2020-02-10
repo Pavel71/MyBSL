@@ -176,7 +176,7 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
 
 
 
-extension ProductListInDinnerViewController:UITextFieldDelegate {
+extension ProductListInDinnerViewController: UITextFieldDelegate {
   
   internal func textFieldDidBeginEditing(_ textField: UITextField) {
         didSelectTextFieldCellClouser!(textField)
@@ -277,7 +277,6 @@ extension ProductListInDinnerViewController {
       )
       
       
-      print("Удаление продукта")
       self.didDeleteProductClouser!([dummyRealmProduct])
       
       succsess(true)

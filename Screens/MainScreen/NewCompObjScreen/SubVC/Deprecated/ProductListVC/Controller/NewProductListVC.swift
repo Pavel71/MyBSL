@@ -14,6 +14,8 @@ class NewProductListVC : BaseProductList {
   
   var tableData : [ProductListViewModel] = []
   
+  
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -27,6 +29,13 @@ class NewProductListVC : BaseProductList {
     
   }
   
+  func setViewModel(viewModel: NewProductListViewModel) {
+    
+    print(viewModel.cells)
+    tableData = viewModel.cells
+    tableView.reloadData()
+  }
+  
 }
 
 // MARK: Set Up ProductListViews
@@ -35,12 +44,16 @@ extension NewProductListVC {
   
   private func configureTableView() {
     
+    
+    tableView.allowsSelection = false
     tableView.tableHeaderView = headerView
     tableView.dataSource      = self
     tableView.register(NewProductListCell.self, forCellReuseIdentifier: NewProductListCell.cellId)
     tableView.keyboardDismissMode = .interactive
     
     tableView.tableFooterView = tableData.isEmpty ? UIView() : footerView
+    
+    
   }
 }
 
@@ -53,7 +66,7 @@ extension NewProductListVC: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: NewProductListCell.cellId, for: indexPath) as! NewProductListCell
-    
+    cell.setViewModel(viewModel: tableData[indexPath.row], withInsulinTextFields: true)
     return cell
   }
   
@@ -77,3 +90,4 @@ extension NewProductListVC {
   }
   
 }
+

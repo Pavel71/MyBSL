@@ -12,7 +12,8 @@ import UIKit
 protocol AddMealCellable {
   
   var cellState     : AddMealCellState        {get set}
-  var productListVM : NewProductListViewModel {get set}
+//  var productListVM : NewProductListViewModel {get set}
+  var dinnerProductListVM : ProductListInDinnerViewModel {get set}
 }
 
 
@@ -23,6 +24,10 @@ enum AddMealCellState {
 
 
 class AddMealCell: UITableViewCell {
+  
+
+  
+  // MARK: Properties
   
   static let cellId = "AddMealCell"
   
@@ -42,6 +47,7 @@ class AddMealCell: UITableViewCell {
   
   
   var didPassSwitcherValueClouser: ((Bool) -> Void)?
+  
   var mealSwitcher: UISwitch = {
     let switcher = UISwitch()
     switcher.isOn               = false
@@ -53,7 +59,8 @@ class AddMealCell: UITableViewCell {
   }()
   
   // Product List
-  var productListViewController = NewProductListVC()
+//  var productListViewController = NewProductListVC()
+  let productListViewController = ProductListInDinnerViewController()
   
   // Add Product Button
   let addNewProductInMealButton: UIButton = {
@@ -69,6 +76,9 @@ class AddMealCell: UITableViewCell {
   // Properties
   var switcherStackView: UIStackView!
 //  var cellState: AddMealCellState = .defaultState
+  var showMenuController: EmptyClouser?
+  
+  // MARK: Init
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -103,8 +113,11 @@ extension AddMealCell {
       mealSwitcher.isOn = false
       
     case .productListState:
+      
       setProductListHidden(isHidden: false)
       mealSwitcher.isOn = true
+      
+      productListViewController.setViewModel(viewModel: viewModel.dinnerProductListVM)
 
     }
  
@@ -190,7 +203,7 @@ extension AddMealCell {
 extension AddMealCell {
   
   @objc private func handleAddNewProduct() {
-    print("Add new Product")
+    showMenuController!()
   }
   
   @objc private func handleSwitcher(switcher: UISwitch) {

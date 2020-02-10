@@ -97,6 +97,9 @@ class SugarCell: UITableViewCell {
     compansationSugarLabel.numberOfLines = 0
     compansationSugarLabel.textColor     = #colorLiteral(red: 0.05815836042, green: 0.1558106244, blue: 0.9651042819, alpha: 1)
     
+    
+    correctionTextField.addDoneButtonOnKeyboard()
+    correctionTextField.keyboardType     = .decimalPad
     correctionTextField.rightButton.addTarget(self, action: #selector(handleCorrectSugarRobotButton), for: .touchUpInside)
     correctionTextField.delegate         = self
     

@@ -870,7 +870,8 @@
 		055A726723A8C66D002CA9A7 /* SubVC */ = {
 			isa = PBXGroup;
 			children = (
-				055A726823A8C9E9002CA9A7 /* ProductListVC */,
+				059FA9BC23F1782300BD2365 /* Deprecated */,
+				059AD9A42358509E007DE168 /* DinnerProductList */,
 			);
 			path = SubVC;
 			sourceTree = "<group>";
@@ -1066,7 +1067,6 @@
 				0509FD01233FB08500B04B30 /* Model */,
 				059AD9A6235850AE007DE168 /* MenuProductList */,
 				059AD9A5235850A6007DE168 /* MealProductList */,
-				059AD9A42358509E007DE168 /* DinnerProductList */,
 			);
 			path = ProductList;
 			sourceTree = "<group>";
@@ -1159,6 +1159,14 @@
 				059D7E7D23506C3200286E57 /* CalculateDistance.swift */,
 			);
 			path = CalculateDistance;
+			sourceTree = "<group>";
+		};
+		059FA9BC23F1782300BD2365 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				055A726823A8C9E9002CA9A7 /* ProductListVC */,
+			);
+			path = Deprecated;
 			sourceTree = "<group>";
 		};
 		05A0E45F23A0E0D7005476DD /* BaseCell */ = {
@@ -1790,9 +1798,9 @@
 		05CBEB9B23A21F9B001D9EEA /* NewCompObjScreen */ = {
 			isa = PBXGroup;
 			children = (
-				055A726723A8C66D002CA9A7 /* SubVC */,
-				05CBEBAA23A21FF2001D9EEA /* NewCompObjScreenTasks */,
 				058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */,
+				05CBEBAA23A21FF2001D9EEA /* NewCompObjScreenTasks */,
+				055A726723A8C66D002CA9A7 /* SubVC */,
 				05CBEBAD23A222F0001D9EEA /* Views */,
 				05CBEBAC23A222AD001D9EEA /* Controller */,
 				05CBEBAE23A222FB001D9EEA /* Intercator */,

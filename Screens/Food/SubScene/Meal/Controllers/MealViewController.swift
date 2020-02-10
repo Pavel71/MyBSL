@@ -225,9 +225,7 @@ class MealViewController: UIViewController, MealDisplayLogic,MainControllerInCon
 extension MealViewController {
   
   private func setUpView() {
-    
-    //    view.backgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
-    
+  
     
     mealView = MealView(frame: view.frame)
     view.addSubview(mealView)

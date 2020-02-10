@@ -15,12 +15,10 @@ protocol NewCompansationObjectScreenBusinessLogic {
 class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusinessLogic {
 
   var presenter: NewCompansationObjectScreenPresentationLogic?
-//  var service: NewCompansationObjectScreenService?
+
   
   func makeRequest(request: NewCompansationObjectScreen.Model.Request.RequestType) {
-//    if service == nil {
-//      service = NewCompansationObjectScreenService()
-//    }
+
     
     catchViewModelRequest(request: request)
   }
@@ -39,8 +37,16 @@ extension NewCompansationObjectScreenInteractor {
       
     case .passCurrentSugar(let sugar):
       presenter?.presentData(response: .updateCurrentSugarInVM(sugar: sugar))
+      
     case .passIsNeedProductList(let isNeed):
       presenter?.presentData(response: .updateAddMealStateInVM(isNeed: isNeed))
+      
+      
+    case .addProductsInProductList(let products):
+      
+      presenter?.presentData(response: .addProductsInProductListVM(products: products))
+    case .deleteProductsFromProductList(let products):
+      presenter?.presentData(response: .deleteProductsInProductListVM(products: products))
     default:break
     }
     

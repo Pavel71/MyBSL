@@ -18,7 +18,7 @@ struct NewCompansationObjConstants {
     
     struct SugarCell {
       
-      static let valueHeigth: CGFloat     = 40
+      static let valueHeigth: CGFloat = 40
       static let titleHeight: CGFloat = 20
     }
   }

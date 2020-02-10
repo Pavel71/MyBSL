@@ -22,6 +22,7 @@ class ProductListCellHeightWorker {
   static  let blankProductListHeight : CGFloat = 90
   
   static  let productRowHeight       : CGFloat = 44
+  static  let listProductRowHeight   : CGFloat = 44
 }
 
 
@@ -33,7 +34,7 @@ extension ProductListCellHeightWorker {
   }
   
   
-  static func getWithProductListCellHeight() -> CGFloat {
-    return getDefaultHeightCell() + blankProductListHeight
+  static func getWithProductListCellHeight(countProduct: Int) -> CGFloat {
+    return getDefaultHeightCell() + blankProductListHeight + (listProductRowHeight * CGFloat(countProduct))
   }
 }
