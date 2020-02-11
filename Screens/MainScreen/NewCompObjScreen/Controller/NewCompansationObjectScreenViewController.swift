@@ -32,7 +32,9 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   var didPanGestureValueChange: ((UIPanGestureRecognizer) -> Void)?
   var didShowMenuProductsListViewControllerClouser: ((CGFloat) -> Void)?
   
+  // KeyBoardNotification
   
+  var textFieldSelectedPoint: CGPoint!
   
   // VIews
   
@@ -88,6 +90,17 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
     
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    setKeyboardNotification()
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    
+    NotificationCenter.default.removeObserver(self)
+  }
+  
+  
   // MARK: Display Data
   
   func displayData(viewModel: NewCompansationObjectScreen.Model.ViewModel.ViewModelData) {
@@ -107,6 +120,7 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
 extension NewCompansationObjectScreenViewController {
   
   private func setUpViews() {
+    
     mainView  = CompansationObjectView()
     navBar    = mainView.navBar
     tableView = mainView.tableView
@@ -255,7 +269,7 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
   private func setProductListControllerCLousers(productListVC: ProductListInDinnerViewController) {
     
     productListVC.didSelectTextFieldCellClouser = {[weak self] textfield in
-      self?.didSelectTextFieldInProductList()
+      self?.didSelectTextFieldInProductList(textField: textfield)
     }
     
     productListVC.didPortionTextFieldEndEditingToDinnerController = {[weak self] portion, index in
@@ -285,8 +299,6 @@ extension NewCompansationObjectScreenViewController {
     case .sugarCell:
       
       return getSugarCellHeight(cellState: viewModel.sugarCellVM.cellState)
-      
-      
     case .addMealCell:
       
       return getAddmealCellHeight()
@@ -301,10 +313,9 @@ extension NewCompansationObjectScreenViewController {
     switch viewModel.addMealCellVM.cellState {
     case .defaultState:
       return ProductListCellHeightWorker.getDefaultHeightCell()
+      
     case .productListState:
-      
-      
-      
+
       return ProductListCellHeightWorker.getWithProductListCellHeight(countProduct: viewModel.addMealCellVM.dinnerProductListVM.productsData.count)
     }
     
@@ -334,7 +345,9 @@ extension NewCompansationObjectScreenViewController {
 
 extension NewCompansationObjectScreenViewController {
   
-  private func didSelectTextFieldInProductList() {
+  private func didSelectTextFieldInProductList(textField: UITextField) {
+    
+    setTextFiedlPoint(textField: textField)
     // MARK: TODO
     if menuState == .open {
       // Закрыть меню!
@@ -382,6 +395,70 @@ extension NewCompansationObjectScreenViewController : MainControllerInContainerP
   }
   
   
+  
+}
+
+// MARK: Work with Keyaboard Notification
+
+extension NewCompansationObjectScreenViewController {
+  
+  
+  
+  // Определим какой текстфилд выбран
+  private func setTextFiedlPoint(textField: UITextField) {
+
+    let point = mainView.convert(textField.center, from: textField.superview!)
+    textFieldSelectedPoint = point
+    
+  }
+  
+  private func setKeyboardNotification() {
+     
+     NotificationCenter.default.addObserver(self, selector: #selector(handleKeyBoardWillUP), name: UIResponder.keyboardWillShowNotification, object: nil)
+     NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDismiss), name: UIResponder.keyboardWillHideNotification, object: nil)
+
+   }
+
+   
+   // Will UP Keyboard
+   @objc private func handleKeyBoardWillUP(notification: Notification) {
+
+     guard let keyBoardFrame = getKeyboardFrame(notification: notification) else {return}
+     animateMealViewThanSelectTextField(isMove: true, keyBoardFrame: keyBoardFrame)
+
+   }
+   // Will Hide
+   @objc private func handleKeyboardDismiss(notification: Notification) {
+     
+     guard let keyBoardFrame = getKeyboardFrame(notification: notification) else {return}
+     
+     animateMealViewThanSelectTextField(isMove: false, keyBoardFrame: keyBoardFrame)
+     
+
+   }
+   
+   private func getKeyboardFrame(notification: Notification) -> CGRect? {
+     guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return nil}
+     return value.cgRectValue
+   }
+   
+   // Than select TextFiedl on TableView KeyBoardFrame
+   
+   private func animateMealViewThanSelectTextField(isMove: Bool, keyBoardFrame: CGRect) {
+
+     guard let textFieldPointY = textFieldSelectedPoint?.y else {return}
+     
+     let saveDistance = view.frame.height - keyBoardFrame.height - Constants.KeyBoard.doneToolBarHeight
+     
+     let diff:CGFloat =  textFieldPointY > saveDistance ? textFieldPointY - saveDistance : 0
+     
+   
+     UIView.animate(withDuration: 0.3) {
+       self.mainView.transform = isMove ? CGAffineTransform(translationX: 0, y: -diff) : .identity
+     }
+     
+
+   }
   
 }
 

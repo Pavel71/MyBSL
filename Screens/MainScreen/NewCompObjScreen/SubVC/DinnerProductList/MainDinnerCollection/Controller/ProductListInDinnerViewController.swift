@@ -26,7 +26,12 @@ class ProductListInDinnerViewController: BaseProductList {
     }
   }
   
-  var tableViewData: [ProductListViewModel] = []
+  var tableViewData: [ProductListViewModel] = [] {
+    
+    didSet {
+      tableView.tableFooterView = tableViewData.isEmpty ? nil : footerView
+    }
+  }
   
   // Clousers
   var didSelectTextFieldCellClouser: TextFieldPassClouser?
@@ -56,18 +61,18 @@ class ProductListInDinnerViewController: BaseProductList {
   
   // MARK: AddNewProduct
   
-  func addNewProduct(products: [ProductRealm]) {
-    
-    tableViewData.append(contentsOf: products.map(getProductListViewModelFromProductReal))
-
-    tableView.reloadData()
-    
-  }
-  
-  private func getProductListViewModelFromProductReal(product: ProductRealm) -> ProductListViewModel {
-    let productListViewModel = ProductListViewModel(insulinValue: product.actualInsulin, isFavorit: product.isFavorits, carboIn100Grm: product.carboIn100grm, category: product.category, name: product.name, portion: product.portion)
-    return productListViewModel
-  }
+//  func addNewProduct(products: [ProductRealm]) {
+//    
+//    tableViewData.append(contentsOf: products.map(getProductListViewModelFromProductReal))
+//
+//    tableView.reloadData()
+//    
+//  }
+//  
+//  private func getProductListViewModelFromProductReal(product: ProductRealm) -> ProductListViewModel {
+//    let productListViewModel = ProductListViewModel(insulinValue: product.actualInsulin, isFavorit: product.isFavorits, carboIn100Grm: product.carboIn100grm, category: product.category, name: product.name, portion: product.portion)
+//    return productListViewModel
+//  }
 
 
   
@@ -132,7 +137,7 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     
     return cell
   }
-  
+  // MARK: Set Cell CLousers
   private func setCellClousers(cell:MainDinnerProductListCell) {
     
     cell.didBeginEditingTextField = {[weak self] textField in

@@ -10,6 +10,8 @@ import UIKit
 
 
 
+// Class отвечает за подгрузку действующих продуктов из базы данных
+
 
 class MainMenuViewController: UIViewController,MenuControllerInContainerProtocol {
   

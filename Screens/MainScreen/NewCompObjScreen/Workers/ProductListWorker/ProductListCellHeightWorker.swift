@@ -21,8 +21,7 @@ class ProductListCellHeightWorker {
   static  let addButtonHeight        : CGFloat = 45
   static  let blankProductListHeight : CGFloat = 90
   
-  static  let productRowHeight       : CGFloat = 44
-  static  let listProductRowHeight   : CGFloat = 44
+  static  let listProductRowHeight   : CGFloat = 34
 }
 
 

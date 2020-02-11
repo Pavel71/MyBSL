@@ -23,7 +23,7 @@ class MainDinnerProductListCell: BaseProductListCell {
   let pickerView: UIPickerView = {
     let pickerView = UIPickerView()
     pickerView.backgroundColor = .white
-    pickerView.frame = CGRect(x: 0, y: 0, width: 0, height: 250)
+    pickerView.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
     return pickerView
   }()
   
