@@ -12,10 +12,13 @@ class BaseTabBarController: UITabBarController {
   
   override func viewDidLoad() {
     
-    let mainContainerController = ContainerController(mainController: MainViewController(), menuController: MainMenuViewController())
+//    let mainContainerController = createNavController(MainScreenViewController(), name: "Stats", imageName: "clipboard" )
+      
+      
+//      ContainerController(mainController: MainViewController(), menuController: MainMenuViewController())
 
     
-    let mainViewController = createNavController(mainContainerController,name: "Main",imageName: "today")
+    let mainViewController = createNavController(MainScreenViewController(),name: "Main",imageName: "today")
     
 
     
@@ -24,7 +27,12 @@ class BaseTabBarController: UITabBarController {
     let productController = createNavController(productViewController,name: "Products", imageName: "diet")
 
     
-    let statsController = createNavController(MainScreenViewController(), name: "Stats", imageName: "clipboard" )
+    let pageCOntroller = OnBoardViewController(
+      transitionStyle: .scroll,
+      navigationOrientation: .horizontal)
+    
+    let statsController = createNavController(pageCOntroller, name: "OnBoard", imageName: "clipboard" )
+    
     let settingsController = createNavController(SettingsViewController(), name: "Settings", imageName: "settings")
     
     viewControllers = [
