@@ -29,11 +29,62 @@ class LearnByFoodVC: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    // Без скроллинга
-    tableView.isScrollEnabled = false
+    
+    configureTableView()
     
     
-    view.backgroundColor = .green
   }
   
+  private func configureTableView() {
+    
+    // Тут нужен высота статус бара и навигатони бара
+    let topPadding    =  UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.height)!
+//    let bottomPadding = self.tabBarController!.tabBar.frame.size.height
+//    tableView.contentInset = .init(top: topPadding, left: 0, bottom: 0, right: 0)
+    // Без скроллинга
+    tableView.allowsSelection      = false
+    tableView.alwaysBounceVertical = true
+    tableView.keyboardDismissMode  = .interactive
+    registerCell()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    print(tableViewData)
+    
+    print("On Board View WIll AppeR")
+    tableView.reloadData()
+  }
+  
+  private func registerCell() {
+    
+    tableView.register(LearnByFoodCell.self, forCellReuseIdentifier: LearnByFoodCell.cellID)
+  }
+  
+}
+
+
+// MARK: TableView Deleagate DataSource
+
+extension LearnByFoodVC {
+  
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return tableViewData.count
+  }
+  
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+    let cell = tableView.dequeueReusableCell(withIdentifier: LearnByFoodCell.cellID, for: indexPath) as! LearnByFoodCell
+    
+    cell.setViewModel(viewModel: tableViewData[indexPath.row])
+    return cell
+  }
+  
+  
+  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+    let topPadding    =  UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.height)!
+
+    return (tableView.frame.height - topPadding) / CGFloat(tableViewData.count)
+  }
 }
