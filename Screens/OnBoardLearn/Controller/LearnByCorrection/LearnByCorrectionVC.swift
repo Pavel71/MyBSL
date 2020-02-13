@@ -9,18 +9,45 @@
 import UIKit
 
 
-// Итак задача Экрана собрать данные как пользователь собирается корректировать высокие сахара!
+// 1. Нужно добавить хедер с описанием какие у нас поля
+// 2. Нужно добавить свитчер чтобы переключить моли в граммы
+// 3. Добавить знак вопроса и показать алерт снова!
+// 4. Добавить viewmodel и сделать функцию валидации по заполнению полей инсулина
 
-class LearnByCorrectionVC: UIViewController {
+class LearnByCorrectionVC: UIViewController,PagesViewControllerable {
+  
+  var didIsNextButtonValid: ((Bool) -> Void)?
+
+  var nextButtonIsValid: Bool = false {
+    
+    didSet {
+      didIsNextButtonValid!(nextButtonIsValid)
+    }
+    
+  }
+  
   
   
   var tableView = UITableView(frame: .zero, style: .plain)
-  var tableData: [LearnByCorrectionModal] = LearnByCorrectionModal.getTestData()
+  var tableData: [LearnByCorrectionModal] = []
+  var viewModel: LearnByCorrectionVM!
   
+  init(didIsNextButtonValid:@escaping ((Bool) -> Void),viewModel: LearnByCorrectionVM) {
+    super.init(nibName: nil, bundle: nil)
+    
+    self.viewModel = viewModel
+    self.didIsNextButtonValid = didIsNextButtonValid
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    
+    configureVM()
     setUpViews()
     
   }
@@ -29,6 +56,18 @@ class LearnByCorrectionVC: UIViewController {
     super.viewWillAppear(animated)
     
     tableView.reloadData()
+  }
+}
+
+//MARK: Configure VM
+
+extension  LearnByCorrectionVC {
+  private func configureVM() {
+    tableData = viewModel.tableData
+    viewModel.didUpdateValidForm = {[weak self] isValid in
+      self?.nextButtonIsValid = isValid
+      
+    }
   }
 }
 
@@ -55,6 +94,8 @@ extension LearnByCorrectionVC {
     tableView.separatorStyle  = .none
     
     tableView.register(LearnByCorrectionSugarCell.self, forCellReuseIdentifier: LearnByCorrectionSugarCell.cellID)
+    
+    tableView.tableHeaderView = LearnByCorrectionHeader(frame: .init(x: 0, y: 0, width: 0, height: 50))
   }
   
 }
@@ -68,9 +109,26 @@ extension LearnByCorrectionVC: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: LearnByCorrectionSugarCell.cellID, for: indexPath) as! LearnByCorrectionSugarCell
+    
     cell.setViewModel(viewModel: tableData[indexPath.row])
+    setCellClouser(cell: cell)
+    
     return cell
   }
+  
+  private func setCellClouser(cell: LearnByCorrectionSugarCell) {
+    
+    cell.passInsulinValue = {[weak self] insulin in
+      
+      guard let index = self?.tableView.indexPath(for: cell)!.row else {return}
+      
+      self?.viewModel.addInsulinInObject(insulinValue: insulin, index: index)
+    }
+    
+  }
+  
+  
+  
   
   
 }

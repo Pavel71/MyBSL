@@ -9,22 +9,29 @@
 import UIKit
 
 
-// Итак на этом экранне я должен отобразить 5 продуктов питания
 
-// Как бы это сделать поудачнее! возможно добавить коллекцию и человек будет листать только картинки а название и текстфилд я буду держать в 1ом месте! где он будет вводить данные
 
-// Когда картинка приходит мы выводим название массу и сколько углеводов
-// дальше предлагаем человеку заполнить поле дозировка инсулина на этот продукт
-
-// Нам уже нужна модель данных с именим каритнкой углеводами 
-
-class LearnByFoodVC: UITableViewController {
+class LearnByFoodVC: UITableViewController,PagesViewControllerable {
+  
+  var didIsNextButtonValid: ((Bool) -> Void)?
+  var nextButtonIsValid: Bool = false {
+    didSet {didIsNextButtonValid!(nextButtonIsValid)}
+  }
   
   
+  var viewModel:LearnByFoodVM!
+  var tableViewData: [LearnByFoodModel] =  []
   
-  var tableViewData: [LearnByFoodModel] =  LearnByFoodModel.getData()
   
+  init(didIsNextButtonValid:@escaping ((Bool) -> Void),viewModel: LearnByFoodVM) {
+    super.init(nibName: nil, bundle: nil)
+    self.viewModel = viewModel
+    self.didIsNextButtonValid = didIsNextButtonValid
+  }
   
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -32,13 +39,20 @@ class LearnByFoodVC: UITableViewController {
     
     configureTableView()
     
-    
+    configureViewModel()
+  }
+  
+  private func configureViewModel() {
+   tableViewData = viewModel.tableData
+    viewModel.didUpdateValidForm = {[weak self] isValid in
+      self?.nextButtonIsValid = isValid
+    }
   }
   
   private func configureTableView() {
     
     // Тут нужен высота статус бара и навигатони бара
-    let topPadding    =  UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.height)!
+//    let topPadding    =  UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.height)!
 //    let bottomPadding = self.tabBarController!.tabBar.frame.size.height
 //    tableView.contentInset = .init(top: topPadding, left: 0, bottom: 0, right: 0)
     // Без скроллинга
@@ -77,7 +91,16 @@ extension LearnByFoodVC {
     let cell = tableView.dequeueReusableCell(withIdentifier: LearnByFoodCell.cellID, for: indexPath) as! LearnByFoodCell
     
     cell.setViewModel(viewModel: tableViewData[indexPath.row])
+    setCellClouser(cell: cell)
     return cell
+  }
+  
+  private func setCellClouser(cell:LearnByFoodCell) {
+    
+    cell.passInsulinValue = {[weak self] insulin in
+      guard let index = self?.tableView.indexPath(for: cell)!.row else {return}
+      self?.viewModel.addInsulinInObject(insulinValue: insulin, index: index)
+    }
   }
   
   

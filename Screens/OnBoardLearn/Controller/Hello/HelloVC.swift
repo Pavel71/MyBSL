@@ -18,7 +18,10 @@ import UIKit
 
 
 
-class HelloVC: UIViewController {
+class HelloVC: UIViewController,PagesViewControllerable {
+  var didIsNextButtonValid: ((Bool) -> Void)?
+  var nextButtonIsValid: Bool = false
+  
   
   
   var helloLabel: UILabel = {
@@ -48,6 +51,7 @@ class HelloVC: UIViewController {
   
   
   
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpView()
@@ -70,7 +74,7 @@ extension HelloVC {
     
     let vstack = UIStackView(arrangedSubviews: [
     markTurboImage,
-    helloLabel,
+    helloLabel
     ])
     vstack.axis = .vertical
     vstack.spacing = 20

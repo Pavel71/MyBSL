@@ -59,6 +59,7 @@
 		055BE0D723448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D623448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift */; };
 		055BE0DA2344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */; };
 		055BE0DD2344DB290029D298 /* WillActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0DC2344DB290029D298 /* WillActiveView.swift */; };
+		0561C15723F53054002167A2 /* UIPageViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0561C15623F53054002167A2 /* UIPageViewController+Extension.swift */; };
 		0562D5322375597E0014A8F4 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D5312375597E0014A8F4 /* MainViewModel.swift */; };
 		0562D536237559D00014A8F4 /* MainHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D535237559D00014A8F4 /* MainHeaderViewModel.swift */; };
 		0562D53923759CE60014A8F4 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D53823759CE60014A8F4 /* DummyData.swift */; };
@@ -94,6 +95,10 @@
 		05A4F1C0233A371500DFE4D7 /* DinnerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1BF233A371500DFE4D7 /* DinnerCollectionViewCell.swift */; };
 		05A4F1C2233A3D1500DFE4D7 /* CustomValueTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1C1233A3D1500DFE4D7 /* CustomValueTextField.swift */; };
 		05A4F1C4233A3E8000DFE4D7 /* ShugarSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1C3233A3E8000DFE4D7 /* ShugarSetView.swift */; };
+		05A6C81923F55AEE00E27CE9 /* LearnByCorrectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A6C81823F55AEE00E27CE9 /* LearnByCorrectionHeader.swift */; };
+		05A6C81C23F55CDC00E27CE9 /* LearnByCorrectionVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A6C81B23F55CDC00E27CE9 /* LearnByCorrectionVM.swift */; };
+		05A6C81F23F567DA00E27CE9 /* LearnByFoodVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A6C81E23F567DA00E27CE9 /* LearnByFoodVM.swift */; };
+		05A6C82223F5750400E27CE9 /* OnBoardVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A6C82123F5750400E27CE9 /* OnBoardVM.swift */; };
 		05A7CAE923827C070075D04E /* Tasks in Resources */ = {isa = PBXBuildFile; fileRef = 05A7CAE823827C070075D04E /* Tasks */; };
 		05A7CAEB23827C8E0075D04E /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A7CAEA23827C8E0075D04E /* MainScreenView.swift */; };
 		05A7CAED23827ECA0075D04E /* MainScreenTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A7CAEC23827ECA0075D04E /* MainScreenTopView.swift */; };
@@ -291,6 +296,7 @@
 		055BE0D623448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePlaceInjectionsRowView.swift; sourceTree = "<group>"; };
 		055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePlaceInjectionsViewAnimated.swift; sourceTree = "<group>"; };
 		055BE0DC2344DB290029D298 /* WillActiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillActiveView.swift; sourceTree = "<group>"; };
+		0561C15623F53054002167A2 /* UIPageViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+Extension.swift"; sourceTree = "<group>"; };
 		0562D5312375597E0014A8F4 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		0562D535237559D00014A8F4 /* MainHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderViewModel.swift; sourceTree = "<group>"; };
 		0562D53823759CE60014A8F4 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
@@ -326,6 +332,10 @@
 		05A4F1BF233A371500DFE4D7 /* DinnerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerCollectionViewCell.swift; sourceTree = "<group>"; };
 		05A4F1C1233A3D1500DFE4D7 /* CustomValueTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomValueTextField.swift; sourceTree = "<group>"; };
 		05A4F1C3233A3E8000DFE4D7 /* ShugarSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShugarSetView.swift; sourceTree = "<group>"; };
+		05A6C81823F55AEE00E27CE9 /* LearnByCorrectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnByCorrectionHeader.swift; sourceTree = "<group>"; };
+		05A6C81B23F55CDC00E27CE9 /* LearnByCorrectionVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnByCorrectionVM.swift; sourceTree = "<group>"; };
+		05A6C81E23F567DA00E27CE9 /* LearnByFoodVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnByFoodVM.swift; sourceTree = "<group>"; };
+		05A6C82123F5750400E27CE9 /* OnBoardVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardVM.swift; sourceTree = "<group>"; };
 		05A7CAE823827C070075D04E /* Tasks */ = {isa = PBXFileReference; lastKnownFileType = text; path = Tasks; sourceTree = "<group>"; };
 		05A7CAEA23827C8E0075D04E /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
 		05A7CAEC23827ECA0075D04E /* MainScreenTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenTopView.swift; sourceTree = "<group>"; };
@@ -594,6 +604,7 @@
 			isa = PBXGroup;
 			children = (
 				0533B99723F41DB8008E13DE /* LearnByCorrectionSugarCell.swift */,
+				05A6C81823F55AEE00E27CE9 /* LearnByCorrectionHeader.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1444,6 +1455,30 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		05A6C81A23F55CC900E27CE9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				05A6C81B23F55CDC00E27CE9 /* LearnByCorrectionVM.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		05A6C81D23F567CC00E27CE9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				05A6C81E23F567DA00E27CE9 /* LearnByFoodVM.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		05A6C82023F574EF00E27CE9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				05A6C82123F5750400E27CE9 /* OnBoardVM.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		05A7CAF02382A34B0075D04E /* ProductListMVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -1766,6 +1801,7 @@
 		05C1F63923F2BBFD00BECDEB /* LearnByFood */ = {
 			isa = PBXGroup;
 			children = (
+				05A6C81D23F567CC00E27CE9 /* ViewModel */,
 				05C1F64623F2CEDD00BECDEB /* Modal */,
 				05C1F64123F2CBC500BECDEB /* View */,
 				05C1F63F23F2BC8200BECDEB /* LearnByFoodVC.swift */,
@@ -1776,6 +1812,7 @@
 		05C1F63A23F2BC0900BECDEB /* LearnByCorrection */ = {
 			isa = PBXGroup;
 			children = (
+				05A6C81A23F55CC900E27CE9 /* ViewModel */,
 				0533B99123F41AE9008E13DE /* Modal */,
 				0533B99223F41AF1008E13DE /* View */,
 				05C1F63D23F2BC5300BECDEB /* LearnByCorrectionVC.swift */,
@@ -2075,6 +2112,7 @@
 		05F7C4A623F2B6B0009EE9C5 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				05A6C82023F574EF00E27CE9 /* ViewModel */,
 				05F7C4A323F2B578009EE9C5 /* OnBoardViewController.swift */,
 				05C1F63A23F2BC0900BECDEB /* LearnByCorrection */,
 				05C1F63923F2BBFD00BECDEB /* LearnByFood */,
@@ -2590,6 +2628,7 @@
 				F1EC85A7233251AD00E14D33 /* UiImageView + Extension.swift */,
 				059D7E7F2350A88800286E57 /* SeacrhBar+Extensions.swift */,
 				0533B98F23F416E4008E13DE /* String+Extension.swift */,
+				0561C15623F53054002167A2 /* UIPageViewController+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2938,6 +2977,7 @@
 				05B1DEB4237ECD0B0015E4E6 /* MainScreenPresenter.swift in Sources */,
 				053BAB52233B56D60080359B /* Validatable.swift in Sources */,
 				F150DBF52317DD2300380AE0 /* MealInteractor.swift in Sources */,
+				0561C15723F53054002167A2 /* UIPageViewController+Extension.swift in Sources */,
 				05A7CAEF23827F9F0075D04E /* MainScreenMiddleView.swift in Sources */,
 				05CBEBB423A22595001D9EEA /* CompansationObjectView.swift in Sources */,
 				05A7CAFA2382B0510075D04E /* TopButtonView.swift in Sources */,
@@ -2968,6 +3008,7 @@
 				05E1C3342372B7FF00007463 /* RidgeRegressionModel.swift in Sources */,
 				F1E78CD6230D338A00592AB8 /* SettingsPresenter.swift in Sources */,
 				F1EC85A623321CC500E14D33 /* CalculateHeightView.swift in Sources */,
+				05A6C81C23F55CDC00E27CE9 /* LearnByCorrectionVM.swift in Sources */,
 				F1E78D1E230D688900592AB8 /* FoodRealmManager.swift in Sources */,
 				05B1DEB7237ECD0B0015E4E6 /* MainScreenModels.swift in Sources */,
 				05515D0123687F2400A298AA /* SettingsWorkerForML.swift in Sources */,
@@ -3043,8 +3084,10 @@
 				F1E78CCA230D336B00592AB8 /* MainModels.swift in Sources */,
 				F1116329231D555F000C79FA /* ProductListCell.swift in Sources */,
 				05CBEBA723A21FD9001D9EEA /* NewCompansationObjectScreenViewController.swift in Sources */,
+				05A6C82223F5750400E27CE9 /* OnBoardVM.swift in Sources */,
 				F1103B60232A726F009A338A /* MealTableViewPresenterWorker.swift in Sources */,
 				0544720E2396536E0020C0DC /* NewSugarDataView.swift in Sources */,
+				05A6C81F23F567DA00E27CE9 /* LearnByFoodVM.swift in Sources */,
 				057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */,
 				05373713234B2B1700411C46 /* MenuView.swift in Sources */,
 				05B1DEB8237ECD0B0015E4E6 /* MainScreenViewController.swift in Sources */,
@@ -3062,6 +3105,7 @@
 				F1CC2D64232F77F100EF7D18 /* TableHeaderView.swift in Sources */,
 				058F5F9123A39CB300717042 /* AddMealCell.swift in Sources */,
 				F1EC85A323320FE400E14D33 /* MenuFoodListheaderInSectionView.swift in Sources */,
+				05A6C81923F55AEE00E27CE9 /* LearnByCorrectionHeader.swift in Sources */,
 				F1E78D10230D568100592AB8 /* Constants.swift in Sources */,
 				05A4F1C4233A3E8000DFE4D7 /* ShugarSetView.swift in Sources */,
 				05AAFF0E238C00C1002AE3D9 /* ChartModel.swift in Sources */,

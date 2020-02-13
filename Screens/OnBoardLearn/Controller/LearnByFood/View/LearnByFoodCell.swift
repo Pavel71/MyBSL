@@ -63,6 +63,7 @@ class LearnByFoodCell: UITableViewCell {
   
   
   var insulinPickerView = InsulinPickerView()
+  var passInsulinValue : ((Double) -> Void)?
 
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -82,7 +83,7 @@ class LearnByFoodCell: UITableViewCell {
     
     insulinPickerView.passValueFromPickerView = {[weak self] value in
       self?.insulinTextField.text = "\(value)"
-      // Здесь же мне нужно прокинуть данные дальше куда надо!
+      self?.passInsulinValue!(value)
     }
   }
   
