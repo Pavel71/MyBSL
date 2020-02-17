@@ -87,9 +87,9 @@ extension LearnByCorrectionVC {
   
   private func configureTableView() {
     
-    tableView.delegate   = self
-    tableView.dataSource = self
-    
+    tableView.delegate        = self
+    tableView.dataSource      = self
+    tableView.allowsSelection = false
     tableView.tableFooterView = UIView()
     tableView.separatorStyle  = .none
     

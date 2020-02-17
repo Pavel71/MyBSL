@@ -52,21 +52,19 @@ class LearnByFoodVC: UITableViewController,PagesViewControllerable {
   private func configureTableView() {
     
     // Тут нужен высота статус бара и навигатони бара
-//    let topPadding    =  UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.height)!
+    let topPadding    =  UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.height)!
 //    let bottomPadding = self.tabBarController!.tabBar.frame.size.height
-//    tableView.contentInset = .init(top: topPadding, left: 0, bottom: 0, right: 0)
+    tableView.contentInset = .init(top: topPadding, left: 0, bottom: 0, right: 0)
     // Без скроллинга
     tableView.allowsSelection      = false
-    tableView.alwaysBounceVertical = true
+    tableView.isScrollEnabled      = false
     tableView.keyboardDismissMode  = .interactive
+    tableView.tableFooterView      = UIView()
     registerCell()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    print(tableViewData)
-    
-    print("On Board View WIll AppeR")
     tableView.reloadData()
   }
   

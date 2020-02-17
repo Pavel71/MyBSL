@@ -18,7 +18,15 @@ import CoreML
 
 class MLWorker {
   
-  let simpleRegressionModel = SimpleRegresiionModel()
+  
+  private var testInsulinByFoodWeights = (0.060631208, 0.17524958)
+  private var testInsulinByCorrectionSugarWeights = (0.14666663, -1.1399995)
+  
+  enum KeyWeights: String {
+    case correctionSugar, insulinByFood
+  }
+  
+  private let simpleRegressionModel = SimpleRegresiionModel()
   
   
 //  var categoryLabelOrdinalDict:[String: Int] = [:]
@@ -30,6 +38,10 @@ class MLWorker {
   
   func trainModelAndSetWeights(trainData:[Float],target:[Float]) {
     simpleRegressionModel.trainModelAndSetNewWeights(train: trainData, target: target)
+  }
+  
+  func getRegressionWeights() -> (Float,Float) {
+    return simpleRegressionModel.getWeights()
   }
   
   

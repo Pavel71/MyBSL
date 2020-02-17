@@ -16,7 +16,12 @@ class SimpleRegresiionModel {
   let linearModel = SimpleLinearRegression()
   
   // Потом когда веса установленные можно сохранять их в юзерДефолтс
-  var weights:(Float,Float) = (0,0)
+  private var weights:(Float,Float) = (0,0)
+  
+  
+  func getWeights() -> (Float,Float) {
+    return weights
+  }
   
 }
 

@@ -24,19 +24,17 @@ protocol PagesViewControllerable: UIViewController {
 class OnBoardViewController: UIPageViewController {
   
   
-  // По хорошему у этого контроллера должна быть своя модель через которую у нас работают другие модели
-  var learnByCorrectionVM = LearnByCorrectionVM()
-  var learnByFoodVM       = LearnByFoodVM()
+  var onBoardVM = OnBoardVM()
   
-fileprivate lazy var pages: [UIViewController] = {
+  fileprivate lazy var pages: [UIViewController] = {
     return [
       HelloVC(),
       LearnByCorrectionVC(
         didIsNextButtonValid: didIsNextButtonValid!,
-        viewModel: learnByCorrectionVM),
+        viewModel: onBoardVM.learnByCorrectionVM),
       LearnByFoodVC(
         didIsNextButtonValid: didIsNextButtonValid!,
-        viewModel: learnByFoodVM)
+        viewModel: onBoardVM.learnByFoodVM)
     ]
   }()
   
@@ -51,7 +49,14 @@ fileprivate lazy var pages: [UIViewController] = {
   
   
   var pageController       : UIPageControl!
-  var nextButton           : UIBarButtonItem!
+  var nextButton     : UIBarButtonItem!
+  
+//  var nextButton : UIButton = {
+//    let b = UIButton(type: .system)
+//    b.setTitle("Дальше", for: .normal)
+//    b.addTarget(self, action: #selector(nextScreen), for: .touchUpInside)
+//    return b
+//  }()
   
   
   var isNextButtonValid    : Bool = true {
@@ -62,43 +67,60 @@ fileprivate lazy var pages: [UIViewController] = {
   override func viewDidLoad()
   {
     super.viewDidLoad()
-   
+    
     setValidateClouser()
     self.dataSource = self
     self.delegate   = self
     
     self.disableSwipeGesture()
+    setUpViews()
     
-    decoratePageControl()
+    
+    
+    
     if let firstVC = pages.first
     {
       setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
     }
     
     
+    
+    
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     configureNavBar()
+    
   }
   
   private func setValidateClouser() {
     // Поставил Clouser
-       didIsNextButtonValid = {[weak self] isValid in
-         self?.isNextButtonValid = isValid
-       }
+    didIsNextButtonValid = {[weak self] isValid in
+      self?.isNextButtonValid = isValid
+    }
   }
   
   private func configureNavBar() {
     nextButton = UIBarButtonItem(title: "Дальше", style: .done, target: self, action: #selector(nextScreen))
     navigationItem.rightBarButtonItem = nextButton
-    
+    navigationController?.navigationItem.title = "Обучение"
+    self.title = "Обучение"
+
   }
   
   @objc private func nextScreen() {
     
     
     if numberPage == pages.count - 1 {
-      print("Конц онбордингу")
+      
       
       // Теперь нам нужно пробежатся по всем моделькам и собрать с них данные ! Дальше нужно будет дисмиснуть экран и появится основной экарн!
+      onBoardVM.learnML()
+      
+      let appStateService: AppState = AppState.shared
+      appStateService.toogleChartWindow()
+      
       
     } else {
       numberPage += 1
@@ -108,14 +130,30 @@ fileprivate lazy var pages: [UIViewController] = {
       
       self.goToNextPage()
     }
-
+    
     
   }
   
   
+
+  
+  
+}
+
+// MARK: SetUPViews
+
+extension OnBoardViewController {
+  
+  func setUpViews() {
+    view.backgroundColor = .white
+//    configureNextButton()
+    decoratePageControl()
+  }
+  
+
+  
   fileprivate func decoratePageControl() {
     
-//    pageController = UIPageControl.appearance(whenContainedInInstancesOf: [OnBoardViewController.self])
     pageController = UIPageControl(frame: .init(x: 0, y: 0, width: 150, height: 50))
     pageController.numberOfPages = pages.count
     pageController.currentPage   = numberPage
@@ -123,18 +161,11 @@ fileprivate lazy var pages: [UIViewController] = {
     pageController.pageIndicatorTintColor        = .gray
     
     self.view.addSubview(pageController)
-    pageController.centerInSuperview()
+    pageController.centerXInSuperview()
+    pageController.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
+
     
-    // Когда я его разверну на новом window тогда и настрою отрисовку!
-    
-//    let tabbarHeight = self.tabBarController?.tabBar.frame.height
-//
-//    pageController.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -tabbarHeight!).isActive = true
-    
-    
-    }
-  
-  
+  }
 }
 
 
@@ -143,34 +174,34 @@ fileprivate lazy var pages: [UIViewController] = {
 
 extension OnBoardViewController: UIPageViewControllerDataSource {
   
-
   
   
-   func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-         
+  
+  func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    
     guard let viewControllerIndex = pages.firstIndex(of: viewController ) else { return nil }
-         
-         let previousIndex = viewControllerIndex - 1
-         
-         guard previousIndex >= 0          else { return nil }
-         
-//         guard pages.count > previousIndex else { return nil        }
-         
-         return pages[previousIndex]
-     }
-     
-     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController?
-     {
-      guard let viewControllerIndex = pages.firstIndex(of: viewController) else { return nil }
-         
-         let nextIndex = viewControllerIndex + 1
-         
-         guard nextIndex < pages.count else { return nil }
-         
-//         guard pages.count > nextIndex else { return nil         }
-         
-         return pages[nextIndex]
-     }
+    
+    let previousIndex = viewControllerIndex - 1
+    
+    guard previousIndex >= 0          else { return nil }
+    
+    //         guard pages.count > previousIndex else { return nil        }
+    
+    return pages[previousIndex]
+  }
+  
+  func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController?
+  {
+    guard let viewControllerIndex = pages.firstIndex(of: viewController) else { return nil }
+    
+    let nextIndex = viewControllerIndex + 1
+    
+    guard nextIndex < pages.count else { return nil }
+    
+    //         guard pages.count > nextIndex else { return nil         }
+    
+    return pages[nextIndex]
+  }
   
   
 }
@@ -180,10 +211,10 @@ extension OnBoardViewController: UIPageViewControllerDelegate {
   func presentationCount(for pageViewController: UIPageViewController) -> Int{
     return pages.count
   }
-
+  
   
   func presentationIndex(for pageViewController: UIPageViewController) -> Int{
-  return 0
+    return 0
   }
   
 }

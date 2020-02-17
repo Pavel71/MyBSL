@@ -73,14 +73,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func root() {
     
+    // Здесь нужно использовать AppState
     
+    let appStateService: AppState = AppState.shared
     
-    window = UIWindow(frame: UIScreen.main.bounds)
-    window?.makeKeyAndVisible()
+    appStateService.mainWindow = UIWindow(frame: UIScreen.main.bounds)
+    appStateService.mainWindow?.rootViewController = BaseTabBarController()
     
-    let tabBarController = BaseTabBarController()
+    appStateService.secondWindow = UIWindow(frame: UIScreen.main.bounds)
     
-    window?.rootViewController = tabBarController
+    let onBoardController = UINavigationController(rootViewController: OnBoardViewController(transitionStyle: .scroll, navigationOrientation: .horizontal))
+    
+    appStateService.secondWindow?.rootViewController = onBoardController
+    appStateService.secondWindow?.makeKeyAndVisible()
+    
+//    window = UIWindow(frame: UIScreen.main.bounds)
+//    window?.makeKeyAndVisible()
+//
+//    let tabBarController = BaseTabBarController()
+//
+//    window?.rootViewController = tabBarController
     
   }
   
