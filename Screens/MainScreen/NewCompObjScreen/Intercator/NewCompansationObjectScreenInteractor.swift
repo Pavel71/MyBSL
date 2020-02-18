@@ -21,6 +21,7 @@ class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusiness
 
     
     catchViewModelRequest(request: request)
+    workWithProductList(request: request)
   }
   
 }
@@ -32,6 +33,7 @@ extension NewCompansationObjectScreenInteractor {
   private func catchViewModelRequest(request: NewCompansationObjectScreen.Model.Request.RequestType) {
     
     switch request {
+      
     case .getBlankViewModel:
       presenter?.presentData(response: .getBlankViewModel)
       
@@ -42,13 +44,32 @@ extension NewCompansationObjectScreenInteractor {
       presenter?.presentData(response: .updateAddMealStateInVM(isNeed: isNeed))
       
       
-    case .addProductsInProductList(let products):
-      
-      presenter?.presentData(response: .addProductsInProductListVM(products: products))
-    case .deleteProductsFromProductList(let products):
-      presenter?.presentData(response: .deleteProductsInProductListVM(products: products))
     default:break
     }
+    
+  }
+  
+  private func workWithProductList(request: NewCompansationObjectScreen.Model.Request.RequestType) {
+    
+    switch request {
+       
+       
+     case .addProductsInProductList(let products):
+       
+       presenter?.presentData(response: .addProductsInProductListVM(products: products))
+       
+     case .deleteProductsFromProductList(let products):
+       presenter?.presentData(response: .deleteProductsInProductListVM(products: products))
+      
+      
+    case .updatePortionInProduct(let portion, let index):
+      
+      presenter?.presentData(response: .updatePortionInProduct(portion: portion, index: index))
+    case .updateInsulinByPerson(let insulin, let index):
+      presenter?.presentData(response: .updateInsulinByPerson(insulin: insulin, index: index))
+       
+     default:break
+     }
     
   }
   

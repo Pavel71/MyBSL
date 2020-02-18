@@ -15,8 +15,8 @@ protocol SugarCellable {
   var cellState            : SugarCellState {get set}
   var correctionImage      : UIImage? {get set}
   var compansationString   : String? {get set}
-  var currentSugar         : Double? {get set}
-  var correctionSugarKoeff : Double? {get set} // Свойство которое будет заполнятся если сахар вне нормы
+  var currentSugar         : Float? {get set}
+  var correctionSugarKoeff : Float? {get set} // Свойство которое будет заполнятся если сахар вне нормы
   
 }
 
@@ -142,7 +142,6 @@ extension SugarCell {
   private func setUpViews() {
     
 
-    
     let currentStackView    = getCurrentSugarStackView()
     let correctionStackView = getCorrectionStackView()
     
@@ -231,10 +230,14 @@ extension SugarCell {
   
   func setViewModel(viewModel: SugarCellModel) {
     
+    
+    
     let currentSugar = viewModel.currentSugar != nil ? "\(viewModel.currentSugar!)": ""
     currentSugarTextField.text = currentSugar
     
-    let correctionKoeff = viewModel.correctionSugarKoeff != nil ? "\(viewModel.correctionSugarKoeff!)": ""
+    
+    let correctionKoeff = viewModel.correctionSugarKoeff != nil ? "\(floatTwo: viewModel.correctionSugarKoeff!)" : ""
+    
     correctionTextField.text   = correctionKoeff
     
     correctionImageView.image  = viewModel.correctionImage

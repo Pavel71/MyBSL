@@ -39,7 +39,7 @@ class ProductListResultWorker {
   private func getResultViewModel() -> ProductListResultsViewModel {
     
 
-    let resultViewModel = ProductListResultsViewModel(sumCarboValue: "\(sumCarbo)", sumPortionValue: "\(sumPortion)", sumInsulinValue: "\(sumInsulin)")
+    let resultViewModel = ProductListResultsViewModel(sumCarboValue: "\(sumCarbo)", sumPortionValue: "\(sumPortion)", sumInsulinValue: "\(floatTwo: sumInsulin)")
     return resultViewModel
 
   }

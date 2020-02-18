@@ -24,4 +24,35 @@ extension String {
 
         return attributedString
     }
+  
+  
+  
+}
+
+
+extension String.StringInterpolation {
+  
+  
+  mutating func appendInterpolation(floatTwo value: Float) {
+    let result = String(format: "%0.2f", value)
+    appendLiteral(result)
+  }
+    
+    mutating func appendInterpolation(spell value: Int) {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .spellOut
+        
+        if let result = formatter.string(from: value as NSNumber) {
+            appendLiteral(result)
+        }
+    }
+    
+    mutating func appendInterpolation(dateFormat date: Date) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.YYYY"
+        
+        let result = formatter.string(from: date)
+        appendLiteral(result)
+    }
+    
 }

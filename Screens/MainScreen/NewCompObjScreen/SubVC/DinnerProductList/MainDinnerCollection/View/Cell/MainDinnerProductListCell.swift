@@ -19,41 +19,6 @@ class MainDinnerProductListCell: BaseProductListCell {
   
   static let cellId = "MainDinnerProductListCell.Id"
   
-  // Picker View
-//  let pickerView: UIPickerView = {
-//    let pickerView = UIPickerView()
-//    pickerView.backgroundColor = .white
-//    pickerView.frame = CGRect(x: 0, y: 0, width: 0, height: 200)
-//    return pickerView
-//  }()
-  
-//  var currentPickerSegment: PickerViewSegment!
-  
-  
-//  let pickerPortionData = [
-//    ["0","100","200","300","400","500","600","700","800","900","1000"],
-//    ["0","10","20","30","40","50","60","70","80","90"],
-//    ["0","1","2","3","4","5","6","7","8","9"]
-//  ]
-//
-//  let pickerInsulinData = [
-//    ["0.0","10.0","20.0","30.0","40.0","50.0","60.0","70.0","80.0","90.0","100.0"],
-//    ["0.0","0.5","1.0","1.5","2.0","2.5","3.0","3.5","4.0","4.5","5.0","5.5","6.0","6.5","7.0","7.5","8.0","8.5","9.0","9.5"],
-//    ["0.0","0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9"]
-//  ]
-//
-//  // Picker View
-//
-//  // Results Insulin
-//  var resultInsulinCompTens: Float = 0
-//  var resultInsulinCompSimple: Float = 0
-//  var resultInsulinComDrob: Float = 0
-//
-//  // Results Portion
-//  var resultPortionCompTens: Float = 0
-//  var resultIPortionCompSimple: Float = 0
-//  var resultPortionComHundred: Float = 0
-  
   
   // Pickers
   
@@ -127,6 +92,7 @@ class MainDinnerProductListCell: BaseProductListCell {
   // MARK: Work with Portion TextFields
   
   private func workWithPortionTextField(isPreviosDinner:Bool) {
+    
     updateTextFieldIsPreviosDinner(
       textField: portionTextField,
       isPreviosDinner: isPreviosDinner
@@ -141,10 +107,11 @@ class MainDinnerProductListCell: BaseProductListCell {
     isPreviosDinner: Bool
   ) {
     
-    guard let insulinValue = viewModel.insulinValue else {return}
-    let insuLinString = insulinValue == 0 ? "" : "\(insulinValue)"
-    insulinTextField.text = insuLinString
-    updateTextFieldIsPreviosDinner(textField: insulinTextField, isPreviosDinner: isPreviosDinner)
+    insulinTextField.text = viewModel.insulinValue == nil ? "" : "\(floatTwo: viewModel.insulinValue!)"
+
+    
+   //      updateTextFieldIsPreviosDinner(textField: insulinTextField, isPreviosDinner: isPreviosDinner)
+    
   }
   
   // MARK: Update TextFields in Previos DInner
@@ -166,115 +133,6 @@ class MainDinnerProductListCell: BaseProductListCell {
   
 }
 
-// MARK: Picker View Methods
-
-//extension MainDinnerProductListCell: UIPickerViewDelegate, UIPickerViewDataSource {
-//
-//
-//  private func getDataToCurrentPickerSegment(pickerSegment: PickerViewSegment) -> [[String]] {
-//
-//    switch pickerSegment {
-//    case .insulin:
-//      return pickerInsulinData
-//
-//    case .portion:
-//      return pickerPortionData
-//    }
-//  }
-//
-//
-//  func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//
-//    let data = getDataToCurrentPickerSegment(pickerSegment: currentPickerSegment)
-//
-//    return data.count
-//  }
-//
-//  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//
-//     let data = getDataToCurrentPickerSegment(pickerSegment: currentPickerSegment)
-//    return data[component].count
-//  }
-//
-//  func pickerView( _ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//    let data = getDataToCurrentPickerSegment(pickerSegment: currentPickerSegment)
-//
-//    return data[component][row]
-//  }
-//
-//  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//
-//    switch currentPickerSegment {
-//    case .insulin?:
-//      changeInsulin(component: component, row: row)
-//    case .portion?:
-//      changePortion(component: component, row: row)
-//    case .none:break
-//    }
-//
-//
-//  }
-//
-//  private func changeInsulin(component: Int,row: Int) {
-//    switch component {
-//    case 0:
-//
-//      resultInsulinCompTens = (pickerInsulinData[component][row] as NSString).floatValue
-//    case 1:
-//      resultInsulinCompSimple = (pickerInsulinData[component][row] as NSString).floatValue
-//    case 2:
-//      resultInsulinComDrob = (pickerInsulinData[component][row] as NSString).floatValue
-//    default:break
-//    }
-//
-//    let value = resultInsulinCompTens + resultInsulinCompSimple + resultInsulinComDrob
-//
-//    insulinTextField.text = String(value)
-//
-//
-//    // Делаем изменнеие как будто пишем текстом
-//    didChangeInsulinFromPickerView!(insulinTextField)
-//  }
-//
-//  private func changePortion(component: Int,row: Int) {
-//
-//    switch component {
-//    case 0:
-//
-//      resultPortionComHundred = (pickerPortionData[component][row] as NSString).floatValue
-//    case 1:
-//      resultPortionCompTens = (pickerPortionData[component][row] as NSString).floatValue
-//    case 2:
-//      resultIPortionCompSimple = (pickerPortionData[component][row] as NSString).floatValue
-//    default:break
-//    }
-//
-//    let value = resultPortionComHundred + resultPortionCompTens + resultIPortionCompSimple
-//
-//    portionTextField.text = String(Int(value))
-//
-//    // Нужно прокинуть PortionTextField срфтпу
-//    // Делаем изменнеие как будто пишем текстом
-//
-////    didChangeInsulinFromPickerView!(insulinTextField)
-//    didChangePortionFromPickerView!(portionTextField)
-//
-//  }
-//
-//
-//  func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-//    switch component {
-//    case 1:
-//      return UIScreen.main.bounds.width / 2
-//    default:break
-//    }
-//    return UIScreen.main.bounds.width / 4
-//  }
-//
-//
-//
-//
-//}
 
 // MARK: TextFields Delegate
 
@@ -297,41 +155,10 @@ extension MainDinnerProductListCell: UITextFieldDelegate {
     }
 
   }
-//
-//  private func setDefaultPortionValue() {
-//    resultPortionCompTens    = 0
-//    resultIPortionCompSimple = 0
-//    resultPortionComHundred  = 0
-//  }
-//
-//
-//  private func setDefaultInsulinValue() {
-//    resultInsulinCompTens   = 0
-//    resultInsulinCompSimple = 0
-//    resultInsulinComDrob    = 0
-//  }
+
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    
-//    switch textField {
-//
-//    case insulinTextField:
-//
-//      currentPickerSegment = .insulin
-//
-//    case portionTextField:
-//
-//      currentPickerSegment = .portion
-//
-//    default: break
-//
-//    }
-//
-//    pickerView.selectRow(0, inComponent: 0, animated: false)
-//    pickerView.selectRow(0, inComponent: 1, animated: false)
-//    pickerView.selectRow(0, inComponent: 2, animated: false)
-//
-//    pickerView.reloadAllComponents()
+  
     // Отправляем в main Controller
     didBeginEditingTextField!(textField)
   }

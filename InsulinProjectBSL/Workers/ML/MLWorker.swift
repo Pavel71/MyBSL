@@ -12,26 +12,28 @@ import Upsurge
 import CoreML
 
 
-
+enum KeyWeights: String {
+   case correctionSugar, insulinByFood
+ }
 
 // Class отвечает за обработку данных и получение прогноза инсулина
 
 class MLWorker {
   
+
+  private let simpleRegressionModel:SimpleRegresiionModel
   
-  private var testInsulinByFoodWeights = (0.060631208, 0.17524958)
-  private var testInsulinByCorrectionSugarWeights = (0.14666663, -1.1399995)
   
-  enum KeyWeights: String {
-    case correctionSugar, insulinByFood
+  
+  init(typeWeights:KeyWeights) {
+    self.simpleRegressionModel = SimpleRegresiionModel(typeWeights: typeWeights)
   }
   
-  private let simpleRegressionModel = SimpleRegresiionModel()
   
   
 //  var categoryLabelOrdinalDict:[String: Int] = [:]
   
-  func getPredictInsulinTest(testData: [Float]) -> [Float] {
+  func getPredict(testData: [Float]) -> [Float] {
     let predicts = simpleRegressionModel.getPredict(test: testData)
     return predicts
   }

@@ -28,7 +28,6 @@ final class AppState {
     
     if let window2 = secondWindow {
       
-      // По анимации пока что оставлю так есть что улучшить если что
       
           if window2.isKeyWindow {
 //            self.mainWindow?.makeKeyAndVisible()
@@ -40,10 +39,6 @@ final class AppState {
               window2.isHidden = true
             }
             
-//            UIView.transition(with: window2, duration: 0.5, options: .curveEaseOut, animations: {
-//              window2.isHidden = true
-//            }, completion: nil)
-              
             
             } else {
               window2.makeKeyAndVisible()

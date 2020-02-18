@@ -19,16 +19,25 @@ enum NewCompansationObjectScreen {
         
         case addProductsInProductList(products: [ProductRealm])
         case deleteProductsFromProductList(products: [ProductRealm])
+        
+        
+        case updatePortionInProduct(portion: Int,index: Int)
+        case updateInsulinByPerson(insulin: Float,index: Int)
       }
     }
     struct Response {
       enum ResponseType {
+        
         case getBlankViewModel
         case updateCurrentSugarInVM(sugar: String)
         case updateAddMealStateInVM(isNeed: Bool)
         
         case addProductsInProductListVM(products: [ProductRealm])
         case deleteProductsInProductListVM(products: [ProductRealm])
+        
+        
+        case updatePortionInProduct(portion: Int,index: Int)
+        case updateInsulinByPerson(insulin: Float,index: Int)
       }
     }
     struct ViewModel {
@@ -46,10 +55,11 @@ enum NewCompansationObjectScreen {
 
 struct NewCompObjViewModel {
   
-  var sugarCellVM   : SugarCellModel
+  var sugarCellVM     : SugarCellModel
   
-  // meal Cell VM
-  var addMealCellVM : AddMealCellModel
+  var addMealCellVM   : AddMealCellModel
+  
+  var injectionCellVM : InjectionPlaceModel
 }
 
 
@@ -63,14 +73,14 @@ struct SugarCellModel: SugarCellable {
   
   var compansationString   : String?
 
-  var currentSugar         : Double?
+  var currentSugar         : Float?
   
-  var correctionSugarKoeff : Double?
+  var correctionSugarKoeff : Float?
   
   init(
     correctionImage      : UIImage? = nil,
-    currentSugar         : Double? = nil,
-    correctionSugarKoeff : Double? = nil,
+    currentSugar         : Float? = nil,
+    correctionSugarKoeff : Float? = nil,
     compansationString   : String? = nil,
     cellState            : SugarCellState = .currentLayer
   ) {
@@ -95,5 +105,11 @@ struct AddMealCellModel: AddMealCellable {
   
 //  var productListVM: NewProductListViewModel
   var dinnerProductListVM: ProductListInDinnerViewModel
+  
+}
+
+struct InjectionPlaceModel {
+  
+  var place: String
   
 }

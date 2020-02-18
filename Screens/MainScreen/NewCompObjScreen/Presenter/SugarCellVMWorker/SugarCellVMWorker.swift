@@ -14,9 +14,11 @@ import Foundation
 class SugarCellVMWorker {
   
   
-  static  func updateCurrentSugarVM(sugar: String, viewModel: inout NewCompObjViewModel) {
+  static  func updateCurrentSugarVM(
+    sugar: String,
+    viewModel: inout NewCompObjViewModel) {
     
-    viewModel.sugarCellVM.currentSugar = sugar == "" ? nil : (sugar as NSString).doubleValue
+    viewModel.sugarCellVM.currentSugar = sugar == "" ? nil : (sugar as NSString).floatValue
     
     updateCompansationLabelAndCellState(sugar: sugar,viewModel:&viewModel)
     
@@ -44,6 +46,9 @@ class SugarCellVMWorker {
       viewModel.sugarCellVM.compansationString = "Сахар выше нормы! нужна коррекция инсулином!"
       viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLayer
       viewModel.sugarCellVM.correctionImage    = #imageLiteral(resourceName: "anesthesia")
+      
+      // Здесь мне нужно расчитать коррекцию автоматически!
+      
     case .correctUp:
       viewModel.sugarCellVM.compansationString = "Сахар ниже нормы! нужна коррекция углеводами!"
       viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLayer

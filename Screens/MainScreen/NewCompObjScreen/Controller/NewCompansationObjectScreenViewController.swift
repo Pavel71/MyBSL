@@ -12,6 +12,7 @@ import UIKit
 enum NewCompansationVCCellsCase: Int,CaseIterable {
   case sugarCell
   case addMealCell
+  case injectionPlaceCell
 }
 
 protocol NewCompansationObjectScreenDisplayLogic: class {
@@ -148,6 +149,15 @@ extension NewCompansationObjectScreenViewController {
   private func registerCell() {
     tableView.register(SugarCell.self, forCellReuseIdentifier: SugarCell.cellId)
     tableView.register(AddMealCell.self, forCellReuseIdentifier: AddMealCell.cellId)
+    tableView.register(InjectionPlaceCell.self, forCellReuseIdentifier: InjectionPlaceCell.cellId)
+  }
+  
+  private func updateSugarCell() {
+    tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+  }
+  
+  private func updateMealCell() {
+    tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
   }
   
   
@@ -192,14 +202,15 @@ extension NewCompansationObjectScreenViewController {
     
     interactor?.makeRequest(request: .passCurrentSugar(sugar: text))
     //    view.endEditing(true)
-    tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    updateSugarCell()
+    
   }
   
   private func catchAddMealCellSwitcherValue(isOn: Bool) {
     // Здесь я посылаю сигнал нужно ли мне показывать модель с продукт листом?
     
     interactor?.makeRequest(request: .passIsNeedProductList(isNeed: isOn))
-    tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+    updateMealCell()
   }
   
   
@@ -215,13 +226,23 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     switch NewCompansationVCCellsCase(rawValue: indexPath.row) {
-    case .sugarCell:
-      return configureSugarCell(indexPath: indexPath)
-    case .addMealCell:
-      return configureAddMealCell(indexPath: indexPath)
-    case .none: return UITableViewCell()
+      case .sugarCell:
+        return configureSugarCell(indexPath: indexPath)
+      case .addMealCell:
+        return configureAddMealCell(indexPath: indexPath)
+      case .injectionPlaceCell:
+        return configureInjectionPlaceCell(indexPath: indexPath)
+      
+      case .none: return UITableViewCell()
     }
     
+  }
+  
+  private func configureInjectionPlaceCell(indexPath: IndexPath) -> UITableViewCell {
+  
+    let cell = tableView.dequeueReusableCell(withIdentifier: InjectionPlaceCell.cellId, for: indexPath)
+    
+    return cell
   }
   
   // AddMealCell
@@ -273,12 +294,15 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
     }
     
     productListVC.didPortionTextFieldEndEditingToDinnerController = {[weak self] portion, index in
-      // Нужно сделать Update в Viewmodel
-      print(portion, index, "Portion End")
+
+      self?.interactor?.makeRequest(request: .updatePortionInProduct(portion: portion,index: index))
+      self?.updateMealCell()
     }
       
     productListVC.didInsulinTextFieldEndEditingToDinnerController = {[weak self] insulin,index in
-      print(insulin, index, "Insulin End")
+    
+      self?.interactor?.makeRequest(request: .updateInsulinByPerson(insulin: insulin, index: index))
+      self?.updateMealCell()
     }
     
     productListVC.didDeleteProductClouser = {[weak self] products in
@@ -296,48 +320,25 @@ extension NewCompansationObjectScreenViewController {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
     switch NewCompansationVCCellsCase(rawValue: indexPath.row) {
-    case .sugarCell:
+      case .sugarCell:
+        
+        return SugarCellHeightWorker.getSugarCellHeight(cellState: viewModel.sugarCellVM.cellState)
+        
+      case .addMealCell:
+        
+        let count = viewModel.addMealCellVM.dinnerProductListVM.productsData.count
+        return ProductListCellHeightWorker.getAddmealCellHeight(
+          cellState    : viewModel.addMealCellVM.cellState,
+          productCount : count)
       
-      return getSugarCellHeight(cellState: viewModel.sugarCellVM.cellState)
-    case .addMealCell:
-      
-      return getAddmealCellHeight()
-      
-    case .none: return 100
+    case .injectionPlaceCell:
+      return 100
+        
+      case .none: return 100
     }
     
   }
   
-  private func getAddmealCellHeight() -> CGFloat {
-    
-    switch viewModel.addMealCellVM.cellState {
-    case .defaultState:
-      return ProductListCellHeightWorker.getDefaultHeightCell()
-      
-    case .productListState:
-
-      return ProductListCellHeightWorker.getWithProductListCellHeight(countProduct: viewModel.addMealCellVM.dinnerProductListVM.productsData.count)
-    }
-    
-    
-  }
-  
-  // MARK: SugsrCellheight
-  private func getSugarCellHeight(cellState: SugarCellState) -> CGFloat {
-    
-    let cellHeight: CGFloat
-    
-    switch cellState {
-    case .currentLayer:
-      cellHeight = SugarCellHeightWorker.getDefaultHeight()
-    case .currentLayerAndCorrectionLabel:
-      cellHeight = SugarCellHeightWorker.getCurrentSugarLayerAndCOrrectionLabelHeight()
-    case .currentLayerAndCorrectionLayer:
-      cellHeight = SugarCellHeightWorker.getCurrentSugarLayerAndComapnsationLayerHeight()
-    }
-    
-    return cellHeight
-  }
 }
 
 

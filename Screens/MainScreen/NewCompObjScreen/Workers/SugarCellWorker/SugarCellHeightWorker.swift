@@ -26,20 +26,39 @@ class SugarCellHeightWorker {
   
   // MARK: Get Default Height
   
-  static func getDefaultHeight() -> CGFloat {
+  static func getSugarCellHeight(cellState: SugarCellState) -> CGFloat {
+   
+       let cellHeight: CGFloat
+   
+       switch cellState {
+       case .currentLayer:
+         cellHeight = SugarCellHeightWorker.getDefaultHeight()
+       case .currentLayerAndCorrectionLabel:
+         cellHeight = SugarCellHeightWorker.getCurrentSugarLayerAndCOrrectionLabelHeight()
+       case .currentLayerAndCorrectionLayer:
+         cellHeight = SugarCellHeightWorker.getCurrentSugarLayerAndComapnsationLayerHeight()
+       }
+   
+       return cellHeight
+     }
+  
+  private static func getDefaultHeight() -> CGFloat {
     
     
     return valueHeight + titleHeight + (spacing * 4) + padding.top + padding.bottom
   }
   
-  static func getCurrentSugarLayerAndCOrrectionLabelHeight() -> CGFloat {
+  private static func getCurrentSugarLayerAndCOrrectionLabelHeight() -> CGFloat {
     
     return getDefaultHeight() + spacing + compansationTitleHeight
   }
   
-  static func getCurrentSugarLayerAndComapnsationLayerHeight() -> CGFloat {
+  private static func getCurrentSugarLayerAndComapnsationLayerHeight() -> CGFloat {
     
     return getCurrentSugarLayerAndCOrrectionLabelHeight() + valueHeight
   }
+  
+  
+   
   
 }

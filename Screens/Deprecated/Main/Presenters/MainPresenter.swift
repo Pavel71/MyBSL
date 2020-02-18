@@ -15,7 +15,7 @@ protocol MainPresentationLogic {
 class MainPresenter: MainPresentationLogic {
   
   weak var viewController: MainDisplayLogic?
-  var mlWorker = MLWorker()
+  var mlWorker = MLWorker(typeWeights: .insulinByFood)
   
 
   
@@ -188,7 +188,7 @@ extension MainPresenter {
     guard let testDinner = mainViewModel.dinnerCollectionViewModel.last else {return []}
     let testProduct = testDinner.productListInDinnerViewModel.productsData.map{Float($0.carboInPortion)}
     
-    return mlWorker.getPredictInsulinTest(testData: testProduct)
+    return mlWorker.getPredict(testData: testProduct)
 
   }
   

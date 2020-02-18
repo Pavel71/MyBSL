@@ -26,12 +26,7 @@ class BaseTabBarController: UITabBarController {
     
     let productController = createNavController(productViewController,name: "Products", imageName: "diet")
 
-    
-    let pageCOntroller = OnBoardViewController(
-      transitionStyle: .scroll,
-      navigationOrientation: .horizontal)
-    
-    let statsController = createNavController(pageCOntroller, name: "OnBoard", imageName: "clipboard" )
+    let statsController = createNavController(StatsViewController(), name: "Stats", imageName: "clipboard" )
     
     let settingsController = createNavController(SettingsViewController(), name: "Settings", imageName: "settings")
     

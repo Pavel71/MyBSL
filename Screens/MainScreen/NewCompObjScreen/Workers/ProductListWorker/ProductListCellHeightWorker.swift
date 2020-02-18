@@ -28,12 +28,28 @@ class ProductListCellHeightWorker {
 extension ProductListCellHeightWorker {
   
   
-  static func getDefaultHeightCell() -> CGFloat {
+  static func getAddmealCellHeight(cellState:AddMealCellState,productCount: Int) -> CGFloat {
+    
+    switch cellState {
+      
+    case .defaultState:
+      return ProductListCellHeightWorker.getDefaultHeightCell()
+      
+    case .productListState:
+      
+      return ProductListCellHeightWorker.getWithProductListCellHeight(countProduct:productCount)
+    }
+    
+    
+  }
+  
+  
+  private static func getDefaultHeightCell() -> CGFloat {
     return valueHeight + titleHeight + (spacing * 2) + padding.top + padding.bottom
   }
   
   
-  static func getWithProductListCellHeight(countProduct: Int) -> CGFloat {
+  private static func getWithProductListCellHeight(countProduct: Int) -> CGFloat {
     return getDefaultHeightCell() + blankProductListHeight + (listProductRowHeight * CGFloat(countProduct))
   }
 }

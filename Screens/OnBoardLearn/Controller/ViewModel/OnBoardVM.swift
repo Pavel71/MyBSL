@@ -17,16 +17,11 @@ class OnBoardVM {
   var learnByCorrectionVM : LearnByCorrectionVM
   var learnByFoodVM       : LearnByFoodVM
   
-  var mlWorker : MLWorker
-  
-  
   
   init() {
     
     learnByCorrectionVM = LearnByCorrectionVM()
     learnByFoodVM       = LearnByFoodVM()
-    
-    mlWorker            = MLWorker()
     
   }
   
@@ -51,38 +46,45 @@ extension OnBoardVM {
     let correctionData    = fetchInsulinValueByCorrectionSugar()
     let insulinByFoodData = fetchInsulinValueByFoodData()
 
+    trainModel(traing: correctionData.train, target: correctionData.target, keyWeights: .correctionSugar)
     
-    let correctionWeights = getWeightsByData(traing: correctionData.train, target: correctionData.target)
+    trainModel(traing: insulinByFoodData.train, target: insulinByFoodData.target, keyWeights: .insulinByFood)
     
-    let insulinByFoodsWeights = getWeightsByData(traing: insulinByFoodData.train, target: insulinByFoodData.target)
+    
+    
+//    let correctionWeights = getWeightsByData(traing: correctionData.train, target: correctionData.target)
+//
+//    let insulinByFoodsWeights = getWeightsByData(traing: insulinByFoodData.train, target: insulinByFoodData.target)
   
     
-    saveWeightsinUserDefaults(
-      weights: correctionWeights,
-      key: MLWorker.KeyWeights.correctionSugar.rawValue
-    )
-    
-    saveWeightsinUserDefaults(
-      weights: insulinByFoodsWeights,
-      key: MLWorker.KeyWeights.insulinByFood.rawValue
-    )
+
 
     
   }
   
-  private func saveWeightsinUserDefaults(weights:(Float,Float), key:String) {
-    let userDefault = UserDefaults.standard
+//  private func saveWeightsinUserDefaults(weights:(Float,Float), key:String) {
+//    let userDefault = UserDefaults.standard
+//    
+//    userDefault.set([weights.0,weights.1], forKey: key)
+//  }
+  
+  // Обучим модель! Когда обучим модель мы автоматом сохраним данные в UserDefaults
+  
+  private func trainModel(traing: [Float],target:[Float],keyWeights: KeyWeights) {
     
-    userDefault.set([weights.0,weights.1], forKey: key)
+    let mlWorker = MLWorker(typeWeights: keyWeights)
+    
+    mlWorker.trainModelAndSetWeights(trainData: traing, target: target)
+    
+    
   }
   
-  private func getWeightsByData(traing: [Float],target:[Float]) -> (Float,Float) {
-    mlWorker.trainModelAndSetWeights(
-         trainData: traing, target: target
-       )
-       
-     return mlWorker.getRegressionWeights()
-  }
+//  private func getWeightsByData(traing: [Float],target:[Float]) -> (Float,Float) {
+//    mlWorker.trainModelAndSetWeights(
+//         trainData: traing, target: target
+//       )
+//     return mlWorker.getRegressionWeights()
+//  }
   
   
   // MARK: Fetch Data

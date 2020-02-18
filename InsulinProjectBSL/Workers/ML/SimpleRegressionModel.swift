@@ -15,9 +15,45 @@ class SimpleRegresiionModel {
   
   let linearModel = SimpleLinearRegression()
   
-  // Потом когда веса установленные можно сохранять их в юзерДефолтс
-  private var weights:(Float,Float) = (0,0)
   
+  // Test Period
+  private var testInsulinByFoodWeights = (Float(0.060631208), Float(0.17524958))
+  private var testInsulinByCorrectionSugarWeights = (Float(0.14666663), Float(-1.1399995))
+  
+  // Когда мы жмем получить вес мы должны достать его из юзер дефолтса! Когда сохраняем вес мы должны сохранить их в UserDefaults
+  // Получается нам сюда нужно передать только ключ по которому мы получим веса!
+  private var weights:(Float,Float) {
+    
+    set {
+      
+      switch typeWeights {
+        case .correctionSugar:
+          saveWeightsinUserDefaults(weights: newValue, key: KeyWeights.correctionSugar.rawValue)
+        case.insulinByFood:
+          saveWeightsinUserDefaults(weights: newValue, key: KeyWeights.insulinByFood.rawValue)
+      }
+      
+    }
+    
+    get {
+      // Так тут будет сделанна подгрузка из Юзер дефолтса
+      switch typeWeights {
+        case .correctionSugar:
+          // Достань из юзердефолтса
+          return testInsulinByCorrectionSugarWeights
+        case .insulinByFood:
+          return testInsulinByFoodWeights
+    
+      }
+    }
+  }
+  
+  
+  var typeWeights:KeyWeights
+  
+  init(typeWeights: KeyWeights) {
+    self.typeWeights = typeWeights
+  }
   
   func getWeights() -> (Float,Float) {
     return weights
@@ -57,6 +93,13 @@ extension SimpleRegresiionModel {
     print("Rss",rss)
      
    }
+  
+  
+  private func saveWeightsinUserDefaults(weights:(Float,Float), key:String) {
+    let userDefault = UserDefaults.standard
+    
+    userDefault.set([weights.0,weights.1], forKey: key)
+  }
 }
 
 

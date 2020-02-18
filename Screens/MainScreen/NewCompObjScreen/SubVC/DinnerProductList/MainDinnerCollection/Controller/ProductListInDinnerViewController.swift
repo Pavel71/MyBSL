@@ -108,6 +108,7 @@ extension ProductListInDinnerViewController {
     footerView.resultsView.setViewModel(viewModel: resultViewModel)
     
     tableView.reloadData()
+    
   }
 }
 
@@ -224,7 +225,7 @@ extension ProductListInDinnerViewController: UITextFieldDelegate {
     guard let (insulin,indexPath) = getValueAndRowTextField(textField: textField) else {return}
     
     let sum = CalculateValueTextField.calculateSumInsulin(insulin: insulin, indexPath: indexPath, tableViewData: &tableViewData)
-    footerView.resultsView.insulinResultLabel.text = String(sum)
+    footerView.resultsView.insulinResultLabel.text = "\(floatTwo: sum)"
     
 //    didInsulinTextFieldChangetToDinnerController!(insulin,row)
 
