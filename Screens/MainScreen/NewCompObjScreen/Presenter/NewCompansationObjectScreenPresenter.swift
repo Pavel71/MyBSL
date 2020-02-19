@@ -57,10 +57,14 @@ extension NewCompansationObjectScreenPresenter {
         throwViewModelToVC()
         
       case .updateAddMealStateInVM(let isNeed):
+        updateMealCellState(isNeed: isNeed)
         
-        AddMealVMWorker.changeNeedProductList(isNeed: isNeed, viewModel: &viewModel)
         throwViewModelToVC()
-    
+      
+    case .updatePlaceInjection(let place):
+      updatePlaceInjectionInVM(place: place)
+      throwViewModelToVC()
+      
     default:break
     }
   }
@@ -113,16 +117,38 @@ extension NewCompansationObjectScreenPresenter {
 extension NewCompansationObjectScreenPresenter {
   
   private func setSugarData(sugar: String) {
-    
+      
      SugarCellVMWorker.updateCurrentSugarVM(sugar: sugar, viewModel: &viewModel)
     
     // Сахар выше нормы мы должны его компенсировать
     if viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer {
+      
       let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [Float(viewModel.sugarCellVM.currentSugar!)])
       viewModel.sugarCellVM.correctionSugarKoeff = predictSugarCompansation.first!
+      // Значит будет укол добавляем поле
+      
     }
+    
+    setInjectionCellState()
   }
   
+  
+}
+
+// MARK: Work With InjectionCellVM
+extension NewCompansationObjectScreenPresenter {
+  
+  private func setInjectionCellState() {
+    // Если показываем обеды или сахар завышен то в этом случае покажи ячейку с местом укола
+    
+    let injectionCellState : InjectionPlaceCellState = viewModel.addMealCellVM.cellState == .productListState || viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer ? .showed : .hidden
+    viewModel.injectionCellVM.cellState = injectionCellState
+  }
+  
+  private func updatePlaceInjectionInVM(place: String) {
+    
+    viewModel.injectionCellVM.titlePlace = place
+  }
   
 }
 
@@ -130,6 +156,13 @@ extension NewCompansationObjectScreenPresenter {
 // MARK: Work With ProductListVM
 
 extension NewCompansationObjectScreenPresenter {
+  
+  
+  private func updateMealCellState(isNeed: Bool) {
+    AddMealVMWorker.changeNeedProductList(isNeed: isNeed, viewModel: &viewModel)
+    
+    setInjectionCellState()
+  }
   
   private func convertProductRealmToProductListVMData(product:ProductRealm) -> ProductListViewModel {
     
@@ -232,10 +265,21 @@ extension NewCompansationObjectScreenPresenter {
   
   private func getBlankViewModel() -> NewCompObjViewModel {
     
-    let sugarCellVM   = getDefaultSugarCellVM()
-    let addMealCellVM = getDefaultAddmealCellVM()
-    return NewCompObjViewModel(sugarCellVM   : sugarCellVM,
-                               addMealCellVM : addMealCellVM)
+    let sugarCellVM     = getDefaultSugarCellVM()
+    let addMealCellVM   = getDefaultAddmealCellVM()
+    let injectionCellVM = getDefaultInjectionCellVM()
+    
+    return NewCompObjViewModel(sugarCellVM     : sugarCellVM,
+                               addMealCellVM   : addMealCellVM,
+                               injectionCellVM : injectionCellVM)
+  }
+  
+  private func getDefaultInjectionCellVM() -> InjectionPlaceModel {
+     let injectionCellVM = InjectionPlaceModel(
+      cellState: .hidden,
+      titlePlace: "")
+    
+    return injectionCellVM
   }
   
   private func getDefaultAddmealCellVM() -> AddMealCellModel {

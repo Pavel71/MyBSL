@@ -23,6 +23,7 @@ enum NewCompansationObjectScreen {
         
         case updatePortionInProduct(portion: Int,index: Int)
         case updateInsulinByPerson(insulin: Float,index: Int)
+        case updatePlaceInjection(place: String)
       }
     }
     struct Response {
@@ -38,6 +39,8 @@ enum NewCompansationObjectScreen {
         
         case updatePortionInProduct(portion: Int,index: Int)
         case updateInsulinByPerson(insulin: Float,index: Int)
+        
+        case updatePlaceInjection(place: String)
       }
     }
     struct ViewModel {
@@ -108,8 +111,16 @@ struct AddMealCellModel: AddMealCellable {
   
 }
 
-struct InjectionPlaceModel {
+// MARK: InjectionPlace Cell VM
+
+struct InjectionPlaceModel:InjectionPlaceCellable {
+  var cellState: InjectionPlaceCellState
   
-  var place: String
+  var titlePlace: String
   
 }
+
+// MARK: Result Cell VM
+
+
+

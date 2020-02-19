@@ -43,11 +43,17 @@ extension NewCompansationObjectScreenInteractor {
     case .passIsNeedProductList(let isNeed):
       presenter?.presentData(response: .updateAddMealStateInVM(isNeed: isNeed))
       
+    case .updatePlaceInjection(let place):
+      presenter?.presentData(response: .updatePlaceInjection(place: place))
+      
       
     default:break
     }
     
   }
+  
+  
+  // MARK: Work With Product List
   
   private func workWithProductList(request: NewCompansationObjectScreen.Model.Request.RequestType) {
     
@@ -77,5 +83,7 @@ extension NewCompansationObjectScreenInteractor {
   
   
 }
+
+
 
 

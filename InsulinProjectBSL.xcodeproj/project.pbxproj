@@ -66,6 +66,7 @@
 		05733CE123FA8512004197B2 /* Array+ Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05733CE023FA8512004197B2 /* Array+ Extensions.swift */; };
 		05733CE423FAAABF004197B2 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05733CE323FAAABF004197B2 /* AppState.swift */; };
 		05733CE723FC0813004197B2 /* InjectionPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05733CE623FC0813004197B2 /* InjectionPlaceCell.swift */; };
+		05733CEA23FD48CC004197B2 /* ResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05733CE923FD48CB004197B2 /* ResultCell.swift */; };
 		057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */; };
 		057B9841234F5054002EAD68 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9840234F5054002EAD68 /* ContainerController.swift */; };
 		057B9848234F6B4C002EAD68 /* PointSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9847234F6B4C002EAD68 /* PointSearcher.swift */; };
@@ -306,6 +307,7 @@
 		05733CE023FA8512004197B2 /* Array+ Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ Extensions.swift"; sourceTree = "<group>"; };
 		05733CE323FAAABF004197B2 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		05733CE623FC0813004197B2 /* InjectionPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectionPlaceCell.swift; sourceTree = "<group>"; };
+		05733CE923FD48CB004197B2 /* ResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCell.swift; sourceTree = "<group>"; };
 		057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMenuAnimator.swift; sourceTree = "<group>"; };
 		057B9840234F5054002EAD68 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		057B9847234F6B4C002EAD68 /* PointSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointSearcher.swift; sourceTree = "<group>"; };
@@ -1071,6 +1073,14 @@
 			path = injectionPlaceCell;
 			sourceTree = "<group>";
 		};
+		05733CE823FD48B5004197B2 /* ResultCell */ = {
+			isa = PBXGroup;
+			children = (
+				05733CE923FD48CB004197B2 /* ResultCell.swift */,
+			);
+			path = ResultCell;
+			sourceTree = "<group>";
+		};
 		057B9845234F634C002EAD68 /* MenuView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1091,6 +1101,7 @@
 		058F5F4823A2490700717042 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				05733CE823FD48B5004197B2 /* ResultCell */,
 				05733CE523FC07F3004197B2 /* injectionPlaceCell */,
 				055A726123A8C329002CA9A7 /* SugarCell */,
 				055A726223A8C337002CA9A7 /* ProductListCell */,
@@ -2929,6 +2940,7 @@
 				055A3A452356F2E80080628C /* MainDinnerProductListCell.swift in Sources */,
 				05CFE0D0237EC3DD006FDC87 /* SomeConstants.swift in Sources */,
 				F1E78CB9230D334B00592AB8 /* FoodWorker.swift in Sources */,
+				05733CEA23FD48CC004197B2 /* ResultCell.swift in Sources */,
 				05A4F1B5233A0BFE00DFE4D7 /* DinnerCollectionViewController.swift in Sources */,
 				052F05C7239E65A900A614B3 /* CompansationObject.swift in Sources */,
 				F1F358BA2321261B00E48369 /* HeaderInSectionWorker.swift in Sources */,

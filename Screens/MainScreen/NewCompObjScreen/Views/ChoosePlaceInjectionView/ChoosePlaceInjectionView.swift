@@ -121,6 +121,7 @@ class ChoosePlaceInjectionView: UIView {
     
     addSubview(topStackView)
     topStackView.anchor(top: nil, leading: nil, bottom: bodyStackView.topAnchor, trailing: nil,padding: .init(top: 0, left: 0, bottom: 10, right: 0))
+    topStackView.centerXInSuperview()
     
     
     

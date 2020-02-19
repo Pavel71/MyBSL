@@ -39,9 +39,10 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   
   // VIews
   
-  var mainView  : CompansationObjectView!
-  var navBar    : CompObjScreenNavBar!
-  var tableView : UITableView!
+  var mainView                 : CompansationObjectView!
+  var navBar                   : CompObjScreenNavBar!
+  var tableView                : UITableView!
+  var choosePlaceInjectionView : ChoosePlaceInjectionView!
   
   
   // ViewModel
@@ -122,14 +123,15 @@ extension NewCompansationObjectScreenViewController {
   
   private func setUpViews() {
     
-    mainView  = CompansationObjectView()
-    navBar    = mainView.navBar
-    tableView = mainView.tableView
+    mainView                 = CompansationObjectView(frame: view.frame)
+    navBar                   = mainView.navBar
+    tableView                = mainView.tableView
+    choosePlaceInjectionView = mainView.choosePlaceInjectionsView
     
     confugireTableView()
     
     view.addSubview(mainView)
-    mainView.fillSuperview()
+//    mainView.fillSuperview()
     
     setViewClousers()
   }
@@ -141,6 +143,7 @@ extension NewCompansationObjectScreenViewController {
     tableView.delegate             = self
     tableView.dataSource           = self
     tableView.tableFooterView      = UIView()
+    tableView.separatorStyle       = .none
     
     
     registerCell()
@@ -154,10 +157,18 @@ extension NewCompansationObjectScreenViewController {
   
   private func updateSugarCell() {
     tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    // Заодно проверим не нужна ли нам 3 ячейка
+    updateUnjectionPlaceCell()
   }
   
   private func updateMealCell() {
     tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+    // Заодно проверим не нужна ли нам 3 ячейка
+    updateUnjectionPlaceCell()
+  }
+  
+  private func updateUnjectionPlaceCell() {
+    tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
   }
   
   
@@ -175,6 +186,17 @@ extension NewCompansationObjectScreenViewController {
     navBar.saveButtonCLouser = {[weak self] in
       self?.didTapNavBarSaveButton()
     }
+    choosePlaceInjectionView.didTapCloseButton = {[weak self] in
+      
+      self?.didShowChooseInjectionPlaceView(isShow: false)
+    }
+    
+    choosePlaceInjectionView.didChooseInjectionsPlace = {[weak self] place in
+      self?.interactor?.makeRequest(request: .updatePlaceInjection(place: place))
+      self?.updateUnjectionPlaceCell()
+      self?.didShowChooseInjectionPlaceView(isShow: false)
+    }
+    
     
     
   }
@@ -182,40 +204,7 @@ extension NewCompansationObjectScreenViewController {
   
 }
 
-// MARK: Catch  Clousers
 
-extension NewCompansationObjectScreenViewController {
-  
-  // NAV Bar Clouser
-  private func didTapNavBarBackButton() {
-    navigationController?.popViewController(animated: true)
-  }
-  
-  private func didTapNavBarSaveButton() {
-    
-    print("Собрать модель и сохранить и сделать дисмисс ")
-  }
-  
-  // SUgarTextField RightButton
-  
-  private func catchCurrentSugarString(text: String) {
-    
-    interactor?.makeRequest(request: .passCurrentSugar(sugar: text))
-    //    view.endEditing(true)
-    updateSugarCell()
-    
-  }
-  
-  private func catchAddMealCellSwitcherValue(isOn: Bool) {
-    // Здесь я посылаю сигнал нужно ли мне показывать модель с продукт листом?
-    
-    interactor?.makeRequest(request: .passIsNeedProductList(isNeed: isOn))
-    updateMealCell()
-  }
-  
-  
-  
-}
 
 // MARK: TableView DataSource and Delegate
 extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITableViewDataSource {
@@ -238,46 +227,40 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
     
   }
   
-  private func configureInjectionPlaceCell(indexPath: IndexPath) -> UITableViewCell {
+ 
   
-    let cell = tableView.dequeueReusableCell(withIdentifier: InjectionPlaceCell.cellId, for: indexPath)
+}
+
+//MARK: Set Cell Clousers
+
+extension NewCompansationObjectScreenViewController {
+  
+  // Injection Cell Clouser
+  
+  private func setInjectionCellClousers(cell: InjectionPlaceCell) {
     
-    return cell
+    cell.didTapChooseButton = {[weak self] in
+      
+      self?.didShowChooseInjectionPlaceView(isShow: true)
+    }
   }
   
-  // AddMealCell
+  // Shugar Cell Clouser
   
-  private func configureAddMealCell(indexPath: IndexPath) -> AddMealCell {
-    
-    let cell = tableView.dequeueReusableCell(withIdentifier: AddMealCell.cellId, for: indexPath) as! AddMealCell
-    
-    cell.setViewModel(viewModel: viewModel.addMealCellVM)
-    setAddMealCellClouser(cell: cell)
-    return cell
-    
-  }
-  
-  // Sugar Cell
-  private func configureSugarCell(indexPath: IndexPath) -> SugarCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: SugarCell.cellId, for: indexPath) as!  SugarCell
-    
-    cell.setViewModel(viewModel: viewModel.sugarCellVM)
-    setSugarCellClouser(cell: cell)
-    
-    return cell
-  }
-  
-  // MARK: Set Cell Clouser
   private func setSugarCellClouser(cell:SugarCell ) {
     cell.passCurrentSugarClouser = {[weak self] text in
       self?.catchCurrentSugarString(text:text)
     }
   }
   
+  // Meal Cell Clousers
+  
   private func setAddMealCellClouser(cell: AddMealCell) {
+    
     cell.didPassSwitcherValueClouser = { [weak self] isOn in
       self?.catchAddMealCellSwitcherValue(isOn: isOn)
     }
+    
     cell.showMenuController = {[weak self] in
       self?.showMenuController()
     }
@@ -287,6 +270,8 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
     
   }
   
+  
+  // Product List Clousers
   private func setProductListControllerCLousers(productListVC: ProductListInDinnerViewController) {
     
     productListVC.didSelectTextFieldCellClouser = {[weak self] textfield in
@@ -310,9 +295,89 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
     }
     
   }
+}
+
+
+// MARK: Catch  Clousers
+
+extension NewCompansationObjectScreenViewController {
+  
+  private func didShowChooseInjectionPlaceView(isShow: Bool) {
+    ChoosePlaceInjectionsAnimated.showView(
+           blurView: (self.mainView.blurView),
+           choosePlaceInjectionView: (self.mainView.choosePlaceInjectionsView),
+           isShow: isShow)
+  }
+  
+  // NAV Bar Clouser
+  private func didTapNavBarBackButton() {
+    navigationController?.popViewController(animated: true)
+  }
+  
+  private func didTapNavBarSaveButton() {
+    
+    print("Собрать модель и сохранить и сделать дисмисс ")
+  }
+  
+  // SUgarTextField RightButton
+  
+  private func catchCurrentSugarString(text: String) {
+    
+    interactor?.makeRequest(request: .passCurrentSugar(sugar: text))
+    //    view.endEditing(true)
+    updateSugarCell()
+    
+  }
+  // Meal cell Switcher
+  private func catchAddMealCellSwitcherValue(isOn: Bool) {
+    // Здесь я посылаю сигнал нужно ли мне показывать модель с продукт листом?
+    
+    interactor?.makeRequest(request: .passIsNeedProductList(isNeed: isOn))
+    updateMealCell()
+  }
+  
   
   
 }
+
+// MARK: Configure Cells
+extension NewCompansationObjectScreenViewController {
+  
+  // Injection Cell
+  private func configureInjectionPlaceCell(indexPath: IndexPath) -> UITableViewCell {
+  
+    let cell = tableView.dequeueReusableCell(withIdentifier: InjectionPlaceCell.cellId, for: indexPath) as! InjectionPlaceCell
+    cell.setViewModel(viewModel: viewModel.injectionCellVM)
+    setInjectionCellClousers(cell: cell)
+    return cell
+  }
+  
+  // AddMealCell
+  
+  private func configureAddMealCell(indexPath: IndexPath) -> AddMealCell {
+    
+    let cell = tableView.dequeueReusableCell(withIdentifier: AddMealCell.cellId, for: indexPath) as! AddMealCell
+    
+    cell.setViewModel(viewModel: viewModel.addMealCellVM)
+    setAddMealCellClouser(cell: cell)
+    return cell
+    
+  }
+  
+  // Sugar Cell
+  private func configureSugarCell(indexPath: IndexPath) -> SugarCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: SugarCell.cellId, for: indexPath) as!  SugarCell
+    
+    cell.setViewModel(viewModel: viewModel.sugarCellVM)
+    setSugarCellClouser(cell: cell)
+    
+    
+    return cell
+  }
+}
+
+
+
 
 // MARK: Height
 extension NewCompansationObjectScreenViewController {
