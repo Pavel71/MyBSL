@@ -12,13 +12,17 @@ import UIKit
 class CustomLabels: UILabel {
   
   
-  init(font: UIFont, text: String) {
+  init(font: UIFont,
+       text: String,
+       textColor:UIColor = .white) {
     super.init(frame: .zero)
     
     self.font = font
     self.text = text
     self.numberOfLines = 0
-    self.textColor = .white
+    
+    self.textColor = textColor
+    
     
   }
   

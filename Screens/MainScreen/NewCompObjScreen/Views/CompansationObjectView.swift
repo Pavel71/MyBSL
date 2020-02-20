@@ -29,6 +29,8 @@ class CompansationObjectView: UIView {
   }()
   // ChoosePlaceInjection Views
   let choosePlaceInjectionsView = ChoosePlaceInjectionView(frame: .init(x: 0, y: 0, width: 250, height: 350))
+  
+  var  resultFooterView         = ResultFooterView(frame: .zero)
 
   
   // MARK: init
@@ -54,7 +56,7 @@ extension CompansationObjectView {
   private func setUpViews() {
     
     setUpNavBar()
-    
+    setUpFooterView()
     setUpTableView()
     
     setUpBlurView()
@@ -66,9 +68,14 @@ extension CompansationObjectView {
     navBar.anchor(top: safeAreaLayoutGuide.topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor)
   }
   
+  private func setUpFooterView() {
+    addSubview(resultFooterView)
+    resultFooterView.anchor(top: nil, leading: leadingAnchor, bottom: safeAreaLayoutGuide.bottomAnchor, trailing: trailingAnchor)
+  }
+  
   private func setUpTableView() {
     addSubview(tableView)
-    tableView.anchor(top: navBar.bottomAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding: .init(top: 3, left: 0, bottom: 0, right: 0))
+    tableView.anchor(top: navBar.bottomAnchor, leading: leadingAnchor, bottom: resultFooterView.topAnchor, trailing: trailingAnchor,padding: .init(top: 3, left: 0, bottom: 0, right: 0))
   }
   
   private func setUpBlurView() {

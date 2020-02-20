@@ -128,13 +128,16 @@ extension NewCompansationObjectScreenViewController {
     tableView                = mainView.tableView
     choosePlaceInjectionView = mainView.choosePlaceInjectionsView
     
+    
     confugireTableView()
     
     view.addSubview(mainView)
-//    mainView.fillSuperview()
+
     
     setViewClousers()
   }
+  
+  
   
   private func confugireTableView() {
     
@@ -144,7 +147,7 @@ extension NewCompansationObjectScreenViewController {
     tableView.dataSource           = self
     tableView.tableFooterView      = UIView()
     tableView.separatorStyle       = .none
-    
+
     
     registerCell()
   }
@@ -153,6 +156,7 @@ extension NewCompansationObjectScreenViewController {
     tableView.register(SugarCell.self, forCellReuseIdentifier: SugarCell.cellId)
     tableView.register(AddMealCell.self, forCellReuseIdentifier: AddMealCell.cellId)
     tableView.register(InjectionPlaceCell.self, forCellReuseIdentifier: InjectionPlaceCell.cellId)
+    tableView.register(ResultCell.self, forCellReuseIdentifier: ResultCell.cellID)
   }
   
   private func updateSugarCell() {
@@ -215,6 +219,7 @@ extension NewCompansationObjectScreenViewController: UITableViewDelegate, UITabl
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     switch NewCompansationVCCellsCase(rawValue: indexPath.row) {
+      
       case .sugarCell:
         return configureSugarCell(indexPath: indexPath)
       case .addMealCell:
@@ -343,8 +348,15 @@ extension NewCompansationObjectScreenViewController {
 // MARK: Configure Cells
 extension NewCompansationObjectScreenViewController {
   
+  private func configureResultCell(indexPath: IndexPath) -> ResultCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: ResultCell.cellID, for: indexPath) as! ResultCell
+    
+    return cell
+    
+  }
+  
   // Injection Cell
-  private func configureInjectionPlaceCell(indexPath: IndexPath) -> UITableViewCell {
+  private func configureInjectionPlaceCell(indexPath: IndexPath) -> InjectionPlaceCell {
   
     let cell = tableView.dequeueReusableCell(withIdentifier: InjectionPlaceCell.cellId, for: indexPath) as! InjectionPlaceCell
     cell.setViewModel(viewModel: viewModel.injectionCellVM)
@@ -385,6 +397,7 @@ extension NewCompansationObjectScreenViewController {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
     switch NewCompansationVCCellsCase(rawValue: indexPath.row) {
+        
       case .sugarCell:
         
         return SugarCellHeightWorker.getSugarCellHeight(cellState: viewModel.sugarCellVM.cellState)
@@ -395,9 +408,9 @@ extension NewCompansationObjectScreenViewController {
         return ProductListCellHeightWorker.getAddmealCellHeight(
           cellState    : viewModel.addMealCellVM.cellState,
           productCount : count)
-      
-    case .injectionPlaceCell:
-      return 100
+        
+      case .injectionPlaceCell:
+        return 100
         
       case .none: return 100
     }
@@ -448,7 +461,8 @@ extension NewCompansationObjectScreenViewController : MainControllerInContainerP
   func addProducts(products: [ProductRealm]) {
     
     interactor?.makeRequest(request: .addProductsInProductList(products: products))
-    tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+    updateMealCell()
+    
     
     
   }
@@ -456,7 +470,7 @@ extension NewCompansationObjectScreenViewController : MainControllerInContainerP
   func deleteProducts(products: [ProductRealm]) {
     
     interactor?.makeRequest(request: .deleteProductsFromProductList(products: products))
-    tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+    updateMealCell()
     
   }
   
