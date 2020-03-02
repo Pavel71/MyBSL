@@ -75,7 +75,7 @@ extension CompansationObjectView {
   
   private func setUpTableView() {
     addSubview(tableView)
-    tableView.anchor(top: navBar.bottomAnchor, leading: leadingAnchor, bottom: resultFooterView.topAnchor, trailing: trailingAnchor,padding: .init(top: 3, left: 0, bottom: 0, right: 0))
+    tableView.anchor(top: navBar.bottomAnchor, leading: leadingAnchor, bottom: resultFooterView.topAnchor, trailing: trailingAnchor,padding: .init(top: 3, left: 0, bottom: 3, right: 0))
   }
   
   private func setUpBlurView() {
