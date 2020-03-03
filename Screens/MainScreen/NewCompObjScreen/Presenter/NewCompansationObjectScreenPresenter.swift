@@ -119,16 +119,23 @@ extension NewCompansationObjectScreenPresenter {
   private func setSugarData(sugar: String) {
       
      SugarCellVMWorker.updateCurrentSugarVM(sugar: sugar, viewModel: &viewModel)
+     updateMeallCellSwitcherEnabled(isEnabled: !sugar.isEmpty)
     
+    if sugar.isEmpty { // Если поле сахара пустое то и убираем обед! так как без сахара нельзя
+      updateMealCellState(isNeed: false)
+    }
+
     // Сахар выше нормы мы должны его компенсировать
     if viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer {
       
       let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [Float(viewModel.sugarCellVM.currentSugar!)])
+      
       viewModel.sugarCellVM.correctionSugarKoeff = predictSugarCompansation.first!
       // Значит будет укол добавляем поле
       
     }
     
+    updateResultViewModel()
     setInjectionCellState()
   }
   
@@ -153,10 +160,17 @@ extension NewCompansationObjectScreenPresenter {
 }
 
 
+
+
+
 // MARK: Work With ProductListVM
 
 extension NewCompansationObjectScreenPresenter {
   
+  
+  private func updateMeallCellSwitcherEnabled(isEnabled: Bool) {
+    viewModel.addMealCellVM.isSwitcherIsEnabled = isEnabled
+  }
   
   private func updateMealCellState(isNeed: Bool) {
     AddMealVMWorker.changeNeedProductList(isNeed: isNeed, viewModel: &viewModel)
@@ -190,7 +204,8 @@ extension NewCompansationObjectScreenPresenter {
           contentsOf:productsVM,
           at: 0)
     // Пересчитываем резалт
-    calculateResultViewModel()
+    calculateResultViewModelInProductList()
+    
   }
   
   // Delete
@@ -202,12 +217,13 @@ extension NewCompansationObjectScreenPresenter {
     viewModel.addMealCellVM.dinnerProductListVM.productsData
       .removeAll(where: { newData.contains($0) })
     // пересчитываем резалт
-    calculateResultViewModel()
+    calculateResultViewModelInProductList()
+    
   }
   
   private func updateInsulinField(insulinValue: Float, index: Int) {
     viewModel.addMealCellVM.dinnerProductListVM.productsData[index].insulinValue = insulinValue
-    calculateResultViewModel()
+    calculateResultViewModelInProductList()
   }
   
   // Update Portion
@@ -220,7 +236,7 @@ extension NewCompansationObjectScreenPresenter {
       getPredictUnsulinByProduct(index: index)
     }
     
-    calculateResultViewModel()
+    calculateResultViewModelInProductList()
   }
   
   private func getPredictUnsulinByProduct(index: Int) {
@@ -243,7 +259,7 @@ extension NewCompansationObjectScreenPresenter {
   // When add New Product or delete we should calculate Again
 
     
-    private func calculateResultViewModel() {
+    private func calculateResultViewModelInProductList() {
       
       let productsData = viewModel.addMealCellVM.dinnerProductListVM.productsData
       
@@ -251,11 +267,62 @@ extension NewCompansationObjectScreenPresenter {
       
       // Set
       viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel = resultViewModel
-
+      // Каждый раз как обновляется резалт по обедам обновляю и итог
+      updateResultViewModel()
     }
     
     
     
+}
+
+
+// MARK: Work With Result View Model
+
+extension NewCompansationObjectScreenPresenter {
+  
+  private func updateResultViewModel() {
+    
+    // Нужно подумать при каких условиях я буду обновлять резалт вью
+    
+    // 1. Если мы ввели сахар и он в норме - то не показываю
+    // 2. Мы ввели сахар и он выше нормы - то показываю сумму коррекции
+    // 3. Если мы ввели сахар и он ниже нормы то нужно пересчитать коррекцию на углеводы и попросить съесть углеводы
+    // 4. Если Сахар выше нормы + обед = то нужно подсчитать коррекцию + сколько всего нужно сделать инсулина
+    // 5. Если Сахар ниже нормы + обед = то нужно конвертировать коррекционные углеводы в инсулин и получить разниуцу!
+    
+    let sugarState = viewModel.sugarCellVM.sugarState
+    
+    
+    switch sugarState {
+    case .dontCorrect:
+      viewModel.resultFooterVM.viewState = .hidden
+    case .correctUp:
+      
+      let message = viewModel.addMealCellVM.cellState == .productListState ? "Нужна коррекция инсулином с компенсацией" : "Нужна коррекция углеводами"
+      
+      viewModel.resultFooterVM.viewState = .showed
+      viewModel.resultFooterVM.message   = message
+      viewModel.resultFooterVM.value     = "\(floatTwo: getTotalInsulin())"
+      
+    case .correctDown:
+      viewModel.resultFooterVM.viewState = .showed
+      viewModel.resultFooterVM.message   = "Нужна коррекция инсулином"
+      viewModel.resultFooterVM.value     = "\(floatTwo: getTotalInsulin())"
+    default:break
+    }
+    
+    viewModel.resultFooterVM.viewState = sugarState == .dontCorrect ? .hidden : .showed
+  }
+  
+  
+  private func getTotalInsulin() -> Float {
+    
+    let compansationBySugarInsulin = viewModel.sugarCellVM.correctionSugarKoeff ?? 0
+    let compasationByCarboInsulin  = (viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumInsulinValue as NSString).floatValue
+
+    return  compansationBySugarInsulin + compasationByCarboInsulin
+  }
+  
 }
 
 
@@ -268,10 +335,17 @@ extension NewCompansationObjectScreenPresenter {
     let sugarCellVM     = getDefaultSugarCellVM()
     let addMealCellVM   = getDefaultAddmealCellVM()
     let injectionCellVM = getDefaultInjectionCellVM()
+    let resultFooterVM  = getDefaultResultFooterVM()
     
     return NewCompObjViewModel(sugarCellVM     : sugarCellVM,
                                addMealCellVM   : addMealCellVM,
-                               injectionCellVM : injectionCellVM)
+                               injectionCellVM : injectionCellVM,
+                               resultFooterVM  : resultFooterVM)
+  }
+  
+  private func getDefaultResultFooterVM() -> ResultFooterModel {
+    
+    return ResultFooterModel(message: "", value: "", viewState: .hidden)
   }
   
   private func getDefaultInjectionCellVM() -> InjectionPlaceModel {

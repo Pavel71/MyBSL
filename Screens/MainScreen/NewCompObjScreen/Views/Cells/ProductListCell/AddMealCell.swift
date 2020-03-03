@@ -11,9 +11,9 @@ import UIKit
 
 protocol AddMealCellable {
   
-  var cellState     : AddMealCellState        {get set}
-//  var productListVM : NewProductListViewModel {get set}
-  var dinnerProductListVM : ProductListInDinnerViewModel {get set}
+  var isSwitcherIsEnabled  : Bool {get set}
+  var cellState            : AddMealCellState        {get set}
+  var dinnerProductListVM  : ProductListInDinnerViewModel {get set}
 }
 
 
@@ -105,6 +105,9 @@ class AddMealCell: UITableViewCell {
 extension AddMealCell {
   
   func setViewModel(viewModel: AddMealCellable) {
+    
+    // Активируем свитчер только когда сахар будет заполнен!
+    mealSwitcher.isEnabled = viewModel.isSwitcherIsEnabled
     
     switch viewModel.cellState {
       

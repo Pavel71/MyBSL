@@ -11,9 +11,9 @@ import UIKit
 
 protocol ResultFooterViewable {
   
-  var message : String {get set}
-  var value   : String {get set}
-  
+  var message   : String {get set}
+  var value     : String {get set}
+  var viewState : ResultFooterViewState {get set}
 }
 
 
@@ -218,6 +218,9 @@ class ResultFooterView : UIView {
   }
   
   
+ 
+  
+  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -232,10 +235,19 @@ extension ResultFooterView {
   
   func setViewModel(viewModel: ResultFooterViewable) {
     
+    
     resultLabel.text = viewModel.message
     resultValue.text = viewModel.value
     
+    hidden(state: viewModel.viewState)
+    
   }
+  
+  private func hidden(state: ResultFooterViewState) {
+     
+     
+     self.isHidden = state == .hidden
+   }
 }
 
 

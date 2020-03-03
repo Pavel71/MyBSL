@@ -62,11 +62,11 @@ extension ProductListViewModel: Equatable {
 
 struct ProductListResultsViewModel: ProductListResultViewModelable {
   
-  var sumCarboValue: String
+  var sumCarboValue   : String
   
-  var sumPortionValue: String
+  var sumPortionValue : String
   
-  var sumInsulinValue: String
+  var sumInsulinValue : String
   
   
 }

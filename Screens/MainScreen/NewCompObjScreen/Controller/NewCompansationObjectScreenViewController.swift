@@ -43,11 +43,15 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   var navBar                   : CompObjScreenNavBar!
   var tableView                : UITableView!
   var choosePlaceInjectionView : ChoosePlaceInjectionView!
-  
+  var resultFooterView         : ResultFooterView!
   
   // ViewModel
   
-  var viewModel: NewCompObjViewModel! //{didSet{tableView.reloadData()}}
+  var viewModel: NewCompObjViewModel! {
+    
+    didSet {resultFooterView.setViewModel(viewModel: viewModel.resultFooterVM)}
+    
+  }
   
   // MARK: Object lifecycle
   
@@ -127,6 +131,7 @@ extension NewCompansationObjectScreenViewController {
     navBar                   = mainView.navBar
     tableView                = mainView.tableView
     choosePlaceInjectionView = mainView.choosePlaceInjectionsView
+    resultFooterView         = mainView.resultFooterView
     
     
     confugireTableView()
@@ -329,8 +334,9 @@ extension NewCompansationObjectScreenViewController {
   private func catchCurrentSugarString(text: String) {
     
     interactor?.makeRequest(request: .passCurrentSugar(sugar: text))
-    //    view.endEditing(true)
+    
     updateSugarCell()
+    updateMealCell()
     
   }
   // Meal cell Switcher

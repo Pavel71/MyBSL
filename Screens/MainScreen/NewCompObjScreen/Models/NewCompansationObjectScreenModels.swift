@@ -63,6 +63,8 @@ struct NewCompObjViewModel {
   var addMealCellVM   : AddMealCellModel
   
   var injectionCellVM : InjectionPlaceModel
+  
+  var resultFooterVM  : ResultFooterModel
 }
 
 
@@ -77,12 +79,14 @@ struct SugarCellModel: SugarCellable {
   var compansationString   : String?
 
   var currentSugar         : Float?
+  var sugarState           : CorrectInsulinPosition
   
   var correctionSugarKoeff : Float?
   
   init(
     correctionImage      : UIImage? = nil,
     currentSugar         : Float? = nil,
+    sugarState           : CorrectInsulinPosition = .dontCorrect,
     correctionSugarKoeff : Float? = nil,
     compansationString   : String? = nil,
     cellState            : SugarCellState = .currentLayer
@@ -93,6 +97,7 @@ struct SugarCellModel: SugarCellable {
     self.correctionSugarKoeff = correctionSugarKoeff
     self.compansationString   = compansationString
     self.correctionImage      = correctionImage
+    self.sugarState           = sugarState
   }
   
   
@@ -103,7 +108,7 @@ struct SugarCellModel: SugarCellable {
 struct AddMealCellModel: AddMealCellable {
 //  var productListVM: NewProductListViewModel
   
-  
+  var isSwitcherIsEnabled = false
   var cellState: AddMealCellState
   
 //  var productListVM: NewProductListViewModel
@@ -120,7 +125,20 @@ struct InjectionPlaceModel:InjectionPlaceCellable {
   
 }
 
-// MARK: Result Cell VM
+// MARK: Result  VM
 
+struct ResultFooterModel: ResultFooterViewable {
+  
+  var message: String
+  
+  var value: String
+  
+  var viewState: ResultFooterViewState
+    
+}
+
+enum ResultFooterViewState {
+  case hidden,showed
+}
 
 

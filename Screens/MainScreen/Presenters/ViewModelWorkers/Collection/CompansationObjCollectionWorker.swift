@@ -87,9 +87,9 @@ extension CompansationObjCollectionWorker {
     let productsVM = Array(compObject.listProduct.map(getProductViewModel))
     
     let resultVM = ProductListResultsViewModel(
-      sumCarboValue   : "\(ResultViewWorker.getSumCarbo(products: productsVM))",
-    sumPortionValue   : "\(ResultViewWorker.getSumPortion(products: productsVM))",
-    sumInsulinValue   : "\(ResultViewWorker.getSumInsulin(products: productsVM))")
+      sumCarboValue : "\(ResultViewWorker.getSumCarbo(products: productsVM))",
+    sumPortionValue : "\(ResultViewWorker.getSumPortion(products: productsVM))",
+    sumInsulinValue : "\(ResultViewWorker.getSumInsulin(products: productsVM))")
        
        let mealProdVcViewModel = MealProductsVCViewModel(
          cells    : productsVM,

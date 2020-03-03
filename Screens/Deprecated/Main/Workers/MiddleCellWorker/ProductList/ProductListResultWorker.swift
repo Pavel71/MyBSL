@@ -18,9 +18,9 @@ class ProductListResultWorker {
   
   
   
-  private var sumCarbo: Int = 0
-  private var sumPortion: Int = 0
-  private var sumInsulin: Float = 0 
+  private var sumCarbo   : Int = 0
+  private var sumPortion : Int = 0
+  private var sumInsulin : Float = 0
   
   
   // Эти значения я пока не пойму ныжны они мне для изменений или нет
@@ -39,7 +39,10 @@ class ProductListResultWorker {
   private func getResultViewModel() -> ProductListResultsViewModel {
     
 
-    let resultViewModel = ProductListResultsViewModel(sumCarboValue: "\(sumCarbo)", sumPortionValue: "\(sumPortion)", sumInsulinValue: "\(floatTwo: sumInsulin)")
+    let resultViewModel = ProductListResultsViewModel(
+      sumCarboValue  : "\(sumCarbo)",
+      sumPortionValue: "\(sumPortion)",
+      sumInsulinValue: "\(floatTwo: sumInsulin)")
     return resultViewModel
 
   }

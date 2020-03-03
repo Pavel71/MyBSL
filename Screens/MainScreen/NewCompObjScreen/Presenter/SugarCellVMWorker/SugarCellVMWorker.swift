@@ -37,6 +37,8 @@ class SugarCellVMWorker {
     let sugarFloat = (sugar as NSString).floatValue
     let wayCorrectPosition = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat)
     
+    viewModel.sugarCellVM.sugarState = wayCorrectPosition
+    
     switch wayCorrectPosition {
     case .dontCorrect:
       viewModel.sugarCellVM.compansationString = "Сахар в норме"

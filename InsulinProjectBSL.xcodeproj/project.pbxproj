@@ -659,6 +659,14 @@
 			path = Validatable;
 			sourceTree = "<group>";
 		};
+		05408F63240E430400226A14 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				05733CE823FD48B5004197B2 /* ResultCell */,
+			);
+			path = Deprecated;
+			sourceTree = "<group>";
+		};
 		0541BA55233777E900F87B18 /* HeaderinSectionWorker */ = {
 			isa = PBXGroup;
 			children = (
@@ -1164,7 +1172,7 @@
 		058F5F4823A2490700717042 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				05733CE823FD48B5004197B2 /* ResultCell */,
+				05408F63240E430400226A14 /* Deprecated */,
 				05733CE523FC07F3004197B2 /* injectionPlaceCell */,
 				055A726123A8C329002CA9A7 /* SugarCell */,
 				055A726223A8C337002CA9A7 /* ProductListCell */,
