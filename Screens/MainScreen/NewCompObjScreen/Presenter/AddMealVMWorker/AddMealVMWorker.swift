@@ -21,6 +21,7 @@ class AddMealVMWorker {
     if isNeed == false {
       // если обед не нужен то очистим все продукты
       viewModel.addMealCellVM.dinnerProductListVM.productsData.removeAll()
+      
     }
     
   }

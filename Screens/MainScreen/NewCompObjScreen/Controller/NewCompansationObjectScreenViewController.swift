@@ -44,14 +44,11 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   var tableView                : UITableView!
   var choosePlaceInjectionView : ChoosePlaceInjectionView!
   var resultFooterView         : ResultFooterView!
+  var saveButton               : UIButton!
   
   // ViewModel
   
-  var viewModel: NewCompObjViewModel! {
-    
-    didSet {resultFooterView.setViewModel(viewModel: viewModel.resultFooterVM)}
-    
-  }
+  var viewModel: NewCompObjViewModel!
   
   // MARK: Object lifecycle
   
@@ -113,10 +110,18 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
     
     switch viewModel {
     case .setViewModel(let viewModel):
-      self.viewModel = viewModel
       
+      setViewModel(viewModel: viewModel)
     default:break
     }
+  }
+  
+  // MARK: Set View Model
+  
+  private func setViewModel(viewModel: NewCompObjViewModel) {
+    self.viewModel = viewModel
+    resultFooterView.setViewModel(viewModel: viewModel.resultFooterVM)
+    saveButton.isEnabled = viewModel.isValidData
   }
   
 }
@@ -132,7 +137,7 @@ extension NewCompansationObjectScreenViewController {
     tableView                = mainView.tableView
     choosePlaceInjectionView = mainView.choosePlaceInjectionsView
     resultFooterView         = mainView.resultFooterView
-    
+    saveButton               = mainView.navBar.saveButton
     
     confugireTableView()
     

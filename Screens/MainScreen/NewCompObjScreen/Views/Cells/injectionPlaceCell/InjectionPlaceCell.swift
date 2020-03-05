@@ -105,7 +105,7 @@ extension InjectionPlaceCell {
   
   func setViewModel(viewModel: InjectionPlaceCellable) {
     
-    let title = viewModel.titlePlace.isEmpty ? "Выберите" : viewModel.titlePlace
+    let title = viewModel.titlePlace.isEmpty ? "---" : viewModel.titlePlace
     chooseButton.setTitle(title, for: .normal)
     
     self.isHidden = viewModel.cellState == .hidden

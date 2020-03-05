@@ -65,6 +65,8 @@ struct NewCompObjViewModel {
   var injectionCellVM : InjectionPlaceModel
   
   var resultFooterVM  : ResultFooterModel
+  
+  var isValidData     : Bool 
 }
 
 

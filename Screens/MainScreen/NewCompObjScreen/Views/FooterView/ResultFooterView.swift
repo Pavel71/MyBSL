@@ -186,7 +186,7 @@ class ResultFooterView : UIView {
   
   
   let resultLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Нужен инсулин (ед.)", textColor: .white)
-  let resultValue = CustomLabels(font: .systemFont(ofSize: 20, weight: .bold), text: "2.0", textColor: .white)
+  let resultValue = CustomLabels(font: .systemFont(ofSize: 24, weight: .bold), text: "2.0", textColor: .white)
   
  
   
@@ -273,29 +273,7 @@ extension ResultFooterView {
 
 extension ResultFooterView {
   
-  private func setUpViews() {
-    
-    backgroundColor = .purple
-    generalTitle.textAlignment = .center
-    
-    let verticalStackView = UIStackView(arrangedSubviews: [
-      generalTitle,
-      compansationSugarStackView,
-      compansationCarboStackView,
-      totalInsulinStackView,
-      placeInjectionStackView
-      
-    ])
-    
-    verticalStackView.spacing      = 2
-    verticalStackView.distribution = .fillEqually
-    verticalStackView.axis         = .vertical
-    
-    
-    addSubview(verticalStackView)
-    verticalStackView.fillSuperview(padding: .init(top: 10, left: 10, bottom: 10, right: 10))
-    
-  }
+ 
   
   private func setUpViews2() {
     
@@ -304,31 +282,7 @@ extension ResultFooterView {
     generalTitle.textAlignment = .center
     
     
-//    let leftStackView = UIStackView(arrangedSubviews: [
-//      totalInsulinButton,
-//      placeInjectionTitleLabel
-//
-//    ])
-//    leftStackView.axis = .vertical
-//    leftStackView.distribution = .fillEqually
-//    leftStackView.spacing = 2
-//    leftStackView.alignment = .center
-//
-//    let rightStackView = UIStackView(arrangedSubviews: [
-//      totalInsulinLabel,
-//      placeInjectionValueLabel
-//    ])
-//
-//    rightStackView.axis = .vertical
-//    rightStackView.distribution = .fillEqually
-//    rightStackView.spacing = 2
-//    rightStackView.alignment = .center
-//
-//    let horizontalStackView = UIStackView(arrangedSubviews: [
-//      leftStackView,rightStackView
-//    ])
-//    horizontalStackView.distribution = .fillEqually
-//    horizontalStackView.spacing = 5
+
     
     
     let resultStackView = UIStackView(arrangedSubviews: [
@@ -344,7 +298,7 @@ extension ResultFooterView {
     
     
     let overAllStackView = UIStackView(arrangedSubviews: [
-      generalTitle,
+//      generalTitle,
       resultStackView
 //      mealAndTotalInsulinStackView
     ])

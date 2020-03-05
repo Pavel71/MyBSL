@@ -25,6 +25,11 @@ extension String {
         return attributedString
     }
   
+  func floatValue() -> Float {
+    
+    return (self as NSString).floatValue
+  }
+  
   
   
 }

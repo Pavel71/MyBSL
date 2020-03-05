@@ -123,6 +123,7 @@ extension NewCompansationObjectScreenPresenter {
     
     if sugar.isEmpty { // Если поле сахара пустое то и убираем обед! так как без сахара нельзя
       updateMealCellState(isNeed: false)
+      updateEnabledSaveButton(isEnabled: false)
     }
 
     // Сахар выше нормы мы должны его компенсировать
@@ -134,7 +135,7 @@ extension NewCompansationObjectScreenPresenter {
       // Значит будет укол добавляем поле
       
     }
-    
+    updateEnabledSaveButton(isEnabled: viewModel.sugarCellVM.sugarState == .correctDown)
     updateResultViewModel()
     setInjectionCellState()
   }
@@ -174,6 +175,8 @@ extension NewCompansationObjectScreenPresenter {
   
   private func updateMealCellState(isNeed: Bool) {
     AddMealVMWorker.changeNeedProductList(isNeed: isNeed, viewModel: &viewModel)
+
+    calculateResultViewModelInProductList() // пересчитыаем результат и обновляем Футер
     
     setInjectionCellState()
   }
@@ -243,7 +246,6 @@ extension NewCompansationObjectScreenPresenter {
      let testData = viewModel.addMealCellVM.dinnerProductListVM.productsData[index].carboInPortion
       let predictInsulin = mlWorkerByFood.getPredict(testData: [Float(testData)])
      
-     print(predictInsulin,"Predict insulin when update")
      viewModel.addMealCellVM.dinnerProductListVM.productsData[index].insulinValue = predictInsulin.first
      
   }
@@ -267,9 +269,30 @@ extension NewCompansationObjectScreenPresenter {
       
       // Set
       viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel = resultViewModel
-      // Каждый раз как обновляется резалт по обедам обновляю и итог
+//      resultStateByMealState()
       updateResultViewModel()
+      // Каждый раз как пересчитывается резалт по обеду! Чекай кнопочку сохранить
+      // Здесь нужно добавить логику того что если кнопочка
+      
+      if viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false {
+        
+        
+        updateEnabledSaveButton(isEnabled: true)
+      } else {
+        // нужно сделать проверку на то что мы можем сохранить только если мы делаем коррекцию Высокого сахара
+        let sugarFiedlIsEmpty = viewModel.sugarCellVM.sugarState == .correctDown
+        updateEnabledSaveButton(isEnabled: sugarFiedlIsEmpty)
+        
+      }
+      
+      
     }
+  
+  // MARK: WOrk With Save Button
+  private func updateEnabledSaveButton(isEnabled: Bool) {
+    
+    viewModel.isValidData = isEnabled
+  }
     
     
     
@@ -282,44 +305,90 @@ extension NewCompansationObjectScreenPresenter {
   
   private func updateResultViewModel() {
     
-    // Нужно подумать при каких условиях я буду обновлять резалт вью
+    // Возможно сообщение нужно формировать исходя из того какую дозировку инсулина мы получаем на выходе!
+
+    resultStateBySugarState()
     
-    // 1. Если мы ввели сахар и он в норме - то не показываю
-    // 2. Мы ввели сахар и он выше нормы - то показываю сумму коррекции
-    // 3. Если мы ввели сахар и он ниже нормы то нужно пересчитать коррекцию на углеводы и попросить съесть углеводы
-    // 4. Если Сахар выше нормы + обед = то нужно подсчитать коррекцию + сколько всего нужно сделать инсулина
-    // 5. Если Сахар ниже нормы + обед = то нужно конвертировать коррекционные углеводы в инсулин и получить разниуцу!
+
+    
+  }
+  
+  
+  private func resultStateBySugarState() {
     
     let sugarState = viewModel.sugarCellVM.sugarState
     
-    
     switch sugarState {
+      
     case .dontCorrect:
+      
       viewModel.resultFooterVM.viewState = .hidden
+      resultStateByMealState()
+      
     case .correctUp:
       
-      let message = viewModel.addMealCellVM.cellState == .productListState ? "Нужна коррекция инсулином с компенсацией" : "Нужна коррекция углеводами"
+
+      let resultInsulin = getTotalInsulin()
+      
+      let message = getresultMessage(resultInsulin: resultInsulin)
       
       viewModel.resultFooterVM.viewState = .showed
       viewModel.resultFooterVM.message   = message
       viewModel.resultFooterVM.value     = "\(floatTwo: getTotalInsulin())"
       
+      
+      
     case .correctDown:
+      
       viewModel.resultFooterVM.viewState = .showed
-      viewModel.resultFooterVM.message   = "Нужна коррекция инсулином"
+      viewModel.resultFooterVM.message   = "Инсулина"
       viewModel.resultFooterVM.value     = "\(floatTwo: getTotalInsulin())"
+      
+      
+      
     default:break
     }
-    
-    viewModel.resultFooterVM.viewState = sugarState == .dontCorrect ? .hidden : .showed
   }
   
+  private func resultStateByMealState() {
+    let mealState  = viewModel.addMealCellVM.cellState
+    
+    switch mealState {
+    case .defaultState:
+      
+      viewModel.resultFooterVM.viewState = .hidden
+      
+    case .productListState:
+      let resultInsulin = getTotalInsulin()
+      let message = getresultMessage(resultInsulin: resultInsulin)
+
+      viewModel.resultFooterVM.viewState = .showed
+      viewModel.resultFooterVM.message   = message
+      viewModel.resultFooterVM.value     = "\(floatTwo: resultInsulin)"
+    }
+  }
+  
+  
+  private func getresultMessage(resultInsulin: Float) -> String {
+    var message : String
+    
+    if resultInsulin < 0.0 {
+      message = "Добавьте продукт"
+    } else if resultInsulin == 0.0 {
+      message = "Все норм"
+    } else {
+      message = "Инсулина"
+    }
+    return message
+  }
+  
+
   
   private func getTotalInsulin() -> Float {
     
     let compansationBySugarInsulin = viewModel.sugarCellVM.correctionSugarKoeff ?? 0
     let compasationByCarboInsulin  = (viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumInsulinValue as NSString).floatValue
-
+    
     return  compansationBySugarInsulin + compasationByCarboInsulin
   }
   
@@ -340,7 +409,8 @@ extension NewCompansationObjectScreenPresenter {
     return NewCompObjViewModel(sugarCellVM     : sugarCellVM,
                                addMealCellVM   : addMealCellVM,
                                injectionCellVM : injectionCellVM,
-                               resultFooterVM  : resultFooterVM)
+                               resultFooterVM  : resultFooterVM,
+                               isValidData     : false)
   }
   
   private func getDefaultResultFooterVM() -> ResultFooterModel {

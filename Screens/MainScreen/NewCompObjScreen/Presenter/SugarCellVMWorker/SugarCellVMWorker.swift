@@ -41,9 +41,10 @@ class SugarCellVMWorker {
     
     switch wayCorrectPosition {
     case .dontCorrect:
-      viewModel.sugarCellVM.compansationString = "Сахар в норме"
-      viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLabel
-      viewModel.sugarCellVM.correctionImage    = nil
+      viewModel.sugarCellVM.compansationString   = "Сахар в норме"
+      viewModel.sugarCellVM.cellState            = .currentLayerAndCorrectionLabel
+      viewModel.sugarCellVM.correctionImage      = nil
+      viewModel.sugarCellVM.correctionSugarKoeff = 0
     case .correctDown:
       viewModel.sugarCellVM.compansationString = "Сахар выше нормы! нужна коррекция инсулином!"
       viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLayer
