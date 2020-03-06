@@ -46,6 +46,9 @@ extension NewCompansationObjectScreenInteractor {
     case .updatePlaceInjection(let place):
       presenter?.presentData(response: .updatePlaceInjection(place: place))
       
+    case .saveCompansationObjectInRealm(let viewModel):
+      // итак нам нужен реалм менеджер по дням который сохранит объект реалма в день
+      let realmCompansationObject = convertViewModelToRealmObject(viewModel: viewModel)
       
     default:break
     }
@@ -78,11 +81,33 @@ extension NewCompansationObjectScreenInteractor {
      }
     
   }
-  
-  
-  
+
   
 }
+
+
+// MARK: Convert View Model to Realm Object
+extension NewCompansationObjectScreenInteractor {
+  
+  
+  private func convertViewModelToRealmObject(viewModel: NewCompObjViewModel) -> CompansationObjectRelam {
+    
+    return CompansationObjectRelam(
+      
+      typeObject: .mealObject,
+      sugarBefore: 5.0,
+      sugarAfter: 0,
+      timeCreate: Date(),
+      compansationFase: .progress,
+      carbo: 20,
+      insulin: 10)
+    
+  }
+  
+}
+
+
+
 
 
 

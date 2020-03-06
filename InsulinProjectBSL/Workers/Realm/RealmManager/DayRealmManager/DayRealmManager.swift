@@ -44,11 +44,11 @@ extension DayRealmManager {
     // Insulin Compansation
     
     let insulinCopmansationObject = CompansationObjectRelam(
-      typeObject: TypeCompansationObject.correctSugarByInsulin.rawValue,
+      typeObject: .correctSugarByInsulin,
       sugarBefore: 12.5,
       sugarAfter: 0,
       timeCreate: Date(timeIntervalSince1970: 1574845200),
-      compansationFase: CompansationPosition.bad.rawValue,
+      compansationFase: .bad,
       carbo: 0,
       insulin: 1.0)
     insulinCopmansationObject.id = insulinCOmpansationObjectID
@@ -56,11 +56,11 @@ extension DayRealmManager {
     // Carbo Compansation
     
     let carboCompansationObject = CompansationObjectRelam(
-      typeObject: TypeCompansationObject.correctSugarByCarbo.rawValue,
+      typeObject: .correctSugarByCarbo,
       sugarBefore: 2.5,
       sugarAfter: 0,
       timeCreate: Date(timeIntervalSince1970: 1574841600),
-      compansationFase: CompansationPosition.progress.rawValue,
+      compansationFase: .progress,
       carbo: 5.0,
       insulin: 0)
     carboCompansationObject.id  = carboCompansationObjectID
@@ -138,11 +138,11 @@ extension DayRealmManager {
   private func getDummyDInner() -> CompansationObjectRelam {
     
     let compansationObjectLikeMeal = CompansationObjectRelam(
-      typeObject  : TypeCompansationObject.mealObject.rawValue,
+      typeObject  : .mealObject,
       sugarBefore : 5.0,
       sugarAfter  : 0,
       timeCreate  : Date(),
-      compansationFase: CompansationPosition.progress.rawValue,
+      compansationFase: .progress,
       carbo       : 13.0,
       insulin     : 1.5)
     
@@ -187,11 +187,11 @@ extension DayRealmManager {
   private func getDummyDInner2() -> CompansationObjectRelam {
     
     let compansationObjectLikeMeal = CompansationObjectRelam(
-    typeObject  : TypeCompansationObject.mealObject.rawValue,
+    typeObject  : .mealObject,
     sugarBefore : 8.0,
     sugarAfter  : 0,
     timeCreate  : Date(),
-    compansationFase: CompansationPosition.progress.rawValue,
+    compansationFase: .progress,
     carbo       : 13.0,
     insulin     : 1.5)
     

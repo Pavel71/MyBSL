@@ -331,6 +331,8 @@ extension NewCompansationObjectScreenViewController {
   
   private func didTapNavBarSaveButton() {
     
+    // Нужно отправить сигнал в интерактор и передать туда текущию модель!
+    // там я ее уже буду разбирать и сохранять в реалм!
     print("Собрать модель и сохранить и сделать дисмисс ")
   }
   

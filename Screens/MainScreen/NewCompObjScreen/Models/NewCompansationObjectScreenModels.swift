@@ -13,6 +13,7 @@ enum NewCompansationObjectScreen {
   enum Model {
     struct Request {
       enum RequestType {
+        
         case getBlankViewModel
         case passCurrentSugar(sugar: String)
         case passIsNeedProductList(isNeed: Bool)
@@ -24,6 +25,8 @@ enum NewCompansationObjectScreen {
         case updatePortionInProduct(portion: Int,index: Int)
         case updateInsulinByPerson(insulin: Float,index: Int)
         case updatePlaceInjection(place: String)
+        
+        case saveCompansationObjectInRealm(viewModel: NewCompObjViewModel)
       }
     }
     struct Response {

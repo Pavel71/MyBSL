@@ -19,6 +19,8 @@ import RealmSwift
   // тип объекта
   dynamic var typeObject       : Int = 0
   
+
+  
   dynamic var sugarBefore      : Double = 0
   dynamic var sugarAfter       : Double = 0 // Этот параметр буду сетить как только вводится новая дозировка инсулина! Тогда мы будем брать текущий сахар
   dynamic var timeCreate       : Date?
@@ -26,30 +28,27 @@ import RealmSwift
   dynamic var compansationFase : Int    = 0
   
   // For results
-   dynamic var carbo           : Double?
-   dynamic var insulin         : Double?
+   dynamic var totalCarbo           : Double?
+   dynamic var totalInsulin         : Double?
    
    
    var listProduct              = List<ProductRealm>()
   
   convenience init(
-    typeObject       : Int,
+    typeObject       : TypeCompansationObject,
     sugarBefore      : Double,
-    sugarAfter       : Double,
-    timeCreate       : Date,
-    compansationFase : Int,
-    carbo            : Double,
-    insulin          : Double
+  
+    totalCarbo            : Double,
+    totalInsulin          : Double
     
     ) {
       self.init()
-    self.typeObject       = typeObject
+    self.typeObject       = typeObject.rawValue
     self.sugarBefore      = sugarBefore
-    self.sugarAfter       = sugarAfter
-    self.timeCreate       = timeCreate
-    self.compansationFase = compansationFase
-    self.carbo            = carbo
-    self.insulin          = insulin
+    self.timeCreate       = Date()
+    self.compansationFase = CompansationPosition.progress.rawValue
+    self.totalCarbo       = totalCarbo
+    self.totalInsulin     = totalInsulin
     
     }
   
