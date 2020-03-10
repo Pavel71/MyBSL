@@ -14,7 +14,7 @@ import UIKit
 protocol MainScreenViewModelable {
   
   var chartVCVM       : ChartVCViewModel             {get set}
-  var collectionVCVM  : CollectionVCVM {get set}
+  var collectionVCVM  : CollectionVCVM               {get set}
   var insulinSupplyVM : InsulinSupplyViewModel       {get set}
   
 }

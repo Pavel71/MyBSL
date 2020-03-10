@@ -7,15 +7,105 @@
 //
 
 import Foundation
+import RealmSwift
 
+
+// Пока что эта базза данных будет состоять просто из дней!
 
 class DayRealmManager {
   
+  
+  var currentDayId: String!
+  
+  
+  
   let provider: RealmProvider
+  
+  var realm : Realm {provider.realm}
   
   init(provider: RealmProvider = RealmProvider.day) {
     self.provider = provider
     
+  }
+  
+}
+
+// MARK: Work With Day
+
+extension DayRealmManager {
+  
+  // Для начала нам нужен пустой день! При каких условиях он будет создававтся?
+  // Наверно нужно мониторить время! Тоесть можно при создание нового обеда или ужина проверять время и если новый день относительно вчера то создавать новый
+  // Иил же я могу чекать по таймеру какое время и создавать пустой бланк как только будет 00 00
+  
+  
+  // Пока просто создам пустой день
+  
+  func getBlankDayObject() -> DayRealm {
+    let dayBlank = DayRealm(date: Date())
+    // Мне нужно теперь записать день в Realm! Чтобы потом я мог с ним работать!
+    
+    DispatchQueue.main.async {
+      do {
+        self.realm.beginWrite()
+        self.realm.add(dayBlank)
+        self.currentDayId = dayBlank.id
+        try self.realm.commitWrite()
+        print(self.realm.configuration.fileURL?.absoluteURL as Any,"Day DB")
+        
+      } catch {
+        print(error.localizedDescription)
+      }
+    }
+    
+    return dayBlank
+  }
+  
+  // MARK: Add Sugar Data
+  func addSugarData(sugarRealm: SugarRealm) {
+    
+    guard let curentDay = getDayById(dayId: currentDayId) else {
+      return print("Нет Current Day")
+    }
+    
+         do {
+           self.realm.beginWrite()
+          // хз будет это работать или нет
+           curentDay.listSugar.append(sugarRealm)
+           // вот эта запись должна обновить объект!
+          self.realm.add(curentDay, update: .all)
+          
+           try self.realm.commitWrite()
+          
+           
+         } catch {
+           print(error.localizedDescription)
+         }
+       
+  }
+  
+  // MARK: Fetch All Days
+  private func fetchAllDays() -> Results<DayRealm> {
+    
+    return realm.objects(DayRealm.self)
+  }
+  
+  // MARK: Day By ID
+  private func getDayById(dayId: String) -> DayRealm? {
+    
+    let days = fetchAllDays()
+    
+    let dayByID = days.first { (day) -> Bool in
+      day.id == dayId
+    }
+    return dayByID
+    
+  }
+  // MARK: Get CurrentDay
+  
+  func getCurrentDay() -> DayRealm? {
+
+    return getDayById(dayId: currentDayId)
   }
   
 }
@@ -35,7 +125,7 @@ extension DayRealmManager {
     let carboCompansationObjectID = "555"
     
     let testDay = DayRealm(date: Date())
-
+    
     let dinners1 = getDummyDInner()
     dinners1.id  = meal1Id
     let dinners2 = getDummyDInner2()
@@ -46,11 +136,9 @@ extension DayRealmManager {
     let insulinCopmansationObject = CompansationObjectRelam(
       typeObject: .correctSugarByInsulin,
       sugarBefore: 12.5,
-      sugarAfter: 0,
-      timeCreate: Date(timeIntervalSince1970: 1574845200),
-      compansationFase: .bad,
-      carbo: 0,
-      insulin: 1.0)
+      totalCarbo: 0,
+      totalInsulin: 1)
+    
     insulinCopmansationObject.id = insulinCOmpansationObjectID
     
     // Carbo Compansation
@@ -58,11 +146,8 @@ extension DayRealmManager {
     let carboCompansationObject = CompansationObjectRelam(
       typeObject: .correctSugarByCarbo,
       sugarBefore: 2.5,
-      sugarAfter: 0,
-      timeCreate: Date(timeIntervalSince1970: 1574841600),
-      compansationFase: .progress,
-      carbo: 5.0,
-      insulin: 0)
+      totalCarbo: 5.0,
+      totalInsulin: 0)
     carboCompansationObject.id  = carboCompansationObjectID
     // Тут я также могу добавить еще и продукт который был употребленн!
     
@@ -72,7 +157,7 @@ extension DayRealmManager {
     testDay.listDinners.append(objectsIn: [dinners1,carboCompansationObject,insulinCopmansationObject,dinners2,dinner3])
     
     let sugars = getSugars()
-  
+    
     testDay.listSugar.append(objectsIn: sugars)
     
     return testDay
@@ -82,26 +167,26 @@ extension DayRealmManager {
   
   private func getSugars() -> [SugarRealm] {
     
-   
+    
     
     let sugarMeal = SugarRealm(
       time       : Date(timeIntervalSince1970: 1574838000),
       sugar      : 6.0,
-      dataCase   : ChartDataCase.mealData.rawValue,
+      dataCase   : .mealData,
       compansationObjectId   : "111"
     )
     
     let carboSugar = SugarRealm(
       time       : Date(timeIntervalSince1970: 1574841600),
       sugar      : 2.5,
-      dataCase   : ChartDataCase.correctCarboData.rawValue,
+      dataCase   : .correctCarboData,
       compansationObjectId  : "555"
     )
     
     let simpleSugar = SugarRealm(
       time       : Date(timeIntervalSince1970: 1574841600),
       sugar      : 7.5,
-      dataCase   : ChartDataCase.sugarData.rawValue,
+      dataCase   : .sugarData,
       compansationObjectId  : nil
     )
     
@@ -110,21 +195,21 @@ extension DayRealmManager {
     let correctInsulinSugar = SugarRealm(
       time       : Date(timeIntervalSince1970: 1574845200),
       sugar      : 12.5,
-      dataCase   : ChartDataCase.correctInsulinData.rawValue,
+      dataCase   : .correctInsulinData,
       compansationObjectId     : "444"
     )
     
     let sugarMeal2 = SugarRealm(
-         time       : Date(timeIntervalSince1970: 1574849000),
-         sugar      : 6.0,
-         dataCase   : ChartDataCase.mealData.rawValue,
-         compansationObjectId     : "222"
-       )
+      time       : Date(timeIntervalSince1970: 1574849000),
+      sugar      : 6.0,
+      dataCase   : .mealData,
+      compansationObjectId     : "222"
+    )
     
     let sugarMeal3 = SugarRealm(
       time       : Date(timeIntervalSince1970: 1574852000),
       sugar      : 8.0,
-      dataCase   : ChartDataCase.mealData.rawValue,
+      dataCase   : .mealData,
       compansationObjectId     : "333"
     )
     
@@ -140,28 +225,25 @@ extension DayRealmManager {
     let compansationObjectLikeMeal = CompansationObjectRelam(
       typeObject  : .mealObject,
       sugarBefore : 5.0,
-      sugarAfter  : 0,
-      timeCreate  : Date(),
-      compansationFase: .progress,
-      carbo       : 13.0,
-      insulin     : 1.5)
+      totalCarbo  : 13.0,
+      totalInsulin: 1.5)
     
-//    let dinner = DinnersRealm(
-//      compansationFase    : CompansationPosition.progress.rawValue,
-//         timeEating       : Date(timeIntervalSince1970: 1574838000),
-//         sugarBefore      : 6.0,
-//         totalCarbo       : 5,
-//         totalInsulin     : 0.5,
-//         totalPortion     : 100
-//
-//
-//       )
+    //    let dinner = DinnersRealm(
+    //      compansationFase    : CompansationPosition.progress.rawValue,
+    //         timeEating       : Date(timeIntervalSince1970: 1574838000),
+    //         sugarBefore      : 6.0,
+    //         totalCarbo       : 5,
+    //         totalInsulin     : 0.5,
+    //         totalPortion     : 100
+    //
+    //
+    //       )
     let product1 = ProductRealm(
-         name          : "Молоко",
-         category      : "Молочные продукты",
-         carboIn100Grm : 5,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-         isFavorits    : false,
-         actualInsulin : 0.5
+      name          : "Молоко",
+      category      : "Молочные продукты",
+      carboIn100Grm : 5,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+      isFavorits    : false,
+      actualInsulin : 0.5
     )
     let product2 = ProductRealm(
       name          : "Яблоко",
@@ -178,29 +260,26 @@ extension DayRealmManager {
       isFavorits    : false,
       actualInsulin : 1
     )
-       
+    
     compansationObjectLikeMeal.listProduct.append(objectsIn: [product1,product2,product3])
-       
+    
     return compansationObjectLikeMeal
   }
   
   private func getDummyDInner2() -> CompansationObjectRelam {
     
     let compansationObjectLikeMeal = CompansationObjectRelam(
-    typeObject  : .mealObject,
-    sugarBefore : 8.0,
-    sugarAfter  : 0,
-    timeCreate  : Date(),
-    compansationFase: .progress,
-    carbo       : 13.0,
-    insulin     : 1.5)
+      typeObject   : .mealObject,
+      sugarBefore  : 8.0,
+      totalCarbo   : 13.0,
+      totalInsulin : 1.5)
     
     let product1 = ProductRealm(
-         name          : "Печенье",
-         category      : "Сладости",
-         carboIn100Grm : 25,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-         isFavorits    : false,
-         actualInsulin : 1
+      name          : "Печенье",
+      category      : "Сладости",
+      carboIn100Grm : 25,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+      isFavorits    : false,
+      actualInsulin : 1
     )
     let product2 = ProductRealm(
       name          : "Суп с картошкой",
@@ -217,9 +296,9 @@ extension DayRealmManager {
       isFavorits    : false,
       actualInsulin : 1
     )
-       
+    
     compansationObjectLikeMeal.listProduct.append(objectsIn: [product1,product2,product3])
-       
+    
     return compansationObjectLikeMeal
   }
   

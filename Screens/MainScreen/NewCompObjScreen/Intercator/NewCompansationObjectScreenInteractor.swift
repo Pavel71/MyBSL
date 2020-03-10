@@ -93,14 +93,11 @@ extension NewCompansationObjectScreenInteractor {
   private func convertViewModelToRealmObject(viewModel: NewCompObjViewModel) -> CompansationObjectRelam {
     
     return CompansationObjectRelam(
-      
       typeObject: .mealObject,
       sugarBefore: 5.0,
-      sugarAfter: 0,
-      timeCreate: Date(),
-      compansationFase: .progress,
-      carbo: 20,
-      insulin: 10)
+      totalCarbo: 20,
+      totalInsulin: 2)
+ 
     
   }
   

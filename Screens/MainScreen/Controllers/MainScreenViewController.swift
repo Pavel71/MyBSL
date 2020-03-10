@@ -231,7 +231,7 @@ extension MainScreenViewController {
       
       AddNewElementViewAnimated.showOrDismissNewView(newElementView: self.newSugarDataView, blurView: self.mainScreenView.blurView, customNavBar: self.navBarView, tabbarController: self.tabBarController!, isShow: true)
       
-      print("Sugar Callback")
+      
     },mealCallback: { action in
       
       // MARK: Go to New ComObj Screen
@@ -283,6 +283,17 @@ extension MainScreenViewController {
     
   }
   
+}
+
+
+// MARK: Catch Clousers from NewCompansationController
+
+extension MainScreenViewController {
+  
+  func passCompansationObjVMtoIntercator(viewModel: NewCompObjViewModel) {
+    
+    interactor?.makeRequest(request: .setCompansationObjVM(viewModel: viewModel))
+  }
 }
 
 // MARK: Keyboard Notififcation

@@ -37,14 +37,14 @@ import Realm
   convenience init(
     time                 : Date,
     sugar                : Double,
-    dataCase             : Int,
+    dataCase             : ChartDataCase,
     compansationObjectId : String?
     
     ) {
       self.init()
     self.sugar                = sugar
     self.time                 = time
-    self.dataCase             = dataCase
+    self.dataCase             = dataCase.rawValue
     self.compansationObjectId = compansationObjectId
 
     }

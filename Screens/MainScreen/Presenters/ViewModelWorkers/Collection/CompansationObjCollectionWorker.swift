@@ -42,8 +42,8 @@ extension CompansationObjCollectionWorker {
   static private func getCompansationObjectByCarboVM(compObject:CompansationObjectRelam ) -> ComapsnationByCarboVM {
     
     let topButtonVM = TopButtonViewModel(
-      carbo: compObject.carbo ?? 0,
-      insulin: compObject.insulin ?? 0,
+      carbo: compObject.totalCarbo ?? 0,
+      insulin: compObject.totalInsulin ?? 0,
       type: TypeCompansationObject(rawValue: compObject.typeObject)!
     )
     
@@ -62,8 +62,8 @@ extension CompansationObjCollectionWorker {
   static private func getCompansationObjectVMByInsulin(compObject: CompansationObjectRelam) -> CompansationByInsulinVM {
     
     let topButtonVM = TopButtonViewModel(
-      carbo: compObject.carbo ?? 0,
-      insulin: compObject.insulin ?? 0,
+      carbo: compObject.totalCarbo ?? 0,
+      insulin: compObject.totalInsulin ?? 0,
       type: TypeCompansationObject(rawValue: compObject.typeObject)!
     )
     
@@ -98,8 +98,8 @@ extension CompansationObjCollectionWorker {
        
        // Нужно переименовывать объект который будем хранить в реалме не как диннер а как SugarDependencyObject
        let topButtonVM = TopButtonViewModel(
-        carbo   : compObject.carbo ?? 0,
-        insulin : compObject.insulin ?? 0,
+        carbo   : compObject.totalCarbo ?? 0,
+        insulin : compObject.totalInsulin ?? 0,
         type    : TypeCompansationObject(rawValue: compObject.typeObject)!
        ) // Заглушка
        

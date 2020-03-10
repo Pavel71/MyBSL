@@ -49,6 +49,10 @@ class ChartViewController: UIViewController {
     
     // Теперь нет картники
     
+    guard viewModel.chartEntryModels.isEmpty == false else {
+      return print("Нет Данных по сахару")
+    }
+    
     entryies          =  chartWorker.getEntryies(data: viewModel.chartEntryModels)
     let lineSet       = getChartDataSets(entryies: entryies)
     
@@ -56,7 +60,7 @@ class ChartViewController: UIViewController {
     
     
     lineChartView.chartDescription?.text = DateWorker.shared.getDayMonthYear(
-      date: viewModel.chartEntryModels[0].time
+      date: viewModel.chartEntryModels[0].time 
     )
     lineChartView.data = lineChartData
     

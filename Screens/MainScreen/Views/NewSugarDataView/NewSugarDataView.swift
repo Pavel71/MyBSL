@@ -53,7 +53,7 @@ class NewSugarDataView: AddNewElementView {
     
     setValidatorClouser()
     configureTextFields()
-    configurePickerView()
+//    configurePickerView()
     setUpViews()
     
   }
@@ -66,16 +66,16 @@ class NewSugarDataView: AddNewElementView {
   }
   
   // Configure PickerView
-  private func configurePickerView() {
-    sugarTextField.inputView    = sugarPickerView
-    // Set Clouser
-    sugarPickerView.passValueFromPickerView = {[weak self] sugar in
-      self?.catchValueFromPickerView(value: sugar)
-       }
-  }
+//  private func configurePickerView() {
+//    sugarTextField.inputView    = sugarPickerView
+//    // Set Clouser
+//    sugarPickerView.passValueFromPickerView = {[weak self] sugar in
+//      self?.catchValueFromPickerView(value: sugar)
+//       }
+//  }
   // Configure TextFields
   private func configureTextFields() {
-    
+    sugarTextField.delegate       = self
     sugarTextField.keyboardType   = .decimalPad
     sugarTextField.addDoneButtonOnKeyboard()
    
@@ -86,18 +86,17 @@ class NewSugarDataView: AddNewElementView {
   
   func clearAllFieldsInView() {
     sugarTextField.text = ""
+    newSugarViewValidator.setDefault()
   }
   
   // MARK: Handle Save and Cancel Button
   override func handleSaveButton() {
-    
-    
-    
+   
     let sugarVM = getSugarViewModel()
-    // очищаем поля они больше не нужны
-    clearAllFieldsInView()
     // Здесь мне нужно собрать моделичку и отправить е в контроллер для передачи данных
     didTapSaveButtonClouser!(sugarVM)
+    handleCancelButton()
+    
   }
   
   override func handleCancelButton() {
@@ -197,6 +196,19 @@ extension NewSugarDataView {
       okButton.backgroundColor =  .lightGray
       okButton.setTitleColor(.black, for: .disabled)
     }
+  }
+  
+}
+
+
+// MARK: TextField Delegate
+extension NewSugarDataView {
+  
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    
+    guard let sugar = textField.text else {return}
+    let sugarFloat = (sugar as NSString).doubleValue
+    catchValueFromPickerView(value: sugarFloat)
   }
   
 }

@@ -50,6 +50,7 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   
   var viewModel: NewCompObjViewModel!
   
+  var didPassViewModelToSaveInRealm: ((NewCompObjViewModel) -> Void)?
   // MARK: Object lifecycle
   
   
@@ -329,10 +330,13 @@ extension NewCompansationObjectScreenViewController {
     navigationController?.popViewController(animated: true)
   }
   
+  // MARK: Save Compansation Object VM
+  
   private func didTapNavBarSaveButton() {
     
-    // Нужно отправить сигнал в интерактор и передать туда текущию модель!
-    // там я ее уже буду разбирать и сохранять в реалм!
+    // Или не липить тут херни а взять просто и создать в интеракторе DayRealmManager и сохранить
+    didPassViewModelToSaveInRealm!(viewModel)
+    didTapNavBarBackButton()
     print("Собрать модель и сохранить и сделать дисмисс ")
   }
   

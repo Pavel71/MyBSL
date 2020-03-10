@@ -35,9 +35,8 @@ import RealmSwift
    var listProduct              = List<ProductRealm>()
   
   convenience init(
-    typeObject       : TypeCompansationObject,
-    sugarBefore      : Double,
-  
+    typeObject            : TypeCompansationObject,
+    sugarBefore           : Double,
     totalCarbo            : Double,
     totalInsulin          : Double
     

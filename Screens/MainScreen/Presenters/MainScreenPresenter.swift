@@ -13,6 +13,7 @@ protocol MainScreenPresentationLogic {
 }
 
 class MainScreenPresenter: MainScreenPresentationLogic {
+  
   weak var viewController: MainScreenDisplayLogic?
   
   func presentData(response: MainScreen.Model.Response.ResponseType) {
@@ -35,6 +36,7 @@ extension MainScreenPresenter {
       
       // Здесь нужно получить ищ реалма модельку с данными и отправить ее на контроллер Дальше только обновить экран
       let dayViewModel = getViewModel(realmData: realmData)
+      
       viewController?.displayData(viewModel: .setViewModel(viewModel: dayViewModel))
     default: break
     }

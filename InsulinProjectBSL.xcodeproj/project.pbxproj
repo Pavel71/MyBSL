@@ -716,6 +716,14 @@
 			path = ContainerController;
 			sourceTree = "<group>";
 		};
+		054F5EBF24177FD70029597A /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				05C0C62B238D40EF001B2664 /* DinnersRealm.swift */,
+			);
+			path = Deprecated;
+			sourceTree = "<group>";
+		};
 		0550B7FF234636C600D88732 /* ListTrainsView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1804,10 +1812,10 @@
 		05C0C628238D408A001B2664 /* Day */ = {
 			isa = PBXGroup;
 			children = (
+				054F5EBF24177FD70029597A /* Deprecated */,
 				05C0C62D238D43C6001B2664 /* Realm Task */,
 				05C0C626238D3EC7001B2664 /* DayRealm.swift */,
 				05C0C629238D40E3001B2664 /* SugarRealm.swift */,
-				05C0C62B238D40EF001B2664 /* DinnersRealm.swift */,
 				052F05C6239E65A900A614B3 /* CompansationObject.swift */,
 			);
 			path = Day;
