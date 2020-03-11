@@ -49,6 +49,7 @@ extension NewCompansationObjectScreenInteractor {
     case .saveCompansationObjectInRealm(let viewModel):
       // итак нам нужен реалм менеджер по дням который сохранит объект реалма в день
       let realmCompansationObject = convertViewModelToRealmObject(viewModel: viewModel)
+      presenter?.presentData(response: .passCompansationObjRealmToVC(compObjRealm: realmCompansationObject))
       
     default:break
     }
@@ -86,20 +87,52 @@ extension NewCompansationObjectScreenInteractor {
 }
 
 
-// MARK: Convert View Model to Realm Object
+// MARK: Convert To RealmCompansationObj
+
 extension NewCompansationObjectScreenInteractor {
   
   
   private func convertViewModelToRealmObject(viewModel: NewCompObjViewModel) -> CompansationObjectRelam {
     
-    return CompansationObjectRelam(
-      typeObject: .mealObject,
-      sugarBefore: 5.0,
-      totalCarbo: 20,
-      totalInsulin: 2)
+    
+    
+     let sugarBefore  = Double(viewModel.sugarCellVM.currentSugar!).roundToDecimal(2)
+     let typeObject   = viewModel.resultFooterVM.typeCompansationObject
+     let totalInsulin = Double(viewModel.resultFooterVM.totalInsulin).roundToDecimal(2)
+     let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
+     
+     
+     
+     
+     let compansationObjectRealm = CompansationObjectRelam(
+       typeObject   : typeObject,
+       sugarBefore  : sugarBefore,
+       totalCarbo   : totalCarbo,
+       totalInsulin : totalInsulin)
+     
+     
+     // тут мне теперь нужна трансформация realmProduct
+     let productsVM = viewModel.addMealCellVM.dinnerProductListVM.productsData
+     
+     compansationObjectRealm.listProduct.append(objectsIn: productsVM.map(converToProductRealm))
+     
+     return compansationObjectRealm
  
     
   }
+  
+  private func converToProductRealm(viewModel: ProductListViewModel) -> ProductRealm {
+     
+     
+     
+     return ProductRealm(
+       name          : viewModel.name,
+       category      : viewModel.category,
+       carboIn100Grm : viewModel.carboIn100Grm,
+       isFavorits    : viewModel.isFavorit,
+       portion       : viewModel.portion ,
+       actualInsulin : viewModel.insulinValue!.roundToDecimal(2))
+   }
   
 }
 

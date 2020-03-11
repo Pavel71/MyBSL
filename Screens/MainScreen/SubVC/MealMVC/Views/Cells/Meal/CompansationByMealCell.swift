@@ -9,7 +9,7 @@
 import UIKit
 
 
-protocol CompansationByMealCellable:CompansationCVBaseCellable {
+protocol CompansationByMealCellable: CompansationCVBaseCellable {
   
   var id                     : String                      {get}
   var topButtonVM            : TopButtonViewModalable      {get}

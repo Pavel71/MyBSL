@@ -33,6 +33,7 @@
 		054471BF2395213B0020C0DC /* InsulinSupplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054471BE2395213B0020C0DC /* InsulinSupplyView.swift */; };
 		054471C1239531410020C0DC /* InsulinSupplyWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054471C0239531410020C0DC /* InsulinSupplyWorker.swift */; };
 		0544720E2396536E0020C0DC /* NewSugarDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0544720D2396536E0020C0DC /* NewSugarDataView.swift */; };
+		0550AEA82418FADF00140254 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0550AEA72418FADF00140254 /* Double+Extensions.swift */; };
 		0550B801234636E500D88732 /* ListTrainsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0550B800234636E500D88732 /* ListTrainsViewController.swift */; };
 		05510CC4234DEC760076FB92 /* MenuRealmWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05510CC3234DEC760076FB92 /* MenuRealmWorker.swift */; };
 		05515CFF236840B300A298AA /* TotalInsulinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05515CFE236840B300A298AA /* TotalInsulinView.swift */; };
@@ -279,6 +280,7 @@
 		054471BE2395213B0020C0DC /* InsulinSupplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsulinSupplyView.swift; sourceTree = "<group>"; };
 		054471C0239531410020C0DC /* InsulinSupplyWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsulinSupplyWorker.swift; sourceTree = "<group>"; };
 		0544720D2396536E0020C0DC /* NewSugarDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSugarDataView.swift; sourceTree = "<group>"; };
+		0550AEA72418FADF00140254 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		0550B800234636E500D88732 /* ListTrainsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTrainsViewController.swift; sourceTree = "<group>"; };
 		05510CC3234DEC760076FB92 /* MenuRealmWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuRealmWorker.swift; sourceTree = "<group>"; };
 		05515CFE236840B300A298AA /* TotalInsulinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalInsulinView.swift; sourceTree = "<group>"; };
@@ -2743,6 +2745,7 @@
 				0533B98F23F416E4008E13DE /* String+Extension.swift */,
 				0561C15623F53054002167A2 /* UIPageViewController+Extension.swift */,
 				05733CE023FA8512004197B2 /* Array+ Extensions.swift */,
+				0550AEA72418FADF00140254 /* Double+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3014,6 +3017,7 @@
 				055A727123A8CC75002CA9A7 /* NewProductListCell.swift in Sources */,
 				058F5F4A23A2492A00717042 /* SugarCell.swift in Sources */,
 				05F7C4A423F2B579009EE9C5 /* OnBoardViewController.swift in Sources */,
+				0550AEA82418FADF00140254 /* Double+Extensions.swift in Sources */,
 				0509FD00233F9DBC00B04B30 /* ProductListResultWorker.swift in Sources */,
 				055A726A23A8CA2B002CA9A7 /* NewProductListVC.swift in Sources */,
 				0550B801234636E500D88732 /* ListTrainsViewController.swift in Sources */,

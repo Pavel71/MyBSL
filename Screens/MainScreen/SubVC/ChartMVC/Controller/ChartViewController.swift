@@ -37,7 +37,7 @@ class ChartViewController: UIViewController {
   
   override func viewDidLoad() {
     
-    print("ChartVC Did Load")
+    
     view.backgroundColor = .orange
     
     setUpChartView()

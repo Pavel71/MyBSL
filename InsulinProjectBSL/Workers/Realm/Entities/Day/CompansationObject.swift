@@ -22,14 +22,22 @@ import RealmSwift
 
   
   dynamic var sugarBefore      : Double = 0
+  
+  var correctionPositionObject : CorrectInsulinPosition{
+    ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: Float(sugarBefore))
+  }
+  
+  
   dynamic var sugarAfter       : Double = 0 // Этот параметр буду сетить как только вводится новая дозировка инсулина! Тогда мы будем брать текущий сахар
   dynamic var timeCreate       : Date?
   // На какой стадии находится объект
   dynamic var compansationFase : Int    = 0
   
+  
+  
   // For results
-   dynamic var totalCarbo           : Double?
-   dynamic var totalInsulin         : Double?
+   dynamic var totalCarbo      : Double = 0
+   dynamic var totalInsulin    : Double = 0
    
    
    var listProduct              = List<ProductRealm>()

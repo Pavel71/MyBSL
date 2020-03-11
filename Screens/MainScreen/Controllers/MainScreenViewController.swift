@@ -83,17 +83,15 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   override func viewDidLoad() {
     super.viewDidLoad()
     setViews()
+    interactor?.makeRequest(request: .getViewModel)
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    print("View Will Appear Main Screeen")
     navigationController?.navigationBar.isHidden = true
-    
     setKeyboardNotification()
     // Сделаем запрос в реалм чтобы получить новые данные по ViewModel
-    interactor?.makeRequest(request: .getViewModel)
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -106,6 +104,8 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     
     switch viewModel {
     case .setViewModel(let viewModel):
+      
+      print(viewModel.collectionVCVM.cells,"Данные по продуктам")
       mainScreenViewModel = viewModel
     }
 
@@ -290,9 +290,9 @@ extension MainScreenViewController {
 
 extension MainScreenViewController {
   
-  func passCompansationObjVMtoIntercator(viewModel: NewCompObjViewModel) {
+  func passCompansationObjVMtoIntercator(viewModel: CompansationObjectRelam) {
     
-    interactor?.makeRequest(request: .setCompansationObjVM(viewModel: viewModel))
+    interactor?.makeRequest(request: .setCompansationObjRealm(compObjRealm: viewModel))
   }
 }
 

@@ -50,7 +50,7 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   
   var viewModel: NewCompObjViewModel!
   
-  var didPassViewModelToSaveInRealm: ((NewCompObjViewModel) -> Void)?
+  var didPassViewModelToSaveInRealm: ((CompansationObjectRelam) -> Void)?
   // MARK: Object lifecycle
   
   
@@ -113,6 +113,9 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
     case .setViewModel(let viewModel):
       
       setViewModel(viewModel: viewModel)
+    case .passCompansationObjRealmtToMainViewController(let compObjRealm):
+      didPassViewModelToSaveInRealm!(compObjRealm)
+      
     default:break
     }
   }
@@ -335,9 +338,12 @@ extension NewCompansationObjectScreenViewController {
   private func didTapNavBarSaveButton() {
     
     // Или не липить тут херни а взять просто и создать в интеракторе DayRealmManager и сохранить
-    didPassViewModelToSaveInRealm!(viewModel)
+    
+    interactor?.makeRequest(request: .saveCompansationObjectInRealm(viewModel: viewModel))
+    
+//    didPassViewModelToSaveInRealm!(viewModel)
     didTapNavBarBackButton()
-    print("Собрать модель и сохранить и сделать дисмисс ")
+    
   }
   
   // SUgarTextField RightButton

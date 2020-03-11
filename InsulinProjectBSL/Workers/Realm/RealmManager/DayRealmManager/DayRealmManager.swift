@@ -15,8 +15,8 @@ import RealmSwift
 class DayRealmManager {
   
   
-  var currentDayId: String!
-  
+//  var currentDayId: String!
+  private var currentDay: DayRealm!
   
   
   let provider: RealmProvider
@@ -41,15 +41,16 @@ extension DayRealmManager {
   
   // Пока просто создам пустой день
   
-  func getBlankDayObject() -> DayRealm {
-    let dayBlank = DayRealm(date: Date())
+  func getBlankDayObject() {
+    
+    currentDay = DayRealm(date: Date())
     // Мне нужно теперь записать день в Realm! Чтобы потом я мог с ним работать!
     
     DispatchQueue.main.async {
       do {
         self.realm.beginWrite()
-        self.realm.add(dayBlank)
-        self.currentDayId = dayBlank.id
+        self.realm.add(self.currentDay)
+//        self.currentDayId = dayBlank.id
         try self.realm.commitWrite()
         print(self.realm.configuration.fileURL?.absoluteURL as Any,"Day DB")
         
@@ -58,31 +59,55 @@ extension DayRealmManager {
       }
     }
     
-    return dayBlank
+    
   }
   
   // MARK: Add Sugar Data
   func addSugarData(sugarRealm: SugarRealm) {
     
-    guard let curentDay = getDayById(dayId: currentDayId) else {
-      return print("Нет Current Day")
-    }
+//    guard let curentDay = getDayById(dayId: currentDayId) else {
+//      return print("Нет Current Day")
+//    }
     
-         do {
-           self.realm.beginWrite()
-          // хз будет это работать или нет
-           curentDay.listSugar.append(sugarRealm)
-           // вот эта запись должна обновить объект!
-          self.realm.add(curentDay, update: .all)
-          
-           try self.realm.commitWrite()
-          
-           
-         } catch {
-           print(error.localizedDescription)
-         }
+     do {
+       self.realm.beginWrite()
+      // хз будет это работать или нет
+       currentDay.listSugar.append(sugarRealm)
+       // вот эта запись должна обновить объект!
+      self.realm.add(currentDay, update: .all)
+      
+       try self.realm.commitWrite()
+      
+       
+     } catch {
+       print(error.localizedDescription)
+     }
        
   }
+  
+  
+  func addCompansationObjectData(compansationObj: CompansationObjectRelam) {
+    
+//    guard let curentDay = getDayById(dayId: currentDayId) else {
+//      return print("Нет Current Day")
+//    }
+    
+     do {
+       self.realm.beginWrite()
+      // хз будет это работать или нет
+      currentDay.listDinners.append(compansationObj)
+      // вот эта запись должна обновить объект!
+      self.realm.add(currentDay, update: .all)
+      
+       try self.realm.commitWrite()
+      
+       
+     } catch {
+       print(error.localizedDescription)
+     }
+    
+  }
+  
   
   // MARK: Fetch All Days
   private func fetchAllDays() -> Results<DayRealm> {
@@ -103,12 +128,19 @@ extension DayRealmManager {
   }
   // MARK: Get CurrentDay
   
-  func getCurrentDay() -> DayRealm? {
+  func getCurrentDay() -> DayRealm {
 
-    return getDayById(dayId: currentDayId)
+    return currentDay
   }
   
 }
+
+
+
+
+
+
+
 
 // MARK: Dummy Data
 

@@ -20,7 +20,7 @@ enum MainScreen {
         
         // Set Data to Realm
         case setSugarVM(sugarViewModel: SugarViewModel)
-        case setCompansationObjVM(viewModel: NewCompObjViewModel)
+        case setCompansationObjRealm(compObjRealm: CompansationObjectRelam)
       }
     }
     

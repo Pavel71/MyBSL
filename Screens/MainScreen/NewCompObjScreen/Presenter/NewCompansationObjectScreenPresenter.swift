@@ -65,10 +65,14 @@ extension NewCompansationObjectScreenPresenter {
       updatePlaceInjectionInVM(place: place)
       throwViewModelToVC()
       
+    case .passCompansationObjRealmToVC(let compObjRealm):
+      viewController?.displayData(viewModel: .passCompansationObjRealmtToMainViewController(compObjRealm: compObjRealm))
+      
     default:break
     }
   }
   
+  // MARK: Work With Product List Requests
   
   private func workWithProductListRequest(response: NewCompansationObjectScreen.Model.Response.ResponseType) {
     
@@ -415,7 +419,11 @@ extension NewCompansationObjectScreenPresenter {
   
   private func getDefaultResultFooterVM() -> ResultFooterModel {
     
-    return ResultFooterModel(message: "", value: "", viewState: .hidden)
+    return ResultFooterModel(
+      message                : "",
+      value                  : "",
+      viewState              : .hidden,
+      typeCompansationObject : .mealObject  )
   }
   
   private func getDefaultInjectionCellVM() -> InjectionPlaceModel {

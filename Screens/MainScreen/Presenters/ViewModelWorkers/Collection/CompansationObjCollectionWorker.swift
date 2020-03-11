@@ -41,9 +41,11 @@ extension CompansationObjCollectionWorker {
   
   static private func getCompansationObjectByCarboVM(compObject:CompansationObjectRelam ) -> ComapsnationByCarboVM {
     
+    
+    
     let topButtonVM = TopButtonViewModel(
-      carbo: compObject.totalCarbo ?? 0,
-      insulin: compObject.totalInsulin ?? 0,
+      carbo: compObject.totalCarbo ,
+      insulin: compObject.totalInsulin ,
       type: TypeCompansationObject(rawValue: compObject.typeObject)!
     )
     
@@ -62,8 +64,8 @@ extension CompansationObjCollectionWorker {
   static private func getCompansationObjectVMByInsulin(compObject: CompansationObjectRelam) -> CompansationByInsulinVM {
     
     let topButtonVM = TopButtonViewModel(
-      carbo: compObject.totalCarbo ?? 0,
-      insulin: compObject.totalInsulin ?? 0,
+      carbo: compObject.totalCarbo ,
+      insulin: compObject.totalInsulin ,
       type: TypeCompansationObject(rawValue: compObject.typeObject)!
     )
     
@@ -89,7 +91,7 @@ extension CompansationObjCollectionWorker {
     let resultVM = ProductListResultsViewModel(
       sumCarboValue : "\(ResultViewWorker.getSumCarbo(products: productsVM))",
     sumPortionValue : "\(ResultViewWorker.getSumPortion(products: productsVM))",
-    sumInsulinValue : "\(ResultViewWorker.getSumInsulin(products: productsVM))")
+    sumInsulinValue : "\(floatTwo: ResultViewWorker.getSumInsulin(products: productsVM))")
        
        let mealProdVcViewModel = MealProductsVCViewModel(
          cells    : productsVM,
@@ -98,8 +100,8 @@ extension CompansationObjCollectionWorker {
        
        // Нужно переименовывать объект который будем хранить в реалме не как диннер а как SugarDependencyObject
        let topButtonVM = TopButtonViewModel(
-        carbo   : compObject.totalCarbo ?? 0,
-        insulin : compObject.totalInsulin ?? 0,
+        carbo   : compObject.totalCarbo ,
+        insulin : compObject.totalInsulin ,
         type    : TypeCompansationObject(rawValue: compObject.typeObject)!
        ) // Заглушка
        

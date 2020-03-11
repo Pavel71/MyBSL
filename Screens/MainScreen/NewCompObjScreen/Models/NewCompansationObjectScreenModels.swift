@@ -44,12 +44,13 @@ enum NewCompansationObjectScreen {
         case updateInsulinByPerson(insulin: Float,index: Int)
         
         case updatePlaceInjection(place: String)
+        case passCompansationObjRealmToVC(compObjRealm: CompansationObjectRelam)
       }
     }
     struct ViewModel {
       enum ViewModelData {
         case setViewModel(viewModel: NewCompObjViewModel)
-        
+        case passCompansationObjRealmtToMainViewController(compObjRealm: CompansationObjectRelam)
       }
     }
   }
@@ -139,6 +140,13 @@ struct ResultFooterModel: ResultFooterViewable {
   var value: String
   
   var viewState: ResultFooterViewState
+  
+  
+  var totalInsulin: Float {
+    (value as NSString).floatValue
+  }
+  
+  var typeCompansationObject: TypeCompansationObject
     
 }
 
