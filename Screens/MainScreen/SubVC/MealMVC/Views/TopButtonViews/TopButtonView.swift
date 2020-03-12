@@ -16,11 +16,18 @@ import UIKit
 // 2. Статус Компенсации
 // 3. Редактировать обед
 
+enum CanRedactingCompObj {
+  case can,not
+}
+
 protocol TopButtonViewModalable {
   
-  var type    : TypeCompansationObject {get}
-  var carbo   : Double {get}
-  var insulin : Double {get}
+  var type          : TypeCompansationObject {get}
+  var carbo         : Double {get}
+  var insulin       : Double {get}
+  var sugarBefore   : Double {get}
+  var sugarAfter    : Double {get}
+  var isRedactating : CanRedactingCompObj {get}
   
 }
 
@@ -35,6 +42,8 @@ class TopButtonView: UIView {
   lazy var carboMealResultButton     : UIButton = createButton(image: #imageLiteral(resourceName: "food"))
   
   lazy var sugarCorrectByCarboButton : UIButton = createButton(image: #imageLiteral(resourceName: "candy"))
+  lazy var sugarBeforeButton         : UIButton = createButton(image: #imageLiteral(resourceName: "sugar-cubes"))
+  lazy var sugarAfterButton          : UIButton = createButton(image: #imageLiteral(resourceName: "sugar-cubes"))
   
   // Кнопочка если мы просто что-то едим для выравнивания сахара!
   
@@ -50,6 +59,8 @@ class TopButtonView: UIView {
   var injectionResultLabel  = CustomLabels(font: .systemFont(ofSize: 16), text: "6.0")
   var carboInMealLabel      = CustomLabels(font: .systemFont(ofSize: 16), text: "25.0")
   var carboCorrectionLabel  = CustomLabels(font: .systemFont(ofSize: 16), text: "5.0")
+  var sugarBeforeLabel      = CustomLabels(font: .systemFont(ofSize: 16), text: "5.0")
+  var sugarAfterLabel       = CustomLabels(font: .systemFont(ofSize: 16), text: "5.0")
   
   
   var cellDataStackView = UIStackView()
@@ -57,6 +68,8 @@ class TopButtonView: UIView {
   var mealObjectStackView            : UIStackView!
   var correctSugarByInsulinStackView : UIStackView!
   var correctSugarByCarboStackView   : UIStackView!
+  var sugarBeforeStackView           : UIStackView!
+  var sugarAfterStackView            : UIStackView!
   
 
   
@@ -88,6 +101,10 @@ class TopButtonView: UIView {
       print("Show Message that it it a Meak Carbo")
     case sugarCorrectByCarboButton :
       print("Show That it is a correction Carbo")
+    case sugarBeforeButton:
+      print("Показать что сахар до")
+    case sugarAfterButton:
+      print("Показать что сахар после")
 
     default:break
     }
@@ -104,6 +121,9 @@ class TopButtonView: UIView {
 extension TopButtonView {
   
   func setViewModel(viewModel:TopButtonViewModalable) {
+    
+    sugarBeforeLabel.text = "\(viewModel.sugarBefore)"
+    sugarAfterLabel.text  = "\(viewModel.sugarAfter)"
     
     switch viewModel.type {
     case .correctSugarByCarbo:
@@ -134,7 +154,28 @@ extension TopButtonView {
       correctSugarByCarboStackView.isHidden   = true
       mealObjectStackView.isHidden            = false
     }
+    
+    // Не позволяем редактировать обхект если его статус изменилдся с прогресса на другой!
+    setStateRedactingCompansationObject(canRedacting: viewModel.isRedactating)
 
+    
+  }
+  
+  private func setStateRedactingCompansationObject(canRedacting: CanRedactingCompObj) {
+    
+    switch canRedacting {
+    case .can:
+      deleteButton.isHidden = false
+      updateButton.isHidden = false
+      
+      sugarAfterStackView.isHidden = true
+    case .not:
+      deleteButton.isHidden = true
+      updateButton.isHidden = true
+      
+      sugarAfterStackView.isHidden = false
+
+    }
     
   }
   
@@ -154,57 +195,87 @@ extension TopButtonView {
     configureCorrectSugarByInsulinStackView()
     configureMealObjectStackView()
     configureCorrectSugarByCarboStackView()
+    configurateSugarBeforeStackView()
+    configurateSugarAfterStackView()
     
     let allStackView = UIStackView(arrangedSubviews: [
-    correctSugarByCarboStackView,mealObjectStackView,correctSugarByInsulinStackView
+    sugarBeforeStackView,
+    correctSugarByCarboStackView,mealObjectStackView,correctSugarByInsulinStackView,
+    sugarAfterStackView
     
     ])
     allStackView.distribution = .fillEqually
     allStackView.spacing      = 5
+    
+    
      
      let stackView = UIStackView(arrangedSubviews: [
        deleteButton,allStackView,updateButton
      ])
     
-    stackView.distribution = .equalCentering
-     
+    stackView.distribution = .equalSpacing
+    stackView.spacing = 5
+    
      addSubview(stackView)
      stackView.fillSuperview()
+  }
+  
+  private func configurateSugarBeforeStackView() {
+    sugarBeforeStackView = UIStackView(arrangedSubviews: [
+    
+    sugarBeforeButton,sugarBeforeLabel,
+    
+    ])
+    sugarBeforeStackView.distribution = .fillEqually
+    sugarBeforeStackView.spacing      = 5
+  }
+  
+  private func configurateSugarAfterStackView() {
+    sugarAfterStackView = UIStackView(arrangedSubviews: [
+    
+    sugarAfterButton,sugarAfterLabel,
+    
+    ])
+    sugarAfterStackView.distribution = .fillEqually
+    sugarAfterStackView.spacing      = 5
+    
+    sugarAfterStackView.isHidden = true
   }
   
   private func configureCorrectSugarByInsulinStackView()  {
     
     correctSugarByInsulinStackView = UIStackView(arrangedSubviews: [
-    injectionResultButton,injectionResultLabel
+    
+    injectionResultButton,injectionResultLabel,
+    
     ])
     correctSugarByInsulinStackView.distribution = .fillEqually
-    correctSugarByInsulinStackView.spacing      = 10
+    correctSugarByInsulinStackView.spacing      = 5
     
     
   }
   private func configureMealObjectStackView() {
     
     mealObjectStackView = UIStackView(arrangedSubviews: [
+    
     carboMealResultButton,carboInMealLabel
     ])
     mealObjectStackView.distribution = .fillEqually
-    mealObjectStackView.spacing      = 10
+    mealObjectStackView.spacing      = 5
     
-//    mealObjectStackView = UIStackView(arrangedSubviews: [
-//    carboMealStackView
-//    ])
-//    mealObjectStackView.distribution = .fillEqually
-//    mealObjectStackView.spacing      = 5
+
     
     
     
   }
   private func configureCorrectSugarByCarboStackView()  {
     correctSugarByCarboStackView = UIStackView(arrangedSubviews: [
-    sugarCorrectByCarboButton,carboCorrectionLabel
+      
+    sugarCorrectByCarboButton,carboCorrectionLabel,
+      
     ])
     correctSugarByCarboStackView.distribution = .fillEqually
-    correctSugarByCarboStackView.spacing = 10
+    correctSugarByCarboStackView.spacing = 5
     
     
   }

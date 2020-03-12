@@ -14,10 +14,10 @@ import Foundation
 
 struct ComapsnationByCarboVM : CompansationObjactable,CompansationByCarboCellable {
   
-  var topButtonVM: TopButtonViewModalable
+  var topButtonVM            : TopButtonViewModalable
 
-  var id: String
-  var type: TypeCompansationObject
+  var id                     : String
+  var type                   : TypeCompansationObject
   
   
 }
@@ -26,11 +26,12 @@ struct ComapsnationByCarboVM : CompansationObjactable,CompansationByCarboCellabl
 // CompansationByInsulin Type Cell
 struct CompansationByInsulinVM : CompansationByInsuliCellable,CompansationObjactable {
   
-  var id: String
+  var id           : String
 
-  var type: TypeCompansationObject
+  var type         : TypeCompansationObject
 
-  var topButtonVM: TopButtonViewModalable
+  var topButtonVM  : TopButtonViewModalable
+  
   
 }
 
@@ -38,6 +39,7 @@ struct CompansationByInsulinVM : CompansationByInsuliCellable,CompansationObjact
 // Meal Type Cell
 
 struct CompansationMealVM : CompansationByMealCellable,CompansationObjactable  {
+  
   
   var topButtonVM            : TopButtonViewModalable
   var type                   : TypeCompansationObject
@@ -53,6 +55,12 @@ struct CompansationMealVM : CompansationByMealCellable,CompansationObjactable  {
 
 // Сюда нужно положить еще если будут углеводы и инсулин!
 struct TopButtonViewModel : TopButtonViewModalable {
+  
+  var sugarBefore: Double
+  
+  var sugarAfter: Double
+  
+  var isRedactating: CanRedactingCompObj
   
   var carbo   : Double
   var insulin : Double

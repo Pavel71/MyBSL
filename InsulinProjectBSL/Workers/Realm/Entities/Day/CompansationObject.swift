@@ -28,11 +28,19 @@ import RealmSwift
   }
   
   
+  
+  
   dynamic var sugarAfter       : Double = 0 // Этот параметр буду сетить как только вводится новая дозировка инсулина! Тогда мы будем брать текущий сахар
   dynamic var timeCreate       : Date?
   // На какой стадии находится объект
-  dynamic var compansationFase : Int    = 0
   
+  dynamic var compansationFase : Int    = 0
+  var compansationFaseEnum : CompansationPosition   {
+    
+    set {compansationFase =  newValue.rawValue}
+    get {CompansationPosition.init(rawValue: compansationFase)!}
+    
+  }
   
   
   // For results

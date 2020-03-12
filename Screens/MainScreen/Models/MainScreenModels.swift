@@ -57,8 +57,9 @@ struct InsulinSupplyViewModel:InsulinSupplyViewModable {
 }
 
 protocol CompansationObjactable {
-  var id   : String                 {get}
-  var type : TypeCompansationObject {get}
+  var id           : String                 {get set}
+  var type         : TypeCompansationObject {get set}
+  
 }
 
 struct CollectionVCVM {
@@ -74,6 +75,8 @@ enum TypeCompansationObject: Int {
   case correctSugarByCarbo   // Мы компенсируем низкий сахар углеводами
   
 }
+
+
 
 
 

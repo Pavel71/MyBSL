@@ -86,25 +86,51 @@ extension DayRealmManager {
   }
   
   
-  func addCompansationObjectData(compansationObj: CompansationObjectRelam) {
+  func addCompansationObjectData(currentCompObj: CompansationObjectRelam) {
     
-//    guard let curentDay = getDayById(dayId: currentDayId) else {
-//      return print("Нет Current Day")
-//    }
-    
+    // Когда добавляем новый объект мы должны установить позицию предыдущего обеда и изменить его состояние
+
      do {
        self.realm.beginWrite()
       // хз будет это работать или нет
-      currentDay.listDinners.append(compansationObj)
-      // вот эта запись должна обновить объект!
-      self.realm.add(currentDay, update: .all)
       
-       try self.realm.commitWrite()
+ 
+      changeCompansationObjectStateSetSugarAfter(sugarAfter: currentCompObj.sugarBefore)
+      
+      currentDay.listDinners.append(currentCompObj)
+      // вот эта запись должна обновить объект!
+      self.realm.add(currentDay, update: .modified)
+      
+      try self.realm.commitWrite()
       
        
      } catch {
        print(error.localizedDescription)
      }
+    
+  }
+  
+  
+  // Изходя из текущего сахара мы определям как мы компенсировали предыдущий обед хорошо или плохо
+  private func changeCompansationObjectStateSetSugarAfter(sugarAfter: Double) {
+    
+    guard let lastCompansationObj = currentDay.listDinners.last else{return}
+    
+    lastCompansationObj.sugarAfter = sugarAfter
+    
+    let sugarCompansation = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: Float(sugarAfter))
+    
+    switch sugarCompansation {
+    case .correctDown:
+      lastCompansationObj.compansationFaseEnum = .bad
+    case .correctUp:
+      lastCompansationObj.compansationFaseEnum = .bad
+    case .dontCorrect:
+      lastCompansationObj.compansationFaseEnum = .good
+    default:break
+    }
+    
+    // Изменения внесутся в реалм!
     
   }
   

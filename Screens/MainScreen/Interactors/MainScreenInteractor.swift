@@ -64,7 +64,7 @@ extension MainScreenInteractor {
       
       // потом добавить в день
       dayRealmManager.addSugarData(sugarRealm: sugarRealm)
-      dayRealmManager.addCompansationObjectData(compansationObj: compObjRealm)
+      dayRealmManager.addCompansationObjectData(currentCompObj: compObjRealm)
       // потом получить новый день
       
       

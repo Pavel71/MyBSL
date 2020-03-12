@@ -171,7 +171,7 @@ extension ChartViewController {
     leftAxis.drawLimitLinesBehindDataEnabled = true
     leftAxis.drawZeroLineEnabled = true
 
-    leftAxis.spaceTop    = 0.2
+    leftAxis.spaceTop    = 0.5
     
     leftAxis.axisMinimum = 0
     leftAxis.labelFont   = UIFont.systemFont(ofSize: 12)

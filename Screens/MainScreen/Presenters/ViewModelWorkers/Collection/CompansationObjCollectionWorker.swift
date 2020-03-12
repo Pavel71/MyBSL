@@ -32,6 +32,16 @@ class CompansationObjCollectionWorker {
     
   }
   
+  static private func getCompansationObjState(compFaseposition: CompansationPosition) -> CanRedactingCompObj {
+    
+    switch compFaseposition {
+    case .progress:
+      return .can
+    default: return .not
+    }
+    
+  }
+  
   
   
 }
@@ -44,6 +54,9 @@ extension CompansationObjCollectionWorker {
     
     
     let topButtonVM = TopButtonViewModel(
+      sugarBefore: compObject.sugarBefore,
+      sugarAfter: compObject.sugarAfter,
+      isRedactating: getCompansationObjState(compFaseposition: compObject.compansationFaseEnum),
       carbo: compObject.totalCarbo ,
       insulin: compObject.totalInsulin ,
       type: TypeCompansationObject(rawValue: compObject.typeObject)!
@@ -64,6 +77,9 @@ extension CompansationObjCollectionWorker {
   static private func getCompansationObjectVMByInsulin(compObject: CompansationObjectRelam) -> CompansationByInsulinVM {
     
     let topButtonVM = TopButtonViewModel(
+      sugarBefore: compObject.sugarBefore,
+      sugarAfter: compObject.sugarAfter,
+      isRedactating: getCompansationObjState(compFaseposition: compObject.compansationFaseEnum),
       carbo: compObject.totalCarbo ,
       insulin: compObject.totalInsulin ,
       type: TypeCompansationObject(rawValue: compObject.typeObject)!
@@ -100,14 +116,17 @@ extension CompansationObjCollectionWorker {
        
        // Нужно переименовывать объект который будем хранить в реалме не как диннер а как SugarDependencyObject
        let topButtonVM = TopButtonViewModel(
-        carbo   : compObject.totalCarbo ,
-        insulin : compObject.totalInsulin ,
-        type    : TypeCompansationObject(rawValue: compObject.typeObject)!
+        sugarBefore  : compObject.sugarBefore,
+        sugarAfter   : compObject.sugarAfter,
+        isRedactating: getCompansationObjState(compFaseposition: compObject.compansationFaseEnum),
+        carbo        : compObject.totalCarbo ,
+        insulin      : compObject.totalInsulin ,
+        type         : TypeCompansationObject(rawValue: compObject.typeObject)!
        ) // Заглушка
        
-       // Так как здесь у меня именно меал то можно проставить руками но это о разджел нужно переисать чтобы обрабатывалиьс все 3 объекта
+       
        return CompansationMealVM(
-         topButtonVM            : topButtonVM,
+        topButtonVM             : topButtonVM,
          type                   : TypeCompansationObject(rawValue: compObject.typeObject)!,
          id                     : compObject.id,
          mealProductVCViewModel : mealProdVcViewModel,
