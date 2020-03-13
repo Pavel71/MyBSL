@@ -49,7 +49,11 @@ extension NewCompansationObjectScreenPresenter {
         viewModel = getBlankViewModel()
         
         throwViewModelToVC()
+      
+      case .convertCompObjRealmToVM(let compObjRealm):
         
+        viewModel = convertCompObjRealmToVM(compObjRealm:compObjRealm)
+          throwViewModelToVC()
       case .updateCurrentSugarInVM(let sugar):
         
         setSugarData(sugar: sugar)
@@ -60,13 +64,13 @@ extension NewCompansationObjectScreenPresenter {
         updateMealCellState(isNeed: isNeed)
         
         throwViewModelToVC()
-      
-    case .updatePlaceInjection(let place):
-      updatePlaceInjectionInVM(place: place)
-      throwViewModelToVC()
-      
-    case .passCompansationObjRealmToVC(let compObjRealm):
-      viewController?.displayData(viewModel: .passCompansationObjRealmtToMainViewController(compObjRealm: compObjRealm))
+        
+      case .updatePlaceInjection(let place):
+        updatePlaceInjectionInVM(place: place)
+        throwViewModelToVC()
+        
+      case .passCompansationObjRealmToVC(let compObjRealm):
+        viewController?.displayData(viewModel: .passCompansationObjRealmtToMainViewController(compObjRealm: compObjRealm))
       
     default:break
     }
@@ -112,6 +116,23 @@ extension NewCompansationObjectScreenPresenter {
     
     
     viewController?.displayData(viewModel: .setViewModel(viewModel: viewModel))
+  }
+  
+}
+
+
+// MARK: Convert CompObjRealmToVM
+
+extension NewCompansationObjectScreenPresenter {
+  
+  private func convertCompObjRealmToVM(compObjRealm:CompansationObjectRelam) -> NewCompObjViewModel {
+    
+    
+    let viewModel = ConvertCompObjRealmToVMWorker.convertCompObjRealmToVM(compObjRealm: compObjRealm)
+
+    
+    return viewModel
+    
   }
   
 }

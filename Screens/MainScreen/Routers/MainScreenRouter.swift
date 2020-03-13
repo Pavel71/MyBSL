@@ -10,7 +10,7 @@ import UIKit
 
 protocol MainScreenRoutingLogic {
   
-  func goToNewCompansationObjectScreen()
+  func goToNewCompansationObjectScreen(compansationObjectRealm: CompansationObjectRelam?)
 }
 
 class MainScreenRouter: NSObject, MainScreenRoutingLogic {
@@ -19,9 +19,9 @@ class MainScreenRouter: NSObject, MainScreenRoutingLogic {
   
   // MARK: Routing
   
-  func goToNewCompansationObjectScreen() {
+  func goToNewCompansationObjectScreen(compansationObjectRealm: CompansationObjectRelam?) {
     
-    let newVC = NewCompansationObjectScreenViewController()
+    let newVC = NewCompansationObjectScreenViewController(compansationObjectRealm: compansationObjectRealm)
     
     let containerController = ContainerController(mainController: newVC, menuController: MainMenuViewController())
     

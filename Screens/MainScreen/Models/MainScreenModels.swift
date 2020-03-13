@@ -21,17 +21,22 @@ enum MainScreen {
         // Set Data to Realm
         case setSugarVM(sugarViewModel: SugarViewModel)
         case setCompansationObjRealm(compObjRealm: CompansationObjectRelam)
+        
+        case deleteCompansationObj(compObjId: String)
+        case getCompansationObj(compObjId: String)
       }
     }
     
     struct Response {
       enum ResponseType {
         case prepareViewModel(realmData:DayRealm)
+        case passCompansationObj(compObj: CompansationObjectRelam)
       }
     }
     struct ViewModel {
       enum ViewModelData {
         case setViewModel(viewModel: MainScreenViewModel)
+        case throwCompansationObjectToUpdate(compObj: CompansationObjectRelam)
       }
     }
   }

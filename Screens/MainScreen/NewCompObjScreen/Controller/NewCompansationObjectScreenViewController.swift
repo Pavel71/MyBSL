@@ -49,13 +49,15 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   // ViewModel
   
   var viewModel: NewCompObjViewModel!
+  var compansationObjectRealm: CompansationObjectRelam?
   
   var didPassViewModelToSaveInRealm: ((CompansationObjectRelam) -> Void)?
   // MARK: Object lifecycle
   
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  init(compansationObjectRealm: CompansationObjectRelam? = nil) {
+    super.init(nibName: nil, bundle: nil)
+    self.compansationObjectRealm = compansationObjectRealm
     setup()
     
   }
@@ -90,7 +92,18 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
     super.viewDidLoad()
     setUpViews()
     
-    interactor?.makeRequest(request: .getBlankViewModel)
+    
+    // Если объект пришел то зпусти заполнение модели данными
+    if let compObjRealm = compansationObjectRealm {
+      
+      interactor?.makeRequest(request: .updateCompansationObject(compObjRealm: compObjRealm))
+
+    } else {
+      // если объекта нет то запусти пустой экран
+      interactor?.makeRequest(request: .getBlankViewModel)
+    }
+    
+    
     
   }
   

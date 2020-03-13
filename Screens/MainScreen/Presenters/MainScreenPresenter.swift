@@ -19,9 +19,24 @@ class MainScreenPresenter: MainScreenPresentationLogic {
   func presentData(response: MainScreen.Model.Response.ResponseType) {
     
     catchViewModelResponse(response: response)
+    
+    catchSimpleResponse(response: response)
   
   }
   
+}
+
+// MARK: Catch Simple Response
+
+extension MainScreenPresenter {
+  
+  private func catchSimpleResponse(response: MainScreen.Model.Response.ResponseType) {
+    switch response {
+    case .passCompansationObj(let compObj):
+      viewController?.displayData(viewModel: .throwCompansationObjectToUpdate(compObj: compObj))
+    default:break
+    }
+  }
 }
 
 
@@ -58,18 +73,12 @@ extension MainScreenPresenter {
     )
     
     
-    // Dinners
-//    let mealCollectionViewModel = MealCollectionVCViewModel(
-//      cells: realmData.listDinners.map(getMealViewModel)
-//    )
-    
-    
-    
     let collectionVCVM = CollectionVCVM(
       cells: realmData.listDinners.map(CompansationObjCollectionWorker.getCellViewModel))
     // InsulinSupply
     
     // По идеи я буду это брать юзер дефолтсе так как в реалме сохранять это бессмысленно!
+    // Здесь мне нужно делать перерасчет каждый раз убавлять сумму инсулина из компенсатион обжетк
     let insulinSupplyVM = InsulinSupplyViewModel(insulinSupply: 300)
     
     

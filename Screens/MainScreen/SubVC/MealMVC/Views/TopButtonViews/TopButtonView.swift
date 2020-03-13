@@ -32,6 +32,9 @@ protocol TopButtonViewModalable {
 }
 
 class TopButtonView: UIView {
+  
+  
+  // MARK: Buttons
 
   lazy var deleteButton              : UIButton = createButton(image: #imageLiteral(resourceName: "cancel"))
 //  lazy var checkStatusDinnerButton: UIButton = createButton(image: #imageLiteral(resourceName: "info"))
@@ -48,6 +51,10 @@ class TopButtonView: UIView {
   // Кнопочка если мы просто что-то едим для выравнивания сахара!
   
   
+  // MARK: Clousers
+  
+  var didTapDeleteButton:  EmptyClouser?
+  var didTapUpdateButton:  EmptyClouser?
   
   func createButton(image: UIImage) -> UIButton {
     let button = UIButton(type: .system)
@@ -93,8 +100,10 @@ class TopButtonView: UIView {
     switch button {
     case deleteButton:
       print("Delete Clouser")
+      didTapDeleteButton!()
     case updateButton:
       print("Update Clouser")
+      didTapUpdateButton!()
     case injectionResultButton:
       print("Show Short Stat by Injections")
     case carboMealResultButton:

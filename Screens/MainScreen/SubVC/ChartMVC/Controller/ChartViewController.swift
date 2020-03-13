@@ -47,22 +47,19 @@ class ChartViewController: UIViewController {
   // Возможно это надо будет переписать
   func setViewModel(viewModel : ChartVCViewModel) {
     
-    // Теперь нет картники
-    
-    guard viewModel.chartEntryModels.isEmpty == false else {
-      return print("Нет Данных по сахару")
+    if viewModel.chartEntryModels.isEmpty {
+      lineChartView.data  = nil
+      lineChartView.noDataText = "Нет данных"
+    } else {
+      entryies          =  chartWorker.getEntryies(data: viewModel.chartEntryModels)
+      let lineSet       = getChartDataSets(entryies: entryies)
+      
+      let lineChartData = LineChartData(dataSet: lineSet)
+      
+      lineChartView.data = lineChartData
     }
     
-    entryies          =  chartWorker.getEntryies(data: viewModel.chartEntryModels)
-    let lineSet       = getChartDataSets(entryies: entryies)
-    
-    let lineChartData = LineChartData(dataSet: lineSet)
-    
-    
-    lineChartView.chartDescription?.text = DateWorker.shared.getDayMonthYear(
-      date: viewModel.chartEntryModels[0].time 
-    )
-    lineChartView.data = lineChartData
+ 
     
   }
   

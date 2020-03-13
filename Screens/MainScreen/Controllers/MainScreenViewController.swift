@@ -103,10 +103,14 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   func displayData(viewModel: MainScreen.Model.ViewModel.ViewModelData) {
     
     switch viewModel {
+      
     case .setViewModel(let viewModel):
       
-      print(viewModel.collectionVCVM.cells,"Данные по продуктам")
       mainScreenViewModel = viewModel
+    case .throwCompansationObjectToUpdate(let compObj):
+      
+      self.router!.goToNewCompansationObjectScreen(compansationObjectRealm: compObj)
+      
     }
 
   }
@@ -120,6 +124,7 @@ extension MainScreenViewController {
   
   
    private func setViews() {
+    
     mainScreenView    = MainScreenView()
     navBarView        = mainScreenView.navBar
     chartVC           = mainScreenView.chartView.chartVC
@@ -138,6 +143,7 @@ extension MainScreenViewController {
   // MARK: Set Clousers From Views
   
   private func setClousers() {
+    
     setChartVCClousers()
     
     setMealVCClousers()
@@ -148,7 +154,25 @@ extension MainScreenViewController {
     
     setNewSugarDataViewClousers()
     
+    setCompansationObjectCellTopButtons()
+    
   }
+  
+  // Top Buttons Clouser
+  private func setCompansationObjectCellTopButtons() {
+    
+    mealCollectionVC.didDeleteCompasationObject = {[weak self] id in
+      self?.interactor?.makeRequest(request: .deleteCompansationObj(compObjId: id))
+    }
+    
+    mealCollectionVC.didUpdateCompansationObject = {[weak self] id in
+      self?.interactor?.makeRequest(request: .getCompansationObj(compObjId: id))
+    }
+    
+  }
+  
+  
+  
   // ChartVC Clousers
   private func setChartVCClousers() {
     chartVC.passCompansationObjectId = { [weak self] mealId in
@@ -236,7 +260,7 @@ extension MainScreenViewController {
       
       // MARK: Go to New ComObj Screen
       
-      self.router!.goToNewCompansationObjectScreen()
+      self.router!.goToNewCompansationObjectScreen(compansationObjectRealm: nil)
     })
     
   }

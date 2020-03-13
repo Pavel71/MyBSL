@@ -15,6 +15,8 @@ enum NewCompansationObjectScreen {
       enum RequestType {
         
         case getBlankViewModel
+        case updateCompansationObject(compObjRealm: CompansationObjectRelam)
+        
         case passCurrentSugar(sugar: String)
         case passIsNeedProductList(isNeed: Bool)
         
@@ -33,6 +35,8 @@ enum NewCompansationObjectScreen {
       enum ResponseType {
         
         case getBlankViewModel
+        case convertCompObjRealmToVM(compObjRealm:CompansationObjectRelam)
+        
         case updateCurrentSugarInVM(sugar: String)
         case updateAddMealStateInVM(isNeed: Bool)
         

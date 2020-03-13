@@ -29,8 +29,6 @@ class MainScreenInteractor: MainScreenBusinessLogic {
   private func passDayRealmToConvertInVMInPresenter() {
     
     let updateDay = dayRealmManager.getCurrentDay()
-    
-    
      presenter?.presentData(response: .prepareViewModel(realmData: updateDay))
    }
   
@@ -73,6 +71,16 @@ extension MainScreenInteractor {
       passDayRealmToConvertInVMInPresenter()
       // и все добавление будет работать!
       
+    case .deleteCompansationObj(let compObjId):
+      dayRealmManager.deleteCompasationObjByID(compansationObjId: compObjId)
+      // Пришел ID объекта и нам нужно понимать что мы работаем с current Day!
+      passDayRealmToConvertInVMInPresenter()
+      
+    case .getCompansationObj(let compObjId):
+      
+      guard let compansationObject = dayRealmManager.getCompansationObjById(compObjId: compObjId) else {return print("Нет такого объекта")}
+      
+      presenter?.presentData(response: .passCompansationObj(compObj: compansationObject))
     default:break
     }
     
@@ -117,20 +125,7 @@ extension MainScreenInteractor {
   }
   
   
-//  private func convertToCompansationObjRealm(viewModel: CompansationObjectRelam) -> (CompansationObjectRelam,SugarRealm) {
-//
-//    // итак я тут имею 2 модели sugar  and Meal Model
-//
-//
-////    let compansationRealm = prepareCompansationObj(viewModel: viewModel)
-//    let sugarRealm        = prepareSugarVM(viewModel: viewModel, mealId: compansationRealm.id)
-//
-//
-//    return (viewModel,sugarRealm)
-//
-//
-//
-//  }
+
   
 }
 
@@ -165,48 +160,7 @@ extension MainScreenInteractor {
   
   
   
-//  private func prepareCompansationObj(viewModel: NewCompObjViewModel) -> CompansationObjectRelam {
-//    
-//    // Мне вообщем нужно все это обдумать и написать более точно Возможно стоит собрать модель Транспортную которая и будет содержать все бе все необходимы объекты! Сейчас доставвать все из этой модели не очнеь удобно!
-//    
-//    let sugarBefore  = Double(viewModel.sugarCellVM.currentSugar!).roundToDecimal(2)
-//    let typeObject   = viewModel.resultFooterVM.typeCompansationObject
-//    let totalInsulin = Double(viewModel.resultFooterVM.totalInsulin).roundToDecimal(2)
-//    let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
-//    
-//    print(totalInsulin, "Total Insulin")
-//    print(totalCarbo, "Total Carbo")
-//    
-//    
-//    
-//    let compansationObjectRealm = CompansationObjectRelam(
-//      typeObject   : typeObject,
-//      sugarBefore  : sugarBefore,
-//      totalCarbo   : totalCarbo,
-//      totalInsulin : totalInsulin)
-//    
-//    
-//    // тут мне теперь нужна трансформация realmProduct
-//    let productsVM = viewModel.addMealCellVM.dinnerProductListVM.productsData
-//    
-//    compansationObjectRealm.listProduct.append(objectsIn: productsVM.map(converToProductRealm))
-//    
-//    return compansationObjectRealm
-//  }
-//  
-//  
-//  private func converToProductRealm(viewModel: ProductListViewModel) -> ProductRealm {
-//    
-//    
-//    
-//    return ProductRealm(
-//      name          : viewModel.name,
-//      category      : viewModel.category,
-//      carboIn100Grm : viewModel.carboIn100Grm,
-//      isFavorits    : viewModel.isFavorit,
-//      portion       : viewModel.portion ,
-//      actualInsulin : viewModel.insulinValue!.roundToDecimal(2))
-//  }
+
   
 }
 

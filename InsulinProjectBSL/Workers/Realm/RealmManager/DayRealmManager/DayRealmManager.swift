@@ -34,10 +34,7 @@ class DayRealmManager {
 
 extension DayRealmManager {
   
-  // Для начала нам нужен пустой день! При каких условиях он будет создававтся?
-  // Наверно нужно мониторить время! Тоесть можно при создание нового обеда или ужина проверять время и если новый день относительно вчера то создавать новый
-  // Иил же я могу чекать по таймеру какое время и создавать пустой бланк как только будет 00 00
-  
+
   
   // Пока просто создам пустой день
   
@@ -62,77 +59,7 @@ extension DayRealmManager {
     
   }
   
-  // MARK: Add Sugar Data
-  func addSugarData(sugarRealm: SugarRealm) {
-    
-//    guard let curentDay = getDayById(dayId: currentDayId) else {
-//      return print("Нет Current Day")
-//    }
-    
-     do {
-       self.realm.beginWrite()
-      // хз будет это работать или нет
-       currentDay.listSugar.append(sugarRealm)
-       // вот эта запись должна обновить объект!
-      self.realm.add(currentDay, update: .all)
-      
-       try self.realm.commitWrite()
-      
-       
-     } catch {
-       print(error.localizedDescription)
-     }
-       
-  }
-  
-  
-  func addCompansationObjectData(currentCompObj: CompansationObjectRelam) {
-    
-    // Когда добавляем новый объект мы должны установить позицию предыдущего обеда и изменить его состояние
-
-     do {
-       self.realm.beginWrite()
-      // хз будет это работать или нет
-      
  
-      changeCompansationObjectStateSetSugarAfter(sugarAfter: currentCompObj.sugarBefore)
-      
-      currentDay.listDinners.append(currentCompObj)
-      // вот эта запись должна обновить объект!
-      self.realm.add(currentDay, update: .modified)
-      
-      try self.realm.commitWrite()
-      
-       
-     } catch {
-       print(error.localizedDescription)
-     }
-    
-  }
-  
-  
-  // Изходя из текущего сахара мы определям как мы компенсировали предыдущий обед хорошо или плохо
-  private func changeCompansationObjectStateSetSugarAfter(sugarAfter: Double) {
-    
-    guard let lastCompansationObj = currentDay.listDinners.last else{return}
-    
-    lastCompansationObj.sugarAfter = sugarAfter
-    
-    let sugarCompansation = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: Float(sugarAfter))
-    
-    switch sugarCompansation {
-    case .correctDown:
-      lastCompansationObj.compansationFaseEnum = .bad
-    case .correctUp:
-      lastCompansationObj.compansationFaseEnum = .bad
-    case .dontCorrect:
-      lastCompansationObj.compansationFaseEnum = .good
-    default:break
-    }
-    
-    // Изменения внесутся в реалм!
-    
-  }
   
   
   // MARK: Fetch All Days
@@ -159,13 +86,137 @@ extension DayRealmManager {
     return currentDay
   }
   
+  // MARK: Get CompansationObj by ID
+  
+  func getCompansationObjById(compObjId: String) -> CompansationObjectRelam? {
+    
+    return currentDay.listDinners.first(where: {$0.id == compObjId})
+  }
+  
 }
 
+// MARK: Add Sugar and Compansation Obj To Realm
+extension DayRealmManager {
+  
+   // MARK: Add Sugar Data
+    func addSugarData(sugarRealm: SugarRealm) {
+      
+  //    guard let curentDay = getDayById(dayId: currentDayId) else {
+  //      return print("Нет Current Day")
+  //    }
+      
+       do {
+         self.realm.beginWrite()
+        // хз будет это работать или нет
+         currentDay.listSugar.append(sugarRealm)
+         // вот эта запись должна обновить объект!
+        self.realm.add(currentDay, update: .all)
+        
+         try self.realm.commitWrite()
+        
+         
+       } catch {
+         print(error.localizedDescription)
+       }
+         
+    }
+    
+    
+    func addCompansationObjectData(currentCompObj: CompansationObjectRelam) {
+      
+      // Когда добавляем новый объект мы должны установить позицию предыдущего обеда и изменить его состояние
 
+       do {
+         self.realm.beginWrite()
+        // хз будет это работать или нет
+        
+   
+        changeCompansationObjectStateSetSugarAfter(sugarAfter: currentCompObj.sugarBefore)
+        
+        currentDay.listDinners.append(currentCompObj)
+        // вот эта запись должна обновить объект!
+        self.realm.add(currentDay, update: .modified)
+        
+        try self.realm.commitWrite()
+        
+         
+       } catch {
+         print(error.localizedDescription)
+       }
+      
+    }
+    
+    
+    // Изходя из текущего сахара мы определям как мы компенсировали предыдущий обед хорошо или плохо
+    private func changeCompansationObjectStateSetSugarAfter(sugarAfter: Double) {
+      
+      guard let lastCompansationObj = currentDay.listDinners.last else {return}
+      
+      lastCompansationObj.sugarAfter = sugarAfter
+      
+      let sugarCompansation = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: Float(sugarAfter))
+      
+      switch sugarCompansation {
+      case .correctDown:
+        lastCompansationObj.compansationFaseEnum = .bad
+      case .correctUp:
+        lastCompansationObj.compansationFaseEnum = .bad
+      case .dontCorrect:
+        lastCompansationObj.compansationFaseEnum = .good
+      default:break
+      }
+      
+      // Изменения внесутся в реалм!
+      
+    }
+  
+}
 
+// MARK: DELETE Sugar And Compansation Sugar From Realm
 
-
-
+extension DayRealmManager {
+  
+  func deleteCompasationObjByID(compansationObjId: String) {
+    
+    // При удаление нужно убрать последний обед
+    // Убрать сахар при этом обеде
+    // Изменить State последнего обеда на прогресс!
+    
+    print("Delete COmpObj",compansationObjId)
+    
+    do {
+      self.realm.beginWrite()
+      
+      // Также нужно изменить последний обед его стайт на прогресс
+      
+      let sugarWithId = currentDay.listSugar.filter{$0.compansationObjectId != nil}
+      
+      guard let sugarToDelete = sugarWithId.first(where: {$0.compansationObjectId == compansationObjId}) else {return}
+      let indexSugar =  currentDay.listSugar.index(of: sugarToDelete)!
+      currentDay.listSugar.remove(at: indexSugar)
+      
+      //  в случае с обедами я могу сделать так
+      currentDay.listDinners.removeLast()
+      
+      // Если есть предыдущий то обнови у него стейт
+      if let nowLastCompObj = currentDay.listDinners.last {
+        nowLastCompObj.compansationFaseEnum = .progress
+      }
+      
+      
+      // Перезаписываю день!
+      self.realm.add(self.currentDay)
+      //        self.currentDayId = dayBlank.id
+      try self.realm.commitWrite()
+      
+      
+    } catch {
+      print(error.localizedDescription)
+    }
+    
+  }
+  
+}
 
 
 // MARK: Dummy Data

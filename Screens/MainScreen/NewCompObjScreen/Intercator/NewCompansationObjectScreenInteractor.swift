@@ -37,6 +37,9 @@ extension NewCompansationObjectScreenInteractor {
     case .getBlankViewModel:
       presenter?.presentData(response: .getBlankViewModel)
       
+    case .updateCompansationObject(let compObjRealm):
+      presenter?.presentData(response: .convertCompObjRealmToVM(compObjRealm: compObjRealm))
+      
     case .passCurrentSugar(let sugar):
       presenter?.presentData(response: .updateCurrentSugarInVM(sugar: sugar))
       

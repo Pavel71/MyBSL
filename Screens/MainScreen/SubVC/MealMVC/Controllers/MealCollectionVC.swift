@@ -11,6 +11,7 @@ import UIKit
 
 class MealCollectionVC: UIViewController {
   
+  // MARK: Collection View
   
   let collectionView: UICollectionView = {
       
@@ -35,11 +36,11 @@ class MealCollectionVC: UIViewController {
     didSet {collectionView.reloadData()}
   }
   
-  // CLousers
+  // MARK: CLousers
   
-  var passMealIdItemThanContinueScroll: StringPassClouser?
-  
-  
+  var passMealIdItemThanContinueScroll : StringPassClouser?
+  var didDeleteCompasationObject       : StringPassClouser?
+  var didUpdateCompansationObject      : StringPassClouser?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -135,17 +136,6 @@ extension MealCollectionVC: UICollectionViewDelegate {
     let collectionViewHeight = collectionView.frame.height
     let width                = UIScreen.main.bounds.width - 20
     
-//    let compansationObj      = dinners[indexPath.row]
-//    
-//    switch compansationObj.type {
-//    case .mealObject:
-//      return .init(width: width, height: collectionViewHeight - 20)
-//    case .correctSugarByCarbo:
-//      return .init(width: width, height: 100)
-//    case .correctSugarByInsulin:
-//      return .init(width: width, height: 100)
-//
-//    }
     
     return .init(width: width, height: collectionViewHeight - 20)
     
@@ -169,7 +159,7 @@ extension MealCollectionVC {
        
        let carboCellVm = dinners[indexPath.item] as! ComapsnationByCarboVM
        cell.setViewModel(viewModel: carboCellVm)
-       
+       setCellClousers(cell: cell)
        return cell
     
   }
@@ -181,18 +171,36 @@ extension MealCollectionVC {
     
     let mealCellVM = dinners[indexPath.item] as! CompansationMealVM
     cell.setViewModel(viewModel: mealCellVM)
-    
+    setCellClousers(cell: cell)
     return cell
     
   }
   
   // Compansation By Insulin Cell
-  private func getCompansationByInsulinCell(indexPath: IndexPath) -> CompansationByInsulinCell {
+  private func getCompansationByInsulinCell(indexPath: IndexPath) ->
+    CompansationByInsulinCell {
+      
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CompansationByInsulinCell.cellId, for: indexPath) as! CompansationByInsulinCell
     
     let compansationByInsulinVM = dinners[indexPath.item] as! CompansationByInsulinVM
     cell.setViewModel(viewModel: compansationByInsulinVM)
+    setCellClousers(cell: cell)
     return cell
+  }
+  
+  // MARK: Set Cell Clousers
+  
+  private func setCellClousers(cell: CompansationCVBaseCell) {
+    
+    // Delete Compansation Object
+    cell.topButtonView.didTapDeleteButton = {[weak self] in
+      self?.didDeleteCompasationObject!(cell.objectId)
+    }
+    
+    cell.topButtonView.didTapUpdateButton = {[weak self] in
+      self?.didUpdateCompansationObject!(cell.objectId)
+    }
+    
   }
   
 }
