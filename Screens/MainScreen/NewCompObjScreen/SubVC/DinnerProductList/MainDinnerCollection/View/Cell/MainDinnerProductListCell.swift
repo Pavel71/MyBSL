@@ -68,14 +68,14 @@ class MainDinnerProductListCell: BaseProductListCell {
   }
   
   
-  func setViewModel(viewModel: ProductListViewModelCell, withInsulinTextFields: Bool = true, isPreviosDinner: Bool, isNeedCorrectionInsulin: Bool) {
+  func setViewModel(viewModel: ProductListViewModelCell) {
     
-    super.setViewModel(viewModel: viewModel, withInsulinTextFields: withInsulinTextFields)
+    super.setViewModel(viewModel: viewModel,withInsulinTextFields: true)
     
-     
-    workWithPortionTextField(isPreviosDinner: isPreviosDinner)
-    workWithActualInsulinFields(viewModel: viewModel,isPreviosDinner:isPreviosDinner)
-    workWithCorrectInsulinFields(isNeedCorrectionInsulin:isNeedCorrectionInsulin)
+//
+//    workWithPortionTextField(isPreviosDinner: isPreviosDinner)
+//    workWithActualInsulinFields(viewModel: viewModel,isPreviosDinner:isPreviosDinner)
+//    workWithCorrectInsulinFields(isNeedCorrectionInsulin:isNeedCorrectionInsulin)
 
     
   }
@@ -83,11 +83,11 @@ class MainDinnerProductListCell: BaseProductListCell {
   // MARK: Work with CorrectInsulin
   
   // Здесь будет идти отработка появления коррекционного текст филда
-  private func workWithCorrectInsulinFields(isNeedCorrectionInsulin:Bool) {
-    
-    correctInsulinTextField.isHidden = !isNeedCorrectionInsulin
-    
-  }
+//  private func workWithCorrectInsulinFields(isNeedCorrectionInsulin:Bool) {
+//    
+//    correctInsulinTextField.isHidden = !isNeedCorrectionInsulin
+//    
+//  }
   
   // MARK: Work with Portion TextFields
   

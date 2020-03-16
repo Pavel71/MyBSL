@@ -48,14 +48,14 @@ class BaseProductListCell: UITableViewCell {
     return textField
   }()
   
-  let correctInsulinTextField: CustomValueTextField = {
-    let textField = CustomValueTextField(placeholder: "", cornerRadius: 10)
-    textField.font = Constants.Font.valueFont
-    textField.textColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
-    textField.textAlignment = .center
-    
-    return textField
-  }()
+//  let correctInsulinTextField: CustomValueTextField = {
+//    let textField = CustomValueTextField(placeholder: "", cornerRadius: 10)
+//    textField.font = Constants.Font.valueFont
+//    textField.textColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+//    textField.textAlignment = .center
+//
+//    return textField
+//  }()
   
   
   let carboInPortionLabel: UILabel = {
@@ -73,13 +73,13 @@ class BaseProductListCell: UITableViewCell {
     backgroundColor = .clear
     
     let stackView = UIStackView(arrangedSubviews: [
-      nameLabel,carboInPortionLabel,portionTextField,insulinTextField,correctInsulinTextField
+      nameLabel,carboInPortionLabel,portionTextField,insulinTextField
       ])
     
     carboInPortionLabel.constrainWidth(constant: Constants.ProductList.labelValueWidth)
     portionTextField.constrainWidth(constant: Constants.ProductList.labelValueWidth)
     insulinTextField.constrainWidth(constant: Constants.ProductList.labelValueWidth)
-    correctInsulinTextField.constrainWidth(constant: Constants.ProductList.labelValueWidth)
+    
     
     stackView.distribution = .fill
     stackView.spacing = 5
@@ -90,17 +90,19 @@ class BaseProductListCell: UITableViewCell {
   }
   
   
-  func setViewModel(viewModel: ProductListViewModelCell, withInsulinTextFields: Bool) {
+  func setViewModel(viewModel: ProductListViewModelCell,withInsulinTextFields: Bool = false) {
     
-    let portionString = String(viewModel.portion)
+    let portionString  = String(viewModel.portion)
     let carboInPortion = String(viewModel.carboInPortion)
-
-    nameLabel.text = viewModel.name
-    portionTextField.text = portionString
+    let insulinValue   = viewModel.insulinValue ?? 0
+    
+    nameLabel.text           = viewModel.name
+    portionTextField.text    = portionString
     carboInPortionLabel.text = carboInPortion
     
     insulinTextField.isHidden = !withInsulinTextFields
-    correctInsulinTextField.isHidden = !withInsulinTextFields
+    insulinTextField.text     = "\(floatTwo: insulinValue)"
+    
     
   }
   

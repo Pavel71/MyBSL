@@ -66,15 +66,18 @@ enum NewCompansationObjectScreen {
 
 struct NewCompObjViewModel {
   
-  var sugarCellVM     : SugarCellModel
+  var isUpdated               : Bool
+  var updatedId               : String
   
-  var addMealCellVM   : AddMealCellModel
-  
-  var injectionCellVM : InjectionPlaceModel
-  
-  var resultFooterVM  : ResultFooterModel
-  
-  var isValidData     : Bool 
+  var sugarCellVM             : SugarCellModel
+          
+  var addMealCellVM           : AddMealCellModel
+          
+  var injectionCellVM         : InjectionPlaceModel
+          
+  var resultFooterVM          : ResultFooterModel
+          
+  var isValidData             : Bool
 }
 
 
@@ -141,13 +144,13 @@ struct ResultFooterModel: ResultFooterViewable {
   
   var message: String
   
-  var value: String
+  var totalInsulinValue: String
   
   var viewState: ResultFooterViewState
   
   
   var totalInsulin: Float {
-    (value as NSString).floatValue
+    (totalInsulinValue as NSString).floatValue
   }
   
   var typeCompansationObject: TypeCompansationObject

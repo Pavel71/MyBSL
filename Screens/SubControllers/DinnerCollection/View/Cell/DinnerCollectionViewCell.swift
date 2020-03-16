@@ -119,10 +119,10 @@ class DinnerCollectionViewCell: UICollectionViewCell {
 
   // Height Product List
   
-  private func setProductListViewHeight(countProducts: Int,isPreviosDinner: Bool) {
+  private func setProductListViewHeight(countProducts: Int) {
     
     
-    let heightProductListView = CalculateHeightView.calculateProductListViewheight(countRow: countProducts,isPreviosDinner: isPreviosDinner)
+    let heightProductListView = CalculateHeightView.calculateProductListViewheight(countRow: countProducts)
 
     heightProductListConstraint.constant = heightProductListView
 
@@ -369,9 +369,9 @@ extension DinnerCollectionViewCell {
     
     productListViewController.setViewModel(viewModel: productListViewModel)
     
-    let isPreviosDinner = productListViewModel.isPreviosDinner
 
-    setProductListViewHeight(countProducts:productListViewModel.productsData.count, isPreviosDinner: isPreviosDinner)
+
+    setProductListViewHeight(countProducts:productListViewModel.productsData.count)
     
   }
   

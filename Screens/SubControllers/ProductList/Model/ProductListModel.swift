@@ -15,11 +15,11 @@ protocol ProductListViewModalable {
 }
 
 
-protocol ProductListInDinnerViewModalable: ProductListViewModalable {
-  
-  var isPreviosDinner: Bool {get set}
-  var isNeedCorrectInsulinIfActualInsulinWrong: Bool {get set}
-}
+//protocol ProductListInDinnerViewModalable: ProductListViewModalable {
+//
+//  var isPreviosDinner: Bool {get set}
+//  var isNeedCorrectInsulinIfActualInsulinWrong: Bool {get set}
+//}
 
 
 struct ProductListViewModel: ProductListViewModelCell {

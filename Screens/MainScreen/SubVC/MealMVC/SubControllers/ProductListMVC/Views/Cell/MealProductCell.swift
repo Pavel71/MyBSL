@@ -55,6 +55,7 @@ class MealProductCell: UITableViewCell {
 
 extension MealProductCell {
   func setViewModel(viewModel: MealProductCellable) {
+    
     nameLabel.text           = viewModel.name
     carboInPortionLabel.text = String(viewModel.carboInPortion)
     portionLabel.text        = String(viewModel.portion)

@@ -100,7 +100,7 @@ extension ProductListInDinnerViewController {
     setResultViewModel(resultViewModel:viewModel.resultsViewModel)
     
     // Отключаем работу таблицы если предыдущий обед
-    tableView.isUserInteractionEnabled = !viewModel.isPreviosDinner
+//    tableView.isUserInteractionEnabled = !viewModel.isPreviosDinner
   }
   
   private func setResultViewModel(resultViewModel:ProductListResultViewModelable ) {
@@ -129,9 +129,9 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     
     cell.setViewModel(
       viewModel: tableViewData[indexPath.row],
-      withInsulinTextFields: true,
-      isPreviosDinner: viewModel.isPreviosDinner,
-      isNeedCorrectionInsulin: viewModel.isNeedCorrectInsulinIfActualInsulinWrong
+      withInsulinTextFields: true
+//      isPreviosDinner: viewModel.isPreviosDinner,
+//      isNeedCorrectionInsulin: viewModel.isNeedCorrectInsulinIfActualInsulinWrong
     )
     
     setCellClousers(cell: cell)

@@ -82,12 +82,12 @@ class CalculateHeightView {
   
   // Product list Height
   
-  static func calculateProductListViewheight(countRow: Int, isPreviosDinner: Bool = false) -> CGFloat {
+  static func calculateProductListViewheight(countRow: Int) -> CGFloat {
     
     let cellPading = Constants.ProductList.marginCell.bottom * 2
     
     // Здесь нам нужно добавить немного из за того что кнопка весит посередине footerView
-    let footerHeight = isPreviosDinner ? Constants.ProductList.TableFooterView.footerHeight - 10 : Constants.ProductList.TableFooterView.footerHeight
+    let footerHeight =  Constants.ProductList.TableFooterView.footerHeight
     
 //    let headerInSection = ProductListHeaderInSection.height
     let headerInSection = Constants.ProductList.headerInSectionHeight

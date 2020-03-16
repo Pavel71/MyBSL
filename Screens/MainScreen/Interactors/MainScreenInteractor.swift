@@ -55,21 +55,20 @@ extension MainScreenInteractor {
       
     case .setCompansationObjRealm(let compObjRealm):
       
-    
-      
-      let sugarRealm = prepareSugarVM(viewModel: compObjRealm)
-      // Теперь нам уже приходит Compansation Object теперь его нужно слегка перебрать здесь
-      
-      // потом добавить в день
-      dayRealmManager.addSugarData(sugarRealm: sugarRealm)
-      dayRealmManager.addCompansationObjectData(currentCompObj: compObjRealm)
-      // потом получить новый день
+      // Здесь мне нужно проверить есть ли такой объект в базе данных! Если да то обнови если нет то добавь
       
       
       
-      // потом отравить его на главный контроолер
+      if compObjRealm.isUpdated {
+        dayRealmManager.updateLastCompansationObj(compObj: compObjRealm)
+      } else {
+        dayRealmManager.addCompansationObjectToRealm(compObj: compObjRealm)
+      }
+      
+      
+      
       passDayRealmToConvertInVMInPresenter()
-      // и все добавление будет работать!
+      
       
     case .deleteCompansationObj(let compObjId):
       dayRealmManager.deleteCompasationObjByID(compansationObjId: compObjId)
@@ -116,7 +115,6 @@ extension MainScreenInteractor {
   private func convertToSugarRealm(sugarVM: SugarViewModel) -> SugarRealm {
     
     
-    
     return SugarRealm(
       time: sugarVM.time,
       sugar: sugarVM.sugar,
@@ -129,38 +127,5 @@ extension MainScreenInteractor {
   
 }
 
-// MARK: Work WIth CompansationObject Realm
-extension MainScreenInteractor {
-  
-  
-  private func prepareSugarVM(viewModel: CompansationObjectRelam) -> SugarRealm {
-    
-    
-    let sugar = viewModel.sugarBefore
-    
-    
-    var dataCase: ChartDataCase
-    
-    switch viewModel.correctionPositionObject {
-    case .correctDown:
-      dataCase = .correctInsulinData
-    case .correctUp:
-      dataCase = .correctCarboData
-    
-    default:
-      dataCase = .mealData
-    }
-    
-    return SugarRealm(
-      time                 : Date(),
-      sugar                : sugar.roundToDecimal(2),
-      dataCase             : dataCase ,
-      compansationObjectId : viewModel.id)
-  }
-  
-  
-  
 
-  
-}
 

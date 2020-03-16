@@ -14,50 +14,52 @@ import Foundation
 class SugarCellVMWorker {
   
   
-  static  func updateCurrentSugarVM(
-    sugar: String,
-    viewModel: inout NewCompObjViewModel) {
-    
-    viewModel.sugarCellVM.currentSugar = sugar == "" ? nil : (sugar as NSString).floatValue
-    
-    updateCompansationLabelAndCellState(sugar: sugar,viewModel:&viewModel)
+  static  func getSugarVM(sugar: String) -> SugarCellModel {
+  
+   return updateCompansationLabelAndCellState(sugar: sugar)
     
   }
   
-  static private func updateCompansationLabelAndCellState(sugar: String,viewModel:inout NewCompObjViewModel) {
+  static private func updateCompansationLabelAndCellState(sugar: String) -> SugarCellModel {
+    
+    var sugarCellVm = SugarCellModel()
         
     // Если пришла пустая строка то ставим ячейку по дефолту
     guard sugar.isEmpty == false else {
-      viewModel.sugarCellVM.cellState          = .currentLayer
-      viewModel.sugarCellVM.compansationString = nil
-      viewModel.sugarCellVM.correctionImage    = nil
-      return
+      sugarCellVm.cellState          = .currentLayer
+      sugarCellVm.compansationString = nil
+      sugarCellVm.correctionImage    = nil
+      return sugarCellVm
     }
         
     let sugarFloat = (sugar as NSString).floatValue
+    sugarCellVm.currentSugar = sugarFloat
+    
     let wayCorrectPosition = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat)
     
-    viewModel.sugarCellVM.sugarState = wayCorrectPosition
+    sugarCellVm.sugarState = wayCorrectPosition
     
     switch wayCorrectPosition {
     case .dontCorrect:
-      viewModel.sugarCellVM.compansationString   = "Сахар в норме"
-      viewModel.sugarCellVM.cellState            = .currentLayerAndCorrectionLabel
-      viewModel.sugarCellVM.correctionImage      = nil
-      viewModel.sugarCellVM.correctionSugarKoeff = 0
+      sugarCellVm.compansationString   = "Сахар в норме"
+      sugarCellVm.cellState            = .currentLayerAndCorrectionLabel
+      sugarCellVm.correctionImage      = nil
+      sugarCellVm.correctionSugarKoeff = 0
     case .correctDown:
-      viewModel.sugarCellVM.compansationString = "Сахар выше нормы! нужна коррекция инсулином!"
-      viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLayer
-      viewModel.sugarCellVM.correctionImage    = #imageLiteral(resourceName: "anesthesia")
+      sugarCellVm.compansationString = "Сахар выше нормы! нужна коррекция инсулином!"
+      sugarCellVm.cellState          = .currentLayerAndCorrectionLayer
+      sugarCellVm.correctionImage    = #imageLiteral(resourceName: "anesthesia")
       
       // Здесь мне нужно расчитать коррекцию автоматически!
       
     case .correctUp:
-      viewModel.sugarCellVM.compansationString = "Сахар ниже нормы! нужна коррекция углеводами!"
-      viewModel.sugarCellVM.cellState          = .currentLayerAndCorrectionLayer
-      viewModel.sugarCellVM.correctionImage    = #imageLiteral(resourceName: "candy")
+      sugarCellVm.compansationString = "Сахар ниже нормы! нужна коррекция углеводами!"
+      sugarCellVm.cellState          = .currentLayerAndCorrectionLayer
+      sugarCellVm.correctionImage    = #imageLiteral(resourceName: "candy")
     default:break
     }
+    
+    return sugarCellVm
     
   }
   

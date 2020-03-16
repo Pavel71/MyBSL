@@ -66,7 +66,7 @@ extension NewProductListVC: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: NewProductListCell.cellId, for: indexPath) as! NewProductListCell
-    cell.setViewModel(viewModel: tableData[indexPath.row], withInsulinTextFields: true)
+    cell.setViewModel(viewModel: tableData[indexPath.row])
     return cell
   }
   

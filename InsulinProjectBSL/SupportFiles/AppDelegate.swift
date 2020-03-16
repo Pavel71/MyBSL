@@ -65,6 +65,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 //    initDinners()
     
+    initDaysRealm()
+    
     root()
     
     
@@ -142,6 +144,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       realm.deleteAll()
 //      realm.add(dinners)
     }
+    
+  }
+  
+  private func initDaysRealm() {
+    let realm = RealmProvider.day.realm
+    
+        try! realm.write {
+          realm.deleteAll()
+    //      realm.add(dinners)
+        }
     
   }
   

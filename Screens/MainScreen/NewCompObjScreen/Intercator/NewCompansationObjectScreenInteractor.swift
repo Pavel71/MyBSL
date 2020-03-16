@@ -15,6 +15,8 @@ protocol NewCompansationObjectScreenBusinessLogic {
 class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusinessLogic {
 
   var presenter: NewCompansationObjectScreenPresentationLogic?
+  
+  
 
   
   func makeRequest(request: NewCompansationObjectScreen.Model.Request.RequestType) {
@@ -38,6 +40,10 @@ extension NewCompansationObjectScreenInteractor {
       presenter?.presentData(response: .getBlankViewModel)
       
     case .updateCompansationObject(let compObjRealm):
+      
+      // вот здесь мы обновляем его и тут можем сохранить в оперативочку
+      
+      
       presenter?.presentData(response: .convertCompObjRealmToVM(compObjRealm: compObjRealm))
       
     case .passCurrentSugar(let sugar):
@@ -50,9 +56,22 @@ extension NewCompansationObjectScreenInteractor {
       presenter?.presentData(response: .updatePlaceInjection(place: place))
       
     case .saveCompansationObjectInRealm(let viewModel):
-      // итак нам нужен реалм менеджер по дням который сохранит объект реалма в день
+      
+      
+      // я должен все таки передавать модель и если будет id то обновлять объект если нет то создавать новый и записывать! и делать это все в недрах dayRealm Manager! можно даже создать подменеджера!
+      
+      // Вообщем если здесь обнаруживается что у нас Есть updateID то мы можем направить данные по другому каналу! и не создавать реалм объект а передать модель и дальше ее обновить по все параметрам
+      
+      // или кидаем compansationObject но делаем у нег не dynamic свойство и передав его ищем по этому свойству объект если он есть то нам нужно обновить все его поля с этого объекта! Если не находим то просто добавляем объект как новый!
+      
+      
+      
       let realmCompansationObject = convertViewModelToRealmObject(viewModel: viewModel)
+      
       presenter?.presentData(response: .passCompansationObjRealmToVC(compObjRealm: realmCompansationObject))
+      
+      // После того как сохранили нужно убрать из оперативки объект compansationObj
+      
       
     default:break
     }
@@ -104,25 +123,32 @@ extension NewCompansationObjectScreenInteractor {
      let totalInsulin = Double(viewModel.resultFooterVM.totalInsulin).roundToDecimal(2)
      let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
      
-     
-     
-     
-     let compansationObjectRealm = CompansationObjectRelam(
-       typeObject   : typeObject,
-       sugarBefore  : sugarBefore,
-       totalCarbo   : totalCarbo,
-       totalInsulin : totalInsulin)
-     
-     
+  
+      let compansationObjectRealm = CompansationObjectRelam(
+        
+        typeObject   : typeObject,
+        sugarBefore  : sugarBefore,
+        totalCarbo   : totalCarbo,
+        totalInsulin : totalInsulin)
+      
+
      // тут мне теперь нужна трансформация realmProduct
      let productsVM = viewModel.addMealCellVM.dinnerProductListVM.productsData
      
      compansationObjectRealm.listProduct.append(objectsIn: productsVM.map(converToProductRealm))
+    
+    // Ставим свойство этот объект обновляет последний или нет!
+    compansationObjectRealm.isUpdated    = viewModel.isUpdated
+    compansationObjectRealm.updateThisID = viewModel.updatedId
      
      return compansationObjectRealm
  
     
   }
+  
+  
+  
+  
   
   private func converToProductRealm(viewModel: ProductListViewModel) -> ProductRealm {
      

@@ -295,13 +295,13 @@ extension MainPresenter {
     
     let resultsViewModel = ProductListResultWorker.shared.getRusultViewModelByProducts(data: productsData)
     
-    let isNeedCorrectionInsulinIfActualInsulinWrong = dinner.compansationFase == 1
+//    let isNeedCorrectionInsulinIfActualInsulinWrong = dinner.compansationFase == 1
  
     return ProductListInDinnerViewModel(
       resultsViewModel:     resultsViewModel,
-      productsData:         productsData,
-      isPreviosDinner:      dinner.isPreviosDinner,
-      isNeedCorrectInsulin: isNeedCorrectionInsulinIfActualInsulinWrong
+      productsData:         productsData
+//      isPreviosDinner:      dinner.isPreviosDinner,
+//      isNeedCorrectInsulin: isNeedCorrectionInsulinIfActualInsulinWrong
     )
   }
   

@@ -15,10 +15,17 @@ import RealmSwift
   enum Property                : String { case id }
         
   dynamic var id               : String = UUID().uuidString
+  
+  var isUpdated                : Bool   = false
+  var updateThisID             : String = ""
         
   // тип объекта
   dynamic var typeObject       : Int = 0
   
+  var typeObjectEnum: TypeCompansationObject {
+    get {TypeCompansationObject(rawValue: typeObject)!}
+    set {typeObject = newValue.rawValue}
+  }
 
   
   dynamic var sugarBefore      : Double = 0

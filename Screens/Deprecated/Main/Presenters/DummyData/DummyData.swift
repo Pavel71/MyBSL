@@ -19,7 +19,9 @@ class DummyData {
      
      let result = ProductListResultsViewModel(sumCarboValue: "", sumPortionValue: "", sumInsulinValue: "")
      
-     let productListViewController1 = ProductListInDinnerViewModel(resultsViewModel: result, productsData: [], isPreviosDinner: false)
+     let productListViewController1 = ProductListInDinnerViewModel(
+      resultsViewModel: result,
+      productsData: [])
      
      let dinner1 = DinnerViewModel(
       compansationFase: .new,

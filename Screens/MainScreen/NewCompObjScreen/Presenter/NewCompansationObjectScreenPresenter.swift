@@ -53,7 +53,8 @@ extension NewCompansationObjectScreenPresenter {
       case .convertCompObjRealmToVM(let compObjRealm):
         
         viewModel = convertCompObjRealmToVM(compObjRealm:compObjRealm)
-          throwViewModelToVC()
+        throwViewModelToVC()
+      
       case .updateCurrentSugarInVM(let sugar):
         
         setSugarData(sugar: sugar)
@@ -114,7 +115,6 @@ extension NewCompansationObjectScreenPresenter {
   
   private func throwViewModelToVC() {
     
-    
     viewController?.displayData(viewModel: .setViewModel(viewModel: viewModel))
   }
   
@@ -143,7 +143,7 @@ extension NewCompansationObjectScreenPresenter {
   
   private func setSugarData(sugar: String) {
       
-     SugarCellVMWorker.updateCurrentSugarVM(sugar: sugar, viewModel: &viewModel)
+     viewModel.sugarCellVM = SugarCellVMWorker.getSugarVM(sugar: sugar)
      updateMeallCellSwitcherEnabled(isEnabled: !sugar.isEmpty)
     
     if sugar.isEmpty { // Если поле сахара пустое то и убираем обед! так как без сахара нельзя
@@ -359,7 +359,7 @@ extension NewCompansationObjectScreenPresenter {
       
       viewModel.resultFooterVM.viewState = .showed
       viewModel.resultFooterVM.message   = message
-      viewModel.resultFooterVM.value     = "\(floatTwo: getTotalInsulin())"
+      viewModel.resultFooterVM.totalInsulinValue     = "\(floatTwo: getTotalInsulin())"
       
       
       
@@ -367,7 +367,7 @@ extension NewCompansationObjectScreenPresenter {
       
       viewModel.resultFooterVM.viewState = .showed
       viewModel.resultFooterVM.message   = "Инсулина"
-      viewModel.resultFooterVM.value     = "\(floatTwo: getTotalInsulin())"
+      viewModel.resultFooterVM.totalInsulinValue     = "\(floatTwo: getTotalInsulin())"
       
       
       
@@ -376,20 +376,23 @@ extension NewCompansationObjectScreenPresenter {
   }
   
   private func resultStateByMealState() {
+    
     let mealState  = viewModel.addMealCellVM.cellState
     
     switch mealState {
+      
     case .defaultState:
       
       viewModel.resultFooterVM.viewState = .hidden
       
     case .productListState:
+      
       let resultInsulin = getTotalInsulin()
       let message = getresultMessage(resultInsulin: resultInsulin)
 
       viewModel.resultFooterVM.viewState = .showed
       viewModel.resultFooterVM.message   = message
-      viewModel.resultFooterVM.value     = "\(floatTwo: resultInsulin)"
+      viewModel.resultFooterVM.totalInsulinValue     = "\(floatTwo: resultInsulin)"
     }
   }
   
@@ -431,18 +434,21 @@ extension NewCompansationObjectScreenPresenter {
     let injectionCellVM = getDefaultInjectionCellVM()
     let resultFooterVM  = getDefaultResultFooterVM()
     
-    return NewCompObjViewModel(sugarCellVM     : sugarCellVM,
-                               addMealCellVM   : addMealCellVM,
-                               injectionCellVM : injectionCellVM,
-                               resultFooterVM  : resultFooterVM,
-                               isValidData     : false)
+    return NewCompObjViewModel(
+      isUpdated         : false,
+      updatedId         : "",
+      sugarCellVM       : sugarCellVM,
+      addMealCellVM     : addMealCellVM,
+      injectionCellVM   : injectionCellVM,
+      resultFooterVM    : resultFooterVM,
+      isValidData       : false)
   }
   
   private func getDefaultResultFooterVM() -> ResultFooterModel {
     
     return ResultFooterModel(
       message                : "",
-      value                  : "",
+      totalInsulinValue                  : "",
       viewState              : .hidden,
       typeCompansationObject : .mealObject  )
   }
@@ -463,8 +469,7 @@ extension NewCompansationObjectScreenPresenter {
     
     let dinnerProductList = ProductListInDinnerViewModel(
       resultsViewModel: resultBalnk,
-      productsData: [],
-      isPreviosDinner: false)
+      productsData: [])
     
     return AddMealCellModel(cellState           : .defaultState,
                             dinnerProductListVM : dinnerProductList)

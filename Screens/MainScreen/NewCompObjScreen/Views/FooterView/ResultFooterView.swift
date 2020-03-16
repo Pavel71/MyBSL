@@ -11,9 +11,9 @@ import UIKit
 
 protocol ResultFooterViewable {
   
-  var message   : String {get set}
-  var value     : String {get set}
-  var viewState : ResultFooterViewState {get set}
+  var message           : String {get set}
+  var totalInsulinValue : String {get set}
+  var viewState         : ResultFooterViewState {get set}
 }
 
 
@@ -237,7 +237,7 @@ extension ResultFooterView {
     
     
     resultLabel.text = viewModel.message
-    resultValue.text = viewModel.value
+    resultValue.text = viewModel.totalInsulinValue
     
     hidden(state: viewModel.viewState)
     

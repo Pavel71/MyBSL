@@ -95,21 +95,120 @@ extension DayRealmManager {
   
 }
 
+// MARK: Update Compansation Obj
+
+extension DayRealmManager {
+  
+  
+  func updateLastCompansationObj(compObj: CompansationObjectRelam)  {
+    
+    updateCompObj(compObj: compObj)
+    updateSugarObj(compObj: compObj)
+  }
+  
+  private func updateSugarObj(compObj:CompansationObjectRelam) {
+    
+    guard let  sugarObj = currentDay.listSugar.first(where: {$0.compansationObjectId == compObj.updateThisID}) else {return}
+    let deleteIndex = currentDay.listSugar.index(of: sugarObj)!
+    
+    let newsugarRealm = prepareSugarRealm(compObj: compObj)
+    
+    do {
+      self.realm.beginWrite()
+      
+      // Оставлю время чтобы оно не менялось!
+      newsugarRealm.time =  sugarObj.time
+      
+      currentDay.listSugar.remove(at: deleteIndex)
+      currentDay.listSugar.append(newsugarRealm)
+      
+     // вот эта запись должна обновить объект!
+     self.realm.add(currentDay, update: .modified)
+     
+     try self.realm.commitWrite()
+     
+      
+    } catch {
+      print(error.localizedDescription)
+    }
+    
+  }
+  
+  
+  private func updateCompObj(compObj: CompansationObjectRelam) {
+    
+    guard let updateCompObj = getCompansationObjById(compObjId: compObj.updateThisID) else {return}
+    let deleteIndex   = currentDay.listDinners.index(of: updateCompObj)!
+    do {
+      self.realm.beginWrite()
+      
+      
+     compObj.timeCreate = updateCompObj.timeCreate
+      
+     currentDay.listDinners.remove(at: deleteIndex)
+     currentDay.listDinners.append(compObj)
+     // вот эта запись должна обновить объект!
+     self.realm.add(currentDay, update: .modified)
+     
+     try self.realm.commitWrite()
+     
+      
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+  
+}
+
 // MARK: Add Sugar and Compansation Obj To Realm
 extension DayRealmManager {
+  
+  
+  func addCompansationObjectToRealm(compObj: CompansationObjectRelam) {
+    
+    
+    let sugarRealm = prepareSugarRealm(compObj: compObj)
+    
+    addSugarData(sugarRealm: sugarRealm)
+    addCompansationObject(currentCompObj: compObj)
+  }
+  
+  
+  private func prepareSugarRealm(compObj: CompansationObjectRelam) -> SugarRealm {
+    
+    
+    let sugar = compObj.sugarBefore
+    
+    
+    var dataCase: ChartDataCase
+    
+    switch compObj.correctionPositionObject {
+    case .correctDown:
+      dataCase = .correctInsulinData
+    case .correctUp:
+      dataCase = .correctCarboData
+    
+    default:
+      dataCase = .mealData
+    }
+    
+    return SugarRealm(
+      time                 : Date(),
+      sugar                : sugar.roundToDecimal(2),
+      dataCase             : dataCase ,
+      compansationObjectId : compObj.id)
+  }
   
    // MARK: Add Sugar Data
     func addSugarData(sugarRealm: SugarRealm) {
       
-  //    guard let curentDay = getDayById(dayId: currentDayId) else {
-  //      return print("Нет Current Day")
-  //    }
+      // мне нужна проверка есть ли объект с таким же id! Если да то просто переписать его!
+      // если есть такой объект то удалить его и записать новый
       
        do {
          self.realm.beginWrite()
-        // хз будет это работать или нет
+
          currentDay.listSugar.append(sugarRealm)
-         // вот эта запись должна обновить объект!
         self.realm.add(currentDay, update: .all)
         
          try self.realm.commitWrite()
@@ -122,9 +221,7 @@ extension DayRealmManager {
     }
     
     
-    func addCompansationObjectData(currentCompObj: CompansationObjectRelam) {
-      
-      // Когда добавляем новый объект мы должны установить позицию предыдущего обеда и изменить его состояние
+    private func addCompansationObject(currentCompObj: CompansationObjectRelam) {
 
        do {
          self.realm.beginWrite()

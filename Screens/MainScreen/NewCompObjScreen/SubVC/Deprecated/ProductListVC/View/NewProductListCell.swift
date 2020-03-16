@@ -21,20 +21,18 @@ class NewProductListCell: BaseProductListCell {
   
   
   
-  override func setViewModel(
-    viewModel: ProductListViewModelCell,
-    withInsulinTextFields: Bool) {
+   func setViewModel(
+    viewModel: ProductListViewModelCell) {
     
+    super.setViewModel(viewModel: viewModel)
     
-    let portionString = String(viewModel.portion)
-    let carboInPortion = String(viewModel.carboInPortion)
-
-    nameLabel.text = viewModel.name
-    portionTextField.text = portionString
-    carboInPortionLabel.text = carboInPortion
+//    let portionString = String(viewModel.portion)
+//    let carboInPortion = String(viewModel.carboInPortion)
+//
+//    nameLabel.text = viewModel.name
+//    portionTextField.text = portionString
+//    carboInPortionLabel.text = carboInPortion
     
-    insulinTextField.isHidden = !withInsulinTextFields
-    correctInsulinTextField.isHidden = !withInsulinTextFields
     
   }
   
