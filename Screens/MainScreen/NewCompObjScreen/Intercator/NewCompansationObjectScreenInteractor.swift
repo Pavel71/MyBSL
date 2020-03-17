@@ -118,18 +118,23 @@ extension NewCompansationObjectScreenInteractor {
     
     
     
-     let sugarBefore  = Double(viewModel.sugarCellVM.currentSugar!).roundToDecimal(2)
-     let typeObject   = viewModel.resultFooterVM.typeCompansationObject
-     let totalInsulin = Double(viewModel.resultFooterVM.totalInsulin).roundToDecimal(2)
-     let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
-     
+    let sugarBefore  = Double(viewModel.sugarCellVM.currentSugar!).roundToDecimal(2)
+    let typeObject   = viewModel.resultFooterVM.typeCompansationObject
+//    let totalInsulin = Double(viewModel.resultFooterVM.totalInsulin).roundToDecimal(2)
+    let insulinCarbo = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumInsulinFloat).roundToDecimal(2)
+    let insulinCorrect = Double(viewModel.sugarCellVM.correctionSugarKoeff ?? 0).roundToDecimal(2)
+    let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
+    let placeInjections = viewModel.injectionCellVM.titlePlace
   
       let compansationObjectRealm = CompansationObjectRelam(
+        typeObject               : typeObject,
+        sugarBefore              : sugarBefore,
+        insulinOnTotalCarbo      : insulinCarbo,
+        insulinInCorrectionSugar : insulinCorrect,
+        totalCarbo               : totalCarbo,
+        placeInjections          : placeInjections)
         
-        typeObject   : typeObject,
-        sugarBefore  : sugarBefore,
-        totalCarbo   : totalCarbo,
-        totalInsulin : totalInsulin)
+        
       
 
      // тут мне теперь нужна трансформация realmProduct

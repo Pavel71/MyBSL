@@ -51,26 +51,37 @@ import RealmSwift
   
   
   // For results
-   dynamic var totalCarbo      : Double = 0
-   dynamic var totalInsulin    : Double = 0
+  dynamic var insulinOnTotalCarbo      : Double = 0
+  dynamic var insulinInCorrectionSugar : Double = 0
+  
+  var totalInsulin                     : Double  {
+    insulinOnTotalCarbo + insulinInCorrectionSugar
+  }
+  
+  dynamic var totalCarbo               : Double = 0
+  dynamic var placeInjections          : String = ""
    
    
    var listProduct              = List<ProductRealm>()
   
   convenience init(
-    typeObject            : TypeCompansationObject,
-    sugarBefore           : Double,
-    totalCarbo            : Double,
-    totalInsulin          : Double
+    typeObject               : TypeCompansationObject,
+    sugarBefore              : Double,
+    insulinOnTotalCarbo      : Double,
+    insulinInCorrectionSugar : Double,
+    totalCarbo               : Double,
+    placeInjections          : String
     
     ) {
       self.init()
-    self.typeObject       = typeObject.rawValue
-    self.sugarBefore      = sugarBefore
-    self.timeCreate       = Date()
-    self.compansationFase = CompansationPosition.progress.rawValue
-    self.totalCarbo       = totalCarbo
-    self.totalInsulin     = totalInsulin
+    self.typeObject               = typeObject.rawValue
+    self.sugarBefore              = sugarBefore
+    self.timeCreate               = Date()
+    self.compansationFase         = CompansationPosition.progress.rawValue
+    self.totalCarbo               = totalCarbo
+    self.insulinOnTotalCarbo      = insulinOnTotalCarbo
+    self.insulinInCorrectionSugar = insulinInCorrectionSugar
+    self.placeInjections          = placeInjections
     
     }
   

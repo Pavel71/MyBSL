@@ -73,5 +73,9 @@ struct ProductListResultsViewModel: ProductListResultViewModelable {
     (sumCarboValue as NSString).floatValue
   }
   
+  var sumInsulinFloat: Float {
+    (sumInsulinValue as NSString).floatValue
+  }
+  
   
 }

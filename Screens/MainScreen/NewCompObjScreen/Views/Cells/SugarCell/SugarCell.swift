@@ -51,6 +51,13 @@ class SugarCell: UITableViewCell {
   
   let currentSugarLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Текущий сахар:")
   
+  var currentSugarButton : UIButton =  {
+    let b = UIButton(type: .system)
+    b.setImage(#imageLiteral(resourceName: "sugar-cubes").withRenderingMode(.alwaysOriginal), for: .normal)
+    b.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
+    return b
+  }()
+  
   var passCurrentSugarClouser: StringPassClouser?
   let currentSugarTextField = CustomCategoryTextField(padding: 5, placeholder: "6.0", cornerRaduis: 10, imageButton: #imageLiteral(resourceName: "right-arrow").withRenderingMode(.alwaysTemplate))
   
@@ -58,11 +65,12 @@ class SugarCell: UITableViewCell {
   // Let Compansation Layer
   
   let compansationSugarLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Сахар в норме")
-  let correctionLabel = CustomLabels(font: .systemFont(ofSize: 16), text: "Коррекция:")
-  let correctionImageView: UIImageView = {
-    let iv = UIImageView()
-    iv.contentMode = .scaleAspectFit
-    return iv
+
+  let correctionButton: UIButton = {
+    let b = UIButton(type: .system)
+    b.setImage(#imageLiteral(resourceName: "anesthesia").withRenderingMode(.alwaysOriginal), for: .normal)
+    b.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
+    return b
   }()
   let correctionTextField = CustomCategoryTextField(padding: 5, placeholder: "", cornerRaduis: 10, imageButton: #imageLiteral(resourceName: "robot32").withRenderingMode(.alwaysOriginal))
   
@@ -73,6 +81,8 @@ class SugarCell: UITableViewCell {
     
     backgroundColor = .orange
     
+    correctionButton.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
+    currentSugarButton.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
     
     configureSugarLayer()
     configureCorrectSugarLayer()
@@ -108,24 +118,43 @@ class SugarCell: UITableViewCell {
   private func compansationLayerHidden() {
     compansationSugarLabel.isHidden      = true
     correctionTextField.isHidden         = true
-    correctionLabel.isHidden             = true
-    correctionImageView.isHidden         = true
+    correctionButton.isHidden            = true
   }
   
   private func correctionStackViewHidden() {
     compansationSugarLabel.isHidden      = false
     correctionTextField.isHidden         = true
-    correctionLabel.isHidden             = true
-    correctionImageView.isHidden         = true
+    correctionButton.isHidden            = true
 
   }
   
   private func comapsnationLayerDontHidden() {
     compansationSugarLabel.isHidden      = false
     correctionTextField.isHidden         = false
-    correctionLabel.isHidden             = false
-    correctionImageView.isHidden         = false
-
+    correctionButton.isHidden            = false
+  }
+  
+  
+  // MARK: Buttons Signals
+  
+  
+  var didTapCurrentSugarButton      : EmptyClouser?
+  var didTapCorrectionInsulinButton : EmptyClouser?
+  var didTapRobotInfoButton         : EmptyClouser?
+  
+  @objc private func tapButton(button: UIButton) {
+    switch button {
+    case correctionButton:
+      didTapCorrectionInsulinButton!()
+    case currentSugarButton:
+      didTapCurrentSugarButton!()
+    default:break
+    }
+    
+  }
+  
+  @objc private func handleCorrectSugarRobotButton() {
+    didTapRobotInfoButton!()
   }
   
   
@@ -160,14 +189,18 @@ extension SugarCell {
   // MARK: SetUp Current Sugr Layer
   
   private func getCurrentSugarStackView() -> UIStackView {
+
     
     let currentstackView = UIStackView(arrangedSubviews: [
-      currentSugarLabel,currentSugarTextField
+      currentSugarButton,currentSugarTextField
     ])
-    currentstackView.spacing      = SugarCellHeightWorker.spacing
-    currentstackView.distribution = .fillEqually
+    currentSugarButton.constrainHeight(constant: SugarCellHeightWorker.valueHeight)
+    currentSugarButton.constrainWidth(constant: SugarCellHeightWorker.valueHeight)
     
-    currentSugarLabel.constrainHeight(constant: SugarCellHeightWorker.valueHeight)
+    currentstackView.spacing      = 20
+    currentstackView.distribution = .fill
+    
+    
     
     let overAllStackView = UIStackView(arrangedSubviews: [
       titleLabel,
@@ -187,19 +220,15 @@ extension SugarCell {
   // MARK: Set Uo Correction Sugar LAyer
   
   private func getCorrectionStackView() -> UIStackView {
-    
-    let leftStackView = UIStackView(arrangedSubviews: [
-    correctionLabel,correctionImageView
-    ])
 
-    leftStackView.distribution = .fillEqually
-    correctionLabel.constrainHeight(constant: SugarCellHeightWorker.valueHeight)
     
     let correctionStackView = UIStackView(arrangedSubviews: [
-      leftStackView, correctionTextField
+      correctionButton, correctionTextField
     ])
-    correctionStackView.spacing      = 5
-    correctionStackView.distribution = .fillEqually
+    correctionButton.constrainHeight(constant: SugarCellHeightWorker.valueHeight)
+    correctionButton.constrainWidth(constant: SugarCellHeightWorker.valueHeight)
+    correctionStackView.spacing      = 20
+    correctionStackView.distribution = .fill
     
     
     
@@ -240,8 +269,8 @@ extension SugarCell {
     
     correctionTextField.text   = correctionKoeff
     
-    correctionImageView.image  = viewModel.correctionImage
-    
+    correctionButton.setImage(viewModel.correctionImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+      
     let compansationString = viewModel.compansationString != nil ? viewModel.compansationString! : ""
     compansationSugarLabel.text = compansationString
     
@@ -316,14 +345,7 @@ extension SugarCell {
   
 }
 
-// MARK: Handle CorrectSugar Robot Button
-extension SugarCell {
-  
-  @objc private func handleCorrectSugarRobotButton() {
-    print("handle correction Robot Text field")
-  }
-  
-}
+
 
 // MARK: TextFiedl Delegate
 

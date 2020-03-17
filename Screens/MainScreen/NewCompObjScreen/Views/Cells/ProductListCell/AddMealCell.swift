@@ -44,7 +44,11 @@ class AddMealCell: UITableViewCell {
   
   // Switcher Stack
   let needMealLable = CustomLabels(font: .systemFont(ofSize: 16), text: "Добавьте обед:")
-  
+  var addMealButton: UIButton = {
+    let b = UIButton(type: .system)
+    b.setImage(#imageLiteral(resourceName: "food").withRenderingMode(.alwaysOriginal), for: .normal)
+    return b
+  }()
   
   var didPassSwitcherValueClouser: ((Bool) -> Void)?
   
@@ -85,7 +89,8 @@ class AddMealCell: UITableViewCell {
     
     backgroundColor = #colorLiteral(red: 0.2078431373, green: 0.6196078431, blue: 0.8588235294, alpha: 1)
     mealSwitcher.addTarget(self, action: #selector(handleSwitcher), for: .valueChanged)
-    needMealLable.textAlignment = .left
+//    needMealLable.textAlignment = .left
+    addMealButton.addTarget(self, action: #selector(handleAddMealButton), for: .touchUpInside)
     
     setUpViews()
     setProductListHidden(isHidden: true)
@@ -177,7 +182,7 @@ extension AddMealCell {
     
     overAllStackView.distribution = .fill
     overAllStackView.axis         = .vertical
-    overAllStackView.spacing      = 15
+    overAllStackView.spacing      = 10
     
     addSubview(overAllStackView)
 
@@ -194,10 +199,14 @@ extension AddMealCell {
     mealSwitcher.centerInSuperview()
     
     switcherStackView = UIStackView(arrangedSubviews: [
-    needMealLable,containerView
+    addMealButton,containerView
     ])
-    switcherStackView.distribution = .fillEqually
-    switcherStackView.spacing = 5
+    addMealButton.constrainHeight(constant: SugarCellHeightWorker.valueHeight)
+    addMealButton.constrainWidth(constant: SugarCellHeightWorker.valueHeight)
+    switcherStackView.spacing      = 20
+    switcherStackView.distribution = .fill
+//    switcherStackView.distribution = .fillEqually
+//    switcherStackView.spacing = 5
     
   }
 }
@@ -212,5 +221,9 @@ extension AddMealCell {
   @objc private func handleSwitcher(switcher: UISwitch) {
     
     didPassSwitcherValueClouser!(switcher.isOn)
+  }
+  
+  @objc private func handleAddMealButton() {
+    print("Meal Button")
   }
 }

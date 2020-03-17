@@ -283,6 +283,19 @@ extension NewCompansationObjectScreenViewController {
     cell.passCurrentSugarClouser = {[weak self] text in
       self?.catchCurrentSugarString(text:text)
     }
+    
+    cell.didTapRobotInfoButton = {[weak self] in
+      self?.showAlertController(title: "Расчет робота", message: "\(floatTwo: self?.viewModel.sugarCellVM.correctionSugarKoeff ?? 0) Дозировка на компенсацию сахара для вас!")
+    }
+    
+    cell.didTapCurrentSugarButton = {[weak self] in
+      self?.showAlertController(title: "Ваш сахар на данный момент", message: "Сделайте замер сахара в крови и заполните поле!")
+    }
+    
+    cell.didTapCorrectionInsulinButton = {[weak self] in
+      self?.showAlertController(title: "Коррекция инсулином", message: "Корректировка высокого сахар инсулином")
+    }
+    
   }
   
   // Meal Cell Clousers
@@ -498,8 +511,7 @@ extension NewCompansationObjectScreenViewController : MainControllerInContainerP
     
     interactor?.makeRequest(request: .addProductsInProductList(products: products))
     updateMealCell()
-    
-    
+
     
   }
   // MARK: Delete
@@ -605,3 +617,4 @@ extension NewCompansationObjectScreenViewController: UIGestureRecognizerDelegate
     return abs((slideMenuPanGestureRecogniser.velocity(in: slideMenuPanGestureRecogniser.view)).y) > abs((slideMenuPanGestureRecogniser.velocity(in: slideMenuPanGestureRecogniser.view)).x)
   }
 }
+

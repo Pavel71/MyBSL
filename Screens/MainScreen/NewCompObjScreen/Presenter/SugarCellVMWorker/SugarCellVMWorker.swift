@@ -23,6 +23,8 @@ class SugarCellVMWorker {
   static private func updateCompansationLabelAndCellState(sugar: String) -> SugarCellModel {
     
     var sugarCellVm = SugarCellModel()
+    
+    
         
     // Если пришла пустая строка то ставим ячейку по дефолту
     guard sugar.isEmpty == false else {

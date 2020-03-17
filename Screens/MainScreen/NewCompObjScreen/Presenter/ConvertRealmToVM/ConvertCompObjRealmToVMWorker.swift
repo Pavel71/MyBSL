@@ -16,9 +16,11 @@ final class ConvertCompObjRealmToVMWorker {
   
   // Нужно прописать всю логику заполнения модели из реалм объекта и все Остальное должно работать сразу же!
   
-  static func convertCompObjRealmToVM(compObjRealm:CompansationObjectRelam) -> NewCompObjViewModel {
+  static func convertCompObjRealmToVM(compObjRealm: CompansationObjectRelam) -> NewCompObjViewModel {
     
-    let sugarCellVM      = convertToSugarCellVM(sugarBefore: String(compObjRealm.sugarBefore))
+    let sugarCellVM      = convertToSugarCellVM(comObj: compObjRealm)
+    
+    
     let addMealCellModel = convertToAddMealCellModel(compObjRealm: compObjRealm)
     let injectionCellVM  = convertToInjectionVM(compObjRealm: compObjRealm)
     
@@ -43,10 +45,11 @@ final class ConvertCompObjRealmToVMWorker {
 
 // MARK: Convert to Sugar VM
 extension ConvertCompObjRealmToVMWorker {
-  private static func convertToSugarCellVM(sugarBefore:String) -> SugarCellModel {
+  private static func convertToSugarCellVM(comObj:CompansationObjectRelam) -> SugarCellModel {
     
-    
-    return SugarCellVMWorker.getSugarVM(sugar: sugarBefore)
+    var sugarModel = SugarCellVMWorker.getSugarVM(sugar: String(comObj.sugarBefore))
+    sugarModel.correctionSugarKoeff = Float(comObj.insulinInCorrectionSugar)
+    return sugarModel
 
   }
 }
@@ -108,7 +111,9 @@ extension  ConvertCompObjRealmToVMWorker {
     
     let injectionCellState: InjectionPlaceCellState = compObjRealm.listProduct.isEmpty ? .hidden : .showed
     
-    return InjectionPlaceModel(cellState: injectionCellState, titlePlace: "Some")
+    return InjectionPlaceModel(
+      cellState  : injectionCellState,
+      titlePlace : compObjRealm.placeInjections)
   }
 }
 

@@ -332,35 +332,43 @@ extension DayRealmManager {
     
     let testDay = DayRealm(date: Date())
     
-    let dinners1 = getDummyDInner()
-    dinners1.id  = meal1Id
-    let dinners2 = getDummyDInner2()
-    dinners2.id  = meal2Id
+//    let dinners1 = getDummyDInner()
+//    dinners1.id  = meal1Id
+//    let dinners2 = getDummyDInner2()
+//    dinners2.id  = meal2Id
     
     // Insulin Compansation
     
-    let insulinCopmansationObject = CompansationObjectRelam(
-      typeObject: .correctSugarByInsulin,
-      sugarBefore: 12.5,
-      totalCarbo: 0,
-      totalInsulin: 1)
-    
-    insulinCopmansationObject.id = insulinCOmpansationObjectID
-    
-    // Carbo Compansation
-    
-    let carboCompansationObject = CompansationObjectRelam(
-      typeObject: .correctSugarByCarbo,
-      sugarBefore: 2.5,
-      totalCarbo: 5.0,
-      totalInsulin: 0)
-    carboCompansationObject.id  = carboCompansationObjectID
+//    let insulinCopmansationObject = CompansationObjectRelam(
+//      typeObject: <#T##TypeCompansationObject#>,
+//      sugarBefore: <#T##Double#>,
+//      insulinOnTotalCarbo: <#T##Double#>,
+//      insulinInCorrectionSugar: <#T##Double#>,
+//      totalInsulin: <#T##Double#>)
+//
+//
+//      CompansationObjectRelam(
+//      typeObject: .correctSugarByInsulin,
+//      sugarBefore: 12.5,
+//      totalCarbo: 0,
+//      totalInsulin: 1)
+//
+//    insulinCopmansationObject.id = insulinCOmpansationObjectID
+//
+//    // Carbo Compansation
+//
+//    let carboCompansationObject = CompansationObjectRelam(
+//      typeObject: .correctSugarByCarbo,
+//      sugarBefore: 2.5,
+//      totalCarbo: 5.0,
+//      totalInsulin: 0)
+//    carboCompansationObject.id  = carboCompansationObjectID
     // Тут я также могу добавить еще и продукт который был употребленн!
     
-    let dinner3  = getDummyDInner()
-    dinner3.id   = meal3Id
+//    let dinner3  = getDummyDInner()
+//    dinner3.id   = meal3Id
     
-    testDay.listDinners.append(objectsIn: [dinners1,carboCompansationObject,insulinCopmansationObject,dinners2,dinner3])
+//    testDay.listDinners.append(objectsIn: [dinners1,carboCompansationObject,insulinCopmansationObject,dinners2,dinner3])
     
     let sugars = getSugars()
     
@@ -426,86 +434,82 @@ extension DayRealmManager {
   
   // Dinner
   
-  private func getDummyDInner() -> CompansationObjectRelam {
-    
-    let compansationObjectLikeMeal = CompansationObjectRelam(
-      typeObject  : .mealObject,
-      sugarBefore : 5.0,
-      totalCarbo  : 13.0,
-      totalInsulin: 1.5)
-    
-    //    let dinner = DinnersRealm(
-    //      compansationFase    : CompansationPosition.progress.rawValue,
-    //         timeEating       : Date(timeIntervalSince1970: 1574838000),
-    //         sugarBefore      : 6.0,
-    //         totalCarbo       : 5,
-    //         totalInsulin     : 0.5,
-    //         totalPortion     : 100
-    //
-    //
-    //       )
-    let product1 = ProductRealm(
-      name          : "Молоко",
-      category      : "Молочные продукты",
-      carboIn100Grm : 5,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-      isFavorits    : false,
-      actualInsulin : 0.5
-    )
-    let product2 = ProductRealm(
-      name          : "Яблоко",
-      category      : "Фрукты",
-      carboIn100Grm : 11,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-      isFavorits    : false,
-      actualInsulin : 1
-    )
-    
-    let product3 = ProductRealm(
-      name          : "Мандарин",
-      category      : "Фрукты",
-      carboIn100Grm : 11,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-      isFavorits    : false,
-      actualInsulin : 1
-    )
-    
-    compansationObjectLikeMeal.listProduct.append(objectsIn: [product1,product2,product3])
-    
-    return compansationObjectLikeMeal
-  }
-  
-  private func getDummyDInner2() -> CompansationObjectRelam {
-    
-    let compansationObjectLikeMeal = CompansationObjectRelam(
-      typeObject   : .mealObject,
-      sugarBefore  : 8.0,
-      totalCarbo   : 13.0,
-      totalInsulin : 1.5)
-    
-    let product1 = ProductRealm(
-      name          : "Печенье",
-      category      : "Сладости",
-      carboIn100Grm : 25,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-      isFavorits    : false,
-      actualInsulin : 1
-    )
-    let product2 = ProductRealm(
-      name          : "Суп с картошкой",
-      category      : "Суп",
-      carboIn100Grm : 3,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-      isFavorits    : false,
-      actualInsulin : 0.3
-    )
-    
-    let product3 = ProductRealm(
-      name          : "Мандарин",
-      category      : "Фрукты",
-      carboIn100Grm : 11,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-      isFavorits    : false,
-      actualInsulin : 1
-    )
-    
-    compansationObjectLikeMeal.listProduct.append(objectsIn: [product1,product2,product3])
-    
-    return compansationObjectLikeMeal
-  }
+//  private func getDummyDInner() -> CompansationObjectRelam {
+//
+//
+//
+//    //    let dinner = DinnersRealm(
+//    //      compansationFase    : CompansationPosition.progress.rawValue,
+//    //         timeEating       : Date(timeIntervalSince1970: 1574838000),
+//    //         sugarBefore      : 6.0,
+//    //         totalCarbo       : 5,
+//    //         totalInsulin     : 0.5,
+//    //         totalPortion     : 100
+//    //
+//    //
+//    //       )
+//    let product1 = ProductRealm(
+//      name          : "Молоко",
+//      category      : "Молочные продукты",
+//      carboIn100Grm : 5,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+//      isFavorits    : false,
+//      actualInsulin : 0.5
+//    )
+//    let product2 = ProductRealm(
+//      name          : "Яблоко",
+//      category      : "Фрукты",
+//      carboIn100Grm : 11,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+//      isFavorits    : false,
+//      actualInsulin : 1
+//    )
+//
+//    let product3 = ProductRealm(
+//      name          : "Мандарин",
+//      category      : "Фрукты",
+//      carboIn100Grm : 11,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+//      isFavorits    : false,
+//      actualInsulin : 1
+//    )
+//
+//    compansationObjectLikeMeal.listProduct.append(objectsIn: [product1,product2,product3])
+//
+//    return compansationObjectLikeMeal
+//  }
+//
+//  private func getDummyDInner2() -> CompansationObjectRelam {
+//
+//    let compansationObjectLikeMeal = CompansationObjectRelam(
+//      typeObject   : .mealObject,
+//      sugarBefore  : 8.0,
+//      totalCarbo   : 13.0,
+//      totalInsulin : 1.5)
+//
+//    let product1 = ProductRealm(
+//      name          : "Печенье",
+//      category      : "Сладости",
+//      carboIn100Grm : 25,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+//      isFavorits    : false,
+//      actualInsulin : 1
+//    )
+//    let product2 = ProductRealm(
+//      name          : "Суп с картошкой",
+//      category      : "Суп",
+//      carboIn100Grm : 3,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+//      isFavorits    : false,
+//      actualInsulin : 0.3
+//    )
+//
+//    let product3 = ProductRealm(
+//      name          : "Мандарин",
+//      category      : "Фрукты",
+//      carboIn100Grm : 11,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+//      isFavorits    : false,
+//      actualInsulin : 1
+//    )
+//
+//    compansationObjectLikeMeal.listProduct.append(objectsIn: [product1,product2,product3])
+//
+//    return compansationObjectLikeMeal
+//  }
   
 }

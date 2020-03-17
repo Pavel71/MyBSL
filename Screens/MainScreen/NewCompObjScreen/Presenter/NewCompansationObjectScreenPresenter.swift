@@ -150,17 +150,38 @@ extension NewCompansationObjectScreenPresenter {
       updateMealCellState(isNeed: false)
       updateEnabledSaveButton(isEnabled: false)
     }
-
-    // Сахар выше нормы мы должны его компенсировать
-    if viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer {
+    
+    
+    switch viewModel.sugarCellVM.cellState {
+    case .currentLayerAndCorrectionLabel:
+      // Сюда попадаем если сахар в норме!
+      
+      if viewModel.addMealCellVM.cellState == .productListState {
+        
+        updateEnabledSaveButton(isEnabled: viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false)
+      } else {
+        
+        updateEnabledSaveButton(isEnabled: false)
+      }
+      
+    case .currentLayerAndCorrectionLayer:
+      
+      // Сюда попоадаем если у нас сахар в не нормы!
       
       let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [Float(viewModel.sugarCellVM.currentSugar!)])
       
       viewModel.sugarCellVM.correctionSugarKoeff = predictSugarCompansation.first!
-      // Значит будет укол добавляем поле
       
+      if viewModel.addMealCellVM.cellState == .productListState {
+        
+        updateEnabledSaveButton(isEnabled: viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false)
+      } else {
+        
+        updateEnabledSaveButton(isEnabled: true)
+      }
+    default:break
     }
-    updateEnabledSaveButton(isEnabled: viewModel.sugarCellVM.sugarState == .correctDown)
+
     updateResultViewModel()
     setInjectionCellState()
   }
@@ -199,10 +220,26 @@ extension NewCompansationObjectScreenPresenter {
   }
   
   private func updateMealCellState(isNeed: Bool) {
-    AddMealVMWorker.changeNeedProductList(isNeed: isNeed, viewModel: &viewModel)
-
-    calculateResultViewModelInProductList() // пересчитыаем результат и обновляем Футер
+//    AddMealVMWorker.changeNeedProductList(isNeed: isNeed, viewModel: &viewModel)
     
+    viewModel.addMealCellVM.cellState = isNeed ? .productListState : .defaultState
+       
+    if isNeed == false {
+      // если обед не нужен то очистим все продукты
+      viewModel.addMealCellVM.dinnerProductListVM.productsData.removeAll()
+      calculateResultViewModelInProductList()
+    }
+    
+    if viewModel.addMealCellVM.cellState == .productListState {
+      updateEnabledSaveButton(isEnabled: viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false)
+    } else {
+      
+      let isSugarCorrectCopm = viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer
+      
+      updateEnabledSaveButton(isEnabled: isSugarCorrectCopm)
+    }
+
+    updateResultViewModel()
     setInjectionCellState()
   }
   
@@ -299,16 +336,19 @@ extension NewCompansationObjectScreenPresenter {
       // Каждый раз как пересчитывается резалт по обеду! Чекай кнопочку сохранить
       // Здесь нужно добавить логику того что если кнопочка
       
-      if viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false {
+      // При перерасчете мы должны видеть хотябы 1 продукт
+      
+      if viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer {
+        
+        let isActivateMeal  = viewModel.addMealCellVM.cellState == .productListState
+        let isEmptyproducts = viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false
+        updateEnabledSaveButton(isEnabled: isActivateMeal && isEmptyproducts)
         
         
-        updateEnabledSaveButton(isEnabled: true)
       } else {
-        // нужно сделать проверку на то что мы можем сохранить только если мы делаем коррекцию Высокого сахара
-        let sugarFiedlIsEmpty = viewModel.sugarCellVM.sugarState == .correctDown
-        updateEnabledSaveButton(isEnabled: sugarFiedlIsEmpty)
-        
+        updateEnabledSaveButton(isEnabled: viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false)
       }
+      
       
       
     }
