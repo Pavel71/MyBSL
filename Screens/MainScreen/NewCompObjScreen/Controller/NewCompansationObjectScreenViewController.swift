@@ -309,6 +309,9 @@ extension NewCompansationObjectScreenViewController {
     cell.showMenuController = {[weak self] in
       self?.showMenuController()
     }
+    cell.didTapMealButtonClouser = {[weak self] in
+      self?.showAlertController(title: "Добавьте обед", message: "Ваши продукты")
+    }
     
     
     setProductListControllerCLousers(productListVC: cell.productListViewController)

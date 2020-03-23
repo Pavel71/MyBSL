@@ -365,8 +365,8 @@ extension DayRealmManager {
 //    carboCompansationObject.id  = carboCompansationObjectID
     // Тут я также могу добавить еще и продукт который был употребленн!
     
-//    let dinner3  = getDummyDInner()
-//    dinner3.id   = meal3Id
+//
+    
     
 //    testDay.listDinners.append(objectsIn: [dinners1,carboCompansationObject,insulinCopmansationObject,dinners2,dinner3])
     

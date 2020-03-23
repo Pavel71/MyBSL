@@ -81,8 +81,9 @@ extension MainScreenPresenter {
     // Здесь мне нужно делать перерасчет каждый раз убавлять сумму инсулина из компенсатион обжетк
     let insulinSupplyVM = InsulinSupplyViewModel(insulinSupply: 300)
     
-    
+    let date = DateWorker.shared.getDayMonthYear(date: realmData.date)
     return MainScreenViewModel(
+      dayDate         : date,
       collectionVCVM  : collectionVCVM,
       chartVCVM       : chartViewModel,
       insulinSupplyVM : insulinSupplyVM

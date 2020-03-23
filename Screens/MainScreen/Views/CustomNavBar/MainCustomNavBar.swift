@@ -35,10 +35,19 @@ class MainCustomNavBar: UIView {
     return button
   }()
   
-  // Clousers
+  var calendarButton: UIButton = {
+    let b = UIButton(type: .system)
+    
+    b.setImage(#imageLiteral(resourceName: "calendar").withRenderingMode(.alwaysOriginal), for: .normal)
+    b.addTarget(self, action: #selector(handleCalendarButton), for: .touchUpInside)
+    return b
+  }()
+  
+  // MARK: Clousers
   
   var didTapAddNewDataClouser : EmptyClouser?
   var didTapRobotMenuClouser  : EmptyClouser?
+  var didTapCalendarClouser   : EmptyClouser?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -49,10 +58,18 @@ class MainCustomNavBar: UIView {
     
   }
   
+  func setTitle(title: String) {
+    titleLabel.text = title
+  }
+  
   private func setUpTitleLabel() {
     
+    let leftStack = UIStackView(arrangedSubviews: [robotButton,calendarButton])
+    leftStack.distribution = .fillEqually
+    leftStack.spacing = 20
+    
     let stackView = UIStackView(arrangedSubviews: [
-    robotButton, titleLabel , addNewDinnerButton
+    leftStack, titleLabel, addNewDinnerButton
     ])
     
     
@@ -62,15 +79,22 @@ class MainCustomNavBar: UIView {
     stackView.fillSuperview(padding: .init(top: 10, left: 10, bottom: 10, right: 10))
   }
   
+  
+  // MARK: Button Signals
+  
+  @objc private func handleCalendarButton() {
+    didTapCalendarClouser!()
+  }
+  
   // Add New Dinner
   @objc private func handleAddNewDinner() {
-    print("Add new Dinner")
+    
     didTapAddNewDataClouser!()
   }
   
   // Robot
   @objc private func handleRobotMenu() {
-    print("Hi iam a robot!")
+    
     didTapRobotMenuClouser!()
   }
   

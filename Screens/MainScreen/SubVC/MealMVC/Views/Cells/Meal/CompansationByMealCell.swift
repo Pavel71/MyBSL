@@ -74,7 +74,7 @@ extension CompansationByMealCell {
     productTableViewController.view
 
     ])
-    topButtonView.constrainHeight(constant: 25)
+    topButtonView.constrainHeight(constant: 30)
 
     
     stackView.axis = .vertical

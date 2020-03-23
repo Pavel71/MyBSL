@@ -53,8 +53,15 @@ class TopButtonView: UIView {
   
   // MARK: Clousers
   
-  var didTapDeleteButton:  EmptyClouser?
-  var didTapUpdateButton:  EmptyClouser?
+  var didTapDeleteButton     :  EmptyClouser?
+  var didTapUpdateButton     :  EmptyClouser?
+  var didTapShowSugarBefore  : StringPassClouser?
+  var didTapShowSugarAfter   : StringPassClouser?
+  var didTapShowTotalCarbo   : StringPassClouser?
+  var didTapShowTotalInsulin : StringPassClouser?
+  
+  
+  
   
   func createButton(image: UIImage) -> UIButton {
     let button = UIButton(type: .system)
@@ -99,21 +106,27 @@ class TopButtonView: UIView {
     
     switch button {
     case deleteButton:
-      print("Delete Clouser")
+      
       didTapDeleteButton!()
     case updateButton:
-      print("Update Clouser")
+      
       didTapUpdateButton!()
+      
     case injectionResultButton:
-      print("Show Short Stat by Injections")
+      
+      didTapShowTotalInsulin!(injectionResultLabel.text ?? "")
+      
     case carboMealResultButton:
-      print("Show Message that it it a Meak Carbo")
+      
+      didTapShowTotalCarbo!(carboInMealLabel.text ?? "")
+      
     case sugarCorrectByCarboButton :
       print("Show That it is a correction Carbo")
+      
     case sugarBeforeButton:
-      print("Показать что сахар до")
+      didTapShowSugarBefore!(sugarBeforeLabel.text ?? "")
     case sugarAfterButton:
-      print("Показать что сахар после")
+      didTapShowSugarAfter!(sugarAfterLabel.text ?? "")
 
     default:break
     }

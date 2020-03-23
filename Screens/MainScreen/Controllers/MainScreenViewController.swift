@@ -82,13 +82,29 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
     setViews()
+    getBlankDay()
+  }
+  
+  private func getBlankDay() {
     interactor?.makeRequest(request: .getViewModel)
   }
+  
+  // MARK: Activate Application
+  func activateApplication() {
+    print("Шо за херня")
+    
+    // метод будет проверять текущию дату с той которая в ViewModel и если даты не совпадают то ставить новую дату в title  и запускать бланк!
+  }
+  
+
+  
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
+    print("Main Screen View Will Appear")
     navigationController?.navigationBar.isHidden = true
     setKeyboardNotification()
     // Сделаем запрос в реалм чтобы получить новые данные по ViewModel
@@ -100,6 +116,8 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     NotificationCenter.default.removeObserver(self)
   }
   
+  // MARK: Display Data
+  
   func displayData(viewModel: MainScreen.Model.ViewModel.ViewModelData) {
     
     switch viewModel {
@@ -107,6 +125,10 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     case .setViewModel(let viewModel):
       
       mainScreenViewModel = viewModel
+      
+      
+      
+      
     case .throwCompansationObjectToUpdate(let compObj):
       
       self.router!.goToNewCompansationObjectScreen(compansationObjectRealm: compObj)
@@ -162,12 +184,37 @@ extension MainScreenViewController {
   private func setCompansationObjectCellTopButtons() {
     
     mealCollectionVC.didDeleteCompasationObject = {[weak self] id in
-      self?.interactor?.makeRequest(request: .deleteCompansationObj(compObjId: id))
+      
+      // Покажи алерт и если будет подтверждение то удали объект!
+      
+      self?.showAlertControllerWithCancel(title: "Удалить обед", confirmDelete: { (_) in
+        self?.interactor?.makeRequest(request: .deleteCompansationObj(compObjId: id))
+      })
+      
+      
     }
-    
+
     mealCollectionVC.didUpdateCompansationObject = {[weak self] id in
       self?.interactor?.makeRequest(request: .getCompansationObj(compObjId: id))
     }
+    
+    
+    mealCollectionVC.didShowSugarBeforeCLouser = {[weak self] sugarBefore in
+      self?.showAlertController(title: "Сахар до еды", message: sugarBefore)
+    }
+    
+    mealCollectionVC.didShowSugarAfterCLouser =  {[weak self] sugarAfter in
+         self?.showAlertController(title: "Сахар после еды", message: sugarAfter)
+    }
+    
+    mealCollectionVC.didSHowTotalInsulinClouser =  {[weak self] totalInsulin in
+         self?.showAlertController(title: "Инсулина сделанно", message: totalInsulin)
+    }
+    
+    mealCollectionVC.didShowTotalCarboClouser =  {[weak self] totalCarbo in
+         self?.showAlertController(title: "Всего Углеводов", message: totalCarbo)
+    }
+    
     
   }
   
@@ -202,6 +249,9 @@ extension MainScreenViewController {
     }
     navBarView.didTapRobotMenuClouser = {[weak self] in
       self?.showRobotMenu()
+    }
+    navBarView.didTapCalendarClouser = {[weak self] in
+      print("Покажи календарь")
     }
   }
   

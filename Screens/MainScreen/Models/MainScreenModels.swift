@@ -46,6 +46,10 @@ enum MainScreen {
 // MARK: Main Screen ViewModel
 
 struct MainScreenViewModel: MainScreenViewModelable {
+  
+  // Дата сегодняшнего дня!
+  var dayDate: String
+  
 
   // Для коллекции должны идти данные содержащие не только обеды!
   var collectionVCVM  : CollectionVCVM

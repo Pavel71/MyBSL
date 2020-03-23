@@ -42,6 +42,11 @@ class MealCollectionVC: UIViewController {
   var didDeleteCompasationObject       : StringPassClouser?
   var didUpdateCompansationObject      : StringPassClouser?
   
+  var didShowSugarBeforeCLouser        : StringPassClouser?
+  var didShowSugarAfterCLouser         : StringPassClouser?
+  var didShowTotalCarboClouser         : StringPassClouser?
+  var didSHowTotalInsulinClouser       : StringPassClouser?
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -200,6 +205,22 @@ extension MealCollectionVC {
     cell.topButtonView.didTapUpdateButton = {[weak self] in
       self?.didUpdateCompansationObject!(cell.objectId)
     }
+    
+    cell.topButtonView.didTapShowSugarBefore = {[weak self] sugarBefore in
+      self?.didShowSugarBeforeCLouser!(sugarBefore)
+    }
+    
+    cell.topButtonView.didTapShowSugarAfter = {[weak self] sugarAfter in
+      self?.didShowSugarAfterCLouser!(sugarAfter)
+    }
+    
+    cell.topButtonView.didTapShowTotalCarbo = {[weak self] totalCarbo in
+      self?.didShowTotalCarboClouser!(totalCarbo)
+    }
+    cell.topButtonView.didTapShowTotalInsulin = {[weak self] totalInsulin in
+      self?.didSHowTotalInsulinClouser!(totalInsulin)
+    }
+    
     
   }
   

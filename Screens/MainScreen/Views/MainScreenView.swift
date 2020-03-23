@@ -13,9 +13,10 @@ import UIKit
 
 protocol MainScreenViewModelable {
   
-  var chartVCVM       : ChartVCViewModel             {get set}
-  var collectionVCVM  : CollectionVCVM               {get set}
-  var insulinSupplyVM : InsulinSupplyViewModel       {get set}
+  var chartVCVM       : ChartVCViewModel       {get set}
+  var collectionVCVM  : CollectionVCVM         {get set}
+  var insulinSupplyVM : InsulinSupplyViewModel {get set}
+  var dayDate         : String                 {get set}
   
 }
 
@@ -43,6 +44,8 @@ class MainScreenView: UIView {
   
   
   func setViewModel(viewModel: MainScreenViewModelable) {
+    
+    navBar.setTitle(title: viewModel.dayDate)
     
     chartView.chartVC.setViewModel(viewModel               : viewModel.chartVCVM)
     mealCollectionView.collectionVC.setViewModel(viewModel : viewModel.collectionVCVM)

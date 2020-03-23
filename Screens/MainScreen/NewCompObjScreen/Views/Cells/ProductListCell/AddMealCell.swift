@@ -50,7 +50,8 @@ class AddMealCell: UITableViewCell {
     return b
   }()
   
-  var didPassSwitcherValueClouser: ((Bool) -> Void)?
+  var didPassSwitcherValueClouser : ((Bool) -> Void)?
+  var didTapMealButtonClouser     : EmptyClouser?
   
   var mealSwitcher: UISwitch = {
     let switcher = UISwitch()
@@ -201,12 +202,8 @@ extension AddMealCell {
     switcherStackView = UIStackView(arrangedSubviews: [
     addMealButton,containerView
     ])
-    addMealButton.constrainHeight(constant: SugarCellHeightWorker.valueHeight)
-    addMealButton.constrainWidth(constant: SugarCellHeightWorker.valueHeight)
     switcherStackView.spacing      = 20
     switcherStackView.distribution = .fill
-//    switcherStackView.distribution = .fillEqually
-//    switcherStackView.spacing = 5
     
   }
 }
@@ -224,6 +221,6 @@ extension AddMealCell {
   }
   
   @objc private func handleAddMealButton() {
-    print("Meal Button")
+    didTapMealButtonClouser!()
   }
 }
