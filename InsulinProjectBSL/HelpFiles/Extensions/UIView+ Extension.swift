@@ -119,3 +119,20 @@ struct AnchoredConstraints {
 
 
 
+// MARK: Animate View
+extension UIView {
+  
+  func hideToTheRightCorner() {
+    self.transform = Constants.Animate.transformUpRightCorner
+    self.alpha = 0
+  }
+  
+  func hideToTheLeftCorner() {
+    self.transform = Constants.Animate.transformUpLeftCorner
+    self.alpha = 0
+  }
+  
+}
+
+
+

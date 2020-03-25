@@ -165,7 +165,7 @@ class MealViewController: UIViewController, MealDisplayLogic,MainControllerInCon
       newMealView.setViewModel(viewModel: viewModel)
       
       isShowingNewMealViewNow = true
-      AddNewElementViewAnimated.showOrDismissNewView(newElementView: newMealView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: isShowingNewMealViewNow)
+      AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newMealView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: isShowingNewMealViewNow)
       
     // Show Allerts
     case .showAlertAfterAddMeal(let isSuccessAdd, let isUpdateMeal):
@@ -329,7 +329,7 @@ extension MealViewController {
   private func cancelNewMealView() {
     
     isShowingNewMealViewNow = false
-    AddNewElementViewAnimated.showOrDismissNewView(newElementView: newMealView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: isShowingNewMealViewNow)
+    AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newMealView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: isShowingNewMealViewNow)
     
     newMealView.clearAllFieldsInView()
     if !pickerView.isHidden {

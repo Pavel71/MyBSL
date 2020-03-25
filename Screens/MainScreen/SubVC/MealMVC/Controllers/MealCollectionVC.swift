@@ -50,6 +50,7 @@ class MealCollectionVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    print("Init Collection View")
     setUpCollectionView()
   }
   
@@ -73,6 +74,8 @@ extension MealCollectionVC {
 extension MealCollectionVC {
   
   private func setUpCollectionView() {
+    
+    
      view.addSubview(collectionView)
      collectionView.fillSuperview()
      registerCell()

@@ -93,7 +93,7 @@ class AddNewElementView: UIView, UITextFieldDelegate, AddNewElemetnView {
   
   func hideViewOnTheRightCorner() {
 
-    self.transform = Constants.Animate.transformAddNewElementView
+    self.transform = Constants.Animate.transformUpRightCorner
     self.alpha = 0
 
   }

@@ -10,5 +10,6 @@ target 'InsulinProjectBSL' do
   pod 'ProgressHUD'
   pod 'MachineLearningKit'
   pod 'Charts'
+  pod 'Koyomi'
 
 end

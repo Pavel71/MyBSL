@@ -147,7 +147,9 @@ struct Constants {
   
   struct Animate {
     
-    static let transformAddNewElementView: CGAffineTransform = CGAffineTransform(translationX: UIScreen.main.bounds.maxX, y: -UIScreen.main.bounds.maxY).concatenating(CGAffineTransform(scaleX: 0.3, y: 0.3))
+    static let transformUpRightCorner: CGAffineTransform = CGAffineTransform(translationX: UIScreen.main.bounds.maxX, y: -UIScreen.main.bounds.maxY).concatenating(CGAffineTransform(scaleX: 0.3, y: 0.3))
+    
+    static let transformUpLeftCorner: CGAffineTransform = CGAffineTransform(translationX: UIScreen.main.bounds.minX, y: -UIScreen.main.bounds.maxY).concatenating(CGAffineTransform(scaleX: 0.3, y: 0.3))
   }
   
 }

@@ -28,6 +28,7 @@ class MainScreenView: UIView {
   let chartView          = ChartView()
   let mealCollectionView = MealCollectionView()
   let newSugarView       = NewSugarDataView(frame: NewSugarDataView.sizeView)
+  let calendareView      = CalendarView(frame: CalendarView.sizeView)
   
   var blurView: UIVisualEffectView = {
     let blurEffect = UIBlurEffect(style: .light)
@@ -69,7 +70,9 @@ extension MainScreenView {
     setUpStackViews()
     
     setUpBlurEffect()
+    setCalendarView()
     setNewSugarDataView()
+    
   }
   
   
@@ -112,6 +115,23 @@ extension MainScreenView {
     
     // Убираем вправый угол!
     newSugarView.hideViewOnTheRightCorner()
+    
+//
+//    let testView = UIView(frame: .zero)
+//    testView.backgroundColor = .yellow
+//    addSubview(testView)
+//    testView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: 80, left: 10, bottom: 0, right: 10),size: .init(width: 200, height: 300))
+  }
+  
+  private func setCalendarView() {
+//
+    addSubview(calendareView)
+    calendareView.centerInSuperview(size: .init(
+      width : CalendarView.sizeView.width,
+      height: CalendarView.sizeView.height))
+
+    
+//    calendareView.hideToTheLeftCorner()
   }
   
   // Set Up Blur

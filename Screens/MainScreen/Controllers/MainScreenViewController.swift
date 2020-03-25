@@ -37,6 +37,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   var mealCollectionVC  : MealCollectionVC!
   var insulinSupplyView : InsulinSupplyView!
   var newSugarDataView  : NewSugarDataView!
+  var calendarView      : CalendarView!
   
   // For KeyboardNotification
   var newSugarViewPointY: CGFloat!
@@ -153,6 +154,7 @@ extension MainScreenViewController {
     mealCollectionVC  = mainScreenView.mealCollectionView.collectionVC
     insulinSupplyView = mainScreenView.insulinSupplyView
     newSugarDataView  = mainScreenView.newSugarView
+    calendarView      = mainScreenView.calendareView
     
     
     view.addSubview(mainScreenView)
@@ -252,6 +254,17 @@ extension MainScreenViewController {
     }
     navBarView.didTapCalendarClouser = {[weak self] in
       print("Покажи календарь")
+      
+      AddNewElementViewAnimated.showOrDismissToTheUpLeftCornerNewView(
+        newElementView: self!.calendarView,
+        blurView: self!.mainScreenView.blurView,
+        customNavBar: self!.navBarView,
+        tabbarController: self!.tabBarController!,
+        isShow: true)
+      
+     
+
+      
     }
   }
   
@@ -303,7 +316,7 @@ extension MainScreenViewController {
     showSheetControllerAddSugarOrMeal(title: "Добавить данные!",
      sugarCallBack: { action in
       
-      AddNewElementViewAnimated.showOrDismissNewView(newElementView: self.newSugarDataView, blurView: self.mainScreenView.blurView, customNavBar: self.navBarView, tabbarController: self.tabBarController!, isShow: true)
+      AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: self.newSugarDataView, blurView: self.mainScreenView.blurView, customNavBar: self.navBarView, tabbarController: self.tabBarController!, isShow: true)
       
       
     },mealCallback: { action in
@@ -353,7 +366,7 @@ extension MainScreenViewController {
   
   private func catchTapedCancelButton() {
     
-    AddNewElementViewAnimated.showOrDismissNewView(newElementView: self.newSugarDataView, blurView: self.mainScreenView.blurView, customNavBar: self.navBarView, tabbarController: self.tabBarController!, isShow: false)
+    AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: self.newSugarDataView, blurView: self.mainScreenView.blurView, customNavBar: self.navBarView, tabbarController: self.tabBarController!, isShow: false)
     
   }
   

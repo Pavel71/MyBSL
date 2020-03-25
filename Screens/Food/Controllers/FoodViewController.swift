@@ -153,7 +153,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
         pickerView.isHidden = true
         
         
-        AddNewElementViewAnimated.showOrDismissNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: true)
+        AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: true)
       
       case .displayAlertSaveNewProduct(let success):
         saveNewProduct(success: success)
@@ -319,7 +319,7 @@ extension FoodViewController {
   // Cancel Button
   @objc private func didCancelNewProduct() {
     
-    AddNewElementViewAnimated.showOrDismissNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: false)
+    AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: false)
     
     newProductView.clearAllFieldsInView()
     
