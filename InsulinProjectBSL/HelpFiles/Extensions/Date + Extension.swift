@@ -24,4 +24,9 @@ extension Date {
   func dayAfter() -> Date {
       return Calendar.current.date(byAdding: .day, value: 1, to: self)!
   }
+  
+  func month() -> Int {
+    
+    return Calendar.current.component(.month, from: self)
+  }
 }

@@ -254,16 +254,7 @@ extension MainScreenViewController {
     }
     navBarView.didTapCalendarClouser = {[weak self] in
       print("Покажи календарь")
-      
-      AddNewElementViewAnimated.showOrDismissToTheUpLeftCornerNewView(
-        newElementView: self!.calendarView,
-        blurView: self!.mainScreenView.blurView,
-        customNavBar: self!.navBarView,
-        tabbarController: self!.tabBarController!,
-        isShow: true)
-      
-     
-
+      self?.showCalendar()
       
     }
   }
@@ -326,6 +317,17 @@ extension MainScreenViewController {
       self.router!.goToNewCompansationObjectScreen(compansationObjectRealm: nil)
     })
     
+  }
+  // MARK: Show Calendar
+  
+  private func showCalendar() {
+    
+    AddNewElementViewAnimated.showOrDismissToTheUpLeftCornerNewView(
+      newElementView: self.calendarView,
+          blurView: self.mainScreenView.blurView,
+          customNavBar: self.navBarView,
+          tabbarController: self.tabBarController!,
+          isShow: true)
   }
   
   

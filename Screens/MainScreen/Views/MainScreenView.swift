@@ -13,10 +13,11 @@ import UIKit
 
 protocol MainScreenViewModelable {
   
-  var chartVCVM       : ChartVCViewModel       {get set}
-  var collectionVCVM  : CollectionVCVM         {get set}
+  var dayVM           :DayVM {get set}
+
   var insulinSupplyVM : InsulinSupplyViewModel {get set}
-  var dayDate         : String                 {get set}
+  var calendarVM      : CalendarVM             {get set}
+//  var dayDate         : String                 {get set}
   
 }
 
@@ -46,10 +47,12 @@ class MainScreenView: UIView {
   
   func setViewModel(viewModel: MainScreenViewModelable) {
     
-    navBar.setTitle(title: viewModel.dayDate)
+ 
+    navBar.setTitle(title: viewModel.dayVM.curentDate)
     
-    chartView.chartVC.setViewModel(viewModel               : viewModel.chartVCVM)
-    mealCollectionView.collectionVC.setViewModel(viewModel : viewModel.collectionVCVM)
+    chartView.chartVC.setViewModel(viewModel: viewModel.dayVM.chartVCVM)
+    
+    mealCollectionView.collectionVC.setViewModel(viewModel : viewModel.dayVM.collectionVCVM)
     
   }
   
@@ -116,22 +119,18 @@ extension MainScreenView {
     // Убираем вправый угол!
     newSugarView.hideViewOnTheRightCorner()
     
-//
-//    let testView = UIView(frame: .zero)
-//    testView.backgroundColor = .yellow
-//    addSubview(testView)
-//    testView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: 80, left: 10, bottom: 0, right: 10),size: .init(width: 200, height: 300))
+
   }
   
   private func setCalendarView() {
-//
+
     addSubview(calendareView)
     calendareView.centerInSuperview(size: .init(
       width : CalendarView.sizeView.width,
       height: CalendarView.sizeView.height))
 
-    
-//    calendareView.hideToTheLeftCorner()
+    calendareView.hideToTheLeftCorner()
+
   }
   
   // Set Up Blur

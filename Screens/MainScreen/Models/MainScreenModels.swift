@@ -48,14 +48,25 @@ enum MainScreen {
 struct MainScreenViewModel: MainScreenViewModelable {
   
   // Дата сегодняшнего дня!
-  var dayDate: String
+//  var dayDate: String
   
 
   // Для коллекции должны идти данные содержащие не только обеды!
-  var collectionVCVM  : CollectionVCVM
-  var chartVCVM       : ChartVCViewModel
+  
+  var dayVM           : DayVM
   var insulinSupplyVM : InsulinSupplyViewModel
+  var calendarVM      : CalendarVM
 
+}
+
+
+// MARK: Day VM
+
+struct DayVM {
+  
+  var curentDate      : String
+  var chartVCVM       : ChartVCViewModel
+  var collectionVCVM  : CollectionVCVM
 }
 
 // MARK: Insulin Supply VM
@@ -82,6 +93,18 @@ enum TypeCompansationObject: Int {
   case mealObject            // Мы кушаем обед
   case correctSugarByInsulin // Мы компенсируем выскоий сахар инсулином
   case correctSugarByCarbo   // Мы компенсируем низкий сахар углеводами
+  
+}
+
+// MARK: CalendarVM
+
+
+struct CalendarVM: CalendarViewModable {
+  
+  var dates: [Date]
+  
+  var selectDay: Date
+  
   
 }
 

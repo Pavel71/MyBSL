@@ -27,6 +27,13 @@ enum NewCompansationObjectScreen {
         case updatePortionInProduct(portion: Int,index: Int)
         case updateInsulinByPerson(insulin: Float,index: Int)
         case updatePlaceInjection(place: String)
+ 
+        
+        
+        
+        
+        
+        
         
         case saveCompansationObjectInRealm(viewModel: NewCompObjViewModel)
       }

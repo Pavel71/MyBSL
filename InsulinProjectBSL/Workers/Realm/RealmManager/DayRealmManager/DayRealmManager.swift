@@ -68,6 +68,18 @@ extension DayRealmManager {
     return realm.objects(DayRealm.self)
   }
   
+  
+  // MARK: Get Date Days in this Month
+  
+  func getDaysInThisMonth() -> [Date] {
+    
+    let days = fetchAllDays()
+    let todayMoth = Date().month()
+    
+    let dates: [Date] = days.map{$0.date}.filter{$0.month() == todayMoth }
+    return dates
+  }
+  
   // MARK: Day By ID
   private func getDayById(dayId: String) -> DayRealm? {
     
