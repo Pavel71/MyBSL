@@ -16,7 +16,9 @@ enum MainScreen {
     
     struct Request {
       enum RequestType {
-        case getViewModel
+        case getBlankViewModel
+        
+        case checkLastDayInDB
         
         // Set Data to Realm
         case setSugarVM(sugarViewModel: SugarViewModel)
@@ -52,11 +54,22 @@ struct MainScreenViewModel: MainScreenViewModelable {
   
 
   // Для коллекции должны идти данные содержащие не только обеды!
-  
+  var mainNavBarVm    : MainNavBarVM
   var dayVM           : DayVM
   var insulinSupplyVM : InsulinSupplyViewModel
   var calendarVM      : CalendarVM
 
+}
+
+// MARK: Main Nav Bar Model
+
+struct MainNavBarVM: MainNavBarModable {
+  
+  var datesInThisMoth: [Date]
+  
+  var titleDate: Date
+
+  
 }
 
 
@@ -64,7 +77,7 @@ struct MainScreenViewModel: MainScreenViewModelable {
 
 struct DayVM {
   
-  var curentDate      : String
+  var curentDate      : Date
   var chartVCVM       : ChartVCViewModel
   var collectionVCVM  : CollectionVCVM
 }

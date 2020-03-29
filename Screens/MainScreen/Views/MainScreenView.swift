@@ -13,11 +13,13 @@ import UIKit
 
 protocol MainScreenViewModelable {
   
-  var dayVM           :DayVM {get set}
+  var mainNavBarVm    : MainNavBarVM {get set}
+  
+  var dayVM           : DayVM {get set}
 
   var insulinSupplyVM : InsulinSupplyViewModel {get set}
   var calendarVM      : CalendarVM             {get set}
-//  var dayDate         : String                 {get set}
+
   
 }
 
@@ -46,9 +48,11 @@ class MainScreenView: UIView {
   
   
   func setViewModel(viewModel: MainScreenViewModelable) {
+
     
- 
-    navBar.setTitle(title: viewModel.dayVM.curentDate)
+    navBar.setViewModel(viewModel: viewModel.mainNavBarVm)
+    
+    calendareView.setViewModel(viewModel: viewModel.calendarVM)
     
     chartView.chartVC.setViewModel(viewModel: viewModel.dayVM.chartVCVM)
     

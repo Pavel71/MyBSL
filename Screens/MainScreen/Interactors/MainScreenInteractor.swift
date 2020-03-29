@@ -98,7 +98,7 @@ extension MainScreenInteractor {
   private func catchViewModelRequests(request: MainScreen.Model.Request.RequestType) {
     
     switch request {
-    case .getViewModel:
+    case .getBlankViewModel:
       dayRealmManager.getBlankDayObject()
       passDayRealmToConvertInVMInPresenter()
       

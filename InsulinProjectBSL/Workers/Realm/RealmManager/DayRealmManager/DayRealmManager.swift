@@ -40,23 +40,38 @@ extension DayRealmManager {
   
   func getBlankDayObject() {
     
+    
+    // Просто для тестирования
+    
+    let dayBefore = DayRealm(date: Date().dayBefore())
+    
+    do {
+      self.realm.beginWrite()
+      self.realm.add(dayBefore)
+      
+      try self.realm.commitWrite()
+      print(self.realm.configuration.fileURL?.absoluteURL as Any,"Day DB")
+      
+    } catch {
+      print(error.localizedDescription)
+    }
+    
+    
     currentDay = DayRealm(date: Date())
     // Мне нужно теперь записать день в Realm! Чтобы потом я мог с ним работать!
     
-    DispatchQueue.main.async {
+
       do {
         self.realm.beginWrite()
         self.realm.add(self.currentDay)
-//        self.currentDayId = dayBlank.id
+
         try self.realm.commitWrite()
         print(self.realm.configuration.fileURL?.absoluteURL as Any,"Day DB")
         
       } catch {
         print(error.localizedDescription)
       }
-    }
-    
-    
+
   }
   
  
@@ -75,6 +90,8 @@ extension DayRealmManager {
     
     let days = fetchAllDays()
     let todayMoth = Date().month()
+    
+    print("days in Realm Method",days)
     
     let dates: [Date] = days.map{$0.date}.filter{$0.month() == todayMoth }
     return dates

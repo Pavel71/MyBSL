@@ -79,29 +79,35 @@ extension MainScreenPresenter {
     
     // По идеи я буду это брать юзер дефолтсе так как в реалме сохранять это бессмысленно!
     // Здесь мне нужно делать перерасчет каждый раз убавлять сумму инсулина из компенсатион обжетк
-    let date = DateWorker.shared.getDayMonthYear(date: realmData.date)
+    
     let dayVM = DayVM(
-      curentDate: date,
+      curentDate: realmData.date,
       chartVCVM: chartViewModel,
       collectionVCVM: collectionVCVM)
     
     // Эти 2 объекта получают информацию не зависимо ото дня! - это общая информация!
     let insulinSupplyVM = getInsulinSupplyVM()
-    let calendarVM = getCalendarVM(realmDay: realmData)
+    let calendarVM      = getCalendarVM(realmDay: realmData)
      
    
-    
+    let mainNavBarVM = MainNavBarVM(
+      datesInThisMoth: calendarVM.dates,
+      titleDate: calendarVM.selectDay)
     
     
     
     return MainScreenViewModel(
-//      dayDate         : date,
+
+      mainNavBarVm    : mainNavBarVM,
       dayVM           : dayVM,
       insulinSupplyVM : insulinSupplyVM,
       calendarVM      : calendarVM
     )
   }
   
+  
+  
+  // MARK: Calendar VM
   
   private func getCalendarVM(realmDay: DayRealm) -> CalendarVM {
     
@@ -113,9 +119,13 @@ extension MainScreenPresenter {
          dates: datesinThisMoth,
          selectDay: realmDay.date)
     
+    print("CalendarVM",calendarVM)
+    
     return calendarVM
   }
   
+  
+  // MARK: Insulin SUpply VM
   private func getInsulinSupplyVM() -> InsulinSupplyViewModel {
     InsulinSupplyViewModel(insulinSupply: 300)
   }

@@ -7,6 +7,13 @@
 //
 import UIKit
 
+
+protocol MainNavBarModable {
+  
+  var titleDate       : Date   {get}
+  var datesInThisMoth : [Date] {get}
+}
+
 class MainCustomNavBar: UIView {
   
   static let sizeBar: CGRect = .init(x: 0, y: 0, width: 0, height: 60)
@@ -58,9 +65,7 @@ class MainCustomNavBar: UIView {
     
   }
   
-  func setTitle(title: String) {
-    titleLabel.text = title
-  }
+
   
   private func setUpTitleLabel() {
     
@@ -116,3 +121,13 @@ class MainCustomNavBar: UIView {
   
   
 }
+
+extension MainCustomNavBar {
+  
+  func setViewModel(viewModel: MainNavBarModable) {
+    let date = DateWorker.shared.getDayMonthYear(date: viewModel.titleDate)
+    titleLabel.text = date
+  }
+}
+
+

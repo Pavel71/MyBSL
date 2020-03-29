@@ -29,4 +29,14 @@ extension Date {
     
     return Calendar.current.component(.month, from: self)
   }
+  
+  
+  func onlyDate() -> Date? {
+         
+    let calender = Calendar.current
+    var dateComponents = calender.dateComponents([.year, .month, .day], from: self)
+    dateComponents.timeZone = NSTimeZone.system
+    return calender.date(from: dateComponents)
+         
+    }
 }

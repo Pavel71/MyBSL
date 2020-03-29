@@ -89,14 +89,18 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   }
   
   private func getBlankDay() {
-    interactor?.makeRequest(request: .getViewModel)
+    interactor?.makeRequest(request: .getBlankViewModel)
   }
   
   // MARK: Activate Application
   func activateApplication() {
     print("Шо за херня")
     
-    // метод будет проверять текущию дату с той которая в ViewModel и если даты не совпадают то ставить новую дату в title  и запускать бланк!
+    // Здесь мне нужно достать последний день из базы и его уже проверить с текущей датой!
+    interactor?.makeRequest(request: .checkLastDayInDB)
+//    if mainScreenViewModel.dayVM.curentDate.onlyDate() != Date().onlyDate() {
+//      getBlankDay()
+//    }
   }
   
 
@@ -168,6 +172,10 @@ extension MainScreenViewController {
   
   private func setClousers() {
     
+    
+    
+    setCalendarViewClousers()
+    
     setChartVCClousers()
     
     setMealVCClousers()
@@ -180,6 +188,15 @@ extension MainScreenViewController {
     
     setCompansationObjectCellTopButtons()
     
+  }
+  
+  //Calenar CLousers
+  
+  private func setCalendarViewClousers() {
+    
+    calendarView.didTapCLoseCalendar = {[weak self] in
+      self?.closeCalendar()
+    }
   }
   
   // Top Buttons Clouser
@@ -253,7 +270,7 @@ extension MainScreenViewController {
       self?.showRobotMenu()
     }
     navBarView.didTapCalendarClouser = {[weak self] in
-      print("Покажи календарь")
+      
       self?.showCalendar()
       
     }
@@ -328,6 +345,15 @@ extension MainScreenViewController {
           customNavBar: self.navBarView,
           tabbarController: self.tabBarController!,
           isShow: true)
+  }
+  
+  private func closeCalendar() {
+    AddNewElementViewAnimated.showOrDismissToTheUpLeftCornerNewView(
+    newElementView: self.calendarView,
+        blurView: self.mainScreenView.blurView,
+        customNavBar: self.navBarView,
+        tabbarController: self.tabBarController!,
+        isShow: false)
   }
   
   
