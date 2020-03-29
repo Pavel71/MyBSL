@@ -80,6 +80,25 @@ extension MainScreenInteractor {
       guard let compansationObject = dayRealmManager.getCompansationObjById(compObjId: compObjId) else {return print("Нет такого объекта")}
       
       presenter?.presentData(response: .passCompansationObj(compObj: compansationObject))
+      
+      
+    case .checkLastDayInDB:
+      print("Chec")
+      
+      // Если true то мы ничего не трогаем и возвращаем нашу модель как есть
+      
+      if dayRealmManager.isNowLastDayInDB() == false {
+        dayRealmManager.getBlankDayObject()
+      }
+      
+      passDayRealmToConvertInVMInPresenter()
+      
+    case .selectDayByCalendar(let date):
+      
+      
+      dayRealmManager.getDayByDate(date: date)
+      passDayRealmToConvertInVMInPresenter()
+      
     default:break
     }
     

@@ -91,10 +91,35 @@ extension DayRealmManager {
     let days = fetchAllDays()
     let todayMoth = Date().month()
     
-    print("days in Realm Method",days)
-    
     let dates: [Date] = days.map{$0.date}.filter{$0.month() == todayMoth }
     return dates
+  }
+  
+  // MARK: Get Day by Date
+  
+  func getDayByDate(date: Date) {
+    
+    let days = fetchAllDays()
+
+    
+    guard let realmDay = days.first(where: {$0.date.onlyDate()!.dayAfter().compareDate(with: date)}) else {return}
+    
+    print("Realm Day by date", realmDay)
+    currentDay = realmDay
+    
+  }
+  
+  // MARK: Check Days on last in DB
+  
+  func isNowLastDayInDB() -> Bool {
+    let days = fetchAllDays()
+    
+    guard let lastDay = days.last else {return false}
+    
+    let dateNow = Date()
+    
+    return lastDay.date.onlyDate()! < dateNow.onlyDate()!
+    
   }
   
   // MARK: Day By ID

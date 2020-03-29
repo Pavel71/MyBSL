@@ -39,4 +39,14 @@ extension Date {
     return calender.date(from: dateComponents)
          
     }
+  
+  func compareDate(with date : Date) -> Bool {
+    let order = NSCalendar.current.compare(self, to: date, toGranularity: .hour)
+      switch order {
+      case .orderedSame:
+          return true
+      default:
+          return false
+      }
+  }
 }

@@ -16,8 +16,8 @@ enum MainScreen {
     
     struct Request {
       enum RequestType {
-        case getBlankViewModel
         
+        case getBlankViewModel
         case checkLastDayInDB
         
         // Set Data to Realm
@@ -26,6 +26,9 @@ enum MainScreen {
         
         case deleteCompansationObj(compObjId: String)
         case getCompansationObj(compObjId: String)
+        
+        // Calendar Date Selected
+        case selectDayByCalendar(date: Date)
       }
     }
     

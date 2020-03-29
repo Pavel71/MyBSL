@@ -97,10 +97,8 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     print("Шо за херня")
     
     // Здесь мне нужно достать последний день из базы и его уже проверить с текущей датой!
-    interactor?.makeRequest(request: .checkLastDayInDB)
-//    if mainScreenViewModel.dayVM.curentDate.onlyDate() != Date().onlyDate() {
-//      getBlankDay()
-//    }
+//    interactor?.makeRequest(request: .checkLastDayInDB)
+
   }
   
 
@@ -195,6 +193,12 @@ extension MainScreenViewController {
   private func setCalendarViewClousers() {
     
     calendarView.didTapCLoseCalendar = {[weak self] in
+      self?.closeCalendar()
+    }
+    
+    calendarView.didTapDateClouser = {[weak self] date in
+      self?.interactor?.makeRequest(request: .selectDayByCalendar(date:date))
+      
       self?.closeCalendar()
     }
   }

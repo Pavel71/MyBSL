@@ -62,8 +62,9 @@ class CalendarView: UIView {
     return b
   }()
   
-  // CLousers
-  var didTapCLoseCalendar: EmptyClouser?
+  //MARK:  CLousers
+  var didTapCLoseCalendar : EmptyClouser?
+  var didTapDateClouser   : ((Date) -> Void)?
   
   // Private items
   
@@ -160,7 +161,7 @@ extension CalendarView: KoyomiDelegate {
     // Не знаю почему но он берет дату на день позже
     guard let date = date else {return}
     
-    print("You Selected: \(date.dayAfter())")
+    didTapDateClouser!(date.dayAfter())
   }
   
   //    func koyomi(_ koyomi: Koyomi, currentDateString dateString: String) {
