@@ -87,12 +87,10 @@ extension MainScreenPresenter {
     
     // Эти 2 объекта получают информацию не зависимо ото дня! - это общая информация!
     let insulinSupplyVM = getInsulinSupplyVM()
-    let calendarVM      = getCalendarVM(realmDay: realmData)
+    let mainNavBarVM    = getMainNavBarVM(realmDay: realmData)
      
    
-    let mainNavBarVM = MainNavBarVM(
-      datesInThisMoth: calendarVM.dates,
-      titleDate: calendarVM.selectDay)
+  
     
     
     
@@ -100,8 +98,8 @@ extension MainScreenPresenter {
 
       mainNavBarVm    : mainNavBarVM,
       dayVM           : dayVM,
-      insulinSupplyVM : insulinSupplyVM,
-      calendarVM      : calendarVM
+      insulinSupplyVM : insulinSupplyVM
+      
     )
   }
   
@@ -109,19 +107,18 @@ extension MainScreenPresenter {
   
   // MARK: Calendar VM
   
-  private func getCalendarVM(realmDay: DayRealm) -> CalendarVM {
+  private func getMainNavBarVM(realmDay: DayRealm) -> MainNavBarVM {
     
     // Здесь мне нужно сделать запрос к базе данных полуичить все дни в текущем месяце которые есть у нас в заполненных!
     
-    let datesinThisMoth = DayRealmManager().getDaysInThisMonth()
+//    let datesinThisMoth = DayRealmManager().getDaysInThisMonth()
+    let lastSevenDates = DayRealmManager().getLastSevenDaysDate()
     
-    let calendarVM      = CalendarVM(
-         dates: datesinThisMoth,
-         selectDay: realmDay.date)
+   let mainNavBarVM = MainNavBarVM(
+    lastSevenDays : lastSevenDates,
+    titleDate     : realmDay.date)
     
-    print("CalendarVM",calendarVM)
-    
-    return calendarVM
+    return mainNavBarVM
   }
   
   

@@ -43,35 +43,45 @@ extension DayRealmManager {
     
     // Просто для тестирования
     
-    let dayBefore = DayRealm(date: Date().dayBefore())
+    let today = Date()
     
-    do {
-      self.realm.beginWrite()
-      self.realm.add(dayBefore)
+    testDaysMethod(today: today)
+
+    
+    currentDay = DayRealm(date: today)
+    // Мне нужно теперь записать день в Realm! Чтобы потом я мог с ним работать!
+    writeDayInDB(dayRealm: currentDay)
+
+  }
+  
+  
+  private func testDaysMethod(today: Date) {
+    
+    var dateBefore = today.dayBefore()
+    
+    
+    for _ in 0...8 {
+      let dayBefore = DayRealm(date: dateBefore)
+      writeDayInDB(dayRealm: dayBefore)
       
-      try self.realm.commitWrite()
-      print(self.realm.configuration.fileURL?.absoluteURL as Any,"Day DB")
-      
-    } catch {
-      print(error.localizedDescription)
+      print(dateBefore)
+      dateBefore = dateBefore.dayBefore()
     }
     
     
-    currentDay = DayRealm(date: Date())
-    // Мне нужно теперь записать день в Realm! Чтобы потом я мог с ним работать!
-    
+  }
+  
+  private func writeDayInDB(dayRealm: DayRealm) {
+    do {
+           self.realm.beginWrite()
+           self.realm.add(dayRealm)
 
-      do {
-        self.realm.beginWrite()
-        self.realm.add(self.currentDay)
-
-        try self.realm.commitWrite()
-        print(self.realm.configuration.fileURL?.absoluteURL as Any,"Day DB")
-        
-      } catch {
-        print(error.localizedDescription)
-      }
-
+           try self.realm.commitWrite()
+//           print(self.realm.configuration.fileURL?.absoluteURL as Any,"Day DB")
+           
+         } catch {
+           print(error.localizedDescription)
+         }
   }
   
  
@@ -95,6 +105,14 @@ extension DayRealmManager {
     return dates
   }
   
+  func getLastSevenDaysDate() -> [Date] {
+    let days = fetchAllDays()
+    
+    let sevenDate: [Date] = days.suffix(7).map{$0.date}
+    
+    return sevenDate
+  }
+  
   // MARK: Get Day by Date
   
   func getDayByDate(date: Date) {
@@ -102,9 +120,8 @@ extension DayRealmManager {
     let days = fetchAllDays()
 
     
-    guard let realmDay = days.first(where: {$0.date.onlyDate()!.dayAfter().compareDate(with: date)}) else {return}
-    
-    print("Realm Day by date", realmDay)
+    guard let realmDay = days.first(where: {$0.date.compareDate(with: date)}) else {return}
+  
     currentDay = realmDay
     
   }

@@ -14,4 +14,5 @@ extension Array {
   func split() -> (Element,Element) {
     return (self[0],self[1])
   }
+  
 }

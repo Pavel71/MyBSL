@@ -11,7 +11,7 @@ import UIKit
 protocol MainNavBarModable {
   
   var titleDate       : Date   {get}
-  var datesInThisMoth : [Date] {get}
+  var lastSevenDays   : [Date] {get}
 }
 
 class MainCustomNavBar: UIView {
@@ -23,7 +23,7 @@ class MainCustomNavBar: UIView {
     
     let label = UILabel()
     label.text = "Главный экран"
-    label.font = UIFont.systemFont(ofSize: 20)
+    label.font = UIFont.systemFont(ofSize: 18)
     label.textAlignment = .center
     return label
   }()
@@ -42,39 +42,70 @@ class MainCustomNavBar: UIView {
     return button
   }()
   
-  var calendarButton: UIButton = {
+//  var calendarButton: UIButton = {
+//    let b = UIButton(type: .system)
+//
+//    b.setImage(#imageLiteral(resourceName: "calendar").withRenderingMode(.alwaysOriginal), for: .normal)
+//    b.addTarget(self, action: #selector(handleCalendarButton), for: .touchUpInside)
+//    return b
+//  }()
+  
+  var previosDayButton: UIButton = {
     let b = UIButton(type: .system)
-    
-    b.setImage(#imageLiteral(resourceName: "calendar").withRenderingMode(.alwaysOriginal), for: .normal)
-    b.addTarget(self, action: #selector(handleCalendarButton), for: .touchUpInside)
+    b.setImage(#imageLiteral(resourceName: "left-arrow"), for: .normal)
+    b.addTarget(self, action: #selector(chooseDay), for: .touchUpInside)
     return b
   }()
+  
+  var nextDayButton: UIButton = {
+    let b = UIButton(type: .system)
+    b.setImage(#imageLiteral(resourceName: "next"), for: .normal)
+    b.addTarget(self, action: #selector(chooseDay), for: .touchUpInside)
+    return b
+  }()
+  
+  
+  // View Model
+  
+  var viewModel: MainNavBarVM!
   
   // MARK: Clousers
   
   var didTapAddNewDataClouser : EmptyClouser?
   var didTapRobotMenuClouser  : EmptyClouser?
-  var didTapCalendarClouser   : EmptyClouser?
+//  var didTapCalendarClouser   : EmptyClouser?
+  
+  var didTapPreviosDateClouser: ((Date) -> Void)?
+  var didTapNextDateClouser   : ((Date) -> Void)?
+
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
     
     backgroundColor = .white
-    setUpTitleLabel()
+    setUpViews()
     
   }
   
 
   
-  private func setUpTitleLabel() {
+  private func setUpViews() {
     
-    let leftStack = UIStackView(arrangedSubviews: [robotButton,calendarButton])
-    leftStack.distribution = .fillEqually
-    leftStack.spacing = 20
+//    let leftStack = UIStackView(arrangedSubviews: [robotButton])
+//    leftStack.distribution = .fillEqually
+//    leftStack.spacing = 20
+    
+    
+    let centralStack = UIStackView(arrangedSubviews: [
+    
+    previosDayButton,titleLabel,nextDayButton
+    ])
+//    centralStack.spacing = 5
+    centralStack.distribution = .fill
     
     let stackView = UIStackView(arrangedSubviews: [
-    leftStack, titleLabel, addNewDinnerButton
+    robotButton, centralStack, addNewDinnerButton
     ])
     
     
@@ -87,9 +118,9 @@ class MainCustomNavBar: UIView {
   
   // MARK: Button Signals
   
-  @objc private func handleCalendarButton() {
-    didTapCalendarClouser!()
-  }
+//  @objc private func handleCalendarButton() {
+//    didTapCalendarClouser!()
+//  }
   
   // Add New Dinner
   @objc private func handleAddNewDinner() {
@@ -101,6 +132,38 @@ class MainCustomNavBar: UIView {
   @objc private func handleRobotMenu() {
     
     didTapRobotMenuClouser!()
+  }
+  
+  
+  
+  @objc private func chooseDay(button: UIButton) {
+    switch button {
+    case nextDayButton:
+      
+      let nextDate = getNextDate()
+      didTapNextDateClouser!(nextDate)
+    case previosDayButton:
+      let previosDate = getPreviosDate()
+      didTapPreviosDateClouser!(previosDate)
+    default:break
+    }
+    
+    
+    
+  }
+  
+  private func getNextDate() -> Date {
+    
+    let indexSelectedDay = viewModel.lastSevenDays.firstIndex(of: viewModel.titleDate)!
+    
+    return viewModel.lastSevenDays[indexSelectedDay + 1]
+  }
+  
+  private func getPreviosDate() -> Date {
+    
+    let indexSelectedDay = viewModel.lastSevenDays.firstIndex(of: viewModel.titleDate)!
+    
+    return viewModel.lastSevenDays[indexSelectedDay - 1]
   }
   
  
@@ -122,11 +185,33 @@ class MainCustomNavBar: UIView {
   
 }
 
+
+
+// MARK: Set View Model
+
 extension MainCustomNavBar {
   
   func setViewModel(viewModel: MainNavBarModable) {
-    let date = DateWorker.shared.getDayMonthYear(date: viewModel.titleDate)
+    
+    self.viewModel = viewModel as? MainNavBarVM
+    
+    let date = DateWorker.shared.getDayMonthYearWeek(date: viewModel.titleDate)
     titleLabel.text = date
+    
+    
+    if viewModel.lastSevenDays.count > 1 {
+      
+      guard let lastElement  = viewModel.lastSevenDays.last else {return}
+      guard let firstElement = viewModel.lastSevenDays.first else {return}
+      
+      previosDayButton.alpha = viewModel.titleDate == firstElement ? 0 : 1
+      nextDayButton.alpha    = viewModel.titleDate == lastElement ? 0 : 1
+      
+      addNewDinnerButton.isEnabled = viewModel.titleDate == lastElement
+    }
+    
+    
+    
   }
 }
 

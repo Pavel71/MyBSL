@@ -37,7 +37,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   var mealCollectionVC  : MealCollectionVC!
   var insulinSupplyView : InsulinSupplyView!
   var newSugarDataView  : NewSugarDataView!
-  var calendarView      : CalendarView!
+//  var calendarView      : CalendarView!
   
   // For KeyboardNotification
   var newSugarViewPointY: CGFloat!
@@ -156,7 +156,7 @@ extension MainScreenViewController {
     mealCollectionVC  = mainScreenView.mealCollectionView.collectionVC
     insulinSupplyView = mainScreenView.insulinSupplyView
     newSugarDataView  = mainScreenView.newSugarView
-    calendarView      = mainScreenView.calendareView
+//    calendarView      = mainScreenView.calendareView
     
     
     view.addSubview(mainScreenView)
@@ -172,7 +172,7 @@ extension MainScreenViewController {
     
     
     
-    setCalendarViewClousers()
+//    setCalendarViewClousers()
     
     setChartVCClousers()
     
@@ -190,18 +190,18 @@ extension MainScreenViewController {
   
   //Calenar CLousers
   
-  private func setCalendarViewClousers() {
-    
-    calendarView.didTapCLoseCalendar = {[weak self] in
-      self?.closeCalendar()
-    }
-    
-    calendarView.didTapDateClouser = {[weak self] date in
-      self?.interactor?.makeRequest(request: .selectDayByCalendar(date:date))
-      
-      self?.closeCalendar()
-    }
-  }
+//  private func setCalendarViewClousers() {
+//
+//    calendarView.didTapCLoseCalendar = {[weak self] in
+//      self?.closeCalendar()
+//    }
+//
+//    calendarView.didTapDateClouser = {[weak self] date in
+//      self?.interactor?.makeRequest(request: .selectDayByCalendar(date:date))
+//
+//      self?.closeCalendar()
+//    }
+//  }
   
   // Top Buttons Clouser
   private func setCompansationObjectCellTopButtons() {
@@ -273,10 +273,16 @@ extension MainScreenViewController {
     navBarView.didTapRobotMenuClouser = {[weak self] in
       self?.showRobotMenu()
     }
-    navBarView.didTapCalendarClouser = {[weak self] in
+    
+    navBarView.didTapNextDateClouser = {[weak self] nextDate in
       
-      self?.showCalendar()
       
+      self?.interactor?.makeRequest(request: .selectDayByCalendar(date: nextDate))
+    }
+    
+    navBarView.didTapPreviosDateClouser = {[weak self] prevDate in
+      
+      self?.interactor?.makeRequest(request: .selectDayByCalendar(date: prevDate))
     }
   }
   
@@ -340,25 +346,25 @@ extension MainScreenViewController {
     
   }
   // MARK: Show Calendar
-  
-  private func showCalendar() {
-    
-    AddNewElementViewAnimated.showOrDismissToTheUpLeftCornerNewView(
-      newElementView: self.calendarView,
-          blurView: self.mainScreenView.blurView,
-          customNavBar: self.navBarView,
-          tabbarController: self.tabBarController!,
-          isShow: true)
-  }
-  
-  private func closeCalendar() {
-    AddNewElementViewAnimated.showOrDismissToTheUpLeftCornerNewView(
-    newElementView: self.calendarView,
-        blurView: self.mainScreenView.blurView,
-        customNavBar: self.navBarView,
-        tabbarController: self.tabBarController!,
-        isShow: false)
-  }
+//  
+//  private func showCalendar() {
+//    
+//    AddNewElementViewAnimated.showOrDismissToTheUpLeftCornerNewView(
+//      newElementView: self.calendarView,
+//          blurView: self.mainScreenView.blurView,
+//          customNavBar: self.navBarView,
+//          tabbarController: self.tabBarController!,
+//          isShow: true)
+//  }
+//  
+//  private func closeCalendar() {
+//    AddNewElementViewAnimated.showOrDismissToTheUpLeftCornerNewView(
+//    newElementView: self.calendarView,
+//        blurView: self.mainScreenView.blurView,
+//        customNavBar: self.navBarView,
+//        tabbarController: self.tabBarController!,
+//        isShow: false)
+//  }
   
   
   

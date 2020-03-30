@@ -49,4 +49,21 @@ extension Date {
           return false
       }
   }
+  
+  
+  func monthAsString() -> String {
+             let df = DateFormatter()
+             df.setLocalizedDateFormatFromTemplate("MMM")
+             return df.string(from: self)
+     }
+  
+    func dayofTheWeek() -> String {
+            let dayNumber = Calendar.current.component(.weekday, from: self)
+            // day number starts from 1 but array count from 0
+            return daysOfTheWeek[dayNumber - 1]
+    }
+
+    private var daysOfTheWeek: [String] {
+            return  ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
+      }
 }

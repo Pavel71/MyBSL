@@ -18,7 +18,7 @@ protocol MainScreenViewModelable {
   var dayVM           : DayVM {get set}
 
   var insulinSupplyVM : InsulinSupplyViewModel {get set}
-  var calendarVM      : CalendarVM             {get set}
+//  var calendarVM      : CalendarVM             {get set} // Пока решаю здесь его не юзать
 
   
 }
@@ -31,7 +31,7 @@ class MainScreenView: UIView {
   let chartView          = ChartView()
   let mealCollectionView = MealCollectionView()
   let newSugarView       = NewSugarDataView(frame: NewSugarDataView.sizeView)
-  let calendareView      = CalendarView(frame: CalendarView.sizeView)
+//  let calendareView      = CalendarView(frame: CalendarView.sizeView)
   
   var blurView: UIVisualEffectView = {
     let blurEffect = UIBlurEffect(style: .light)
@@ -52,7 +52,7 @@ class MainScreenView: UIView {
     
     navBar.setViewModel(viewModel: viewModel.mainNavBarVm)
     
-    calendareView.setViewModel(viewModel: viewModel.calendarVM)
+//    calendareView.setViewModel(viewModel: viewModel.calendarVM)
     
     chartView.chartVC.setViewModel(viewModel: viewModel.dayVM.chartVCVM)
     
@@ -77,7 +77,7 @@ extension MainScreenView {
     setUpStackViews()
     
     setUpBlurEffect()
-    setCalendarView()
+//    setCalendarView()
     setNewSugarDataView()
     
   }
@@ -126,16 +126,16 @@ extension MainScreenView {
 
   }
   
-  private func setCalendarView() {
-
-    addSubview(calendareView)
-    calendareView.centerInSuperview(size: .init(
-      width : CalendarView.sizeView.width,
-      height: CalendarView.sizeView.height))
-
-    calendareView.hideToTheLeftCorner()
-
-  }
+//  private func setCalendarView() {
+//
+//    addSubview(calendareView)
+//    calendareView.centerInSuperview(size: .init(
+//      width : CalendarView.sizeView.width,
+//      height: CalendarView.sizeView.height))
+//
+//    calendareView.hideToTheLeftCorner()
+//
+//  }
   
   // Set Up Blur
   private func setUpBlurEffect() {

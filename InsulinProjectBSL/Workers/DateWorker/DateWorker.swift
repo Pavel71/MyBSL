@@ -53,7 +53,13 @@ class DateWorker {
   }
   
   func getDayMonthYear(date: Date) -> String {
+    
     return dateFormatterDayMonthYear.string(from: date)
+  }
+  
+  func getDayMonthYearWeek(date: Date) -> String {
+    
+    return "\(getDayMonthYear(date: date)), \(date.dayofTheWeek())"
   }
   
 }

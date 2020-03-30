@@ -60,15 +60,15 @@ struct MainScreenViewModel: MainScreenViewModelable {
   var mainNavBarVm    : MainNavBarVM
   var dayVM           : DayVM
   var insulinSupplyVM : InsulinSupplyViewModel
-  var calendarVM      : CalendarVM
+//  var calendarVM      : CalendarVM
 
 }
 
 // MARK: Main Nav Bar Model
 
 struct MainNavBarVM: MainNavBarModable {
+  var lastSevenDays: [Date]
   
-  var datesInThisMoth: [Date]
   
   var titleDate: Date
 
