@@ -38,7 +38,18 @@ extension DayRealmManager {
   
   // Пока просто создам пустой день
   
-  func getBlankDayObject() {
+  func addBlankDay() {
+    
+    print("Add Blank Day")
+    
+     let today = Date()
+    currentDay = DayRealm(date: today)
+       // Мне нужно теперь записать день в Realm! Чтобы потом я мог с ним работать!
+    writeDayInDB(dayRealm: currentDay)
+    
+  }
+  
+  func getTestsObjects() {
     
     
     // Просто для тестирования
@@ -48,9 +59,9 @@ extension DayRealmManager {
     testDaysMethod(today: today)
 
     
-    currentDay = DayRealm(date: today)
-    // Мне нужно теперь записать день в Realm! Чтобы потом я мог с ним работать!
-    writeDayInDB(dayRealm: currentDay)
+//    currentDay = DayRealm(date: today)
+//    // Мне нужно теперь записать день в Realm! Чтобы потом я мог с ним работать!
+//    writeDayInDB(dayRealm: currentDay)
 
   }
   
@@ -59,12 +70,14 @@ extension DayRealmManager {
     
     var dateBefore = today.dayBefore()
     
+    currentDay = DayRealm(date: today)
+       // Мне нужно теперь записать день в Realm! Чтобы потом я мог с ним работать!
+    writeDayInDB(dayRealm: currentDay)
     
     for _ in 0...8 {
       let dayBefore = DayRealm(date: dateBefore)
       writeDayInDB(dayRealm: dayBefore)
       
-      print(dateBefore)
       dateBefore = dateBefore.dayBefore()
     }
     
@@ -106,20 +119,20 @@ extension DayRealmManager {
   }
   
   func getLastSevenDaysDate() -> [Date] {
+
     let days = fetchAllDays()
     
     let sevenDate: [Date] = days.suffix(7).map{$0.date}
-    
+
     return sevenDate
   }
   
   // MARK: Get Day by Date
   
-  func getDayByDate(date: Date) {
+  func setCurrentDayByDate(date: Date) {
     
     let days = fetchAllDays()
 
-    
     guard let realmDay = days.first(where: {$0.date.compareDate(with: date)}) else {return}
   
     currentDay = realmDay
@@ -135,7 +148,7 @@ extension DayRealmManager {
     
     let dateNow = Date()
     
-    return lastDay.date.onlyDate()! < dateNow.onlyDate()!
+    return lastDay.date.onlyDate()! == dateNow.onlyDate()!
     
   }
   
@@ -153,7 +166,9 @@ extension DayRealmManager {
   // MARK: Get CurrentDay
   
   func getCurrentDay() -> DayRealm {
-
+    
+    setCurrentDayByDate(date: Date())
+    
     return currentDay
   }
   

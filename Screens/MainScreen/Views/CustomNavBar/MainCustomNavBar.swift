@@ -69,6 +69,19 @@ class MainCustomNavBar: UIView {
   
   var viewModel: MainNavBarVM!
   
+  var indexSelectedDay: Int {
+    
+    var indexG: Int = 0
+    
+    for (index,date) in viewModel.lastSevenDays.enumerated() {
+      if date.compareDate(with: viewModel.titleDate) {
+        indexG = index
+      }
+    }
+
+    return indexG
+  }
+  
   // MARK: Clousers
   
   var didTapAddNewDataClouser : EmptyClouser?
@@ -154,14 +167,10 @@ class MainCustomNavBar: UIView {
   
   private func getNextDate() -> Date {
     
-    let indexSelectedDay = viewModel.lastSevenDays.firstIndex(of: viewModel.titleDate)!
-    
     return viewModel.lastSevenDays[indexSelectedDay + 1]
   }
   
   private func getPreviosDate() -> Date {
-    
-    let indexSelectedDay = viewModel.lastSevenDays.firstIndex(of: viewModel.titleDate)!
     
     return viewModel.lastSevenDays[indexSelectedDay - 1]
   }
@@ -198,16 +207,21 @@ extension MainCustomNavBar {
     let date = DateWorker.shared.getDayMonthYearWeek(date: viewModel.titleDate)
     titleLabel.text = date
     
-    
     if viewModel.lastSevenDays.count > 1 {
-      
+
       guard let lastElement  = viewModel.lastSevenDays.last else {return}
       guard let firstElement = viewModel.lastSevenDays.first else {return}
       
-      previosDayButton.alpha = viewModel.titleDate == firstElement ? 0 : 1
-      nextDayButton.alpha    = viewModel.titleDate == lastElement ? 0 : 1
+      previosDayButton.alpha =
+        viewModel.titleDate.compareDate(with: firstElement) ? 0 : 1
+      nextDayButton.alpha    =
+        viewModel.titleDate.compareDate(with: lastElement) ? 0 : 1
       
-      addNewDinnerButton.isEnabled = viewModel.titleDate == lastElement
+      
+      addNewDinnerButton.isEnabled = viewModel.titleDate.compareDate(with:lastElement)
+    } else {
+      previosDayButton.alpha = 0
+      nextDayButton.alpha    = 0
     }
     
     

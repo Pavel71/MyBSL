@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 //    initDinners()
     
-    initDaysRealm()
+//    initDaysRealm()
     
     root()
     
@@ -75,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   
   func applicationDidBecomeActive(_ application: UIApplication) {
-    print("Activate Application")
+    
   
     // Здесь мне нужно сделать проверку на дату! и передать информацию в ViewController - сделать какойнить класс с оперативкой
     let appStateService: AppState = AppState.shared

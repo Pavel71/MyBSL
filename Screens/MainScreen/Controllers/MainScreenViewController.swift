@@ -47,6 +47,8 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     
     didSet {
       mainScreenView.setViewModel(viewModel: mainScreenViewModel)
+      
+      mainScreenView.setNeedsDisplay()
     }
   }
 
@@ -85,19 +87,21 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     super.viewDidLoad()
     
     setViews()
-    getBlankDay()
+    
+//    interactor?.makeRequest(request: .checkLastDayInDB)
+//    getBlankDay()
   }
   
-  private func getBlankDay() {
-    interactor?.makeRequest(request: .getBlankViewModel)
-  }
+//  private func getBlankDay() {
+//    interactor?.makeRequest(request: .getBlankViewModel)
+//  }
   
   // MARK: Activate Application
   func activateApplication() {
-    print("Шо за херня")
+    print("Activate application")
     
-    // Здесь мне нужно достать последний день из базы и его уже проверить с текущей датой!
-//    interactor?.makeRequest(request: .checkLastDayInDB)
+    // На старте мы просто перезапишим балнк модель и все! в остальное время будет все норм!
+    interactor?.makeRequest(request: .checkLastDayInDB)
 
   }
   
@@ -108,6 +112,10 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     super.viewWillAppear(animated)
     
     print("Main Screen View Will Appear")
+    
+    interactor?.makeRequest(request: .checkLastDayInDB)
+    
+    
     navigationController?.navigationBar.isHidden = true
     setKeyboardNotification()
     // Сделаем запрос в реалм чтобы получить новые данные по ViewModel
@@ -129,7 +137,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
       
       mainScreenViewModel = viewModel
       
-      
+      print("Set View Model")
       
       
     case .throwCompansationObjectToUpdate(let compObj):

@@ -83,12 +83,15 @@ extension MainScreenInteractor {
       
       
     case .checkLastDayInDB:
-      print("Chec")
       
+  
       // Если true то мы ничего не трогаем и возвращаем нашу модель как есть
       
       if dayRealmManager.isNowLastDayInDB() == false {
-        dayRealmManager.getBlankDayObject()
+        print("Сегодняшнего дня нет в базе поэтому добавляю его пустым")
+        dayRealmManager.addBlankDay()
+      } else {
+        print("Сегодня есть в базе просто возвращаю что есть")
       }
       
       passDayRealmToConvertInVMInPresenter()
@@ -96,7 +99,7 @@ extension MainScreenInteractor {
     case .selectDayByCalendar(let date):
       
       
-      dayRealmManager.getDayByDate(date: date)
+      dayRealmManager.setCurrentDayByDate(date: date)
       passDayRealmToConvertInVMInPresenter()
       
     default:break
@@ -118,7 +121,9 @@ extension MainScreenInteractor {
     
     switch request {
     case .getBlankViewModel:
-      dayRealmManager.getBlankDayObject()
+      
+      // MARK: TO DO Change methods
+      dayRealmManager.getTestsObjects()
       passDayRealmToConvertInVMInPresenter()
       
     default:break
