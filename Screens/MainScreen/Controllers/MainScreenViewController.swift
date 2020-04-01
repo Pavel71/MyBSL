@@ -89,12 +89,12 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     setViews()
     
 //    interactor?.makeRequest(request: .checkLastDayInDB)
-//    getBlankDay()
+    getBlankDay()
   }
   
-//  private func getBlankDay() {
-//    interactor?.makeRequest(request: .getBlankViewModel)
-//  }
+  private func getBlankDay() {
+    interactor?.makeRequest(request: .getBlankViewModel)
+  }
   
   // MARK: Activate Application
   func activateApplication() {
@@ -137,7 +137,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
       
       mainScreenViewModel = viewModel
       
-      print("Set View Model")
+      print("Set View Model",viewModel.dayVM.collectionVCVM.cells)
       
       
     case .throwCompansationObjectToUpdate(let compObj):

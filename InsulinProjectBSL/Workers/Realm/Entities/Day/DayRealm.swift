@@ -18,18 +18,28 @@ import RealmSwift
 
 
 
+
+
 @objcMembers class DayRealm: Object {
   
   enum Property : String {case id}
   
+  enum DayType {
+    case newDay,pastDay
+  }
   
   dynamic var id: String = UUID().uuidString
-  
-  
-  
   dynamic var date: Date = Date() // Дата будет создаватся при создание объекта
+  
+  
+  
   var listSugar          = List<SugarRealm>()
   var listDinners        = List<CompansationObjectRelam>()
+  
+  var dayType: DayType {
+    
+    return date.onlyDate()!.compareDate(with: Date()) ? .newDay : .pastDay
+  }
   
   convenience  init(
     date: Date

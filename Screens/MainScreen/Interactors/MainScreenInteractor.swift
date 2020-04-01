@@ -92,6 +92,7 @@ extension MainScreenInteractor {
         dayRealmManager.addBlankDay()
       } else {
         print("Сегодня есть в базе просто возвращаю что есть")
+        // тут нужно достать текущий день и все
       }
       
       passDayRealmToConvertInVMInPresenter()

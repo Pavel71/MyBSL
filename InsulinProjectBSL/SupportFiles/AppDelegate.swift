@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 //    initDinners()
     
-//    initDaysRealm()
+    initDaysRealm()
     
     root()
     

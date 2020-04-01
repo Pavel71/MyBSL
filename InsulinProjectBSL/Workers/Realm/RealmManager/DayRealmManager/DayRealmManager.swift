@@ -54,9 +54,9 @@ extension DayRealmManager {
     
     // Просто для тестирования
     
-    let today = Date()
+    let yestarday = Date().dayBefore()
     
-    testDaysMethod(today: today)
+    testDaysMethod(yestarday: yestarday)
 
     
 //    currentDay = DayRealm(date: today)
@@ -65,25 +65,66 @@ extension DayRealmManager {
 
   }
   
+  // MARK: Test Methods
   
-  private func testDaysMethod(today: Date) {
-    
-    var dateBefore = today.dayBefore()
-    
-    currentDay = DayRealm(date: today)
-       // Мне нужно теперь записать день в Realm! Чтобы потом я мог с ним работать!
+  // Добавлю вчерашний день
+  private func testDaysMethod(yestarday: Date) {
+
+    currentDay = DayRealm(date: yestarday)
     writeDayInDB(dayRealm: currentDay)
     
-    for _ in 0...8 {
-      let dayBefore = DayRealm(date: dateBefore)
-      writeDayInDB(dayRealm: dayBefore)
-      
-      dateBefore = dateBefore.dayBefore()
-    }
+    let testCompObj = getDummyCompansationObj()
+    addCompansationObjectToRealm(compObj: testCompObj)
+
+    
+//    for _ in 0...8 {
+//      let dayBefore = DayRealm(date: dateBefore)
+//      writeDayInDB(dayRealm: dayBefore)
+//
+//      dateBefore = dateBefore.dayBefore()
+//    }
     
     
   }
   
+  private func getDummyCompansationObj() -> CompansationObjectRelam {
+    
+            let dinner = CompansationObjectRelam(
+              typeObject: .mealObject,
+              sugarBefore: 5.8,
+              insulinOnTotalCarbo: 2.0,
+              insulinInCorrectionSugar: 0,
+              totalCarbo: 20,
+              placeInjections: "some")
+        let product1 = ProductRealm(
+          name          : "Молоко",
+          category      : "Молочные продукты",
+          carboIn100Grm : 5,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+          isFavorits    : false,
+          actualInsulin : 0.5
+        )
+        let product2 = ProductRealm(
+          name          : "Яблоко",
+          category      : "Фрукты",
+          carboIn100Grm : 11,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+          isFavorits    : false,
+          actualInsulin : 1
+        )
+    
+        let product3 = ProductRealm(
+          name          : "Мандарин",
+          category      : "Фрукты",
+          carboIn100Grm : 11,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
+          isFavorits    : false,
+          actualInsulin : 1
+        )
+    
+        dinner.listProduct.append(objectsIn: [product1,product2,product3])
+    
+        return dinner
+  }
+  
+  // MARK: Write Day in DB
   private func writeDayInDB(dayRealm: DayRealm) {
     do {
            self.realm.beginWrite()
@@ -121,7 +162,7 @@ extension DayRealmManager {
   func getLastSevenDaysDate() -> [Date] {
 
     let days = fetchAllDays()
-    
+    print(days.count,"Days Count")
     let sevenDate: [Date] = days.suffix(7).map{$0.date}
 
     return sevenDate
@@ -167,9 +208,15 @@ extension DayRealmManager {
   
   func getCurrentDay() -> DayRealm {
     
-    setCurrentDayByDate(date: Date())
-    
     return currentDay
+  }
+  
+  func getYestarday() -> DayRealm? {
+    
+    let days = fetchAllDays()
+    
+    let yestarday = days.first(where: {$0.date.onlyDate() == currentDay.date.onlyDate()?.dayBefore()})
+    return yestarday
   }
   
   // MARK: Get CompansationObj by ID
@@ -190,11 +237,18 @@ extension DayRealmManager {
     
     updateCompObj(compObj: compObj)
     updateSugarObj(compObj: compObj)
+    
+    // Все таки логика расчитанна на то что мы обновляем после записи
+    // если нет предыдущего compObj то и обновлять нам нечего
+    guard let prevCompObjForChanging = haveWeCompObjForChangingUpdating() else {return}
+    writeChangingToPrevCompObj(prevCompObj: prevCompObjForChanging,
+                               sugarAfter: compObj.sugarBefore)
   }
   
   private func updateSugarObj(compObj:CompansationObjectRelam) {
     
     guard let  sugarObj = currentDay.listSugar.first(where: {$0.compansationObjectId == compObj.updateThisID}) else {return}
+    
     let deleteIndex = currentDay.listSugar.index(of: sugarObj)!
     
     let newsugarRealm = prepareSugarRealm(compObj: compObj)
@@ -225,6 +279,7 @@ extension DayRealmManager {
     
     guard let updateCompObj = getCompansationObjById(compObjId: compObj.updateThisID) else {return}
     let deleteIndex   = currentDay.listDinners.index(of: updateCompObj)!
+    
     do {
       self.realm.beginWrite()
       
@@ -295,7 +350,7 @@ extension DayRealmManager {
          self.realm.beginWrite()
 
          currentDay.listSugar.append(sugarRealm)
-        self.realm.add(currentDay, update: .all)
+        self.realm.add(currentDay, update: .modified)
         
          try self.realm.commitWrite()
         
@@ -306,46 +361,124 @@ extension DayRealmManager {
          
     }
     
-    
+    // MARK: Add CompansationObj
+  
     private func addCompansationObject(currentCompObj: CompansationObjectRelam) {
+      
 
-       do {
-         self.realm.beginWrite()
-        // хз будет это работать или нет
+      
+      
+      // если предыдущиего объекта нет то и менять нечего
+      guard let prevCompObjForChanging = haveWeСompObjForChangingAdding() else { writeCompObjToDB(compObj: currentCompObj)
+        return
         
-   
-        changeCompansationObjectStateSetSugarAfter(sugarAfter: currentCompObj.sugarBefore)
-        
-        currentDay.listDinners.append(currentCompObj)
-        // вот эта запись должна обновить объект!
-        self.realm.add(currentDay, update: .modified)
-        
-        try self.realm.commitWrite()
-        
-         
-       } catch {
-         print(error.localizedDescription)
-       }
+      }
+      // Есть предыдущий объект подрпавим его и Добавим новый!
+      writeChangingToPrevCompObj(prevCompObj: prevCompObjForChanging, sugarAfter: currentCompObj.sugarBefore)
+      writeCompObjToDB(compObj: currentCompObj)
+      
       
     }
+  // MARK: Write Compansation Obj To DB
+  private func writeCompObjToDB(compObj: CompansationObjectRelam) {
+    
+    do {
+      self.realm.beginWrite()
+     
+     currentDay.listDinners.append(compObj)
+     
+     // вот эта запись должна обновить объект!
+     self.realm.add(currentDay, update: .modified)
+     
+     try self.realm.commitWrite()
+     
+      
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+  // MARK: Write changing in prev Compansation Obj
+  
+  private func writeChangingToPrevCompObj(
+    prevCompObj: CompansationObjectRelam,sugarAfter: Double) {
     
     
-    // Изходя из текущего сахара мы определям как мы компенсировали предыдущий обед хорошо или плохо
-    private func changeCompansationObjectStateSetSugarAfter(sugarAfter: Double) {
+    
+    do {
+      self.realm.beginWrite()
+      // хз будет это работать или нет
       
-      guard let lastCompansationObj = currentDay.listDinners.last else {return}
+      changeCompansationObjectStateSetSugarAfter(
+        sugarAfter      : sugarAfter,
+        compansationObj : prevCompObj)
+
+      // вот эта запись должна обновить объект!
+      self.realm.add(currentDay, update: .modified)
       
-      lastCompansationObj.sugarAfter = sugarAfter
+      try self.realm.commitWrite()
+      
+      
+    } catch {
+      print(error.localizedDescription)
+      
+    }
+  }
+  
+  
+  // MARK: Have We CompObjFor Changing?
+  private func haveWeСompObjForChangingAdding() -> CompansationObjectRelam? {
+    
+    // он возвращает nil так как для первого дня нет предыдущиего
+    
+    if let yesterday = getYestarday() { // Есть вчерашний день
+      
+      return currentDay.listDinners.count != 0 ? currentDay.listDinners.last : yesterday.listDinners.last
+      
+    } else { // Вчера нет
+      
+      return currentDay.listDinners.count != 0 ? currentDay.listDinners.last : nil
+    }
+
+  }
+  
+  private func haveWeCompObjForChangingUpdating() -> CompansationObjectRelam? {
+    
+    if let yesterday = getYestarday() { // Есть вчерашний день
+         
+
+         return currentDay.listDinners.count > 1 ? currentDay.listDinners[currentDay.listDinners.count - 2] : yesterday.listDinners.last
+         
+       } else { // Вчера нет
+         
+         return currentDay.listDinners.count > 1 ? currentDay.listDinners[currentDay.listDinners.count - 2] : nil
+       }
+  }
+  
+  
+//  private func haveWeCompObjForChangingDeleting() -> CompansationObjectRelam? {
+//
+//  }
+  
+
+  
+  private func changeCompansationObjectStateSetSugarAfter(
+    sugarAfter: Double,
+    compansationObj: CompansationObjectRelam) {
+      
+      
+      compansationObj.sugarAfter = sugarAfter
       
       let sugarCompansation = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: Float(sugarAfter))
-      
+    
       switch sugarCompansation {
       case .correctDown:
-        lastCompansationObj.compansationFaseEnum = .bad
+        compansationObj.compansationFaseEnum = .bad
       case .correctUp:
-        lastCompansationObj.compansationFaseEnum = .bad
+        compansationObj.compansationFaseEnum = .bad
       case .dontCorrect:
-        lastCompansationObj.compansationFaseEnum = .good
+        compansationObj.compansationFaseEnum = .good
+      case .progress:
+        compansationObj.compansationFaseEnum = .progress
       default:break
       }
       
@@ -366,6 +499,15 @@ extension DayRealmManager {
     // Изменить State последнего обеда на прогресс!
     
     print("Delete COmpObj",compansationObjId)
+    
+    // Можно удалить а потом подправить последний после удаления!
+    
+    guard let prevCompObjForChanging = haveWeCompObjForChangingUpdating() else {return}
+    // Есть предыдущий объект подрпавим его и Добавим новый!
+    writeChangingToPrevCompObj(prevCompObj: prevCompObjForChanging, sugarAfter: -1)
+    
+    
+    // Когда мы удаляем то мы должны засетить 0 сахар после
     
     do {
       self.realm.beginWrite()

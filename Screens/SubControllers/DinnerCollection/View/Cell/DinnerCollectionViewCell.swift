@@ -20,6 +20,8 @@ enum CorrectInsulinPosition {
   case correctUp
   case correctDown
   
+  case progress
+  
 }
 
 
