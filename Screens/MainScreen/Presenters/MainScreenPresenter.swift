@@ -89,11 +89,7 @@ extension MainScreenPresenter {
     let insulinSupplyVM = getInsulinSupplyVM()
     let mainNavBarVM    = getMainNavBarVM(realmDay: realmData)
      
-   
-  
-    
-    
-    
+
     return MainScreenViewModel(
 
       mainNavBarVm    : mainNavBarVM,

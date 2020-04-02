@@ -27,7 +27,7 @@ class MainScreenRouter: NSObject, MainScreenRoutingLogic {
     
     // Pass ViewModel
     newVC.didPassViewModelToSaveInRealm = {[weak self] viewModel in
-      self?.viewController?.passCompansationObjVMtoIntercator(viewModel: viewModel)
+      self?.viewController?.passCompansationObjVMtoIntercator(compObjRealm: viewModel)
     }
     
     viewController?.navigationController?.pushViewController(containerController, animated: true)

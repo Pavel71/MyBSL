@@ -403,7 +403,6 @@ extension DayRealmManager {
     prevCompObj: CompansationObjectRelam,sugarAfter: Double) {
     
     
-    
     do {
       self.realm.beginWrite()
       // хз будет это работать или нет
@@ -455,9 +454,17 @@ extension DayRealmManager {
   }
   
   
-//  private func haveWeCompObjForChangingDeleting() -> CompansationObjectRelam? {
-//
-//  }
+  private func haveWeCompObjForChangingDeleting() -> CompansationObjectRelam? {
+    
+    if let yesterday = getYestarday() { // Есть вчерашний день
+        
+        return currentDay.listDinners.count != 0 ? currentDay.listDinners.last : yesterday.listDinners.last
+        
+      } else { // Вчера нет
+        
+        return currentDay.listDinners.count != 0 ? currentDay.listDinners.last : nil
+      }
+  }
   
 
   
@@ -493,56 +500,100 @@ extension DayRealmManager {
 extension DayRealmManager {
   
   func deleteCompasationObjByID(compansationObjId: String) {
+
     
-    // При удаление нужно убрать последний обед
-    // Убрать сахар при этом обеде
-    // Изменить State последнего обеда на прогресс!
+   writeDeletingCopmObjInDb(compansationObjId: compansationObjId)
     
-    print("Delete COmpObj",compansationObjId)
     
-    // Можно удалить а потом подправить последний после удаления!
-    
-    guard let prevCompObjForChanging = haveWeCompObjForChangingUpdating() else {return}
-    // Есть предыдущий объект подрпавим его и Добавим новый!
+    guard let prevCompObjForChanging = haveWeCompObjForChangingDeleting() else {return}
+       // Есть предыдущий объект подрпавим его и удалим последний
     writeChangingToPrevCompObj(prevCompObj: prevCompObjForChanging, sugarAfter: -1)
     
-    
-    // Когда мы удаляем то мы должны засетить 0 сахар после
-    
+  }
+  
+  
+  private func writeDeletingCopmObjInDb(compansationObjId: String) {
     do {
-      self.realm.beginWrite()
-      
-      // Также нужно изменить последний обед его стайт на прогресс
-      
-      let sugarWithId = currentDay.listSugar.filter{$0.compansationObjectId != nil}
-      
-      guard let sugarToDelete = sugarWithId.first(where: {$0.compansationObjectId == compansationObjId}) else {return}
-      let indexSugar =  currentDay.listSugar.index(of: sugarToDelete)!
-      currentDay.listSugar.remove(at: indexSugar)
-      
-      //  в случае с обедами я могу сделать так
-      currentDay.listDinners.removeLast()
-      
-      // Если есть предыдущий то обнови у него стейт
-      if let nowLastCompObj = currentDay.listDinners.last {
-        nowLastCompObj.compansationFaseEnum = .progress
-      }
-      
-      
-      // Перезаписываю день!
-      self.realm.add(self.currentDay)
-      //        self.currentDayId = dayBlank.id
-      try self.realm.commitWrite()
-      
-      
-    } catch {
-      print(error.localizedDescription)
-    }
-    
+         self.realm.beginWrite()
+         
+         // Также нужно изменить последний обед его стайт на прогресс
+         
+         let sugarWithId = currentDay.listSugar.filter{$0.compansationObjectId != nil}
+         
+         guard let sugarToDelete = sugarWithId.first(where: {$0.compansationObjectId == compansationObjId}) else {return}
+         let indexSugar =  currentDay.listSugar.index(of: sugarToDelete)!
+         currentDay.listSugar.remove(at: indexSugar)
+         
+         //  в случае с обедами я могу сделать так
+         currentDay.listDinners.removeLast()
+         
+         // Если есть предыдущий то обнови у него стейт
+         if let nowLastCompObj = currentDay.listDinners.last {
+           nowLastCompObj.compansationFaseEnum = .progress
+         }
+         
+         
+         // Перезаписываю день!
+         self.realm.add(self.currentDay)
+         //        self.currentDayId = dayBlank.id
+         try self.realm.commitWrite()
+         
+         
+       } catch {
+         print(error.localizedDescription)
+       }
   }
   
 }
 
+
+// MARK: Learning Compansation Obj
+
+extension DayRealmManager {
+  
+  func isReadyToLearnInMl() -> Bool {
+    
+    
+    guard let prevCompObjToPrepare = haveWeCompObjForChangingUpdating() else {return false}
+    
+    let updateCompObj = MLPreparingDataWorker.prepareCompObj(compObj: prevCompObjToPrepare)
+    
+    // теперь проблема как сохранить данные поэтому объекту в списке дня!
+    
+    writePreparedCompObjToDB(prepareCompObj: updateCompObj)
+    
+    return true
+  }
+  
+  // Вообще все шо то через жопу! По идеи дни должны содержать списки id - и по этим id  я бы доставал объекты и передавал их а обновлял через реалм update! и мозг не канапатил c этими list!
+  // Да и мне было бы проще собирать все compObj -
+  //просто достань их и все! А в день я записываю только Id и все!
+  // Вообщем нужно переписать модель работы с базой данных - думаю что это будет не сложно сделать
+  
+  private func writePreparedCompObjToDB(prepareCompObj: CompansationObjectRelam) {
+    
+    // Итак у нас есть объект - мы должны определить из какого он дня! и перезаписать его!
+    guard let dayRealm = findDayWhereisPrepareCompObj(prepareCompObj: prepareCompObj) else { return print("Не нашли такой день где этот объект")}
+    
+//    let deleteIndex = dayRealm.listDinners.index(of: dayRealm)
+    
+    do {
+        self.realm.beginWrite()
+        
+      
+
+        //        self.currentDayId = dayBlank.id
+        try self.realm.commitWrite()
+      } catch {
+        print(error.localizedDescription)
+      }
+  }
+  
+  private func findDayWhereisPrepareCompObj(prepareCompObj: CompansationObjectRelam) -> DayRealm? {
+    return currentDay.listDinners.contains(prepareCompObj) ? currentDay : getYestarday()
+  }
+  
+}
 
 // MARK: Dummy Data
 

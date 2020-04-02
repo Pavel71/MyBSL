@@ -166,6 +166,7 @@
 		05D26A3923605D9200155F31 /* TotalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A3823605D9200155F31 /* TotalView.swift */; };
 		05D26A3E236093CB00155F31 /* DinnerRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A3D236093CB00155F31 /* DinnerRealmManager.swift */; };
 		05D806142348C9CF00C19764 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D806132348C9CF00C19764 /* MainMenuViewController.swift */; };
+		05DE9BFA24361B8600280D4F /* MLPreparingDataWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DE9BF924361B8600280D4F /* MLPreparingDataWorker.swift */; };
 		05E1C3312372B77C00007463 /* SimpleRegressionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E1C3302372B77C00007463 /* SimpleRegressionModel.swift */; };
 		05E1C3342372B7FF00007463 /* RidgeRegressionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E1C3332372B7FF00007463 /* RidgeRegressionModel.swift */; };
 		05F7C4A423F2B579009EE9C5 /* OnBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F7C4A323F2B578009EE9C5 /* OnBoardViewController.swift */; };
@@ -416,6 +417,7 @@
 		05D26A3823605D9200155F31 /* TotalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalView.swift; sourceTree = "<group>"; };
 		05D26A3D236093CB00155F31 /* DinnerRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerRealmManager.swift; sourceTree = "<group>"; };
 		05D806132348C9CF00C19764 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
+		05DE9BF924361B8600280D4F /* MLPreparingDataWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLPreparingDataWorker.swift; sourceTree = "<group>"; };
 		05E1C3302372B77C00007463 /* SimpleRegressionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleRegressionModel.swift; sourceTree = "<group>"; };
 		05E1C3332372B7FF00007463 /* RidgeRegressionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidgeRegressionModel.swift; sourceTree = "<group>"; };
 		05F7C4A323F2B578009EE9C5 /* OnBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardViewController.swift; sourceTree = "<group>"; };
@@ -788,6 +790,7 @@
 		05515D0223699CF000A298AA /* ML */ = {
 			isa = PBXGroup;
 			children = (
+				05DE9BF824361B5500280D4F /* MLPipline */,
 				05515D0323699D0800A298AA /* MLWorker.swift */,
 				05E1C3302372B77C00007463 /* SimpleRegressionModel.swift */,
 				05E1C3332372B7FF00007463 /* RidgeRegressionModel.swift */,
@@ -2231,6 +2234,14 @@
 			path = ShugarCorrectorWorker;
 			sourceTree = "<group>";
 		};
+		05DE9BF824361B5500280D4F /* MLPipline */ = {
+			isa = PBXGroup;
+			children = (
+				05DE9BF924361B8600280D4F /* MLPreparingDataWorker.swift */,
+			);
+			path = MLPipline;
+			sourceTree = "<group>";
+		};
 		05F7C4A123F2B52E009EE9C5 /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
@@ -3044,6 +3055,7 @@
 				058F5F4A23A2492A00717042 /* SugarCell.swift in Sources */,
 				05F7C4A423F2B579009EE9C5 /* OnBoardViewController.swift in Sources */,
 				0550AEA82418FADF00140254 /* Double+Extensions.swift in Sources */,
+				05DE9BFA24361B8600280D4F /* MLPreparingDataWorker.swift in Sources */,
 				0509FD00233F9DBC00B04B30 /* ProductListResultWorker.swift in Sources */,
 				055A726A23A8CA2B002CA9A7 /* NewProductListVC.swift in Sources */,
 				0550B801234636E500D88732 /* ListTrainsViewController.swift in Sources */,

@@ -137,8 +137,6 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
       
       mainScreenViewModel = viewModel
       
-      print("Set View Model",viewModel.dayVM.collectionVCVM.cells)
-      
       
     case .throwCompansationObjectToUpdate(let compObj):
       
@@ -177,10 +175,6 @@ extension MainScreenViewController {
   // MARK: Set Clousers From Views
   
   private func setClousers() {
-    
-    
-    
-//    setCalendarViewClousers()
     
     setChartVCClousers()
     
@@ -347,12 +341,18 @@ extension MainScreenViewController {
       
     },mealCallback: { action in
       
+      // идея запустить обучение здесь! Пускай покачто будет здесь!
+      
       // MARK: Go to New ComObj Screen
       
       self.router!.goToNewCompansationObjectScreen(compansationObjectRealm: nil)
     })
     
   }
+  
+
+  
+  
   // MARK: Show Calendar
 //  
 //  private func showCalendar() {
@@ -423,9 +423,9 @@ extension MainScreenViewController {
 
 extension MainScreenViewController {
   
-  func passCompansationObjVMtoIntercator(viewModel: CompansationObjectRelam) {
+  func passCompansationObjVMtoIntercator(compObjRealm: CompansationObjectRelam) {
     
-    interactor?.makeRequest(request: .setCompansationObjRealm(compObjRealm: viewModel))
+    interactor?.makeRequest(request: .setCompansationObjRealm(compObjRealm: compObjRealm))
   }
 }
 
