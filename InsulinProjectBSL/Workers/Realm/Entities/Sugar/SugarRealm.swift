@@ -25,14 +25,14 @@ import Realm
   dynamic var time                 : Date = Date()       // Время когда установленн сахар
              
   dynamic var dataCase             : Int = 0     // Тип данных которые приходят в график
-   
-//  dynamic var insulin    : Double?
-//  dynamic var totalCarbo : Double?
+  
+  var chartDataCase: ChartDataCase {
+    set {dataCase = newValue.rawValue}
+    get {ChartDataCase.init(rawValue: dataCase) ?? ChartDataCase.mealData}
+  }
+
   dynamic var compansationObjectId : String?
-//  dynamic var data      : [Double]? // Не разрешает хранить словарь!
-  
-  
-  // Здесь какая идея сейчас у мнея эти данные разнятся! тоесть они не свзянна сахара и обеды! а можно сделать так что обед всегда содержит сахар тоесть там будут данные какой сахар до еды каким стал после еды!
+
   
   convenience init(
     time                 : Date,

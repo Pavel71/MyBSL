@@ -66,15 +66,19 @@ extension MainScreenPresenter {
   // MAin View Model
   private func getViewModel(realmData: DayRealm) -> MainScreenViewModel {
     
+    // Test
+    
+    let listSugar = realmData.listSugarID.compactMap(SugarRealmManager.shared.fetchSugarById)
+    let listCopmObj = realmData.listCompObjID.compactMap(CompObjRealmManager.shared.fetchCompObjById)
     
     // Charts
     let chartViewModel = ChartVCViewModel(
-      chartEntryModels : realmData.listSugar.map(ChartVMWorker.getChartViewModel)
+      chartEntryModels : listSugar.map(ChartVMWorker.getChartViewModel)
     )
     
     
     let collectionVCVM = CollectionVCVM(
-      cells: realmData.listDinners.map(CompansationObjCollectionWorker.getCellViewModel))
+      cells: listCopmObj.map(CompansationObjCollectionWorker.getCellViewModel))
     // InsulinSupply
     
     // По идеи я буду это брать юзер дефолтсе так как в реалме сохранять это бессмысленно!
@@ -108,7 +112,7 @@ extension MainScreenPresenter {
     // Здесь мне нужно сделать запрос к базе данных полуичить все дни в текущем месяце которые есть у нас в заполненных!
     
 //    let datesinThisMoth = DayRealmManager().getDaysInThisMonth()
-    let lastSevenDates = DayRealmManager().getLastSevenDaysDate()
+    let lastSevenDates = NewDayRealmManager.shared.fetchLastSevenDaysDate()
     
    let mainNavBarVM = MainNavBarVM(
     lastSevenDays : lastSevenDates,

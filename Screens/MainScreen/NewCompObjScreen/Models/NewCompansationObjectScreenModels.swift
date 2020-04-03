@@ -27,13 +27,7 @@ enum NewCompansationObjectScreen {
         case updatePortionInProduct(portion: Int,index: Int)
         case updateInsulinByPerson(insulin: Float,index: Int)
         case updatePlaceInjection(place: String)
- 
-        
-        
-        
-        
-        
-        
+
         
         case saveCompansationObjectInRealm(viewModel: NewCompObjViewModel)
       }
@@ -55,13 +49,16 @@ enum NewCompansationObjectScreen {
         case updateInsulinByPerson(insulin: Float,index: Int)
         
         case updatePlaceInjection(place: String)
-        case passCompansationObjRealmToVC(compObjRealm: CompansationObjectRelam)
+        
+        case updateSugarRealmAndCompObjSucsess
+        case passCompObjIdAndSugarRealmIdToVC(compObjId: String,sugarRealmId: String)
       }
     }
     struct ViewModel {
       enum ViewModelData {
         case setViewModel(viewModel: NewCompObjViewModel)
-        case passCompansationObjRealmtToMainViewController(compObjRealm: CompansationObjectRelam)
+        case passCompanObjIdAndSugarRealmIdToMainVC(compObjRealmId: String,sugarRealmId: String)
+        case updateCompObjAndSugarRealmSucsess
       }
     }
   }

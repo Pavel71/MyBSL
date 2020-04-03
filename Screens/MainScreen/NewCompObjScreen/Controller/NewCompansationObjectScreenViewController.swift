@@ -51,7 +51,9 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   var viewModel: NewCompObjViewModel!
   var compansationObjectRealm: CompansationObjectRelam?
   
-  var didPassViewModelToSaveInRealm: ((CompansationObjectRelam) -> Void)?
+  //Clousers
+  var didPassCompObjIdToSaveInDayRealm: ((String,String) -> Void)?
+  var didUpdateCompObjAndSugarRealm: EmptyClouser?
   // MARK: Object lifecycle
   
   
@@ -126,8 +128,11 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
     case .setViewModel(let viewModel):
       
       setViewModel(viewModel: viewModel)
-    case .passCompansationObjRealmtToMainViewController(let compObjRealm):
-      didPassViewModelToSaveInRealm!(compObjRealm)
+    case .passCompanObjIdAndSugarRealmIdToMainVC(let compObjRealmId,let sugarRealmId):
+      didPassCompObjIdToSaveInDayRealm!(compObjRealmId,sugarRealmId)
+      
+    case .updateCompObjAndSugarRealmSucsess:
+      didUpdateCompObjAndSugarRealm!()
       
     default:break
     }

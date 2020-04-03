@@ -22,10 +22,14 @@ enum MainScreen {
         
         // Set Data to Realm
         case setSugarVM(sugarViewModel: SugarViewModel)
-        case setCompansationObjRealm(compObjRealm: CompansationObjectRelam)
+        
+        case addCompIdAndSugarIdinDay(compObjId: String,sugarId: String)
+        
         
         case deleteCompansationObj(compObjId: String)
         case getCompansationObj(compObjId: String)
+        
+        case updateDayVM
         
         // Calendar Date Selected
         case selectDayByCalendar(date: Date)
@@ -36,6 +40,7 @@ enum MainScreen {
       enum ResponseType {
         case prepareViewModel(realmData:DayRealm)
         case passCompansationObj(compObj: CompansationObjectRelam)
+        
       }
     }
     struct ViewModel {

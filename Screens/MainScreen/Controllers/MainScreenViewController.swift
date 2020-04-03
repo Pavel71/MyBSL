@@ -101,7 +101,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     print("Activate application")
     
     // На старте мы просто перезапишим балнк модель и все! в остальное время будет все норм!
-    interactor?.makeRequest(request: .checkLastDayInDB)
+//    interactor?.makeRequest(request: .checkLastDayInDB)
 
   }
   
@@ -113,7 +113,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     
     print("Main Screen View Will Appear")
     
-    interactor?.makeRequest(request: .checkLastDayInDB)
+//    interactor?.makeRequest(request: .checkLastDayInDB)
     
     
     navigationController?.navigationBar.isHidden = true
@@ -419,13 +419,18 @@ extension MainScreenViewController {
 }
 
 
-// MARK: Catch Clousers from NewCompansationController
+// MARK: ViewController Clousers
 
 extension MainScreenViewController {
   
-  func passCompansationObjVMtoIntercator(compObjRealm: CompansationObjectRelam) {
+  func passCompObjIdAndSugarIdToSaveInDay(compObjId: String,sugarId: String) {
     
-    interactor?.makeRequest(request: .setCompansationObjRealm(compObjRealm: compObjRealm))
+    interactor?.makeRequest(request: .addCompIdAndSugarIdinDay(compObjId: compObjId,sugarId:sugarId))
+    
+  }
+  
+  func passSignalSuccsessUpdateCompObjAndRealm() {
+    interactor?.makeRequest(request: .updateDayVM)
   }
 }
 

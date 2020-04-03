@@ -31,10 +31,13 @@ import RealmSwift
   dynamic var id: String = UUID().uuidString
   dynamic var date: Date = Date() // Дата будет создаватся при создание объекта
   
+  dynamic var listSugarID   = List<String>()
+  dynamic var listCompObjID = List<String>()
   
   
-  var listSugar          = List<SugarRealm>()
-  var listDinners        = List<CompansationObjectRelam>()
+  
+//  var listSugar          = List<SugarRealm>()
+//  var listCompObj        = List<CompansationObjectRelam>()
   
   var dayType: DayType {
     

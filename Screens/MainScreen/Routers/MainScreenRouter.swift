@@ -26,8 +26,13 @@ class MainScreenRouter: NSObject, MainScreenRoutingLogic {
     let containerController = ContainerController(mainController: newVC, menuController: MainMenuViewController())
     
     // Pass ViewModel
-    newVC.didPassViewModelToSaveInRealm = {[weak self] viewModel in
-      self?.viewController?.passCompansationObjVMtoIntercator(compObjRealm: viewModel)
+    newVC.didPassCompObjIdToSaveInDayRealm = {[weak self] compId,sugarId in
+      self?.viewController?.passCompObjIdAndSugarIdToSaveInDay(
+        compObjId: compId,
+        sugarId: sugarId)
+    }
+    newVC.didUpdateCompObjAndSugarRealm = {[weak self] in
+      self?.viewController
     }
     
     viewController?.navigationController?.pushViewController(containerController, animated: true)

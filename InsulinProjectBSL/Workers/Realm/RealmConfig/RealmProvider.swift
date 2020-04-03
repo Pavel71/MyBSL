@@ -71,6 +71,27 @@ class RealmProvider {
     return RealmProvider.init(config: dayConfig)
   }()
   
+  
+  private static let compObjConfig = Realm.Configuration(
+    fileURL: try! Path.inDocuments("compObj.realm"),
+    schemaVersion: 1,
+    deleteRealmIfMigrationNeeded: true, // Это для тестирования
+    objectTypes: [CompansationObjectRelam.self,ProductRealm.self])
+  
+  public static var compObjProvider: RealmProvider = {
+    return RealmProvider.init(config: compObjConfig)
+  }()
+  
+  private static let sugarConfig = Realm.Configuration(
+     fileURL: try! Path.inDocuments("sugar.realm"),
+     schemaVersion: 1,
+     deleteRealmIfMigrationNeeded: true, // Это для тестирования
+     objectTypes: [SugarRealm.self])
+   
+   public static var sugarProvider: RealmProvider = {
+     return RealmProvider.init(config: sugarConfig)
+   }()
+  
 //  private static let sectionMealTypeConfig = Realm.Configuration(
 //    fileURL: try! Path.inDocuments("sectionMealType.realm"),
 //    schemaVersion: 1,

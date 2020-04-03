@@ -199,6 +199,8 @@ extension FoodRealmManager {
         product.isFavorits = viewModel.isFavorit
         product.portion =  Int(viewModel.portion)!
         
+//        realm.add(product, update: .all)
+        
       }
       
     } catch let error {

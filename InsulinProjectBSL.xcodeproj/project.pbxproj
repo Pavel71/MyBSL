@@ -78,6 +78,9 @@
 		057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */; };
 		057B9841234F5054002EAD68 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9840234F5054002EAD68 /* ContainerController.swift */; };
 		057B9848234F6B4C002EAD68 /* PointSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9847234F6B4C002EAD68 /* PointSearcher.swift */; };
+		057E261E24372F7B0081CE56 /* CompObjRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E261D24372F7B0081CE56 /* CompObjRealmManager.swift */; };
+		057E262024372FA40081CE56 /* SugarRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E261F24372FA40081CE56 /* SugarRealmManager.swift */; };
+		057E26222437341D0081CE56 /* NewDayRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E26212437341D0081CE56 /* NewDayRealmManager.swift */; };
 		058F5F4A23A2492A00717042 /* SugarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F4923A2492A00717042 /* SugarCell.swift */; };
 		058F5F9123A39CB300717042 /* AddMealCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9023A39CB300717042 /* AddMealCell.swift */; };
 		058F5F9323A3A16E00717042 /* NewCompansationObjConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */; };
@@ -329,6 +332,9 @@
 		057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMenuAnimator.swift; sourceTree = "<group>"; };
 		057B9840234F5054002EAD68 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		057B9847234F6B4C002EAD68 /* PointSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointSearcher.swift; sourceTree = "<group>"; };
+		057E261D24372F7B0081CE56 /* CompObjRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompObjRealmManager.swift; sourceTree = "<group>"; };
+		057E261F24372FA40081CE56 /* SugarRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarRealmManager.swift; sourceTree = "<group>"; };
+		057E26212437341D0081CE56 /* NewDayRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDayRealmManager.swift; sourceTree = "<group>"; };
 		058F5F4923A2492A00717042 /* SugarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarCell.swift; sourceTree = "<group>"; };
 		058F5F9023A39CB300717042 /* AddMealCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMealCell.swift; sourceTree = "<group>"; };
 		058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjConstants.swift; sourceTree = "<group>"; };
@@ -1840,11 +1846,9 @@
 		05C0C628238D408A001B2664 /* Day */ = {
 			isa = PBXGroup;
 			children = (
-				054F5EBF24177FD70029597A /* Deprecated */,
 				05C0C62D238D43C6001B2664 /* Realm Task */,
 				05C0C626238D3EC7001B2664 /* DayRealm.swift */,
-				05C0C629238D40E3001B2664 /* SugarRealm.swift */,
-				052F05C6239E65A900A614B3 /* CompansationObject.swift */,
+				054F5EBF24177FD70029597A /* Deprecated */,
 			);
 			path = Day;
 			sourceTree = "<group>";
@@ -1901,6 +1905,7 @@
 			isa = PBXGroup;
 			children = (
 				05C0C62F238D5331001B2664 /* DayRealmManager.swift */,
+				057E26212437341D0081CE56 /* NewDayRealmManager.swift */,
 			);
 			path = DayRealmManager;
 			sourceTree = "<group>";
@@ -2240,6 +2245,38 @@
 				05DE9BF924361B8600280D4F /* MLPreparingDataWorker.swift */,
 			);
 			path = MLPipline;
+			sourceTree = "<group>";
+		};
+		05DE9BFB24372E0900280D4F /* CompObj */ = {
+			isa = PBXGroup;
+			children = (
+				052F05C6239E65A900A614B3 /* CompansationObject.swift */,
+			);
+			path = CompObj;
+			sourceTree = "<group>";
+		};
+		05DE9BFC24372E1600280D4F /* Sugar */ = {
+			isa = PBXGroup;
+			children = (
+				05C0C629238D40E3001B2664 /* SugarRealm.swift */,
+			);
+			path = Sugar;
+			sourceTree = "<group>";
+		};
+		05DE9BFD24372E8400280D4F /* CompObjRealmManager */ = {
+			isa = PBXGroup;
+			children = (
+				057E261D24372F7B0081CE56 /* CompObjRealmManager.swift */,
+			);
+			path = CompObjRealmManager;
+			sourceTree = "<group>";
+		};
+		05DE9BFE24372E9000280D4F /* SugarRealmManager */ = {
+			isa = PBXGroup;
+			children = (
+				057E261F24372FA40081CE56 /* SugarRealmManager.swift */,
+			);
+			path = SugarRealmManager;
 			sourceTree = "<group>";
 		};
 		05F7C4A123F2B52E009EE9C5 /* Deprecated */ = {
@@ -2738,6 +2775,8 @@
 		F1E78CEF230D349C00592AB8 /* RealmManager */ = {
 			isa = PBXGroup;
 			children = (
+				05DE9BFE24372E9000280D4F /* SugarRealmManager */,
+				05DE9BFD24372E8400280D4F /* CompObjRealmManager */,
 				05C0C63B238FE33E001B2664 /* DayRealmManager */,
 				05C0C633238EA76A001B2664 /* Dinner */,
 				05C0C632238EA762001B2664 /* Meal */,
@@ -2749,9 +2788,11 @@
 		F1E78CF0230D34AC00592AB8 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				05C0C634238EA775001B2664 /* Product */,
+				05DE9BFC24372E1600280D4F /* Sugar */,
+				05DE9BFB24372E0900280D4F /* CompObj */,
 				05C0C636238EA783001B2664 /* Dinner */,
 				05C0C635238EA77C001B2664 /* Meal */,
-				05C0C634238EA775001B2664 /* Product */,
 				05C0C628238D408A001B2664 /* Day */,
 			);
 			path = Entities;
@@ -3071,6 +3112,7 @@
 				0533B98823F3DE6F008E13DE /* LearnByFoodCell.swift in Sources */,
 				055A3A412356EFB60080628C /* FoodMealProductListCell.swift in Sources */,
 				052EFB1B236185D600FDCCC4 /* HeaderCellWorker.swift in Sources */,
+				057E26222437341D0081CE56 /* NewDayRealmManager.swift in Sources */,
 				055A3A3A2355ECB40080628C /* BaseProductListCell.swift in Sources */,
 				F1E78CDA230D338A00592AB8 /* SettingsViewController.swift in Sources */,
 				F13B351F2318D8170020AD26 /* MealRealm.swift in Sources */,
@@ -3111,6 +3153,7 @@
 				05CBEBA523A21FD9001D9EEA /* NewCompansationObjectScreenRouter.swift in Sources */,
 				F1E78CFA230D355F00592AB8 /* UITextField+Extension.swift in Sources */,
 				F1E78CC9230D336B00592AB8 /* MainRouter.swift in Sources */,
+				057E262024372FA40081CE56 /* SugarRealmManager.swift in Sources */,
 				05AAFF07238BFFFF002AE3D9 /* BallonMarker.swift in Sources */,
 				F112845A2327926B00416AF4 /* NewMealView.swift in Sources */,
 				059AD9A9235854E0007DE168 /* DinnerViewModelValidator.swift in Sources */,
@@ -3262,6 +3305,7 @@
 				05C0C62A238D40E3001B2664 /* SugarRealm.swift in Sources */,
 				05AAFF01238BFA68002AE3D9 /* MealCollectionView.swift in Sources */,
 				05A4F19F2339EF6A00DFE4D7 /* MainView.swift in Sources */,
+				057E261E24372F7B0081CE56 /* CompObjRealmManager.swift in Sources */,
 				058F5F9523A76B5100717042 /* SugarCellHeightWorker.swift in Sources */,
 				05CBEBA423A21FD9001D9EEA /* NewCompansationObjectScreenWorker.swift in Sources */,
 				0533B99823F41DB8008E13DE /* LearnByCorrectionSugarCell.swift in Sources */,
