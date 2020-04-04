@@ -24,7 +24,7 @@ class DummyData {
       productsData: [])
      
      let dinner1 = DinnerViewModel(
-      compansationFase: .new,
+      compansationFase: .progress,
       dinnerPosition: .newdinner,
       correctInsulinByShugarPosition: .dontCorrect,
       isPreviosDinner: false,

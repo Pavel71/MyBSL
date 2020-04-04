@@ -169,6 +169,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //      realm.add(dinners)
         }
     
+    initCompObjRealm()
+    initSugarRealm()
+  }
+  
+  private func initCompObjRealm() {
+    let realm = RealmProvider.compObjProvider.realm
+    
+        try! realm.write {
+          realm.deleteAll()
+    //      realm.add(dinners)
+        }
+    
+  }
+  
+  private func initSugarRealm() {
+    let realm = RealmProvider.sugarProvider.realm
+    
+        try! realm.write {
+          realm.deleteAll()
+    //      realm.add(dinners)
+        }
+    
   }
   
 

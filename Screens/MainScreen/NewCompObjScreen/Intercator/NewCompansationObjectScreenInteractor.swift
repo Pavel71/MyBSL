@@ -81,6 +81,7 @@ extension NewCompansationObjectScreenInteractor {
 
       } else {
         // Создаем новые объекте
+        print("Add New Obj")
         let compObj    = convertViewModelToCompObjRealm(viewModel: viewModel)
         let sugarRealm = convertModelToSugarRealm(compObj: compObj)
         saveCompObjToRealm(compObj  : compObj)
@@ -172,7 +173,7 @@ extension NewCompansationObjectScreenInteractor {
     
     CompObjRealmManager.shared.updateCompObj(transportTuple: transportTuple)
     // После обновления и записи в реамл я получу обновленный объект
-    updateCompObj = CompObjRealmManager.shared.fetchCompObjById(compObjId: updateCompObj.id)
+    updateCompObj = CompObjRealmManager.shared.fetchCompObjByPrimeryKey(compObjPrimaryKey: updateCompObj.id)
   }
   
 }

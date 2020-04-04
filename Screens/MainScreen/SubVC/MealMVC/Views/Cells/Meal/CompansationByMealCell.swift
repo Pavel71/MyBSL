@@ -27,7 +27,7 @@ class CompansationByMealCell: CompansationCVBaseCell {
   let resultView = MealProductsFooterView(frame: .init(x: 0, y: 0, width: 0, height: Constants.ProductList.TableFooterView.footerHeight))
   
   
-  var mealCompansation: CompansationPosition = .new
+  var mealCompansation: CompansationPosition = .progress
 
   
   override init(frame: CGRect) {

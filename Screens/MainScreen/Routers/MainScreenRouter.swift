@@ -32,7 +32,7 @@ class MainScreenRouter: NSObject, MainScreenRoutingLogic {
         sugarId: sugarId)
     }
     newVC.didUpdateCompObjAndSugarRealm = {[weak self] in
-      self?.viewController
+      self?.viewController?.passSignalSuccsessUpdateCompObjAndRealm()
     }
     
     viewController?.navigationController?.pushViewController(containerController, animated: true)

@@ -29,7 +29,8 @@ enum CompansationPosition: Int {
   case good
   case bad
   case progress
-  case new
+//  case new
+  case dontCalculated
 }
 
 enum DinnerPosition {
@@ -62,7 +63,7 @@ class DinnerCollectionViewCell: UICollectionViewCell {
   static let cellId = "DinnerCollectionViewCellId"
   
   
-  var compasationPosition: CompansationPosition              = .new
+  var compasationPosition: CompansationPosition              = .progress
   var dinnerPosition: DinnerPosition                         = .newdinner
   var correctInsulinByShugarPosition: CorrectInsulinPosition = .dontCorrect
   
@@ -327,7 +328,7 @@ extension DinnerCollectionViewCell {
        case .progress:
          
        totalInsulinView.totalInsulinImageView.tintColor = #colorLiteral(red: 0.9173465967, green: 1, blue: 0.1846651733, alpha: 1)
-     case .new:
+     case .dontCalculated:
       
        totalInsulinView.totalInsulinImageView.tintColor = .white
 

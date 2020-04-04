@@ -38,7 +38,7 @@ import RealmSwift
   
   
   dynamic var sugarAfter       : Double = 0 // Этот параметр буду сетить как только вводится новая дозировка инсулина! Тогда мы будем брать текущий сахар
-  dynamic var timeCreate       : Date?
+  dynamic var timeCreate       : Date = Date()
   // На какой стадии находится объект
   
   dynamic var compansationFase : Int    = 0
@@ -76,7 +76,6 @@ import RealmSwift
       self.init()
     self.typeObject               = typeObject.rawValue
     self.sugarBefore              = sugarBefore
-    self.timeCreate               = Date()
     self.compansationFase         = CompansationPosition.progress.rawValue
     self.totalCarbo               = totalCarbo
     self.insulinOnTotalCarbo      = insulinOnTotalCarbo

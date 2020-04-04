@@ -38,10 +38,16 @@ extension SugarRealmManager {
     
   }
   
-  func fetchSugarById(sugarRealmId: String) -> SugarRealm? {
+//  func fetchSugarById(sugarRealmId: String) -> SugarRealm? {
+//
+//    let sugarRealm = fetchAllSugar().first(where: {$0.id == sugarRealmId})
+//    return sugarRealm
+//  }
+  
+  func fetchSugarByPrimeryKey(sugarPrimaryKey: String)-> SugarRealm? {
     
-    let sugarRealm = fetchAllSugar().first(where: {$0.id == sugarRealmId})
-    return sugarRealm
+    let sugar = realm.object(ofType: SugarRealm.self, forPrimaryKey: sugarPrimaryKey)
+    return sugar
   }
   
   func fetchSugarByCompansationId(sugarCompObjId: String) -> SugarRealm? {

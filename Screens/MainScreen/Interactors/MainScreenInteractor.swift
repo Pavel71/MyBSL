@@ -75,7 +75,7 @@ extension MainScreenInteractor {
       
     case .getCompansationObj(let compObjId):
       
-      guard let compObj = CompObjRealmManager.shared.fetchCompObjById(compObjId: compObjId) else {return}
+      guard let compObj = CompObjRealmManager.shared.fetchCompObjByPrimeryKey(compObjPrimaryKey: compObjId) else {return}
       
       presenter?.presentData(response: .passCompansationObj(compObj: compObj))
 
@@ -101,6 +101,8 @@ extension MainScreenInteractor {
       passDayRealmToConvertInVMInPresenter()
       
     case .updateDayVM:
+      
+      print("Запусти обновление дня")
       passDayRealmToConvertInVMInPresenter()
       
     default:break
