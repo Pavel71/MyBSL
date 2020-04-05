@@ -47,6 +47,8 @@ class SugarCellVMWorker {
       sugarCellVm.cellState            = .currentLayerAndCorrectionLabel
       sugarCellVm.correctionImage      = nil
       sugarCellVm.correctionSugarKoeff = 0
+      
+      
     case .correctDown:
       sugarCellVm.compansationString = "Сахар выше нормы! нужна коррекция инсулином!"
       sugarCellVm.cellState          = .currentLayerAndCorrectionLayer

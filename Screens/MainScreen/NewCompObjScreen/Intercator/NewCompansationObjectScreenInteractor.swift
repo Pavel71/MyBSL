@@ -87,6 +87,8 @@ extension NewCompansationObjectScreenInteractor {
         saveCompObjToRealm(compObj  : compObj)
         saveSugarToRealm(sugarRealm : sugarRealm)
         
+        preparingCompObjToLearnToML()
+        
         presenter?.presentData(response: .passCompObjIdAndSugarRealmIdToVC(compObjId: compObj.id, sugarRealmId: sugarRealm.id))
         
       }
@@ -96,6 +98,15 @@ extension NewCompansationObjectScreenInteractor {
     default:break
     }
     
+  }
+  
+  // MARK: Preparing CompObj To ML Worker
+  
+  private func preparingCompObjToLearnToML() {
+    
+    guard let compObjToLearnInMl = CompObjRealmManager.shared.fetchSecondOnTheEndCompObj() else {return}
+    
+    MLPreparingDataWorker.prepareCompObj(compObj: compObjToLearnInMl)
   }
   
   // MARK: Save Data to Realm
@@ -142,6 +153,8 @@ extension NewCompansationObjectScreenInteractor {
 
 extension NewCompansationObjectScreenInteractor {
   
+  typealias TransportTuple = (compObjId: String, sugarBefore: Double, typeObjectEnum: TypeCompansationObject, insulinCarbo: Double, insulinCorrect: Double, totalCarbo: Double, placeInjections: String, productsRealm: [ProductRealm])
+  
   private func updatingSugarRealm(compObj: CompansationObjectRelam) {
     
     SugarRealmManager.shared.updateSugarRealmByCompObj(compObj: compObj)
@@ -160,7 +173,7 @@ extension NewCompansationObjectScreenInteractor {
     let productsVM = viewModel.addMealCellVM.dinnerProductListVM.productsData
     let productsRealm = productsVM.map(converToProductRealm)
     
-    let transportTuple = (compObjId       : updateCompObj.id,
+    let transportTuple:TransportTuple = (compObjId       : updateCompObj.id,
                           sugarBefore     : sugarBefore,
                           typeObjectEnum  : typeObject,
                           insulinCarbo    : insulinCarbo,
@@ -182,6 +195,7 @@ extension NewCompansationObjectScreenInteractor {
 // MARK: Convert To RealmCompansationObj
 
 extension NewCompansationObjectScreenInteractor {
+
   
   
   private func convertViewModelToCompObjRealm(viewModel: NewCompObjViewModel) -> CompansationObjectRelam {
@@ -212,9 +226,7 @@ extension NewCompansationObjectScreenInteractor {
     
     compansationObjectRealm.listProduct.append(objectsIn: productsVM.map(converToProductRealm))
     
-    // Ставим свойство этот объект обновляет последний или нет!
-    compansationObjectRealm.isUpdated    = viewModel.isUpdated
-    compansationObjectRealm.updateThisID = viewModel.updatedId
+ 
     
     return compansationObjectRealm
     
@@ -226,7 +238,6 @@ extension NewCompansationObjectScreenInteractor {
   
   
   private func converToProductRealm(viewModel: ProductListViewModel) -> ProductRealm {
-    
     
     
     return ProductRealm(
@@ -248,7 +259,7 @@ extension NewCompansationObjectScreenInteractor {
     
     let sugar = compObj.sugarBefore
     
-    let dataCase = getChartDataCase(correctInsulinPosition: compObj.correctionPositionObject)
+    let dataCase = getChartDataCase(compObj: compObj)
     
     return SugarRealm(
       time                 : Date(),
@@ -257,19 +268,22 @@ extension NewCompansationObjectScreenInteractor {
       compansationObjectId : compObj.id)
   }
   
-  private func getChartDataCase(correctInsulinPosition: CorrectInsulinPosition) -> ChartDataCase {
-    var dataCase: ChartDataCase
+  private func getChartDataCase(compObj: CompansationObjectRelam) -> ChartDataCase {
     
-    switch correctInsulinPosition {
+    // Будет возвращать что у нас обед всегда когда есть обед
+    guard compObj.listProduct.isEmpty else {return .mealData}
+    
+    switch compObj.correctSugarPosition {
+      
     case .correctDown:
-      dataCase = .correctInsulinData
+      return .correctInsulinData
     case .correctUp:
-      dataCase = .correctCarboData
+      return .correctCarboData
       
     default:
-      dataCase = .mealData
+      return .sugarData
     }
-    return dataCase
+
   }
   
   

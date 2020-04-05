@@ -8,7 +8,8 @@
 
 
 
-import Foundation
+import UIKit
+
 
 
 
@@ -23,10 +24,11 @@ enum ChartDataCase: Int {
 protocol ChartModable {
   
 
-  var compansationObjectId : String?         {get set}
-  var dataCase             : ChartDataCase   {get set}
-  var sugar                : Double          {get set}
-  var time                 : Date            {get set}
+  var compansationObjectId : String?       {get set}
+  var dataCase             : ChartDataCase {get set}
+  var sugar                : Double        {get set}
+  var time                 : Date          {get set}
+  
   
 }
 
@@ -39,6 +41,8 @@ struct ChartVCViewModel {
 
 struct SugarViewModel: ChartModable {
   
+  
+
 
   var compansationObjectId   : String?
 

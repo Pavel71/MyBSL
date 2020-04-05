@@ -48,17 +48,16 @@ extension ChartWorker {
     
     let time  = convertTime(time: data.time)
     
-    let dataObject = getData(
-                      dataCase: data.dataCase,
-                      compansationObjectId  : data.compansationObjectId
-                         )
-                    
+    let dataObject = getData(compansationObjectId  : data.compansationObjectId)
+    
     let entry = ChartDataEntry(
       x    : time,
       y    : data.sugar,
-      icon : getImage(imageCase: data.dataCase),
+      icon : getImage(data: data),
       data : dataObject
     )
+    
+//    getImage(data: data)
 
     return entry
   }
@@ -94,9 +93,10 @@ extension ChartWorker {
 
 extension ChartWorker {
   
-    private func getImage(imageCase: ChartDataCase) -> NSUIImage? {
-
-      switch imageCase {
+    private func getImage(data: ChartModable) -> NSUIImage? {
+      
+      
+      switch data.dataCase {
         case .correctInsulinData:
           return #imageLiteral(resourceName: "anesthesia")
         case .mealData:
@@ -115,10 +115,7 @@ extension ChartWorker {
 
 extension ChartWorker {
   
-  private func getData(
-    dataCase               : ChartDataCase,
-    compansationObjectId   : String?
-  ) -> [String: Any]? {
+  private func getData(compansationObjectId   : String?) -> [String: Any]? {
     
     guard compansationObjectId != nil else {return nil}
     
@@ -127,17 +124,7 @@ extension ChartWorker {
         ChartDataKey.compansationObjectId.rawValue  : compansationObjectId!
     ]
 
-//      switch dataCase {
-//        case .correctInsulinData:
-//          return [ChartDataKey.insulin.rawValue : insulin!]
-//        case .mealData:
-//
-//          return [
-//            ChartDataKey.compansationObjectId.rawValue  : compansationObjectId!
-//        ]
-//        case.sugarData:
-//        return nil
-//      }
+
       
   }
   

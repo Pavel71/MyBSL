@@ -16,8 +16,6 @@ import RealmSwift
         
   dynamic var id               : String = UUID().uuidString
   
-  var isUpdated                : Bool   = false
-  var updateThisID             : String = ""
         
   // тип объекта
   dynamic var typeObject       : Int = 0
@@ -28,9 +26,11 @@ import RealmSwift
   }
 
   
-  dynamic var sugarBefore      : Double = 0
+  dynamic var sugarBefore                  : Double = 0
+  dynamic var userSetInsulinToCorrectSugar : Double = 0
+  dynamic var insulinToCorrectSugarML      : Float = 0 // Для Машинного обучения
   
-  var correctionPositionObject : CorrectInsulinPosition{
+  var correctSugarPosition : CorrectInsulinPosition {
     ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: Float(sugarBefore))
   }
   
@@ -52,10 +52,10 @@ import RealmSwift
   
   // For results
   dynamic var insulinOnTotalCarbo      : Double = 0
-  dynamic var insulinInCorrectionSugar : Double = 0
+ 
   
   var totalInsulin                     : Double  {
-    insulinOnTotalCarbo + insulinInCorrectionSugar
+    insulinOnTotalCarbo + userSetInsulinToCorrectSugar
   }
   
   dynamic var totalCarbo               : Double = 0
@@ -79,7 +79,7 @@ import RealmSwift
     self.compansationFase         = CompansationPosition.progress.rawValue
     self.totalCarbo               = totalCarbo
     self.insulinOnTotalCarbo      = insulinOnTotalCarbo
-    self.insulinInCorrectionSugar = insulinInCorrectionSugar
+    self.userSetInsulinToCorrectSugar = insulinInCorrectionSugar
     self.placeInjections          = placeInjections
     
     }

@@ -109,7 +109,7 @@ extension DinnerRealmManager {
     
     let realm = provider.realm
     
-    let carbo = realm.objects(DinnerRealm.self).filter("compansationFase == %@",CompansationPosition.good.rawValue).flatMap{$0.listProduct.map{$0.actualInsulin}}
+    let carbo = realm.objects(DinnerRealm.self).filter("compansationFase == %@",CompansationPosition.good.rawValue).flatMap{$0.listProduct.map{$0.userSetInsulinOnCarbo}}
     
     // Здесь нужно брать не актуал инсулин а скорректированный если коректировка не нужна то берется актуалИнсулин
     

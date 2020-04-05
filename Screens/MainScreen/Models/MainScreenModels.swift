@@ -29,10 +29,8 @@ enum MainScreen {
         case deleteCompansationObj(compObjId: String)
         case getCompansationObj(compObjId: String)
         
-        case updateDayVM
+        case reloadDay
         
-        // Calendar Date Selected
-        case selectDayByCalendar(date: Date)
       }
     }
     

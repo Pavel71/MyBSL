@@ -61,6 +61,10 @@ extension MainScreenInteractor {
     case .addCompIdAndSugarIdinDay(let compObjId,let sugarId):
       
       newDayRealmManager.addNewCompObjId(compObjId: compObjId)
+      
+      
+      
+      
       newDayRealmManager.addNewSugarId(sugarId: sugarId)
       
       passDayRealmToConvertInVMInPresenter()
@@ -80,29 +84,18 @@ extension MainScreenInteractor {
       presenter?.presentData(response: .passCompansationObj(compObj: compObj))
 
     case .checkLastDayInDB:
-      
-  
       // Если true то мы ничего не трогаем и возвращаем нашу модель как есть
       
-//      if dayRealmManager.isNowLastDayInDB() == false {
-//        print("Сегодняшнего дня нет в базе поэтому добавляю его пустым")
-//        dayRealmManager.addBlankDay()
-//      } else {
-//        print("Сегодня есть в базе просто возвращаю что есть")
-//        // тут нужно достать текущий день и все
-//      }
+      if newDayRealmManager.isNowLastDayInDB() == false {
+        print("Сегодняшнего дня нет в базе поэтому добавляю новый день")
+        newDayRealmManager.addBlankDay()
+      }
       
       passDayRealmToConvertInVMInPresenter()
       
-    case .selectDayByCalendar(let date):
       
+    case .reloadDay:
       
-//      dayRealmManager.setCurrentDayByDate(date: date)
-      passDayRealmToConvertInVMInPresenter()
-      
-    case .updateDayVM:
-      
-      print("Запусти обновление дня")
       passDayRealmToConvertInVMInPresenter()
       
     default:break

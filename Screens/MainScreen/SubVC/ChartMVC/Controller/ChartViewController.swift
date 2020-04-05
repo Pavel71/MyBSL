@@ -44,7 +44,7 @@ class ChartViewController: UIViewController {
     
   }
   
-  // Возможно это надо будет переписать
+  // MARK: Set View Model
   func setViewModel(viewModel : ChartVCViewModel) {
     
     if viewModel.chartEntryModels.isEmpty {

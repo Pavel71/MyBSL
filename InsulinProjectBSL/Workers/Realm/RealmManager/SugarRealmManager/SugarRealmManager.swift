@@ -120,7 +120,7 @@ extension SugarRealmManager {
       
       sugarRealm.sugar = compObj.sugarBefore
       
-      sugarRealm.chartDataCase  = getChartDataCase(correctInsulinPosition: compObj.correctionPositionObject)
+      sugarRealm.chartDataCase  = getChartDataCase(compObj: compObj)
       
       
       try self.realm.commitWrite()
@@ -132,18 +132,21 @@ extension SugarRealmManager {
     
   }
   
-  private  func getChartDataCase(correctInsulinPosition: CorrectInsulinPosition) -> ChartDataCase {
-    var dataCase: ChartDataCase
+  private func getChartDataCase(compObj: CompansationObjectRelam) -> ChartDataCase {
     
-    switch correctInsulinPosition {
+    // Будет возвращать что у нас обед всегда когда есть обед
+    guard compObj.listProduct.isEmpty else {return .mealData}
+    
+    switch compObj.correctSugarPosition {
+      
     case .correctDown:
-      dataCase = .correctInsulinData
+      return .correctInsulinData
     case .correctUp:
-      dataCase = .correctCarboData
+      return .correctCarboData
       
     default:
-      dataCase = .mealData
+      return .sugarData
     }
-    return dataCase
+
   }
 }

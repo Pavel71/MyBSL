@@ -308,7 +308,7 @@ extension MainPresenter {
   private func createProductListViewModel(product:ProductRealm) -> ProductListViewModel {
     
     return ProductListViewModel(
-      insulinValue:   product.actualInsulin,
+      insulinValue:   product.userSetInsulinOnCarbo,
       isFavorit:      product.isFavorits,
       carboIn100Grm:  product.carboIn100grm,
       category:       product.category,

@@ -25,8 +25,8 @@ import RealmSwift
     return (Float(carboIn100grm) * (Float(portion) / 100))
   }
   
-  dynamic var actualInsulin           : Float = 0
-  dynamic var goodCompansationinsulin : Float = 0
+  dynamic var userSetInsulinOnCarbo : Float = 0
+  dynamic var insulinOnCarboToML    : Float = 0
   
   dynamic var isFavorits: Bool = false
   
@@ -45,7 +45,7 @@ import RealmSwift
     self.carboIn100grm  = carboIn100Grm
     self.portion        = portion
     self.isFavorits     = isFavorits
-    self.actualInsulin  = actualInsulin
+    self.userSetInsulinOnCarbo  = actualInsulin
     
   }
   

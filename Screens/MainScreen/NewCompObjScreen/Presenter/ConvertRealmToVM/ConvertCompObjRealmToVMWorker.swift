@@ -48,7 +48,7 @@ extension ConvertCompObjRealmToVMWorker {
   private static func convertToSugarCellVM(comObj:CompansationObjectRelam) -> SugarCellModel {
     
     var sugarModel = SugarCellVMWorker.getSugarVM(sugar: String(comObj.sugarBefore))
-    sugarModel.correctionSugarKoeff = Float(comObj.insulinInCorrectionSugar)
+    sugarModel.correctionSugarKoeff = Float(comObj.userSetInsulinToCorrectSugar)
     return sugarModel
 
   }
@@ -59,9 +59,9 @@ extension ConvertCompObjRealmToVMWorker {
   
    
    private static func convertToAddMealCellModel(compObjRealm:CompansationObjectRelam) -> AddMealCellModel {
-     
-     let isSwitcherIsEnabled = compObjRealm.listProduct.isEmpty == false
-     let cellState:AddMealCellState = isSwitcherIsEnabled ? .productListState : .defaultState
+
+     let isSwitcherActivated = true
+     let cellState: AddMealCellState = compObjRealm.listProduct.isEmpty == false ? .productListState : .defaultState
      
     let resultVM = getResultVM(compObjRealm:compObjRealm )
     
@@ -70,9 +70,9 @@ extension ConvertCompObjRealmToVMWorker {
      let dinnerProductListVm = ProductListInDinnerViewModel(
        resultsViewModel : resultVM,
        productsData     : productRealm)
-     
+    
      return AddMealCellModel(
-       isSwitcherIsEnabled : isSwitcherIsEnabled,
+       isSwitcherIsEnabled : isSwitcherActivated,
        cellState           : cellState,
        dinnerProductListVM : dinnerProductListVm)
    }
@@ -82,7 +82,7 @@ extension ConvertCompObjRealmToVMWorker {
     
       let resultPortion = compObjRealm.listProduct.map{$0.portion}.reduce(0, +)
       let resultCarbo   = compObjRealm.listProduct.map{$0.carboInPortion}.reduce(0, +)
-      let resultInsulin = compObjRealm.listProduct.map{$0.actualInsulin}.reduce(0, +)
+      let resultInsulin = compObjRealm.listProduct.map{$0.userSetInsulinOnCarbo}.reduce(0, +)
       
       return ProductListResultsViewModel(
         sumCarboValue   : String(resultCarbo),
@@ -93,8 +93,8 @@ extension ConvertCompObjRealmToVMWorker {
   private static func getProductListVM(productRealm: ProductRealm) -> ProductListViewModel {
     
     return ProductListViewModel(
-      correctInsulinValue : productRealm.actualInsulin,
-      insulinValue        : productRealm.actualInsulin,
+      correctInsulinValue : productRealm.userSetInsulinOnCarbo,
+      insulinValue        : productRealm.userSetInsulinOnCarbo,
       isFavorit           : productRealm.isFavorits,
       carboIn100Grm       : productRealm.carboIn100grm,
       category            : productRealm.category,

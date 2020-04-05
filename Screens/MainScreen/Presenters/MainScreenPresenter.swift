@@ -69,14 +69,14 @@ extension MainScreenPresenter {
     // Test
     
     let listSugar = realmData.listSugarID.compactMap(SugarRealmManager.shared.fetchSugarByPrimeryKey(sugarPrimaryKey:))
+    
     let listCopmObj = realmData.listCompObjID.compactMap(CompObjRealmManager.shared.fetchCompObjByPrimeryKey(compObjPrimaryKey:))
     
     // Charts
     let chartViewModel = ChartVCViewModel(
       chartEntryModels : listSugar.map(ChartVMWorker.getChartViewModel)
     )
-    
-    
+
     let collectionVCVM = CollectionVCVM(
       cells: listCopmObj.map(CompansationObjCollectionWorker.getCellViewModel))
     // InsulinSupply

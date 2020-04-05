@@ -140,7 +140,7 @@ extension CompansationObjCollectionWorker {
       name           : product.name,
       carboInPortion : product.carboInPortion,
       portion        : product.portion,
-      factInsulin    : product.actualInsulin)
+      factInsulin    : product.userSetInsulinOnCarbo)
   }
   
 }

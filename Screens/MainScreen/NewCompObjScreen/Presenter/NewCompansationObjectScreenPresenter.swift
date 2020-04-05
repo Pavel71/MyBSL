@@ -148,8 +148,12 @@ extension NewCompansationObjectScreenPresenter {
 extension NewCompansationObjectScreenPresenter {
   
   private func setSugarData(sugar: String) {
-      
+    
+     let productListIsnotEmtpy = viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false
      viewModel.sugarCellVM = SugarCellVMWorker.getSugarVM(sugar: sugar)
+    
+    
+    
      updateMeallCellSwitcherEnabled(isEnabled: !sugar.isEmpty)
     
     if sugar.isEmpty { // Если поле сахара пустое то и убираем обед! так как без сахара нельзя
@@ -164,7 +168,7 @@ extension NewCompansationObjectScreenPresenter {
       
       if viewModel.addMealCellVM.cellState == .productListState {
         
-        updateEnabledSaveButton(isEnabled: viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false)
+        updateEnabledSaveButton(isEnabled: productListIsnotEmtpy )
       } else {
         
         updateEnabledSaveButton(isEnabled: false)
@@ -174,16 +178,21 @@ extension NewCompansationObjectScreenPresenter {
       
       // Сюда попоадаем если у нас сахар в не нормы!
       
+      
+      
       let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [Float(viewModel.sugarCellVM.currentSugar!)])
       
       viewModel.sugarCellVM.correctionSugarKoeff = predictSugarCompansation.first!
       
       if viewModel.addMealCellVM.cellState == .productListState {
         
-        updateEnabledSaveButton(isEnabled: viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false)
+        updateEnabledSaveButton(isEnabled: productListIsnotEmtpy)
       } else {
+        // Продуктов нет и можно сохранять только если мы сбиваем сахар
+        let sugarFloat = (sugar as NSString).floatValue
+        let isCorrectInsulinDown = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat) == .correctDown
         
-        updateEnabledSaveButton(isEnabled: true)
+        updateEnabledSaveButton(isEnabled: isCorrectInsulinDown)
       }
     default:break
     }
@@ -216,7 +225,7 @@ extension NewCompansationObjectScreenPresenter {
 
 
 
-// MARK: Work With ProductListVM
+// MARK: Work With Meal Cell
 
 extension NewCompansationObjectScreenPresenter {
   
@@ -234,10 +243,15 @@ extension NewCompansationObjectScreenPresenter {
       // если обед не нужен то очистим все продукты
       viewModel.addMealCellVM.dinnerProductListVM.productsData.removeAll()
       calculateResultViewModelInProductList()
+      
     }
     
     if viewModel.addMealCellVM.cellState == .productListState {
+      
       updateEnabledSaveButton(isEnabled: viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false)
+      
+      
+      
     } else {
       
       let isSugarCorrectCopm = viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer
@@ -394,7 +408,7 @@ extension NewCompansationObjectScreenPresenter {
     case .dontCorrect:
       
       viewModel.resultFooterVM.viewState = .hidden
-      resultStateByMealState()
+//      resultStateByMealState()
       
     case .correctUp:
       
@@ -406,7 +420,7 @@ extension NewCompansationObjectScreenPresenter {
       viewModel.resultFooterVM.viewState = .showed
       viewModel.resultFooterVM.message   = message
       viewModel.resultFooterVM.totalInsulinValue     = "\(floatTwo: getTotalInsulin())"
-      
+      viewModel.resultFooterVM.typeCompansationObject = .correctSugarByCarbo
       
       
     case .correctDown:
@@ -414,11 +428,13 @@ extension NewCompansationObjectScreenPresenter {
       viewModel.resultFooterVM.viewState = .showed
       viewModel.resultFooterVM.message   = "Инсулина"
       viewModel.resultFooterVM.totalInsulinValue     = "\(floatTwo: getTotalInsulin())"
-      
+      viewModel.resultFooterVM.typeCompansationObject = .correctSugarByInsulin
       
       
     default:break
     }
+    
+    resultStateByMealState()
   }
   
   private func resultStateByMealState() {
@@ -439,6 +455,7 @@ extension NewCompansationObjectScreenPresenter {
       viewModel.resultFooterVM.viewState = .showed
       viewModel.resultFooterVM.message   = message
       viewModel.resultFooterVM.totalInsulinValue     = "\(floatTwo: resultInsulin)"
+      viewModel.resultFooterVM.typeCompansationObject = .mealObject
     }
   }
   
@@ -494,7 +511,7 @@ extension NewCompansationObjectScreenPresenter {
     
     return ResultFooterModel(
       message                : "",
-      totalInsulinValue                  : "",
+      totalInsulinValue      : "",
       viewState              : .hidden,
       typeCompansationObject : .mealObject  )
   }

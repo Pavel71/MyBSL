@@ -81,6 +81,7 @@
 		057E261E24372F7B0081CE56 /* CompObjRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E261D24372F7B0081CE56 /* CompObjRealmManager.swift */; };
 		057E262024372FA40081CE56 /* SugarRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E261F24372FA40081CE56 /* SugarRealmManager.swift */; };
 		057E26222437341D0081CE56 /* NewDayRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E26212437341D0081CE56 /* NewDayRealmManager.swift */; };
+		057E26242439ED010081CE56 /* SaveButtonValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E26232439ED010081CE56 /* SaveButtonValidator.swift */; };
 		058F5F4A23A2492A00717042 /* SugarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F4923A2492A00717042 /* SugarCell.swift */; };
 		058F5F9123A39CB300717042 /* AddMealCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9023A39CB300717042 /* AddMealCell.swift */; };
 		058F5F9323A3A16E00717042 /* NewCompansationObjConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */; };
@@ -335,6 +336,7 @@
 		057E261D24372F7B0081CE56 /* CompObjRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompObjRealmManager.swift; sourceTree = "<group>"; };
 		057E261F24372FA40081CE56 /* SugarRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarRealmManager.swift; sourceTree = "<group>"; };
 		057E26212437341D0081CE56 /* NewDayRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDayRealmManager.swift; sourceTree = "<group>"; };
+		057E26232439ED010081CE56 /* SaveButtonValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveButtonValidator.swift; sourceTree = "<group>"; };
 		058F5F4923A2492A00717042 /* SugarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarCell.swift; sourceTree = "<group>"; };
 		058F5F9023A39CB300717042 /* AddMealCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMealCell.swift; sourceTree = "<group>"; };
 		058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjConstants.swift; sourceTree = "<group>"; };
@@ -2109,6 +2111,7 @@
 		05CBEBAF23A22309001D9EEA /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				057E26232439ED010081CE56 /* SaveButtonValidator.swift */,
 				05CBEB9C23A21FD9001D9EEA /* NewCompansationObjectScreenPresenter.swift */,
 				055A727723A8F54A002CA9A7 /* AddMealVMWorker */,
 				055A727623A8F53E002CA9A7 /* SugarCellVMWorker */,
@@ -3247,6 +3250,7 @@
 				05C16D66233F4E6100486CAE /* RobotView.swift in Sources */,
 				05C0C638238FBFD9001B2664 /* MealCollectionViewModel.swift in Sources */,
 				05CBEBA823A21FD9001D9EEA /* NewCompansationObjectScreenInteractor.swift in Sources */,
+				057E26242439ED010081CE56 /* SaveButtonValidator.swift in Sources */,
 				05D1469E2397CE2100E6E6EA /* SugarPickerView.swift in Sources */,
 				05C1F64523F2CE4100BECDEB /* LearnByFoodModel.swift in Sources */,
 				05D26A30235DC31C00155F31 /* ShugarCorrectorWorker.swift in Sources */,

@@ -38,11 +38,6 @@ extension CompObjRealmManager {
     
   }
   
-//  func fetchCompObjById(compObjId: String) -> CompansationObjectRelam? {
-//    
-//    let compObj = fetchAllCompObj().first(where: {$0.id == compObjId})
-//    return compObj
-//  }
   
   func fetchLastCompObj() -> CompansationObjectRelam? {
     
@@ -67,12 +62,10 @@ extension CompObjRealmManager {
     let count = allCompObj.count
     
     var compObj : CompansationObjectRelam?
-    print(count)
+    
     if count > 1 {
        compObj = allCompObj[count - 2]
     }
-    
-    print("Second of the End", compObj)
     return  compObj
   }
   
@@ -162,12 +155,12 @@ extension CompObjRealmManager {
       
       self.realm.beginWrite()
       
-      updateCompObj.sugarBefore              = transportTuple.sugarBefore
-      updateCompObj.typeObjectEnum           = transportTuple.typeObjectEnum
-      updateCompObj.insulinOnTotalCarbo      = transportTuple.insulinCarbo
-      updateCompObj.insulinInCorrectionSugar = transportTuple.insulinCorrect
-      updateCompObj.totalCarbo               = transportTuple.totalCarbo
-      updateCompObj.placeInjections          = transportTuple.placeInjections
+      updateCompObj.sugarBefore                  = transportTuple.sugarBefore
+      updateCompObj.typeObjectEnum               = transportTuple.typeObjectEnum
+      updateCompObj.insulinOnTotalCarbo          = transportTuple.insulinCarbo
+      updateCompObj.userSetInsulinToCorrectSugar = transportTuple.insulinCorrect
+      updateCompObj.totalCarbo                   = transportTuple.totalCarbo
+      updateCompObj.placeInjections              = transportTuple.placeInjections
       updateCompObj.listProduct.removeAll()
       updateCompObj.listProduct.append(objectsIn:transportTuple.productsRealm)
       
@@ -295,5 +288,62 @@ extension CompObjRealmManager {
      
      return compPosition
    }
+  
+}
+
+
+// MARK: ML Working
+
+extension CompObjRealmManager {
+  
+  // MARK: Success Compansation
+  
+  func compensationSuccessWriteMlData(compObj: CompansationObjectRelam) {
+    
+    print("Success Запись успешных показателей")
+    
+       do {
+         
+         self.realm.beginWrite()
+        
+         setInsulinOnCorrectSugarML(compobj: compObj)
+         compObj.listProduct.forEach(setInsulinOnCarboML)
+        
+         try self.realm.commitWrite()
+         
+       } catch {
+         print(error.localizedDescription)
+       }
+  }
+  
+  private func setInsulinOnCarboML(productRealm: ProductRealm) {
+      
+      productRealm.insulinOnCarboToML = productRealm.userSetInsulinOnCarbo
+    }
+    
+  private func setInsulinOnCorrectSugarML(compobj:CompansationObjectRelam) {
+      compobj.insulinToCorrectSugarML = Float(compobj.userSetInsulinToCorrectSugar)
+    }
+  
+  
+  
+  func setCorrectSugarInsuilin(compObj: CompansationObjectRelam,correctSugarMl: Double) {
+    
+    print("Коррекция сахара в норме")
+    do {
+      
+      self.realm.beginWrite()
+     
+      compObj.insulinToCorrectSugarML = Float(correctSugarMl)
+     
+      try self.realm.commitWrite()
+      
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+  
+  
+ 
   
 }

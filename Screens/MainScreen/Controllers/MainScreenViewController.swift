@@ -89,7 +89,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     setViews()
     
 //    interactor?.makeRequest(request: .checkLastDayInDB)
-    getBlankDay()
+//    getBlankDay()
   }
   
   private func getBlankDay() {
@@ -101,7 +101,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     print("Activate application")
     
     // На старте мы просто перезапишим балнк модель и все! в остальное время будет все норм!
-//    interactor?.makeRequest(request: .checkLastDayInDB)
+    interactor?.makeRequest(request: .checkLastDayInDB)
 
   }
   
@@ -113,7 +113,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     
     print("Main Screen View Will Appear")
     
-//    interactor?.makeRequest(request: .checkLastDayInDB)
+    interactor?.makeRequest(request: .checkLastDayInDB)
     
     
     navigationController?.navigationBar.isHidden = true
@@ -276,16 +276,16 @@ extension MainScreenViewController {
       self?.showRobotMenu()
     }
     
-    navBarView.didTapNextDateClouser = {[weak self] nextDate in
-      
-      
-      self?.interactor?.makeRequest(request: .selectDayByCalendar(date: nextDate))
-    }
-    
-    navBarView.didTapPreviosDateClouser = {[weak self] prevDate in
-      
-      self?.interactor?.makeRequest(request: .selectDayByCalendar(date: prevDate))
-    }
+//    navBarView.didTapNextDateClouser = {[weak self] nextDate in
+//      
+//      
+//      self?.interactor?.makeRequest(request: .selectDayByCalendar(date: nextDate))
+//    }
+//    
+//    navBarView.didTapPreviosDateClouser = {[weak self] prevDate in
+//      
+//      self?.interactor?.makeRequest(request: .selectDayByCalendar(date: prevDate))
+//    }
   }
   
   // NewSugarView Clousers
@@ -430,7 +430,7 @@ extension MainScreenViewController {
   }
   
   func passSignalSuccsessUpdateCompObjAndRealm() {
-    interactor?.makeRequest(request: .updateDayVM)
+    interactor?.makeRequest(request: .reloadDay)
   }
 }
 

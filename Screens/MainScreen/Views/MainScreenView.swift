@@ -46,6 +46,7 @@ class MainScreenView: UIView {
     setUpViews()
   }
   
+  // MARK: Set View Model
   
   func setViewModel(viewModel: MainScreenViewModelable) {
 

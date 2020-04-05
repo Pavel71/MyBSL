@@ -56,24 +56,32 @@ extension NewDayRealmManager {
      return fetchAllDays().suffix(7).map{$0.date}
      
    }
-  
-  
-  
+
   
 }
 
-// MARK: fill List Sugar And list CompObj To Day
+// MARK: Get Day
 
 extension NewDayRealmManager {
   
   // MARK: Get CurrentDay
   func getCurrentDay() -> DayRealm {
     
-    print("Return Current Day",currentDay)
-    
     return currentDay
     
   }
+  
+  func isNowLastDayInDB() -> Bool {
+    
+      let days = fetchAllDays()
+  
+      guard let lastDay = days.last else {return false}
+  
+      let dateNow = Date()
+  
+      return lastDay.date.onlyDate()! == dateNow.onlyDate()!
+  
+    }
   
 }
 
