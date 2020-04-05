@@ -31,10 +31,12 @@ class SugarCellVMWorker {
       sugarCellVm.cellState          = .currentLayer
       sugarCellVm.compansationString = nil
       sugarCellVm.correctionImage    = nil
+      sugarCellVm.currentSugar       = nil
       return sugarCellVm
     }
         
     let sugarFloat = (sugar as NSString).floatValue
+    
     sugarCellVm.currentSugar = sugarFloat
     
     let wayCorrectPosition = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat)

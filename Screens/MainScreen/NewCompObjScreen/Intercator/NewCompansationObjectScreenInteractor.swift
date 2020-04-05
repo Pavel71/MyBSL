@@ -106,7 +106,7 @@ extension NewCompansationObjectScreenInteractor {
     
     guard let compObjToLearnInMl = CompObjRealmManager.shared.fetchSecondOnTheEndCompObj() else {return}
     
-    MLPreparingDataWorker.prepareCompObj(compObj: compObjToLearnInMl)
+    MLPreparingDataWorker.shared.prepareCompObj(compObj: compObjToLearnInMl)
   }
   
   // MARK: Save Data to Realm
@@ -153,15 +153,11 @@ extension NewCompansationObjectScreenInteractor {
 
 extension NewCompansationObjectScreenInteractor {
   
-  typealias TransportTuple = (compObjId: String, sugarBefore: Double, typeObjectEnum: TypeCompansationObject, insulinCarbo: Double, insulinCorrect: Double, totalCarbo: Double, placeInjections: String, productsRealm: [ProductRealm])
+  typealias TransportTuple = (sugarBefore: Double, typeObjectEnum: TypeCompansationObject, insulinCarbo: Double, insulinCorrect: Double, totalCarbo: Double, placeInjections: String, productsRealm: [ProductRealm])
   
-  private func updatingSugarRealm(compObj: CompansationObjectRelam) {
-    
-    SugarRealmManager.shared.updateSugarRealmByCompObj(compObj: compObj)
-
-  }
   
-  private func updatingCompObj(viewModel: NewCompObjViewModel) {
+  
+  private func getTransportTuple(viewModel: NewCompObjViewModel) -> TransportTuple {
     
     let sugarBefore  = Double(viewModel.sugarCellVM.currentSugar!).roundToDecimal(2)
     let typeObject   = viewModel.resultFooterVM.typeCompansationObject
@@ -173,7 +169,7 @@ extension NewCompansationObjectScreenInteractor {
     let productsVM = viewModel.addMealCellVM.dinnerProductListVM.productsData
     let productsRealm = productsVM.map(converToProductRealm)
     
-    let transportTuple:TransportTuple = (compObjId       : updateCompObj.id,
+    let transportTuple:TransportTuple = (
                           sugarBefore     : sugarBefore,
                           typeObjectEnum  : typeObject,
                           insulinCarbo    : insulinCarbo,
@@ -181,10 +177,43 @@ extension NewCompansationObjectScreenInteractor {
                           totalCarbo      : totalCarbo,
                           placeInjections : placeInjections,
                           productsRealm   : productsRealm)
+    return transportTuple
+  }
+  
+  private func updatingSugarRealm(compObj: CompansationObjectRelam) {
+    
+    SugarRealmManager.shared.updateSugarRealmByCompObj(compObj: compObj)
+
+  }
+  
+  private func updatingCompObj(viewModel: NewCompObjViewModel) {
+    
+//    let sugarBefore  = Double(viewModel.sugarCellVM.currentSugar!).roundToDecimal(2)
+//    let typeObject   = viewModel.resultFooterVM.typeCompansationObject
+//    //    let totalInsulin = Double(viewModel.resultFooterVM.totalInsulin).roundToDecimal(2)
+//    let insulinCarbo = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumInsulinFloat).roundToDecimal(2)
+//    let insulinCorrect = Double(viewModel.sugarCellVM.correctionSugarKoeff ?? 0).roundToDecimal(2)
+//    let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
+//    let placeInjections = viewModel.injectionCellVM.titlePlace
+//    let productsVM = viewModel.addMealCellVM.dinnerProductListVM.productsData
+//    let productsRealm = productsVM.map(converToProductRealm)
+//
+//    let transportTuple:TransportTuple = (
+//                          sugarBefore     : sugarBefore,
+//                          typeObjectEnum  : typeObject,
+//                          insulinCarbo    : insulinCarbo,
+//                          insulinCorrect  : insulinCorrect,
+//                          totalCarbo      : totalCarbo,
+//                          placeInjections : placeInjections,
+//                          productsRealm   : productsRealm)
+    
+    let transportTuple = getTransportTuple(viewModel: viewModel)
     
    
+    CompObjRealmManager.shared.updateCompObj(
+      transportTuple : transportTuple,
+      compObjId      : updateCompObj.id)
     
-    CompObjRealmManager.shared.updateCompObj(transportTuple: transportTuple)
     // После обновления и записи в реамл я получу обновленный объект
     updateCompObj = CompObjRealmManager.shared.fetchCompObjByPrimeryKey(compObjPrimaryKey: updateCompObj.id)
   }
@@ -199,32 +228,40 @@ extension NewCompansationObjectScreenInteractor {
   
   
   private func convertViewModelToCompObjRealm(viewModel: NewCompObjViewModel) -> CompansationObjectRelam {
+
+//    let sugarBefore  = Double(viewModel.sugarCellVM.currentSugar!).roundToDecimal(2)
+//    let typeObject   = viewModel.resultFooterVM.typeCompansationObject
+//    //    let totalInsulin = Double(viewModel.resultFooterVM.totalInsulin).roundToDecimal(2)
+//    let insulinCarbo = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumInsulinFloat).roundToDecimal(2)
+//    let insulinCorrect = Double(viewModel.sugarCellVM.correctionSugarKoeff ?? 0).roundToDecimal(2)
+//    let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
+//    let placeInjections = viewModel.injectionCellVM.titlePlace
     
+    let transportTuple = getTransportTuple(viewModel: viewModel)
     
-    
-    let sugarBefore  = Double(viewModel.sugarCellVM.currentSugar!).roundToDecimal(2)
-    let typeObject   = viewModel.resultFooterVM.typeCompansationObject
-    //    let totalInsulin = Double(viewModel.resultFooterVM.totalInsulin).roundToDecimal(2)
-    let insulinCarbo = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumInsulinFloat).roundToDecimal(2)
-    let insulinCorrect = Double(viewModel.sugarCellVM.correctionSugarKoeff ?? 0).roundToDecimal(2)
-    let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
-    let placeInjections = viewModel.injectionCellVM.titlePlace
+//    let compansationObjectRealm = CompansationObjectRelam(
+//      typeObject               : transportTuple,
+//      sugarBefore              : sugarBefore,
+//      insulinOnTotalCarbo      : insulinCarbo,
+//      insulinInCorrectionSugar : insulinCorrect,
+//      totalCarbo               : totalCarbo,
+//      placeInjections          : placeInjections)
     
     let compansationObjectRealm = CompansationObjectRelam(
-      typeObject               : typeObject,
-      sugarBefore              : sugarBefore,
-      insulinOnTotalCarbo      : insulinCarbo,
-      insulinInCorrectionSugar : insulinCorrect,
-      totalCarbo               : totalCarbo,
-      placeInjections          : placeInjections)
+      typeObject                  : transportTuple.typeObjectEnum,
+      sugarBefore                 : transportTuple.sugarBefore,
+      insulinOnTotalCarbo         : transportTuple.insulinCarbo,
+      insulinInCorrectionSugar    : transportTuple.insulinCorrect,
+      totalCarbo                  : transportTuple.totalCarbo,
+      placeInjections             : transportTuple.placeInjections)
     
     
     
     
     // тут мне теперь нужна трансформация realmProduct
-    let productsVM = viewModel.addMealCellVM.dinnerProductListVM.productsData
+//    let productsVM = viewModel.addMealCellVM.dinnerProductListVM.productsData
     
-    compansationObjectRealm.listProduct.append(objectsIn: productsVM.map(converToProductRealm))
+    compansationObjectRealm.listProduct.append(objectsIn: transportTuple.productsRealm)
     
  
     

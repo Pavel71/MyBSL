@@ -14,15 +14,22 @@ class SaveButtonValidator {
   
   var isValid: Bool = false
   
-  var isSugarFieldNotEmpty = false
+  var isSugarFieldNotEmpty                    = false {didSet{checkValidButton()}}
   var sugarCorrection: CorrectInsulinPosition = .progress {didSet {checkValidButton()}}
-  var isProductListNotEmtpy = false {didSet{checkValidButton()}}
-  
-  
+  var isProductListNotEmtpy                   = false {didSet{checkValidButton()}}
+  var isMealSwitcherEnabled                   = false {didSet{checkValidButton()}}
+   
   func checkValidButton() {
     
-    if sugarCorrection == .correctDown && isSugarFieldNotEmpty {
-      isValid = true
+    if sugarCorrection == .correctDown && isSugarFieldNotEmpty  {
+      
+      if isMealSwitcherEnabled {
+        isValid = isProductListNotEmtpy
+      } else {
+        isValid = true
+      }
+
+      
     } else {
       
       isValid = isProductListNotEmtpy && isSugarFieldNotEmpty

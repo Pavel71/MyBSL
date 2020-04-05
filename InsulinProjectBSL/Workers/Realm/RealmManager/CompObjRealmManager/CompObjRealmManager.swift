@@ -141,13 +141,13 @@ extension CompObjRealmManager {
 
 extension CompObjRealmManager {
   
-   typealias TransportTuple = (compObjId: String, sugarBefore: Double, typeObjectEnum: TypeCompansationObject, insulinCarbo: Double, insulinCorrect: Double, totalCarbo: Double, placeInjections: String, productsRealm: [ProductRealm])
+   typealias TransportTuple = (sugarBefore: Double, typeObjectEnum: TypeCompansationObject, insulinCarbo: Double, insulinCorrect: Double, totalCarbo: Double, placeInjections: String, productsRealm: [ProductRealm])
   
   
   
-  func updateCompObj(transportTuple: TransportTuple) {
+  func updateCompObj(transportTuple: TransportTuple,compObjId: String) {
     
-    guard let updateCompObj = fetchCompObjByPrimeryKey(compObjPrimaryKey: transportTuple.compObjId) else {return}
+    guard let updateCompObj = fetchCompObjByPrimeryKey(compObjPrimaryKey: compObjId) else {return}
     
     updatingPrevCompObjWhenUpdatingCurrent(sugarAfter: transportTuple.sugarBefore)
     
@@ -333,7 +333,7 @@ extension CompObjRealmManager {
     do {
       
       self.realm.beginWrite()
-     
+      
       compObj.insulinToCorrectSugarML = Float(correctSugarMl)
      
       try self.realm.commitWrite()

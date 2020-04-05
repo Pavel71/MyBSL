@@ -22,6 +22,7 @@ class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPresentat
   var isAutoCalculateInsulin = true
   // ViewModel
   private var viewModel: NewCompObjViewModel!
+  private var saveButtonValidator  = SaveButtonValidator()
   
   private var mlWorkerByCorrection = MLWorker(typeWeights: .correctionSugar)
   private var mlWorkerByFood       = MLWorker(typeWeights: .insulinByFood)
@@ -147,55 +148,26 @@ extension NewCompansationObjectScreenPresenter {
 // MARK: Woek With Sugar VM
 extension NewCompansationObjectScreenPresenter {
   
+ 
+  
   private func setSugarData(sugar: String) {
     
-     let productListIsnotEmtpy = viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false
-     viewModel.sugarCellVM = SugarCellVMWorker.getSugarVM(sugar: sugar)
     
+    viewModel.sugarCellVM = SugarCellVMWorker.getSugarVM(sugar: sugar)
     
+    updateMeallCellSwitcherEnabled(isEnabled: !sugar.isEmpty)
     
-     updateMeallCellSwitcherEnabled(isEnabled: !sugar.isEmpty)
+
     
-    if sugar.isEmpty { // Если поле сахара пустое то и убираем обед! так как без сахара нельзя
-      updateMealCellState(isNeed: false)
-      updateEnabledSaveButton(isEnabled: false)
-    }
-    
-    
-    switch viewModel.sugarCellVM.cellState {
-    case .currentLayerAndCorrectionLabel:
-      // Сюда попадаем если сахар в норме!
-      
-      if viewModel.addMealCellVM.cellState == .productListState {
-        
-        updateEnabledSaveButton(isEnabled: productListIsnotEmtpy )
-      } else {
-        
-        updateEnabledSaveButton(isEnabled: false)
-      }
-      
-    case .currentLayerAndCorrectionLayer:
-      
-      // Сюда попоадаем если у нас сахар в не нормы!
-      
-      
+    if viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer {
       
       let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [Float(viewModel.sugarCellVM.currentSugar!)])
       
       viewModel.sugarCellVM.correctionSugarKoeff = predictSugarCompansation.first!
-      
-      if viewModel.addMealCellVM.cellState == .productListState {
-        
-        updateEnabledSaveButton(isEnabled: productListIsnotEmtpy)
-      } else {
-        // Продуктов нет и можно сохранять только если мы сбиваем сахар
-        let sugarFloat = (sugar as NSString).floatValue
-        let isCorrectInsulinDown = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat) == .correctDown
-        
-        updateEnabledSaveButton(isEnabled: isCorrectInsulinDown)
-      }
-    default:break
     }
+    
+    
+    checkSaveButton()
 
     updateResultViewModel()
     setInjectionCellState()
@@ -235,7 +207,7 @@ extension NewCompansationObjectScreenPresenter {
   }
   
   private func updateMealCellState(isNeed: Bool) {
-//    AddMealVMWorker.changeNeedProductList(isNeed: isNeed, viewModel: &viewModel)
+
     
     viewModel.addMealCellVM.cellState = isNeed ? .productListState : .defaultState
        
@@ -246,19 +218,8 @@ extension NewCompansationObjectScreenPresenter {
       
     }
     
-    if viewModel.addMealCellVM.cellState == .productListState {
-      
-      updateEnabledSaveButton(isEnabled: viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false)
-      
-      
-      
-    } else {
-      
-      let isSugarCorrectCopm = viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer
-      
-      updateEnabledSaveButton(isEnabled: isSugarCorrectCopm)
-    }
-
+    
+    checkSaveButton()
     updateResultViewModel()
     setInjectionCellState()
   }
@@ -351,24 +312,10 @@ extension NewCompansationObjectScreenPresenter {
       
       // Set
       viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel = resultViewModel
-//      resultStateByMealState()
+
       updateResultViewModel()
-      // Каждый раз как пересчитывается резалт по обеду! Чекай кнопочку сохранить
-      // Здесь нужно добавить логику того что если кнопочка
-      
-      // При перерасчете мы должны видеть хотябы 1 продукт
-      
-      if viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer {
-        
-        let isActivateMeal  = viewModel.addMealCellVM.cellState == .productListState
-        let isEmptyproducts = viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false
-        updateEnabledSaveButton(isEnabled: isActivateMeal && isEmptyproducts)
-        
-        
-      } else {
-        updateEnabledSaveButton(isEnabled: viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false)
-      }
-      
+
+      checkSaveButton()
       
       
     }
@@ -378,6 +325,22 @@ extension NewCompansationObjectScreenPresenter {
     
     viewModel.isValidData = isEnabled
   }
+  
+  
+   private func checkSaveButton() {
+     
+     let productListIsnotEmtpy = viewModel.addMealCellVM.dinnerProductListVM.productsData.isEmpty == false
+
+     saveButtonValidator.isProductListNotEmtpy = productListIsnotEmtpy
+     saveButtonValidator.isSugarFieldNotEmpty  = viewModel.sugarCellVM.currentSugar != nil
+     saveButtonValidator.isMealSwitcherEnabled = viewModel.addMealCellVM.cellState == .productListState
+     
+     if let sugarFloat = viewModel.sugarCellVM.currentSugar {
+       saveButtonValidator.sugarCorrection = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat)
+     }
+     
+     updateEnabledSaveButton(isEnabled: saveButtonValidator.isValid)
+   }
     
     
     

@@ -16,6 +16,10 @@ class ShugarCorrectorWorker {
   private var bottomShugarLevel: Float
   private var higherShuagrLevel: Float
   
+  var optimalSugarLevel : Float {
+     (bottomShugarLevel + higherShuagrLevel) / 2
+  }
+  
   
   var isNeedCorrectShugarByInsulin: Bool = false
   // Этот бул для того надо ли показать текстфилд или нет
