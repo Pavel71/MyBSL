@@ -111,7 +111,7 @@ extension MainViewModel {
     dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.timeBefore = time
       
     // Set Should Correct Insulin By SHugar
-    dinnerCollectionViewModel[indexNewDinner].correctInsulinByShugarPosition = ShugarCorrectorWorker.shared.getCorrectInsulinBySugarPosition(sugar: shugarBefore)
+    dinnerCollectionViewModel[indexNewDinner].correctInsulinByShugarPosition = ShugarCorrectorWorker.shared.getCorrectInsulinBySugarPosition(sugar: Float(shugarBefore))
 //    dinnerCollectionViewModel[indexNewDinner].shugarTopViewModel.isNeedInsulinCorrectByShugar = ShugarCorrectorWorker.shared.isPreviosDinnerFalledCompansation(shugarValue: shugarBefore)
   }
 }

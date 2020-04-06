@@ -87,6 +87,7 @@ extension NewCompansationObjectScreenInteractor {
         saveCompObjToRealm(compObj  : compObj)
         saveSugarToRealm(sugarRealm : sugarRealm)
         
+        // MARK: Start Ml Learning
         preparingCompObjToLearnToML()
         
         presenter?.presentData(response: .passCompObjIdAndSugarRealmIdToVC(compObjId: compObj.id, sugarRealmId: sugarRealm.id))

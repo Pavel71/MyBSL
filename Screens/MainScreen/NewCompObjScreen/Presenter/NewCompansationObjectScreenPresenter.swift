@@ -157,14 +157,22 @@ extension NewCompansationObjectScreenPresenter {
     
     updateMeallCellSwitcherEnabled(isEnabled: !sugar.isEmpty)
     
-
+    // Все таки думаю что лучше считать корректировку по сахару для всех
     
-    if viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer {
-      
+    if sugar.isEmpty == false {
       let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [Float(viewModel.sugarCellVM.currentSugar!)])
-      
-      viewModel.sugarCellVM.correctionSugarKoeff = predictSugarCompansation.first!
+      guard let firstPred = predictSugarCompansation.first else {return}
+      viewModel.sugarCellVM.correctionSugarKoeff = firstPred
     }
+    
+    
+    
+//    if viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer {
+//
+//      let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [Float(viewModel.sugarCellVM.currentSugar!)])
+//
+//      viewModel.sugarCellVM.correctionSugarKoeff = predictSugarCompansation.first!
+//    }
     
     
     checkSaveButton()

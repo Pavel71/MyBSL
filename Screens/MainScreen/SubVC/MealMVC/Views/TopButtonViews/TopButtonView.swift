@@ -149,7 +149,7 @@ extension TopButtonView {
     
     switch viewModel.type {
     case .correctSugarByCarbo:
-      print("PЗдесь я устанавливаю стек вью с конфеткой")
+      
       
       carboCorrectionLabel.text               = "\(viewModel.carbo)"
       
@@ -158,7 +158,7 @@ extension TopButtonView {
       mealObjectStackView.isHidden            = true
       
     case .correctSugarByInsulin:
-      print("Здесь я устанавливаю стек вью с шприцом")
+      
       
       injectionResultLabel.text               = "\(viewModel.insulin)"
       
@@ -167,7 +167,7 @@ extension TopButtonView {
       mealObjectStackView.isHidden            = true
 
     case .mealObject:
-      print("Тут у меня картиночка с обедом и шприц с инсулином!")
+      
       
       carboInMealLabel.text                   = "\(viewModel.carbo)"
       injectionResultLabel.text               = "\(viewModel.insulin)"

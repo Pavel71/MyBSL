@@ -75,6 +75,13 @@ extension CompObjRealmManager {
     return compObj
   }
   
+  func fetchCompObjByTypeCompObj(typeObj: TypeCompansationObject,compFase: CompansationPosition) -> Results<CompansationObjectRelam> {
+    
+    return fetchAllCompObj().filter("(typeObject == %@) AND (compansationFase == %@)",typeObj.rawValue,compFase.rawValue)
+  }
+  
+  
+  
 }
 
 
@@ -300,8 +307,6 @@ extension CompObjRealmManager {
   
   func compensationSuccessWriteMlData(compObj: CompansationObjectRelam) {
     
-    print("Success Запись успешных показателей")
-    
        do {
          
          self.realm.beginWrite()
@@ -327,9 +332,9 @@ extension CompObjRealmManager {
   
   
   
-  func setCorrectSugarInsuilin(compObj: CompansationObjectRelam,correctSugarMl: Double) {
+  func writeCorrectSugarInsuilin(compObj: CompansationObjectRelam,correctSugarMl: Double) {
     
-    print("Коррекция сахара в норме")
+    
     do {
       
       self.realm.beginWrite()
@@ -344,6 +349,47 @@ extension CompObjRealmManager {
   }
   
   
+  
+  
  
+  
+}
+
+// MARK: Fetch For ML
+
+extension CompObjRealmManager {
+  
+  // Train Meal
+  
+   func fetchAllCarbo() -> [Float] {
+    
+    let allMealObj = fetchCompObjByTypeCompObj(typeObj: .mealObject, compFase: .good)
+    let carboList:[Float] = allMealObj.flatMap{$0.listProduct.map{$0.carboInPortion}}
+
+    return carboList
+  }
+  
+  // Target Meal
+   func fetchAllInsulinOnCarboMl() -> [Float] {
+    
+    let allMealObj = fetchCompObjByTypeCompObj(typeObj: .mealObject, compFase: .good)
+    let insulinList:[Float] = allMealObj.flatMap{$0.listProduct.map{$0.insulinOnCarboToML}}
+
+    return insulinList
+  }
+  
+  // Train Sugar
+  
+  // Здесь по идеи я должен выбирать по позиции хорошо компенсированные!
+  
+   func fetchAllSugarDiffML() -> [Float] {
+    let allMealObj = fetchAllCompObj()
+    return allMealObj.map{$0.sugarDiffForMl}
+  }
+  // Test Sugar
+   func fetchAllInsulinCorrectSugarML() -> [Float] {
+    let allMealObj = fetchAllCompObj()
+    return allMealObj.map{$0.insulinToCorrectSugarML}
+  }
   
 }

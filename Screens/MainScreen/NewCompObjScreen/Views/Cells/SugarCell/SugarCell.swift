@@ -285,13 +285,16 @@ extension SugarCell {
   
   private func setComapsnationLayerHidden() {
     
+//    comapsnationLayerDontHidden()
+    
     switch cellState {
     case .currentLayer:
-    
+      
       compansationLayerHidden()
     case .currentLayerAndCorrectionLabel:
-      
-      correctionStackViewHidden()
+
+//      correctionStackViewHidden()
+      comapsnationLayerDontHidden()
     case .currentLayerAndCorrectionLayer:
       comapsnationLayerDontHidden()
     }
@@ -302,31 +305,7 @@ extension SugarCell {
 extension SugarCell {
   
   
-//  private func checkSugar(sugar: String) {
-//
-//    let sugarFloat = (sugar as NSString).floatValue
-//    let wayCorrectPosition = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat)
-//
-//    var compansationString: String!
-//
-//    switch wayCorrectPosition {
-//    case .dontCorrect:
-//      compansationString = "Сахар в норме"
-//      print("Сахар в норме можно показывать ячейку с продуктами")
-//    case .correctDown:
-//      compansationString = "Сахар выше нормы! нужна коррекция инсулином!"
-//      print("Высокий сахар нужно скорректировать доп инсулином и показываем продукты")
-//    case .correctUp:
-//      compansationString = "Сахар ниже нормы! нужна коррекция углеводами!"
-//      print("Сахар ниже нормы Показываем возможность добавить продукты")
-//    default:break
-//    }
-//
-//
-//    //    animatedCompansationSugarLabel(isHidden: false)
-//
-//    compansationSugarLabel.text = compansationString
-//  }
+
   
   // MARK: Animated CompansationLabel
   

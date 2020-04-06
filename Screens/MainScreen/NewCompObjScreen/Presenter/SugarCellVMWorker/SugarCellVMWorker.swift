@@ -47,7 +47,7 @@ class SugarCellVMWorker {
     case .dontCorrect:
       sugarCellVm.compansationString   = "Сахар в норме"
       sugarCellVm.cellState            = .currentLayerAndCorrectionLabel
-      sugarCellVm.correctionImage      = nil
+      sugarCellVm.correctionImage      = #imageLiteral(resourceName: "anesthesia")
       sugarCellVm.correctionSugarKoeff = 0
       
       

@@ -34,7 +34,8 @@ class SugarCellHeightWorker {
        case .currentLayer:
          cellHeight = SugarCellHeightWorker.getDefaultHeight()
        case .currentLayerAndCorrectionLabel:
-         cellHeight = SugarCellHeightWorker.getCurrentSugarLayerAndCOrrectionLabelHeight()
+         cellHeight = SugarCellHeightWorker.getCurrentSugarLayerAndComapnsationLayerHeight()
+//        SugarCellHeightWorker.getCurrentSugarLayerAndCOrrectionLabelHeight()
        case .currentLayerAndCorrectionLayer:
          cellHeight = SugarCellHeightWorker.getCurrentSugarLayerAndComapnsationLayerHeight()
        }

@@ -82,7 +82,7 @@ extension ChartWorker {
      
      let double = hour + minutes
      
-     print("Return Double",double)
+     
      return double
      
    }

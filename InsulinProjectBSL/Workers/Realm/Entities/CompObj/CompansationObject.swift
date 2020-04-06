@@ -27,7 +27,11 @@ import RealmSwift
 
   
   dynamic var sugarBefore                  : Double = 0
-  dynamic var userSetInsulinToCorrectSugar : Double = 0
+  
+  dynamic var userSetInsulinToCorrectSugar : Double = 0 
+  
+  // Для машинного обучения по компенсации сахара
+  dynamic var sugarDiffForMl               : Float = 0
   dynamic var insulinToCorrectSugarML      : Float = 0 // Для Машинного обучения
   
   var correctSugarPosition : CorrectInsulinPosition {
@@ -81,6 +85,13 @@ import RealmSwift
     self.insulinOnTotalCarbo      = insulinOnTotalCarbo
     self.userSetInsulinToCorrectSugar = insulinInCorrectionSugar
     self.placeInjections          = placeInjections
+    
+    if ShugarCorrectorWorker.shared.optimalSugarLevel.isLess(than: sugarBefore) {
+      sugarDiffForMl = Float(sugarBefore - ShugarCorrectorWorker.shared.optimalSugarLevel)
+    } else {
+      sugarDiffForMl = Float(ShugarCorrectorWorker.shared.optimalSugarLevel - sugarBefore)
+    }
+
     
     }
   

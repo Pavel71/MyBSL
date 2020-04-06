@@ -16,9 +16,11 @@ class ShugarCorrectorWorker {
   private var bottomShugarLevel: Float
   private var higherShuagrLevel: Float
   
-  var optimalSugarLevel : Float {
-     (bottomShugarLevel + higherShuagrLevel) / 2
+  var optimalSugarLevel : Double {
+     Double(bottomShugarLevel + higherShuagrLevel) / 2
   }
+  
+  
   
   
   var isNeedCorrectShugarByInsulin: Bool = false

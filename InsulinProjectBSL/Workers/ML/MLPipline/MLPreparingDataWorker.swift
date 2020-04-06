@@ -7,9 +7,24 @@
 //
 
 import UIKit
+import RealmSwift
+
 
 
 // Создам Pipline по подготовке и обучению данных!
+
+
+
+// Проблема в том что я имею объекты которые например еще не проверенны - мы их проверили и справили
+
+// но потом мне нужно брать только проверенные данны - мне не нужно брать данные где могут содержатся ошибки
+
+// Как мне написать эту логику
+
+// 1. Можно брать для исправления плохих объектов только хорошие - и считать по ним так как если они хорошие то у них все данные будут заполнены!
+
+// 2. тоже самое для обучение мы будим брать только Объекты где компенсация будет хорошей
+     // Если таких нет то мы пока что пропускаем исправление
 
 class MLPreparingDataWorker {
   
@@ -18,22 +33,8 @@ class MLPreparingDataWorker {
   var sugarCorrectWorker = ShugarCorrectorWorker.shared
   // Для обучения используются
   
-  // Продукты
-  // Train - CarboInPortion
-  // Target - InsulinInCarboML
   
-  // CompObj - CorrectionSugar
-  
-  // Train - sugarBefore
-  // Target - correctSugarInsulinML
-  
-  
-  
-  // к нам приходит предыдущий обед и мы с ним работаем!
-  
-  // Тут основная проблема в том что если мы будим удалять обеды! Это в целом абсолютно не критично так как мы все закладываем в веса! с другой стороны если человек балуется и фигачит объекты с неправлеьными данными потом их удаляет! Все таки мне кажется мы должны запускать процесс пересчета весов!
-  
-  // Нужно будет подумать об изменение position после хорошо компенсированных объектов!
+  // Какие проблемы - в том что для корректировки я беру не скорректированные данны- Чтобы брать скорректированные тогда мне нужно dropать 2 последних объекта - текущий и тот которые мы сейчас правим!
   
   
   func prepareCompObj(compObj: CompansationObjectRelam)  {
@@ -56,29 +57,8 @@ class MLPreparingDataWorker {
       print("Meal Obj")
     }
     
-//    switch compObj.compansationFaseEnum {
-//
-//
-//    case .bad:
-//      print("Bad need preapring")
-//
-//      // Так тут надо действовать поэтапно
-//      // 1. Нужно определить была ли компенсация сахара?
-//      // 2. Нужно проверять все продукты
-//
-//      workWithSugarCorrectPosition(compObj: compObj)
-//
-//
-//    case .good:
-//      print("Every thing alright need writing")
-//
-//      // Мне нужно взять все продукты и записать поля для ML
-//      // Нужно записать коррекцию сахара для ML
-//      CompObjRealmManager.shared.compensationSuccessWriteMlData(compObj: compObj)
-//
-//    default: break
-//
-//    }
+
+
     
     
   }
@@ -97,30 +77,30 @@ extension  MLPreparingDataWorker {
   
   private  func workWithCorrectSugarByInsulinTypeObj(compObj: CompansationObjectRelam) {
     
+    // По хорошему нужно проверить есть с чего мне брать данные для корректировки
+    // Если нет то пропустить правку Как только появится хорошо компенсированный объект то мы можем приступить к исправлению!
+    
+    
+    // или вообще не обращатся к истории в жопу ее! просто взять все данные из текущего обеда! и его же подкорректировать! нужно только сделать еще 1 флаг! что объект был модифицированн! Для статистики и я буду брать тогда для обучения данные из хороших объектов и тех которые прошли модификацию
+    
     print("Обрабатываем компенсацию повышенного сахара")
     
     // Итак сюда мы попали значит у нас сахар был плох и мы его дополнительно сбивали без продуктов! Чтобы был чистый сценарий
     
     switch compObj.compansationFaseEnum {
-    case .bad:
-      print("Плохо посчитали")
       
-      // Компенсировали плохо! Поэтому нужно расчитать в среднем на сколько мы ошиблись по инмулину и добавить это
-      workWithSugarCorrectPosition(compObj: compObj)
+      case .bad:
+        print("Плохо посчитали")
+        
+        // Компенсировали плохо! Поэтому нужно расчитать в среднем на сколько мы ошиблись по инмулину и добавить это
+        workWithSugarCorrectPosition(compObj: compObj)
+        
+      case .good:
+        print("Все норм сахар нормализовался")
+        // Записываем что все норм
+        writeCorrectInsulinCompSugarToCompObj(compObj: compObj, correctInsulin: compObj.userSetInsulinToCorrectSugar)
       
-    case .good:
-      print("Все норм сахар нормализовался")
-      // Записываем что все норм
-      CompObjRealmManager.shared.setCorrectSugarInsuilin(
-        compObj: compObj,
-        correctSugarMl: compObj.userSetInsulinToCorrectSugar)
-      
-    case .dontCalculated:
-      print("Прошло много времени не учитываю в расчете")
-      break
-    case .progress:
-      print("Сюда не может попасть")
-      break
+    default: break
     }
     
   }
@@ -132,40 +112,164 @@ extension  MLPreparingDataWorker {
 
     let sugarAfter = compObj.sugarAfter
     
-    
     switch compObj.correctSugarPosition {
 
     case .correctDown:
-      // Сахар Высокий нужно больше инсулина
+      // Сахар Высокий нужно было сделать Больше инсулина
       
-      // Теперь я знаю на сколько я ошибся - Дальше мне нужно посчитать сколько на этот сахар мне нужно было добавить инсулина! и прибавить это кол-во к гserSetInsulin!
+    let sugarError = sugarAfter - Double(sugarCorrectWorker.optimalSugarLevel)
+    
+    let meanInsulinOnSugar = getMeanInsulinValueOnCorrectSugar()
+    let addingInsulin = meanInsulinOnSugar * sugarError
       
-    let sugarError = Float(sugarAfter) - sugarCorrectWorker.optimalSugarLevel
-      
-      print(sugarError, "Sugar Error")
+    print(sugarError, "Sugar Error")
+    print(meanInsulinOnSugar,"Mean Insulin On Sugar")
+    let resultCorrectSugarCompShouldHaveDone = compObj.userSetInsulinToCorrectSugar + addingInsulin
+    print("Нужно было сделать столько инсулина",resultCorrectSugarCompShouldHaveDone)
+    
+      writeCorrectInsulinCompSugarToCompObj(compObj: compObj, correctInsulin: resultCorrectSugarCompShouldHaveDone)
       
     case .correctUp:
-      // Сахар Низкий нужно было меньше инсулина
+      // Сахар Низкий нужно было сделать меньше инсулина
       
-      let sugarError = sugarCorrectWorker.optimalSugarLevel - Float(sugarAfter)
+      let sugarError = Double(sugarCorrectWorker.optimalSugarLevel) - sugarAfter
       print(sugarError,"SugarError")
-
+      let meanInsulinOnSugar = getMeanInsulinValueOnCorrectSugar()
+      let addingInsulin = meanInsulinOnSugar * sugarError
+      print(meanInsulinOnSugar,"Mean Insulin On Sugar")
+      let resultCorrectSugarCompShouldHaveDone = compObj.userSetInsulinToCorrectSugar - addingInsulin
+      print("Нужно было сделать столько инсулина",resultCorrectSugarCompShouldHaveDone)
+      
+      writeCorrectInsulinCompSugarToCompObj(compObj: compObj, correctInsulin: resultCorrectSugarCompShouldHaveDone)
 
     default:break
     }
+    
+    
   }
+  
+  // Write CorrectInsulinComp
+  
+  private func writeCorrectInsulinCompSugarToCompObj(
+    compObj: CompansationObjectRelam,correctInsulin: Double) {
+    
+    CompObjRealmManager.shared.writeCorrectSugarInsuilin(
+      compObj: compObj, correctSugarMl: correctInsulin)
+  }
+  
+  
+
   
 }
 
 
-// MARK: Work wtih Compansation Products
+// MARK: Work wtih Meal Object
 
 extension  MLPreparingDataWorker {
   
   // Здесь мы будим работать с продуктами! Если у нас есче идет и повышенный сахар то его я не учитываю так как мы не знаем точно где мы могли ошибится! Только если человек умышленно сам навредит!
   
  private func  workWithMealTypeObj(compObj: CompansationObjectRelam) {
+    // Если пришедший обед хорошо компенсированн то запиши все данные для ML
+  
+  switch compObj.compansationFaseEnum {
+    
+    case .good:
+      
+      CompObjRealmManager.shared.compensationSuccessWriteMlData(compObj: compObj)
+      
+    case .bad:
+      
+      // Итак работаем над тем кейсом что был обед - Сахар был в норме - Значит мы ошиблись в продуктах!
+      
+      print("Обед компенсирован плохо! надо подумать что можно сделать!")
+      prepareMealDataInBadMeal(compObj:compObj)
+    default:break
+  }
+  
     
   }
+  
+  
+  private func prepareMealDataInBadMeal(compObj: CompansationObjectRelam) {
+    
+    // итак расчет на обед зависит от углеводов - для того чтобы подправить все это дело
+    // мне нужно пройтись по всем объектам - meal - собрать все углеводы - и все дозировки инсуилна
+    
+    // Сперва мне нужно узнать какая ошибка у меня
+    // не мне важно знать и направление!
+    
+    let allProductCarboSum     = CompObjRealmManager.shared.fetchAllCarbo().sum()
+    let allInsulinByCarboMLSum = CompObjRealmManager.shared.fetchAllInsulinOnCarboMl().sum()
+    let meanInsulinByCarbo = allProductCarboSum / allInsulinByCarboMLSum
+    
+    if sugarCorrectWorker.optimalSugarLevel.isLess(than: compObj.sugarAfter) {
+      //
+      let sugarError = compObj.sugarAfter - sugarCorrectWorker.optimalSugarLevel
+      
+      print("Ошибка сахара из за углеводов",sugarError)
+      print("В среднем инсулина на углеводы",meanInsulinByCarbo)
+    } else {
+      let sugarError = sugarCorrectWorker.optimalSugarLevel - compObj.sugarAfter
+      print("Ошибка сахара из за углеводов",sugarError)
+      print("В среднем инсулина на углеводы",meanInsulinByCarbo)
+    }
+    
+//    switch compObj.correctSugarPosition {
+//    case .correctDown:
+//      // Сахар Высокий нужно было сделать Больше инсулина
+//      let sugarError = compObj.sugarAfter - sugarCorrectWorker.optimalSugarLevel
+//
+//      print("Ошибка сахара из за углеводов",sugarError)
+//      print("В среднем инсулина на углеводы",meanInsulinByCarbo)
+//      // Так ошибка известна - Теперь нужно расчитать сколько в среднем инсулина идет на углевод -
+//
+//    case .correctUp:
+//      // Сахар Низкий нужно было сделать Меньше инсулина
+//      let sugarError = sugarCorrectWorker.optimalSugarLevel - compObj.sugarAfter
+//      print("Ошибка сахара из за углеводов",sugarError)
+//      print("В среднем инсулина на углеводы",meanInsulinByCarbo)
+//
+//    default: break
+//    }
+    
+    
+    
+    
+    // Итак тут собраны все Данные!
+    
+    
+    
+  }
+  
+}
+
+// MARK: Get Data From Realm
+
+
+extension  MLPreparingDataWorker {
+  
+  private func getMeanInsulinValueOnCorrectSugar() -> Double {
+    
+    let sugarCorrectCompObjs = CompObjRealmManager.shared.fetchCompObjByTypeCompObj(typeObj: .correctSugarByInsulin, compFase: .good)
+    
+    let sugarsDiffSum  = sugarCorrectCompObjs.map{Double($0.sugarDiffForMl)}.sum()
+    
+    print(sugarsDiffSum, "Сумма разницы сахара до идеального сахар")
+    
+    // Здесь я должен буду брать уже хорошие показатели или можно не паритс
+    let insulinCorrectSum = sugarCorrectCompObjs.map{$0.userSetInsulinToCorrectSugar}.sum()
+    
+    print(insulinCorrectSum,"Сумма инсулиновых инъекций")
+    
+    let insulinOnTheSugar = insulinCorrectSum / sugarsDiffSum
+    
+    print(insulinOnTheSugar,"Среднее значение инсулина на сахар")
+
+    return insulinOnTheSugar
+    
+  }
+  
+
   
 }

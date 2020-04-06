@@ -15,4 +15,10 @@ extension Array {
     return (self[0],self[1])
   }
   
+
+  
+}
+
+extension Sequence where Element: AdditiveArithmetic {
+    func sum() -> Element { reduce(.zero, +) }
 }
