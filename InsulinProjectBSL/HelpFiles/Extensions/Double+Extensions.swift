@@ -15,6 +15,10 @@ extension Double {
         let multiplier = pow(10, Double(fractionDigits))
         return Darwin.round(self * multiplier) / multiplier
     }
+  
+  func toFloat() -> Float {
+     return Float(self)
+   }
 }
 
 
@@ -23,4 +27,8 @@ extension Float {
         let multiplier = pow(10, Float(fractionDigits))
         return Darwin.round(self * multiplier) / multiplier
     }
-}
+  
+  func toDouble() -> Double {
+    return Double(self)
+  }
+ }

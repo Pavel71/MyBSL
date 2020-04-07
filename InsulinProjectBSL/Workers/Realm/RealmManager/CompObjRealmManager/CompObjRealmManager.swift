@@ -310,7 +310,7 @@ extension CompObjRealmManager {
        do {
          
          self.realm.beginWrite()
-        
+         
          setInsulinOnCorrectSugarML(compobj: compObj)
          compObj.listProduct.forEach(setInsulinOnCarboML)
         
@@ -321,24 +321,20 @@ extension CompObjRealmManager {
        }
   }
   
-  private func setInsulinOnCarboML(productRealm: ProductRealm) {
-      
-      productRealm.insulinOnCarboToML = productRealm.userSetInsulinOnCarbo
-    }
-    
-  private func setInsulinOnCorrectSugarML(compobj:CompansationObjectRelam) {
-      compobj.insulinToCorrectSugarML = Float(compobj.userSetInsulinToCorrectSugar)
-    }
+ 
   
   
-  
-  func writeCorrectSugarInsuilin(compObj: CompansationObjectRelam,correctSugarMl: Double) {
+  // MARKK: Modifided Correct Sugar
+  func writeCorrectSugarInsuilin(
+    compObj: CompansationObjectRelam,
+    correctSugarMl: Double,
+    changeTypeCompPosition: CompansationPosition) {
     
     
     do {
       
       self.realm.beginWrite()
-      
+      compObj.compansationFaseEnum    = changeTypeCompPosition
       compObj.insulinToCorrectSugarML = Float(correctSugarMl)
      
       try self.realm.commitWrite()
@@ -347,6 +343,51 @@ extension CompObjRealmManager {
       print(error.localizedDescription)
     }
   }
+  
+  func writeInsulinOnCarboInProducts(
+    compObj: CompansationObjectRelam,
+    correctKoeficient: Float,
+    isPlus: Bool) {
+    
+    
+    do {
+      
+      self.realm.beginWrite()
+      
+      // нужно проследить чтобы происходили изменения в CompPosition но и Fetch шел не только хорошие объекты но и модифицированные! 
+//      compObj.compansationFaseEnum = .modifidedForMl
+      
+      if isPlus {
+        compObj.listProduct.forEach { (product) in
+          product.insulinOnCarboToML = product.userSetInsulinOnCarbo + (Float(product.percantageCarboInMeal) * correctKoeficient)
+        }
+      } else {
+        compObj.listProduct.forEach { (product) in
+          product.insulinOnCarboToML = product.userSetInsulinOnCarbo - (Float(product.percantageCarboInMeal) * correctKoeficient)
+        }
+      }
+      
+      
+     
+      try self.realm.commitWrite()
+      
+    } catch {
+      print(error.localizedDescription)
+    }
+    
+    
+  }
+  
+  private func setInsulinOnCarboML(productRealm: ProductRealm) {
+       
+       productRealm.insulinOnCarboToML = productRealm.userSetInsulinOnCarbo
+     }
+     
+   private func setInsulinOnCorrectSugarML(compobj:CompansationObjectRelam) {
+       compobj.insulinToCorrectSugarML = Float(compobj.userSetInsulinToCorrectSugar)
+     }
+  
+  
   
   
   
@@ -384,7 +425,7 @@ extension CompObjRealmManager {
   
    func fetchAllSugarDiffML() -> [Float] {
     let allMealObj = fetchAllCompObj()
-    return allMealObj.map{$0.sugarDiffForMl}
+    return allMealObj.map{$0.sugarDiffToOptimaForMl}
   }
   // Test Sugar
    func fetchAllInsulinCorrectSugarML() -> [Float] {

@@ -82,6 +82,7 @@
 		057E262024372FA40081CE56 /* SugarRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E261F24372FA40081CE56 /* SugarRealmManager.swift */; };
 		057E26222437341D0081CE56 /* NewDayRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E26212437341D0081CE56 /* NewDayRealmManager.swift */; };
 		057E26242439ED010081CE56 /* SaveButtonValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E26232439ED010081CE56 /* SaveButtonValidator.swift */; };
+		057E2626243C767A0081CE56 /* DataEnrichmentWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E2625243C767A0081CE56 /* DataEnrichmentWorker.swift */; };
 		058F5F4A23A2492A00717042 /* SugarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F4923A2492A00717042 /* SugarCell.swift */; };
 		058F5F9123A39CB300717042 /* AddMealCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9023A39CB300717042 /* AddMealCell.swift */; };
 		058F5F9323A3A16E00717042 /* NewCompansationObjConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */; };
@@ -170,7 +171,6 @@
 		05D26A3923605D9200155F31 /* TotalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A3823605D9200155F31 /* TotalView.swift */; };
 		05D26A3E236093CB00155F31 /* DinnerRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A3D236093CB00155F31 /* DinnerRealmManager.swift */; };
 		05D806142348C9CF00C19764 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D806132348C9CF00C19764 /* MainMenuViewController.swift */; };
-		05DE9BFA24361B8600280D4F /* MLPreparingDataWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DE9BF924361B8600280D4F /* MLPreparingDataWorker.swift */; };
 		05E1C3312372B77C00007463 /* SimpleRegressionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E1C3302372B77C00007463 /* SimpleRegressionModel.swift */; };
 		05E1C3342372B7FF00007463 /* RidgeRegressionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E1C3332372B7FF00007463 /* RidgeRegressionModel.swift */; };
 		05F7C4A423F2B579009EE9C5 /* OnBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F7C4A323F2B578009EE9C5 /* OnBoardViewController.swift */; };
@@ -337,6 +337,7 @@
 		057E261F24372FA40081CE56 /* SugarRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarRealmManager.swift; sourceTree = "<group>"; };
 		057E26212437341D0081CE56 /* NewDayRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDayRealmManager.swift; sourceTree = "<group>"; };
 		057E26232439ED010081CE56 /* SaveButtonValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveButtonValidator.swift; sourceTree = "<group>"; };
+		057E2625243C767A0081CE56 /* DataEnrichmentWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataEnrichmentWorker.swift; sourceTree = "<group>"; };
 		058F5F4923A2492A00717042 /* SugarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarCell.swift; sourceTree = "<group>"; };
 		058F5F9023A39CB300717042 /* AddMealCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMealCell.swift; sourceTree = "<group>"; };
 		058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjConstants.swift; sourceTree = "<group>"; };
@@ -425,7 +426,6 @@
 		05D26A3823605D9200155F31 /* TotalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalView.swift; sourceTree = "<group>"; };
 		05D26A3D236093CB00155F31 /* DinnerRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerRealmManager.swift; sourceTree = "<group>"; };
 		05D806132348C9CF00C19764 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
-		05DE9BF924361B8600280D4F /* MLPreparingDataWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLPreparingDataWorker.swift; sourceTree = "<group>"; };
 		05E1C3302372B77C00007463 /* SimpleRegressionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleRegressionModel.swift; sourceTree = "<group>"; };
 		05E1C3332372B7FF00007463 /* RidgeRegressionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidgeRegressionModel.swift; sourceTree = "<group>"; };
 		05F7C4A323F2B578009EE9C5 /* OnBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardViewController.swift; sourceTree = "<group>"; };
@@ -2245,7 +2245,7 @@
 		05DE9BF824361B5500280D4F /* MLPipline */ = {
 			isa = PBXGroup;
 			children = (
-				05DE9BF924361B8600280D4F /* MLPreparingDataWorker.swift */,
+				057E2625243C767A0081CE56 /* DataEnrichmentWorker.swift */,
 			);
 			path = MLPipline;
 			sourceTree = "<group>";
@@ -3099,7 +3099,6 @@
 				058F5F4A23A2492A00717042 /* SugarCell.swift in Sources */,
 				05F7C4A423F2B579009EE9C5 /* OnBoardViewController.swift in Sources */,
 				0550AEA82418FADF00140254 /* Double+Extensions.swift in Sources */,
-				05DE9BFA24361B8600280D4F /* MLPreparingDataWorker.swift in Sources */,
 				0509FD00233F9DBC00B04B30 /* ProductListResultWorker.swift in Sources */,
 				055A726A23A8CA2B002CA9A7 /* NewProductListVC.swift in Sources */,
 				0550B801234636E500D88732 /* ListTrainsViewController.swift in Sources */,
@@ -3158,6 +3157,7 @@
 				F1E78CC9230D336B00592AB8 /* MainRouter.swift in Sources */,
 				057E262024372FA40081CE56 /* SugarRealmManager.swift in Sources */,
 				05AAFF07238BFFFF002AE3D9 /* BallonMarker.swift in Sources */,
+				057E2626243C767A0081CE56 /* DataEnrichmentWorker.swift in Sources */,
 				F112845A2327926B00416AF4 /* NewMealView.swift in Sources */,
 				059AD9A9235854E0007DE168 /* DinnerViewModelValidator.swift in Sources */,
 				05AD21532361B784008E6BB0 /* DateWorker.swift in Sources */,

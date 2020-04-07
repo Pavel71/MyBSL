@@ -107,7 +107,7 @@ extension NewCompansationObjectScreenInteractor {
     
     guard let compObjToLearnInMl = CompObjRealmManager.shared.fetchSecondOnTheEndCompObj() else {return}
     
-    MLPreparingDataWorker.shared.prepareCompObj(compObj: compObjToLearnInMl)
+    DataEnrichmentWorker.shared.prepareCompObj(compObj: compObjToLearnInMl)
   }
   
   // MARK: Save Data to Realm
@@ -157,7 +157,7 @@ extension NewCompansationObjectScreenInteractor {
   typealias TransportTuple = (sugarBefore: Double, typeObjectEnum: TypeCompansationObject, insulinCarbo: Double, insulinCorrect: Double, totalCarbo: Double, placeInjections: String, productsRealm: [ProductRealm])
   
   
-  
+  // MARK: Get Transport Tuple
   private func getTransportTuple(viewModel: NewCompObjViewModel) -> TransportTuple {
     
     let sugarBefore  = Double(viewModel.sugarCellVM.currentSugar!).roundToDecimal(2)
@@ -167,8 +167,16 @@ extension NewCompansationObjectScreenInteractor {
     let insulinCorrect = Double(viewModel.sugarCellVM.correctionSugarKoeff ?? 0).roundToDecimal(2)
     let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
     let placeInjections = viewModel.injectionCellVM.titlePlace
+    
     let productsVM = viewModel.addMealCellVM.dinnerProductListVM.productsData
+    
     let productsRealm = productsVM.map(converToProductRealm)
+    
+    // Set Total Carbo in Products
+    productsRealm.forEach { (product) in
+      product.setPercentageCarboInMeal = totalCarbo
+    }
+    
     
     let transportTuple:TransportTuple = (
                           sugarBefore     : sugarBefore,
@@ -278,13 +286,14 @@ extension NewCompansationObjectScreenInteractor {
   private func converToProductRealm(viewModel: ProductListViewModel) -> ProductRealm {
     
     
+    // просто сюда нужно передать общее кол-во углеводов в обеде! и все будет нормально
     return ProductRealm(
-      name          : viewModel.name,
-      category      : viewModel.category,
-      carboIn100Grm : viewModel.carboIn100Grm,
-      isFavorits    : viewModel.isFavorit,
-      portion       : viewModel.portion ,
-      actualInsulin : viewModel.insulinValue!.roundToDecimal(2))
+      name                  : viewModel.name,
+      category              : viewModel.category,
+      carboIn100Grm         : viewModel.carboIn100Grm,
+      isFavorits            : viewModel.isFavorit,
+      portion               : viewModel.portion ,
+      actualInsulin         : viewModel.insulinValue!.roundToDecimal(2))
   }
   
 }

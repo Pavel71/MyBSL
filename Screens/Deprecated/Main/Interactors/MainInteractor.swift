@@ -280,12 +280,12 @@ extension MainInteractor {
     private func convertProductListViewModeltToProductRealm(prodViewModel: ProductListViewModel) -> ProductRealm {
       
       return ProductRealm(
-        name: prodViewModel.name,
-        category: prodViewModel.category,
-        carboIn100Grm: prodViewModel.carboIn100Grm,
-        isFavorits: prodViewModel.isFavorit,
-        portion: prodViewModel.portion,
-        actualInsulin: prodViewModel.insulinValue ?? 0
+        name                  : prodViewModel.name,
+        category              : prodViewModel.category,
+        carboIn100Grm         : prodViewModel.carboIn100Grm,
+        isFavorits            : prodViewModel.isFavorit,
+        portion               : prodViewModel.portion,
+        actualInsulin         : prodViewModel.insulinValue ?? 0
       )
     }
   

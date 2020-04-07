@@ -31,6 +31,7 @@ enum CompansationPosition: Int {
   case progress
 //  case new
   case dontCalculated
+  case modifidedForMl
 }
 
 enum DinnerPosition {
@@ -331,7 +332,8 @@ extension DinnerCollectionViewCell {
      case .dontCalculated:
       
        totalInsulinView.totalInsulinImageView.tintColor = .white
-
+     case .modifidedForMl:
+      totalInsulinView.totalInsulinImageView.tintColor = .white
 
        }
    }

@@ -148,10 +148,11 @@ extension FoodRealmManager {
     let massa = Int(viewModel.portion)!
     
     return ProductRealm.init(
-      name: name, category: category,
-      carboIn100Grm: carbo,
-      isFavorits: isFavorits,
-      portion:massa
+      name            : name,
+      category        : category,
+      carboIn100Grm   : carbo,
+      isFavorits      : isFavorits,
+      portion         : massa
     )
   }
   

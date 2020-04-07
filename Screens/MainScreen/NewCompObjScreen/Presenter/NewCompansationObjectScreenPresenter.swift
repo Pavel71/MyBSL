@@ -246,7 +246,8 @@ extension NewCompansationObjectScreenPresenter {
       carboIn100Grm       : product.carboIn100grm,
       category            : product.category,
       name                : product.name,
-      portion             : product.portion)
+      portion             : product.portion,
+      totalCarboInMeal    :     0    )
   }
   
   
@@ -320,6 +321,14 @@ extension NewCompansationObjectScreenPresenter {
       
       // Set
       viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel = resultViewModel
+      
+      // Каждый раз я также буду пересчитывать долю продукта по углеводам в обеде
+      let totalCarboInMeal = resultViewModel.sumCarboFloat.toDouble()
+      
+      
+//      // MARK: To Do here
+//      viewModel.addMealCellVM.dinnerProductListVM.productsData.forEach{$0.totalCarboInMeal = totalCarboInMeal}
+      
 
       updateResultViewModel()
 
@@ -327,6 +336,8 @@ extension NewCompansationObjectScreenPresenter {
       
       
     }
+  
+//  private func setTotalCarbo
   
   // MARK: WOrk With Save Button
   private func updateEnabledSaveButton(isEnabled: Bool) {

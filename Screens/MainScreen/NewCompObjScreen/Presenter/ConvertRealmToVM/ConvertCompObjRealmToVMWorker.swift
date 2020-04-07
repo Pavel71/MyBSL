@@ -99,7 +99,8 @@ extension ConvertCompObjRealmToVMWorker {
       carboIn100Grm       : productRealm.carboIn100grm,
       category            : productRealm.category,
       name                : productRealm.name,
-      portion             : productRealm.portion)
+      portion             : productRealm.portion,
+      totalCarboInMeal    : 0)
   }
 }
 

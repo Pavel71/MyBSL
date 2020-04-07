@@ -48,6 +48,8 @@ struct ProductListViewModel: ProductListViewModelCell {
     return Int(Float(carboIn100Grm) * (Float(portion) / 100))
   }
   
+  var totalCarboInMeal: Double
+  
 }
 
 // MARK: Equtable Viewmodel by Name

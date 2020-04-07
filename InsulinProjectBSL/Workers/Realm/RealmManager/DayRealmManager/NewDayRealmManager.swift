@@ -249,7 +249,7 @@ extension NewDayRealmManager {
             name          : "Молоко",
             category      : "Молочные продукты",
             carboIn100Grm : 5,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-            isFavorits    : false,
+            isFavorits    : false, 
             actualInsulin : 0.5
           )
           let product2 = ProductRealm(
