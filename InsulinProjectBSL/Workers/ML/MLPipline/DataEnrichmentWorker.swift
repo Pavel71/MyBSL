@@ -17,8 +17,7 @@ class DataEnrichmentWorker {
 
   // Создам Pipline по подготовке и обучению данных!
 
-  // 1 Сценарий - Сбив Сахара - Хороший + Плохой +
-  // 2 Сценарий - Сахар в норме коррекция продуктов по углеводам Хороший +
+  // 1 Теперь мне нужно убедится что я вношу изменения в Стату Компенсации на modife
 
 
   
@@ -162,10 +161,7 @@ extension  DataEnrichmentWorker {
       
       return Double(middleInsulinOnTheSugar)
       
-      
     }
-    
-    
 
     
   }
@@ -174,7 +170,6 @@ extension  DataEnrichmentWorker {
   // MARK: Work wtih Meal Object
 extension  DataEnrichmentWorker {
     
-    // Здесь мы будим работать с продуктами! Если у нас есче идет и повышенный сахар то его я не учитываю так как мы не знаем точно где мы могли ошибится! Только если человек умышленно сам навредит!
     
    private func  workWithMealTypeObj(compObj: CompansationObjectRelam) {
       // Если пришедший обед хорошо компенсированн то запиши все данные для ML
@@ -189,7 +184,7 @@ extension  DataEnrichmentWorker {
         
         // Итак работаем над тем кейсом что был обед - Сахар был в норме - Значит мы ошиблись в продуктах!
         
-        print("Обед компенсирован плохо! надо подумать что можно сделать!")
+        
         workWithMealDataInBadMeal(compObj:compObj)
       default:break
     }
@@ -200,8 +195,10 @@ extension  DataEnrichmentWorker {
     
     private func workWithMealDataInBadMeal(compObj: CompansationObjectRelam) {
       
-      // Функция работает как я и хотел теперь определится в этом кейсе с записью компенсации сахара
-      // В случае если и сахар высокий и продукты сахар не трогаю так как его компенсировать достаточно легко и ошибки там маловероятны!
+      writeCorrectInsulinCompSugarToCompObj(
+      compObj         : compObj,
+      correctInsulin  : compObj.userSetInsulinToCorrectSugar,
+      compPosition    : .modifidedForMl)
       
       let allProductCarboSum     = compObj.listProduct.map{$0.carboInPortion}.sum()
       let allInsulinByCarboMLSum = compObj.listProduct.map{$0.userSetInsulinOnCarbo}.sum()
@@ -231,18 +228,7 @@ extension  DataEnrichmentWorker {
         isPlus             : false)
         
       }
-      
-   
-      
-      
-      
-      // ввести новое поле процентное соотношение относительно общего totalCarbo
-      // и потом умножать carboInPortion каждого продукта на это соотношение - и так мы узнаем долю продукта в обеде
-      
-      // потом берем сколько надо было добавить инсулина и прибавляем в том же соотношение
-      // Сохраняем!
-      
-      
+
       
     }
   
@@ -250,28 +236,6 @@ extension  DataEnrichmentWorker {
     
 }
 
-  // MARK: Get Data From Realm
 
-extension  DataEnrichmentWorker {
-    
-  //  private func getMeanInsulinValueOnCorrectSugar(compObj: CompansationObjectRelam) -> Double {
-  //
-  //
-  //    // Концепция в том что я обхожусь данными того объекта который приходит! Так как в целом все данные будут только улучшатся то больших отклонений не должно быть
-  //
-  //    let shugarDiffLevel         = compObj.sugarDiffForMl
-  //    let sugarCorrectInsulin     = compObj.userSetInsulinToCorrectSugar.toFloat()
-  //
-  //    let middleInsulinOnTheSugar = sugarCorrectInsulin / shugarDiffLevel
-  //
-  //
-  //    return Double(middleInsulinOnTheSugar)
-  //
-  //
-  //  }
-    
-
-    
-  }
 
   

@@ -358,14 +358,17 @@ extension CompObjRealmManager {
 //      compObj.compansationFaseEnum = .modifidedForMl
       
       if isPlus {
+        
         compObj.listProduct.forEach { (product) in
           product.insulinOnCarboToML = product.userSetInsulinOnCarbo + (Float(product.percantageCarboInMeal) * correctKoeficient)
         }
+        
       } else {
         compObj.listProduct.forEach { (product) in
           product.insulinOnCarboToML = product.userSetInsulinOnCarbo - (Float(product.percantageCarboInMeal) * correctKoeficient)
         }
       }
+      compObj.compansationFaseEnum = .modifidedForMl
       
       
      
