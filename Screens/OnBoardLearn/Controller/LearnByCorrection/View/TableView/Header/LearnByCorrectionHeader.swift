@@ -16,13 +16,15 @@ class LearnByCorrectionHeader: UIView {
     let label  = UILabel()
     label.font = UIFont.systemFont(ofSize: 16)
     label.text = "Уровень сахара"
+    label.textAlignment = .center
     return label
   }()
   
   var insulinValueLabel: UILabel = {
-    let label  = UILabel()
-    label.font = UIFont.systemFont(ofSize: 16)
-    label.text = "Дозировка инсулина"
+    let label           = UILabel()
+    label.font          = UIFont.systemFont(ofSize: 16)
+    label.textAlignment = .center
+    label.text          = "Инсулин"
     return label
   }()
   

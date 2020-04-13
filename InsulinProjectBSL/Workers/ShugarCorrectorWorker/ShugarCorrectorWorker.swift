@@ -35,8 +35,8 @@ class ShugarCorrectorWorker {
   static let shared: ShugarCorrectorWorker = {
     
     // Эти показатели будут браться из Настроек
-    let bottomLevel:Float = 4.5
-    let higherLevel:Float = 7.5
+    let bottomLevel:Float = UserDefaults.standard.float(forKey: UserDefaultsKey.lowSugarLevel.rawValue)
+    let higherLevel:Float = UserDefaults.standard.float(forKey: UserDefaultsKey.higherSugarLevel.rawValue)
     
     let shugarCorrectorClass = ShugarCorrectorWorker(bottomShugarLevel: bottomLevel,higherShuagrLevel:higherLevel)
     
@@ -49,25 +49,21 @@ class ShugarCorrectorWorker {
     self.higherShuagrLevel = higherShuagrLevel
   }
   
-  
-  
-  
-  
-  func isPreviosDinnerFalledCompansation(shugarValue: Float) -> Bool {
-    
-    if shugarValue == 0 {
-      return false
-    } else {
-      return shugarValue > higherShuagrLevel || shugarValue < bottomShugarLevel
-    }
-    
-    
-  }
+
   
   func getCorrectInsulinBySugarPosition(sugar: Float) -> CorrectInsulinPosition {
     
     let isNeedCorrect = isPreviosDinnerFalledCompansation(shugarValue: sugar)
     return isNeedCorrect ? .needCorrect : .dontCorrect
+  }
+  
+  func isPreviosDinnerFalledCompansation(shugarValue: Float) -> Bool {
+
+    if shugarValue == 0 {
+      return false
+    } else {
+      return shugarValue > higherShuagrLevel || shugarValue < bottomShugarLevel
+    }
   }
   
   func getWayCorrectPosition(sugar: Float) -> CorrectInsulinPosition {
@@ -83,40 +79,47 @@ class ShugarCorrectorWorker {
 
     return .dontCorrect
   }
-
   
+  // MARK: Prepare Data to Sugar Train
   
-  func getInsulinCorrectionByShugar(shugarValue: Float) -> Float? {
-    // Если 0 то значит мы сетим первый раз с viewModel!
-//    guard shugarValue != 0 else {return}
+  func getSugasrTrainData(currentSugar: Double) -> Float {
     
-//    let valueFloat = (shugarValue as NSString).floatValue
-
-    isNeedCorrectShugarByInsulin =  isPreviosDinnerFalledCompansation(shugarValue: shugarValue)
-    
-    
-    if isNeedCorrectShugarByInsulin {
-      
-      // Здесь должен быть еще 1 флаг ждем данные от пользователя? или считаем сами
-      if isUserHaveToSetData {
-        // Пользователь сам введет данные пока это флаг не измениться а измениться он после 10 обдеов например
-        correctionInsulinByShugar = nil
-        
-      } else {
-        
-        // Здесь будет идти автоматический расчет дозировки инсулина
-        print("Считаем Корректировку сахара с помощью Алгоритма")
-        
-      }
-
-    } else {
-      correctionInsulinByShugar = 0
-    }
-    
-    return correctionInsulinByShugar
-    
-    
-    
+    return abs(optimalSugarLevel - currentSugar).toFloat()
   }
+
+  
+  
+//  func getInsulinCorrectionByShugar(shugarValue: Float) -> Float? {
+//    // Если 0 то значит мы сетим первый раз с viewModel!
+////    guard shugarValue != 0 else {return}
+//    
+////    let valueFloat = (shugarValue as NSString).floatValue
+//
+//    isNeedCorrectShugarByInsulin =  isPreviosDinnerFalledCompansation(shugarValue: shugarValue)
+//    
+//    
+//    if isNeedCorrectShugarByInsulin {
+//      
+//      // Здесь должен быть еще 1 флаг ждем данные от пользователя? или считаем сами
+//      if isUserHaveToSetData {
+//        // Пользователь сам введет данные пока это флаг не измениться а измениться он после 10 обдеов например
+//        correctionInsulinByShugar = nil
+//        
+//      } else {
+//        
+//        // Здесь будет идти автоматический расчет дозировки инсулина
+//        print("Считаем Корректировку сахара с помощью Алгоритма")
+//        
+//      }
+//
+//    } else {
+//      correctionInsulinByShugar = 0
+//    }
+//    
+//    return correctionInsulinByShugar
+//    
+//    
+//    
+//  }
   
 }

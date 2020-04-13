@@ -24,8 +24,8 @@ class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPresentat
   private var viewModel: NewCompObjViewModel!
   private var saveButtonValidator  = SaveButtonValidator()
   
-  private var mlWorkerByCorrection = MLWorker(typeWeights: .correctionSugar)
-  private var mlWorkerByFood       = MLWorker(typeWeights: .insulinByFood)
+  private var mlWorkerByCorrection = MLWorker(typeWeights: .correctSugarByInsulinWeights)
+  private var mlWorkerByFood       = MLWorker(typeWeights: .correctCarboByInsulinWeights)
   
   func presentData(response: NewCompansationObjectScreen.Model.Response.ResponseType) {
     
@@ -148,7 +148,7 @@ extension NewCompansationObjectScreenPresenter {
 // MARK: Woek With Sugar VM
 extension NewCompansationObjectScreenPresenter {
   
- 
+ // MARK: Get ML Predict
   
   private func setSugarData(sugar: String) {
     
@@ -160,7 +160,12 @@ extension NewCompansationObjectScreenPresenter {
     // Все таки думаю что лучше считать корректировку по сахару для всех
     
     if sugar.isEmpty == false {
-      let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [Float(viewModel.sugarCellVM.currentSugar!)])
+      
+      
+      let test = ShugarCorrectorWorker.shared.getSugasrTrainData(currentSugar: viewModel.sugarCellVM.currentSugar!.toDouble())
+
+      
+      let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [test])
       guard let firstPred = predictSugarCompansation.first else {return}
       viewModel.sugarCellVM.correctionSugarKoeff = firstPred
     }

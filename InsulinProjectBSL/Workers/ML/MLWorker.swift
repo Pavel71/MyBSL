@@ -12,9 +12,9 @@ import Upsurge
 import CoreML
 
 
-enum KeyWeights: String {
-   case correctionSugar, insulinByFood
- }
+//enum KeyWeights: String {
+//   case correctionSugar, insulinByFood
+// }
 
 // Class отвечает за обработку данных и получение прогноза инсулина
 
@@ -25,7 +25,7 @@ class MLWorker {
   
   
   
-  init(typeWeights:KeyWeights) {
+  init(typeWeights: UserDefaultsKey) {
     self.simpleRegressionModel = SimpleRegresiionModel(typeWeights: typeWeights)
   }
   

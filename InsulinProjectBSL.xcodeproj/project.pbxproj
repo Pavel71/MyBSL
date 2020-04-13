@@ -70,6 +70,10 @@
 		0562D5322375597E0014A8F4 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D5312375597E0014A8F4 /* MainViewModel.swift */; };
 		0562D536237559D00014A8F4 /* MainHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D535237559D00014A8F4 /* MainHeaderViewModel.swift */; };
 		0562D53923759CE60014A8F4 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D53823759CE60014A8F4 /* DummyData.swift */; };
+		056647FB24431E000085F542 /* SugarLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056647FA24431E000085F542 /* SugarLevelView.swift */; };
+		056647FE24431FE70085F542 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056647FD24431FE70085F542 /* RangeSlider.swift */; };
+		05664801244320110085F542 /* RangeSliderTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05664800244320110085F542 /* RangeSliderTrackLayer.swift */; };
+		05664803244324570085F542 /* LearnByCorrectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05664802244324570085F542 /* LearnByCorrectionView.swift */; };
 		05733CE123FA8512004197B2 /* Array+ Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05733CE023FA8512004197B2 /* Array+ Extensions.swift */; };
 		05733CE423FAAABF004197B2 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05733CE323FAAABF004197B2 /* AppState.swift */; };
 		05733CE723FC0813004197B2 /* InjectionPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05733CE623FC0813004197B2 /* InjectionPlaceCell.swift */; };
@@ -325,6 +329,10 @@
 		0562D5312375597E0014A8F4 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		0562D535237559D00014A8F4 /* MainHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderViewModel.swift; sourceTree = "<group>"; };
 		0562D53823759CE60014A8F4 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
+		056647FA24431E000085F542 /* SugarLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarLevelView.swift; sourceTree = "<group>"; };
+		056647FD24431FE70085F542 /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
+		05664800244320110085F542 /* RangeSliderTrackLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSliderTrackLayer.swift; sourceTree = "<group>"; };
+		05664802244324570085F542 /* LearnByCorrectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnByCorrectionView.swift; sourceTree = "<group>"; };
 		05733CE023FA8512004197B2 /* Array+ Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ Extensions.swift"; sourceTree = "<group>"; };
 		05733CE323FAAABF004197B2 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		05733CE623FC0813004197B2 /* InjectionPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectionPlaceCell.swift; sourceTree = "<group>"; };
@@ -639,8 +647,9 @@
 		0533B99223F41AF1008E13DE /* View */ = {
 			isa = PBXGroup;
 			children = (
-				0533B99723F41DB8008E13DE /* LearnByCorrectionSugarCell.swift */,
-				05A6C81823F55AEE00E27CE9 /* LearnByCorrectionHeader.swift */,
+				05664802244324570085F542 /* LearnByCorrectionView.swift */,
+				056647F924431DDF0085F542 /* SugarlevelView */,
+				056647F624431DC40085F542 /* TableView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1127,6 +1136,57 @@
 				0562D53823759CE60014A8F4 /* DummyData.swift */,
 			);
 			path = DummyData;
+			sourceTree = "<group>";
+		};
+		056647F624431DC40085F542 /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				056647F824431DD70085F542 /* Header */,
+				056647F724431DD10085F542 /* Cell */,
+			);
+			path = TableView;
+			sourceTree = "<group>";
+		};
+		056647F724431DD10085F542 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				0533B99723F41DB8008E13DE /* LearnByCorrectionSugarCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		056647F824431DD70085F542 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				05A6C81823F55AEE00E27CE9 /* LearnByCorrectionHeader.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		056647F924431DDF0085F542 /* SugarlevelView */ = {
+			isa = PBXGroup;
+			children = (
+				056647FA24431E000085F542 /* SugarLevelView.swift */,
+				056647FC24431FDB0085F542 /* RangeSlider */,
+			);
+			path = SugarlevelView;
+			sourceTree = "<group>";
+		};
+		056647FC24431FDB0085F542 /* RangeSlider */ = {
+			isa = PBXGroup;
+			children = (
+				056647FF24431FF90085F542 /* TrackLayer */,
+				056647FD24431FE70085F542 /* RangeSlider.swift */,
+			);
+			path = RangeSlider;
+			sourceTree = "<group>";
+		};
+		056647FF24431FF90085F542 /* TrackLayer */ = {
+			isa = PBXGroup;
+			children = (
+				05664800244320110085F542 /* RangeSliderTrackLayer.swift */,
+			);
+			path = TrackLayer;
 			sourceTree = "<group>";
 		};
 		05733CE223FAAAB1004197B2 /* AppState */ = {
@@ -1958,10 +2018,10 @@
 		05C1F63A23F2BC0900BECDEB /* LearnByCorrection */ = {
 			isa = PBXGroup;
 			children = (
+				05C1F63D23F2BC5300BECDEB /* LearnByCorrectionVC.swift */,
 				05A6C81A23F55CC900E27CE9 /* ViewModel */,
 				0533B99123F41AE9008E13DE /* Modal */,
 				0533B99223F41AF1008E13DE /* View */,
-				05C1F63D23F2BC5300BECDEB /* LearnByCorrectionVC.swift */,
 			);
 			path = LearnByCorrection;
 			sourceTree = "<group>";
@@ -3090,6 +3150,7 @@
 			files = (
 				05CBEBB723A22651001D9EEA /* CompObjScreenNavBar.swift in Sources */,
 				05B6E80B242B72120009F7EA /* CalendarView.swift in Sources */,
+				05664803244324570085F542 /* LearnByCorrectionView.swift in Sources */,
 				05C0C62C238D40EF001B2664 /* DinnersRealm.swift in Sources */,
 				05B1DEB5237ECD0B0015E4E6 /* MainScreenWorker.swift in Sources */,
 				F1E78CD7230D338A00592AB8 /* SettingsWorker.swift in Sources */,
@@ -3108,6 +3169,7 @@
 				05CFE0D0237EC3DD006FDC87 /* SomeConstants.swift in Sources */,
 				F1E78CB9230D334B00592AB8 /* FoodWorker.swift in Sources */,
 				05733CEA23FD48CC004197B2 /* ResultCell.swift in Sources */,
+				056647FB24431E000085F542 /* SugarLevelView.swift in Sources */,
 				05A4F1B5233A0BFE00DFE4D7 /* DinnerCollectionViewController.swift in Sources */,
 				052F05C7239E65A900A614B3 /* CompansationObject.swift in Sources */,
 				F1F358BA2321261B00E48369 /* HeaderInSectionWorker.swift in Sources */,
@@ -3151,6 +3213,7 @@
 				05D26A35236041FE00155F31 /* ProductListWorker.swift in Sources */,
 				055BE0CD2340A69C0029D298 /* ContainerDinnerViewController.swift in Sources */,
 				05A7CAED23827ECA0075D04E /* MainScreenTopView.swift in Sources */,
+				05664801244320110085F542 /* RangeSliderTrackLayer.swift in Sources */,
 				052F05C5239E4EA100A614B3 /* CompansationByInsulinCell.swift in Sources */,
 				05CBEBA523A21FD9001D9EEA /* NewCompansationObjectScreenRouter.swift in Sources */,
 				F1E78CFA230D355F00592AB8 /* UITextField+Extension.swift in Sources */,
@@ -3229,6 +3292,7 @@
 				0552E63D237EC19A00499168 /* MiddleCell.swift in Sources */,
 				055BE0D2234359680029D298 /* ForceGestureRecogniser.swift in Sources */,
 				F150DBF82317DE5100380AE0 /* MealView.swift in Sources */,
+				056647FE24431FE70085F542 /* RangeSlider.swift in Sources */,
 				F1CC2D6B232FB41F00EF7D18 /* ProductListInMealViewController.swift in Sources */,
 				F11132B4232BABF2000E6994 /* ProductListHeaderInSection.swift in Sources */,
 				F1E78CE8230D33AE00592AB8 /* StatsModels.swift in Sources */,

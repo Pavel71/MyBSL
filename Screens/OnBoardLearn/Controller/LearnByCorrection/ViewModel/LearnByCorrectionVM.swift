@@ -14,6 +14,8 @@ import UIKit
 class LearnByCorrectionVM {
   
   
+  // MARK: Validate
+  
   var isFillAllFields = false {
     
     didSet {
@@ -23,6 +25,9 @@ class LearnByCorrectionVM {
   }
   var didUpdateValidForm: ((Bool) -> Void)?
   
+  
+  // MARK: Sugar Insulin Models
+  
   var tableData: [LearnByCorrectionModal] =
   [
     LearnByCorrectionModal(sugar: 9.0, correctionInsulin: nil),
@@ -31,6 +36,12 @@ class LearnByCorrectionVM {
     LearnByCorrectionModal(sugar: 18.0, correctionInsulin: nil),
     LearnByCorrectionModal(sugar: 21.0, correctionInsulin: nil),
   ]
+  
+  // MARK: Sugar LEvel Models
+  
+  var sugarLevelVM = SugarLevelModel(
+    lowerSliderValue: 4.5,
+    higherSliderValue: 7.5)
   
   
   
@@ -51,4 +62,18 @@ class LearnByCorrectionVM {
   
   
   
+}
+
+
+  
+  
+//}
+// MARK: Work with sugarLevelVM
+
+extension LearnByCorrectionVM {
+  
+  func updateSugarLevelVM(sugarLevelModel: SugarLevelModel) {
+    sugarLevelVM.lowerSliderValue  = sugarLevelModel.lowerSliderValue
+    sugarLevelVM.higherSliderValue = sugarLevelModel.higherSliderValue
+  }
 }

@@ -15,10 +15,8 @@ protocol MainPresentationLogic {
 class MainPresenter: MainPresentationLogic {
   
   weak var viewController: MainDisplayLogic?
-  var mlWorker = MLWorker(typeWeights: .insulinByFood)
-  
+  var mlWorker = MLWorker(typeWeights: .correctCarboByInsulinWeights)
 
-  
   var mainViewModel: MainViewModel!
   
   // Мне нужно сетить данные в новый обед! Либо надо отвязатся от индекса в массиве либо делать поиск по каким то другим параметрам

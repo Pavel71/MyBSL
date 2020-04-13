@@ -409,7 +409,7 @@ extension MainViewController {
 
       dinnerValidator?.shugarBeforeValue = String(shugarBefore)
 
-      dinnerValidator?.correctionInsulin = ShugarCorrectorWorker.shared.getInsulinCorrectionByShugar(shugarValue: shugarBefore)
+//      dinnerValidator?.correctionInsulin = ShugarCorrectorWorker.shared.getInsulinCorrectionByShugar(shugarValue: shugarBefore)
    
     }
     // End Editing Shugar Before and Time

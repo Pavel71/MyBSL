@@ -43,13 +43,16 @@ extension OnBoardVM {
   
   func learnML() {
     
+    
+    // Save Sugar LEvel In User Defaults
+    saveSugarLevelInUserDefaults()
+    
     let correctionData    = fetchInsulinValueByCorrectionSugar()
     let insulinByFoodData = fetchInsulinValueByFoodData()
 
-    trainModel(traing: correctionData.train, target: correctionData.target, keyWeights: .correctionSugar)
+    trainModel(traing: correctionData.train, target: correctionData.target, keyWeights: .correctSugarByInsulinWeights)
     
-    trainModel(traing: insulinByFoodData.train, target: insulinByFoodData.target, keyWeights: .insulinByFood)
-    
+    trainModel(traing: insulinByFoodData.train, target: insulinByFoodData.target, keyWeights: .correctCarboByInsulinWeights)
     
     
 //    let correctionWeights = getWeightsByData(traing: correctionData.train, target: correctionData.target)
@@ -62,6 +65,12 @@ extension OnBoardVM {
     
   }
   
+  private func saveSugarLevelInUserDefaults() {
+    let userDefaults = UserDefaults.standard
+    userDefaults.set(learnByCorrectionVM.sugarLevelVM.sugarLowerLevel, forKey: UserDefaultsKey.lowSugarLevel.rawValue)
+    userDefaults.set(learnByCorrectionVM.sugarLevelVM.sugarHigherLevel, forKey: UserDefaultsKey.higherSugarLevel.rawValue)
+  }
+  
 //  private func saveWeightsinUserDefaults(weights:(Float,Float), key:String) {
 //    let userDefault = UserDefaults.standard
 //    
@@ -70,7 +79,7 @@ extension OnBoardVM {
   
   // Обучим модель! Когда обучим модель мы автоматом сохраним данные в UserDefaults
   
-  private func trainModel(traing: [Float],target:[Float],keyWeights: KeyWeights) {
+  private func trainModel(traing: [Float],target:[Float],keyWeights: UserDefaultsKey) {
     
     let mlWorker = MLWorker(typeWeights: keyWeights)
     
@@ -79,20 +88,25 @@ extension OnBoardVM {
     
   }
   
-//  private func getWeightsByData(traing: [Float],target:[Float]) -> (Float,Float) {
-//    mlWorker.trainModelAndSetWeights(
-//         trainData: traing, target: target
-//       )
-//     return mlWorker.getRegressionWeights()
-//  }
-  
+
   
   // MARK: Fetch Data
   
   private func fetchInsulinValueByCorrectionSugar() -> (train:[Float],target:[Float]) {
     
-    let train  = learnByCorrectionVM.tableData.map{Float($0.sugar)}
-    let target = learnByCorrectionVM.tableData.map{Float($0.correctionInsulin!)}
+    // Так теперь мы видим данные нам нужно засетить Сахар в В User Defaults
+    // потом добавить туда Веса!
+    
+
+    
+    var train  = learnByCorrectionVM.tableData.map{Float(abs($0.sugar - learnByCorrectionVM.sugarLevelVM.optimalSugarLevel))}
+    var target = learnByCorrectionVM.tableData.map{Float($0.correctionInsulin!)}
+    
+    // Обогатим данные идеальным сахаром и инмсулином на этот сахар
+    // Траин 0 - так как нет разницы с идеальным сахаром
+    train.insert(0, at: 0)
+    target.insert(0, at: 0)
+    
     return (train:train,target:target)
   }
   

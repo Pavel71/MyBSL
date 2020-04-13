@@ -25,3 +25,16 @@ enum State {
     }
   }
 }
+
+// MARK: User Defaults Enums
+
+enum UserDefaultsKey: String {
+  
+  case lowSugarLevel
+  case higherSugarLevel
+  
+  case correctSugarByInsulinWeights
+  case correctCarboByInsulinWeights
+}
+
+

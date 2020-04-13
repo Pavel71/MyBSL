@@ -39,11 +39,13 @@ class LearnByCorrectionSugarCell: UITableViewCell {
    
    
    var insulinPickerView = InsulinPickerView()
-  var passInsulinValue: ((Double) -> Void)?
+  var passInsulinTextField: ((UITextField) -> Void)?
   
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
+    insulinTextField.delegate = self
     
     setUpViews()
     
@@ -86,7 +88,7 @@ extension LearnByCorrectionSugarCell {
      insulinPickerView.passValueFromPickerView = {[weak self] value in
        self?.insulinTextField.text = "\(value)"
        // Здесь же мне нужно прокинуть данные дальше куда надо!
-      self?.passInsulinValue!(value)
+      self?.passInsulinTextField!(self!.insulinTextField)
      }
   }
 }
@@ -99,5 +101,13 @@ extension LearnByCorrectionSugarCell {
     nameLabel.text = "\(viewModel.sugar)"    
     
   }
+}
+// MARK: Text Fiedl Delegate
+extension LearnByCorrectionSugarCell: UITextFieldDelegate {
+  
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    passInsulinTextField!(textField)
+  }
+  
 }
 
