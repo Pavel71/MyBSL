@@ -10,11 +10,17 @@ import Foundation
 
 // Класс отвечает за корректировку сахара инсулином! Без Продуктов питания
 
-class ShugarCorrectorWorker {
+final class ShugarCorrectorWorker {
   
   // Эти значения будут браться из Настроек пользователя!
-  private var bottomShugarLevel: Float
-  private var higherShuagrLevel: Float
+  private var bottomShugarLevel: Float {
+    4.5 // Test
+//    UserDefaults.standard.float(forKey: UserDefaultsKey.lowSugarLevel.rawValue)
+  }
+  private var higherShuagrLevel: Float {
+    8.0 // Test
+//    UserDefaults.standard.float(forKey: UserDefaultsKey.higherSugarLevel.rawValue)
+  }
   
   var optimalSugarLevel : Double {
      Double(bottomShugarLevel + higherShuagrLevel) / 2
@@ -32,23 +38,24 @@ class ShugarCorrectorWorker {
   
   // Singleton
   
-  static let shared: ShugarCorrectorWorker = {
+  static let shared: ShugarCorrectorWorker = { ShugarCorrectorWorker()
     
     // Эти показатели будут браться из Настроек
-    let bottomLevel:Float = UserDefaults.standard.float(forKey: UserDefaultsKey.lowSugarLevel.rawValue)
-    let higherLevel:Float = UserDefaults.standard.float(forKey: UserDefaultsKey.higherSugarLevel.rawValue)
     
-    let shugarCorrectorClass = ShugarCorrectorWorker(bottomShugarLevel: bottomLevel,higherShuagrLevel:higherLevel)
+    // Пока что для тестинга я возму дефолтные значения
     
-    return shugarCorrectorClass
+//    let bottomLevel:Float = UserDefaults.standard.float(forKey: UserDefaultsKey.lowSugarLevel.rawValue)
+//    let higherLevel:Float = UserDefaults.standard.float(forKey: UserDefaultsKey.higherSugarLevel.rawValue)
+    
+    
     
   }()
   
-  init(bottomShugarLevel: Float,higherShuagrLevel: Float) {
-    self.bottomShugarLevel = bottomShugarLevel
-    self.higherShuagrLevel = higherShuagrLevel
-  }
-  
+//  init(bottomShugarLevel: Float,higherShuagrLevel: Float) {
+//    self.bottomShugarLevel = bottomShugarLevel
+//    self.higherShuagrLevel = higherShuagrLevel
+//  }
+//
 
   
   func getCorrectInsulinBySugarPosition(sugar: Float) -> CorrectInsulinPosition {

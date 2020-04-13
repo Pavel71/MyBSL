@@ -19,6 +19,7 @@ class MainDinnerProductListCell: BaseProductListCell {
   
   static let cellId = "MainDinnerProductListCell.Id"
   
+
   
   // Pickers
   
@@ -41,8 +42,6 @@ class MainDinnerProductListCell: BaseProductListCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     
-//    portionTextField.keyboardType = .numberPad
-//    insulinTextField.keyboardType = .decimalPad
     
     
     portionTextField.delegate = self
@@ -52,7 +51,10 @@ class MainDinnerProductListCell: BaseProductListCell {
     portionTextField.inputView = portionPickerView
     insulinTextField.inputView = insulinPickerView
     
+    
     portionPickerView.passValueFromPickerView = {[weak self] value in
+      
+      
       self?.portionTextField.text = "\(Int(value))"
       self?.didChangePortionFromPickerView!(self!.portionTextField)
     }
@@ -71,23 +73,10 @@ class MainDinnerProductListCell: BaseProductListCell {
   func setViewModel(viewModel: ProductListViewModelCell) {
     
     super.setViewModel(viewModel: viewModel,withInsulinTextFields: true)
-    
-//
-//    workWithPortionTextField(isPreviosDinner: isPreviosDinner)
-//    workWithActualInsulinFields(viewModel: viewModel,isPreviosDinner:isPreviosDinner)
-//    workWithCorrectInsulinFields(isNeedCorrectionInsulin:isNeedCorrectionInsulin)
 
     
   }
   
-  // MARK: Work with CorrectInsulin
-  
-  // Здесь будет идти отработка появления коррекционного текст филда
-//  private func workWithCorrectInsulinFields(isNeedCorrectionInsulin:Bool) {
-//    
-//    correctInsulinTextField.isHidden = !isNeedCorrectionInsulin
-//    
-//  }
   
   // MARK: Work with Portion TextFields
   
@@ -145,6 +134,8 @@ extension MainDinnerProductListCell: UITextFieldDelegate {
     case insulinTextField:
 
       didInsulinTextFieldEditing!(textField)
+      
+      
 //      setDefaultInsulinValue()
     case portionTextField:
 
@@ -163,4 +154,15 @@ extension MainDinnerProductListCell: UITextFieldDelegate {
     didBeginEditingTextField!(textField)
   }
   
+}
+
+// MARK: Accessuary View Signals
+
+extension MainDinnerProductListCell {
+
+  
+  @objc private func doneButtonAction() {
+    print("Done Button")
+    self.endEditing(true)
+  }
 }

@@ -68,8 +68,9 @@ extension ConvertCompObjRealmToVMWorker {
     let productRealm: [ProductListViewModel] = compObjRealm.listProduct.map(getProductListVM)
      
      let dinnerProductListVm = ProductListInDinnerViewModel(
-       resultsViewModel : resultVM,
-       productsData     : productRealm)
+       resultsViewModel         : resultVM,
+       productsData             : productRealm,
+       compansationSugarInsulin : compObjRealm.userSetInsulinToCorrectSugar.toFloat())
     
      return AddMealCellModel(
        isSwitcherIsEnabled : isSwitcherActivated,

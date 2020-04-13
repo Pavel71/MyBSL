@@ -111,8 +111,11 @@ extension OnBoardVM {
   }
   
   private func fetchInsulinValueByFoodData() -> (train:[Float],target:[Float]) {
-    let train  = learnByFoodVM.tableData.map{Float($0.carbo)}
-    let target = learnByFoodVM.tableData.map{Float($0.insulin!)}
+    var train  = learnByFoodVM.tableData.map{Float($0.carbo)}
+    var target = learnByFoodVM.tableData.map{Float($0.insulin!)}
+    // При нулевых углеводах = 0 инсулина
+    train.insert(0, at: 0)
+    target.insert(0, at: 0)
     return (train:train,target:target)
   }
   

@@ -297,7 +297,7 @@ extension MainPresenter {
  
     return ProductListInDinnerViewModel(
       resultsViewModel:     resultsViewModel,
-      productsData:         productsData
+      productsData:         productsData, compansationSugarInsulin: 0
 //      isPreviosDinner:      dinner.isPreviosDinner,
 //      isNeedCorrectInsulin: isNeedCorrectionInsulinIfActualInsulinWrong
     )

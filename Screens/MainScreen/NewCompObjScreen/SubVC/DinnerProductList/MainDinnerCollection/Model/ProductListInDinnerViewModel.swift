@@ -19,23 +19,10 @@ import UIKit
 
 struct ProductListInDinnerViewModel: ProductListViewModalable {
   
-  var resultsViewModel: ProductListResultsViewModel
-  var productsData: [ProductListViewModel]
-//  var isPreviosDinner: Bool
-//  var isNeedCorrectInsulinIfActualInsulinWrong: Bool
-  
-  init(
-    resultsViewModel:ProductListResultsViewModel,
-    productsData:[ProductListViewModel]
-//    isPreviosDinner: Bool,
-//    isNeedCorrectInsulin: Bool = false
-    
-    ) {
-    self.resultsViewModel = resultsViewModel
-    self.productsData = productsData
-//    self.isPreviosDinner = isPreviosDinner
-//    self.isNeedCorrectInsulinIfActualInsulinWrong = isNeedCorrectInsulin
-  }
+  var resultsViewModel         : ProductListResultsViewModel
+  var productsData             : [ProductListViewModel]
+  var compansationSugarInsulin : Float
+
   
 }
 

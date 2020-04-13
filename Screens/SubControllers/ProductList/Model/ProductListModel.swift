@@ -12,6 +12,7 @@ import Foundation
 protocol ProductListViewModalable {
   var resultsViewModel: ProductListResultsViewModel {get set}
   var productsData: [ProductListViewModel] {get set}
+  var compansationSugarInsulin: Float {get set}
 }
 
 

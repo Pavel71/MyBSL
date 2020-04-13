@@ -12,7 +12,7 @@ protocol NewCompansationObjectScreenPresentationLogic {
   func presentData(response: NewCompansationObjectScreen.Model.Response.ResponseType)
 }
 
-class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPresentationLogic {
+final class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPresentationLogic {
   
   weak var viewController: NewCompansationObjectScreenDisplayLogic?
   
@@ -159,15 +159,18 @@ extension NewCompansationObjectScreenPresenter {
     
     // Все таки думаю что лучше считать корректировку по сахару для всех
     
-    if sugar.isEmpty == false {
+    if sugar.isEmpty == false,let currentSugar = viewModel.sugarCellVM.currentSugar {
       
       
-      let test = ShugarCorrectorWorker.shared.getSugasrTrainData(currentSugar: viewModel.sugarCellVM.currentSugar!.toDouble())
+      let test = ShugarCorrectorWorker.shared.getSugasrTrainData(currentSugar: currentSugar.toDouble())
+      print("Sugar Comming",currentSugar)
+      print(test,"Sugar Test Data")
 
       
       let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [test])
       guard let firstPred = predictSugarCompansation.first else {return}
       viewModel.sugarCellVM.correctionSugarKoeff = firstPred
+      viewModel.addMealCellVM.dinnerProductListVM.compansationSugarInsulin = firstPred
     }
     
     
@@ -519,7 +522,7 @@ extension NewCompansationObjectScreenPresenter {
     
     let dinnerProductList = ProductListInDinnerViewModel(
       resultsViewModel: resultBalnk,
-      productsData: [])
+      productsData: [], compansationSugarInsulin: 0)
     
     return AddMealCellModel(cellState           : .defaultState,
                             dinnerProductListVM : dinnerProductList)

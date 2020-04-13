@@ -11,6 +11,47 @@ import UIKit
 
 class ProductListInDinnerViewController: BaseProductList {
   
+  
+  
+  // ToolBar
+  
+  var insulinTitleLabel: UILabel = {
+    let l = UILabel()
+    l.text = "Всего инсулина:"
+    
+    return l
+  }()
+  
+  var insulinLabel: UILabel = {
+    let l  = UILabel()
+    l.text = ""
+
+    return l
+  }()
+  
+  var sugarCompansationInsulin: Float = 0
+  
+  // Try To Set Acsessuary View
+  
+  lazy var insulinLabelToolBar: UIToolbar = {
+    
+    let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: Constants.KeyBoard.doneToolBarHeight))
+    doneToolbar.barStyle = .default
+    
+    let insulinTL = UIBarButtonItem(customView: insulinTitleLabel)
+    let insulinValueLabel = UIBarButtonItem(customView: insulinLabel)
+    
+    let flexSpaceLeft = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    let flexSpaceRight = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    let done: UIBarButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(doneButtonAction))
+    
+    let items = [insulinTL,flexSpaceLeft,insulinValueLabel,flexSpaceRight, done]
+    doneToolbar.items = items
+    doneToolbar.sizeToFit()
+    
+    return doneToolbar
+  }()
+  
 
   var viewModel: ProductListInDinnerViewModel! {
     
@@ -33,9 +74,14 @@ class ProductListInDinnerViewController: BaseProductList {
     }
   }
   
+  // ML Worker For Fast Predict Insulin By Carbo
+  private var mlWorkerByFood  = MLWorker(typeWeights: .correctCarboByInsulinWeights)
+  
   // Clousers
   var didSelectTextFieldCellClouser: TextFieldPassClouser?
   var didDeleteProductClouser:(([ProductRealm]) -> Void)?
+  
+  
   
   
   
@@ -59,20 +105,6 @@ class ProductListInDinnerViewController: BaseProductList {
   }
   
   
-  // MARK: AddNewProduct
-  
-//  func addNewProduct(products: [ProductRealm]) {
-//    
-//    tableViewData.append(contentsOf: products.map(getProductListViewModelFromProductReal))
-//
-//    tableView.reloadData()
-//    
-//  }
-//  
-//  private func getProductListViewModelFromProductReal(product: ProductRealm) -> ProductListViewModel {
-//    let productListViewModel = ProductListViewModel(insulinValue: product.actualInsulin, isFavorit: product.isFavorits, carboIn100Grm: product.carboIn100grm, category: product.category, name: product.name, portion: product.portion)
-//    return productListViewModel
-//  }
 
 
   
@@ -94,13 +126,22 @@ extension ProductListInDinnerViewController {
   
   func setViewModel(viewModel: ProductListInDinnerViewModel) {
     
+    
+    
     tableView.tableHeaderView = viewModel.productsData.count == 0 ? headerView : nil
     
     self.viewModel = viewModel
+    self.sugarCompansationInsulin = viewModel.compansationSugarInsulin
+    
     setResultViewModel(resultViewModel:viewModel.resultsViewModel)
     
-    // Отключаем работу таблицы если предыдущий обед
-//    tableView.isUserInteractionEnabled = !viewModel.isPreviosDinner
+    let sumCarboInsulin = self.viewModel.resultsViewModel.sumInsulinFloat.roundToDecimal(2)
+    let sugarInsulin = self.sugarCompansationInsulin.roundToDecimal(2)
+    
+    let allInsulin = sumCarboInsulin + sugarInsulin
+    self.updateInsulinLabelInToolBar(insulinValue: allInsulin)
+    
+    
   }
   
   private func setResultViewModel(resultViewModel:ProductListResultViewModelable ) {
@@ -111,6 +152,24 @@ extension ProductListInDinnerViewController {
     
   }
 }
+
+// MARK: Signals
+
+extension ProductListInDinnerViewController {
+  
+  @objc private func doneButtonAction() {
+    self.view.endEditing(true)
+  }
+  
+  func setAllInsulinLabelValue(allInsulin: Float) {
+    insulinLabel.text = "\(allInsulin)"
+    insulinLabel.sizeToFit()
+    
+  }
+  
+}
+
+
 
 
 // MARK: TableView Delegate Datasource
@@ -126,12 +185,12 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     
     let cell = tableView.dequeueReusableCell(withIdentifier: MainDinnerProductListCell.cellId, for: indexPath) as! MainDinnerProductListCell
     
+    cell.insulinTextField.inputAccessoryView = insulinLabelToolBar
+    cell.portionTextField.inputAccessoryView = insulinLabelToolBar
     
     cell.setViewModel(
       viewModel: tableViewData[indexPath.row],
       withInsulinTextFields: true
-//      isPreviosDinner: viewModel.isPreviosDinner,
-//      isNeedCorrectionInsulin: viewModel.isNeedCorrectInsulinIfActualInsulinWrong
     )
     
     setCellClousers(cell: cell)
@@ -142,7 +201,10 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
   private func setCellClousers(cell:MainDinnerProductListCell) {
     
     cell.didBeginEditingTextField = {[weak self] textField in
-      self?.textFieldDidBeginEditing(textField) // SuperClass
+      self?.textFieldDidBeginEditing(textField) // Pass Signal to SuperClass
+      
+      // Здесь нужно запустить метод который посчитает значение insulinLabel
+      
     }
     
     // PortionTextField Delegate
@@ -197,39 +259,66 @@ extension ProductListInDinnerViewController: UITextFieldDelegate {
     
     guard let (portion,indexPath) = getValueAndRowTextField(textField: textField) else {return}
     let cell = tableView.cellForRow(at: indexPath) as! MainDinnerProductListCell
-
     
+    tableViewData[indexPath.row].portion = Int(portion)
+    let carboInPortion = tableViewData[indexPath.row].carboInPortion
+
     // Подумать как приукрасит
     let sumPortion = CalculateValueTextField.calculateSumPortion(portion: Int(portion),indexPath:indexPath, tableViewData: &tableViewData)
     
-    cell.carboInPortionLabel.text = String(tableViewData[indexPath.row].carboInPortion)
+    cell.carboInPortionLabel.text = String(carboInPortion)
 
     let sumCarbo = CalculateValueTextField.calculateSumCarbo(indexPath: indexPath, tableViewData: &tableViewData)
     
     footerView.resultsView.portionResultLabel.text = String(sumPortion)
     footerView.resultsView.carboResultLabel.text = String(sumCarbo)
+    
+    // Set insulin To Visual
 
     
-//    didPortionTextFieldChangetToDinnerController!(Int(portion),row)
+    guard let insulin  = getPredictInsulinByCarbo(carbo: Float(carboInPortion)) else {return}
+    cell.insulinTextField.text = "\(insulin)"
+    let sum = CalculateValueTextField.calculateSumInsulin(insulin: insulin, indexPath: indexPath, tableViewData: &tableViewData)
+    footerView.resultsView.insulinResultLabel.text = "\(floatTwo: sum)"
+    
+    let allInsulin = sum.roundToDecimal(2) + sugarCompansationInsulin.roundToDecimal(2)
+    updateInsulinLabelInToolBar(insulinValue: allInsulin)
 
+
+  }
+  
+  private func updateInsulinLabelInToolBar(insulinValue: Float) {
+    insulinLabel.text = "\(insulinValue)"
+    insulinLabel.sizeToFit()
+  }
+  
+  
+  
+  private func getPredictInsulinByCarbo(carbo: Float) -> Float? {
+     let insulinByCarbo = mlWorkerByFood.getPredict(testData: [Float(carbo)])
+    
+    return insulinByCarbo.first?.roundToDecimal(2)
   }
   
   // MARK: DidChange InsulinFiedl
   @objc private func didChangeInsulinTextField(textField: UITextField) {
-    
-//    guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return}
-//    guard let text = textField.text else {return}
-//
-//    let insulin = (text as NSString).floatValue
+
     
     guard let (insulin,indexPath) = getValueAndRowTextField(textField: textField) else {return}
+    let cell = tableView.cellForRow(at: indexPath) as! MainDinnerProductListCell
+    cell.insulinTextField.text = "\(insulin)"
     
     let sum = CalculateValueTextField.calculateSumInsulin(insulin: insulin, indexPath: indexPath, tableViewData: &tableViewData)
     footerView.resultsView.insulinResultLabel.text = "\(floatTwo: sum)"
     
-//    didInsulinTextFieldChangetToDinnerController!(insulin,row)
+    let allInsulin = sum.roundToDecimal(2) + sugarCompansationInsulin.roundToDecimal(2)
+    updateInsulinLabelInToolBar(insulinValue: allInsulin)
+
 
   }
+  
+  
+  
   
   private func getValueAndRowTextField(textField: UITextField) ->(Float,IndexPath)? {
     

@@ -21,7 +21,7 @@ class DummyData {
      
      let productListViewController1 = ProductListInDinnerViewModel(
       resultsViewModel: result,
-      productsData: [])
+      productsData: [], compansationSugarInsulin: 0)
      
      let dinner1 = DinnerViewModel(
       compansationFase: .progress,

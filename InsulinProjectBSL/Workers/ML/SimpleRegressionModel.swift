@@ -23,7 +23,7 @@ class SimpleRegresiionModel {
   // New (0.081395335, 0.2558142)
   // Old (0.060631208), (0.17524958)
   
-  private var testInsulinByCorrectionSugarWeights: (Float,Float) = (0.14666663, -0.223333)
+  private var testInsulinByCorrectionSugarWeights: (Float,Float) = (0.13607857, -0.10890615)
   
   // Newer 0.13607857, -0.10890615
   // New (0.14666663, -0.223333)
@@ -51,15 +51,19 @@ class SimpleRegresiionModel {
     get {
       // Так тут будет сделанна подгрузка из Юзер дефолтса
       
-      let weightsArr = getWeightsFromUD(userDefKey: typeWeights)
-      print(weightsArr,"Get Weights")
-      return (weightsArr[0],weightsArr[1])
+      // For Production Period
       
-//      if typeWeights == .correctCarboByInsulinWeights {
-//        return testInsulinByFoodWeights
-//      } else {
-//        return testInsulinByCorrectionSugarWeights
-//      }
+//      let weightsArr = getWeightsFromUD(userDefKey: typeWeights)
+//      print(weightsArr,"Get Weights")
+//      return (weightsArr[0],weightsArr[1])
+      
+      // For Testing Period
+      
+      if typeWeights == .correctCarboByInsulinWeights {
+        return testInsulinByFoodWeights
+      } else {
+        return testInsulinByCorrectionSugarWeights
+      }
       
 //      switch typeWeights {
 //
@@ -112,9 +116,9 @@ extension SimpleRegresiionModel {
 extension SimpleRegresiionModel {
   
   func trainModelAndSetNewWeights(train:[Float],target:[Float]){
-     
-     weights = try! linearModel.train(train, output: target)
     
+    weights = linearModel.train(train, output: target)
+
     // Посмотреть на ошибку!
     let rss = linearModel.RSS(train, output: target, slope: weights.0, intercept: weights.1)
     print("Rss",rss)
