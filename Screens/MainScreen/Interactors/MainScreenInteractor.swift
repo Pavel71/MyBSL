@@ -61,10 +61,7 @@ extension MainScreenInteractor {
     case .addCompIdAndSugarIdinDay(let compObjId,let sugarId):
       
       newDayRealmManager.addNewCompObjId(compObjId: compObjId)
-      
-      
-      
-      
+
       newDayRealmManager.addNewSugarId(sugarId: sugarId)
       
       passDayRealmToConvertInVMInPresenter()

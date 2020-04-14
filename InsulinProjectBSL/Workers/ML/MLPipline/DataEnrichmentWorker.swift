@@ -25,6 +25,7 @@ class DataEnrichmentWorker {
     static let shared: DataEnrichmentWorker = {DataEnrichmentWorker()}()
     
     var sugarCorrectWorker = ShugarCorrectorWorker.shared
+    var compObjRealmManager = CompObjRealmManager.shared
 
     
     func prepareCompObj(compObj: CompansationObjectRelam)  {
@@ -46,10 +47,7 @@ class DataEnrichmentWorker {
         
         print("Meal Obj")
       }
-      
 
-
-      
       
     }
     
@@ -142,7 +140,7 @@ extension  DataEnrichmentWorker {
       correctInsulin : Double,
       compPosition   : CompansationPosition) {
       
-      CompObjRealmManager.shared.writeCorrectSugarInsuilin(
+      compObjRealmManager.writeCorrectSugarInsuilin(
         compObj              : compObj,
         correctSugarMl       : correctInsulin,
       changeTypeCompPosition : compPosition)
@@ -211,7 +209,7 @@ extension  DataEnrichmentWorker {
         let sugarError = Float(compObj.sugarAfter - sugarCorrectWorker.optimalSugarLevel)
         let shouldHaveDoneInsulinOnMeal = meanInsulinByCarbo * sugarError
         
-        CompObjRealmManager.shared.writeInsulinOnCarboInProducts(
+        compObjRealmManager.writeInsulinOnCarboInProducts(
           compObj            : compObj,
           correctKoeficient  : shouldHaveDoneInsulinOnMeal,
           isPlus: true)
@@ -222,7 +220,7 @@ extension  DataEnrichmentWorker {
         let sugarError = Float(sugarCorrectWorker.optimalSugarLevel - compObj.sugarAfter)
         let shouldHaveDoneInsulinOnMeal = meanInsulinByCarbo * sugarError
         
-        CompObjRealmManager.shared.writeInsulinOnCarboInProducts(
+        compObjRealmManager.writeInsulinOnCarboInProducts(
         compObj            : compObj,
         correctKoeficient  : shouldHaveDoneInsulinOnMeal,
         isPlus             : false)

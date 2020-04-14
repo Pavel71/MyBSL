@@ -15,8 +15,15 @@ extension Array {
     return (self[0],self[1])
   }
   
-
   
+  
+}
+
+extension Array where Element: AdditiveArithmetic {
+  
+  mutating func setZeroValue() {
+    self.insert(Element.zero, at: 0)
+  }
 }
 
 extension Sequence where Element: AdditiveArithmetic {

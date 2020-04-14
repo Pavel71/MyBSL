@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 //    initDinners()
     
-    initDaysRealm()
+//    initDaysRealm()
     
     root()
     
@@ -98,23 +98,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     appStateService.mainWindow?.makeKeyAndVisible()
     
     
-//    appStateService.secondWindow = UIWindow(frame: UIScreen.main.bounds)
-//    
-//    let onBoardController = UINavigationController(rootViewController: OnBoardViewController(transitionStyle: .scroll, navigationOrientation: .horizontal))
-//    
-//    appStateService.secondWindow?.rootViewController = onBoardController
-//    
-////     Это сделаю при запуске приложения первый раз!
-//    appStateService.secondWindow?.makeKeyAndVisible()
+    appStateService.secondWindow = UIWindow(frame: UIScreen.main.bounds)
     
+    let onBoardController = UINavigationController(rootViewController: OnBoardViewController(transitionStyle: .scroll, navigationOrientation: .horizontal))
     
+    appStateService.secondWindow?.rootViewController = onBoardController
     
-//    window = UIWindow(frame: UIScreen.main.bounds)
-//    window?.makeKeyAndVisible()
-//
-//    let tabBarController = BaseTabBarController()
-//
-//    window?.rootViewController = tabBarController
+//     Это сделаю при запуске приложения первый раз!
+    appStateService.secondWindow?.makeKeyAndVisible()
+    
     
   }
   

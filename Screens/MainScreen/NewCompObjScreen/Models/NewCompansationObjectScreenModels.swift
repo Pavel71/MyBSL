@@ -52,6 +52,9 @@ enum NewCompansationObjectScreen {
         
         case updateSugarRealmAndCompObjSucsess
         case passCompObjIdAndSugarRealmIdToVC(compObjId: String,sugarRealmId: String)
+        
+        
+        case learnMlForNewData
       }
     }
     struct ViewModel {

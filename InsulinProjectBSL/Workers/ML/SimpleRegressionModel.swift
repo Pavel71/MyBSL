@@ -53,17 +53,17 @@ class SimpleRegresiionModel {
       
       // For Production Period
       
-//      let weightsArr = getWeightsFromUD(userDefKey: typeWeights)
-//      print(weightsArr,"Get Weights")
-//      return (weightsArr[0],weightsArr[1])
+      let weightsArr = getWeightsFromUD(userDefKey: typeWeights)
+      print(weightsArr,"Get Weights")
+      return (weightsArr[0],weightsArr[1])
       
       // For Testing Period
       
-      if typeWeights == .correctCarboByInsulinWeights {
-        return testInsulinByFoodWeights
-      } else {
-        return testInsulinByCorrectionSugarWeights
-      }
+//      if typeWeights == .correctCarboByInsulinWeights {
+//        return testInsulinByFoodWeights
+//      } else {
+//        return testInsulinByCorrectionSugarWeights
+//      }
       
 //      switch typeWeights {
 //

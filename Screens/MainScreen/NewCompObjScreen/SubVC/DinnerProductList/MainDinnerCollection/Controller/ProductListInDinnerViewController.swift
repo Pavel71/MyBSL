@@ -288,7 +288,7 @@ extension ProductListInDinnerViewController: UITextFieldDelegate {
   }
   
   private func updateInsulinLabelInToolBar(insulinValue: Float) {
-    insulinLabel.text = "\(insulinValue)"
+    insulinLabel.text = "\(floatTwo: insulinValue)"
     insulinLabel.sizeToFit()
   }
   

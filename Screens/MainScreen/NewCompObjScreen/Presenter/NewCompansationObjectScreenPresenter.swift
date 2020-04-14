@@ -24,13 +24,19 @@ final class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPre
   private var viewModel: NewCompObjViewModel!
   private var saveButtonValidator  = SaveButtonValidator()
   
+  private var sugarCorrectorWorker = ShugarCorrectorWorker.shared
+  
+  
   private var mlWorkerByCorrection = MLWorker(typeWeights: .correctSugarByInsulinWeights)
   private var mlWorkerByFood       = MLWorker(typeWeights: .correctCarboByInsulinWeights)
   
   func presentData(response: NewCompansationObjectScreen.Model.Response.ResponseType) {
     
+    
+    workWithMachinLearning(response: response)
     catchViewModelResponse(response: response)
     workWithProductListRequest(response: response)
+    
   }
   
   
@@ -39,6 +45,17 @@ final class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPre
 
 // MARK: Catch View Model Requests
 extension NewCompansationObjectScreenPresenter {
+  
+  private func workWithMachinLearning(response: NewCompansationObjectScreen.Model.Response.ResponseType) {
+    
+
+    
+    switch response {
+    case .learnMlForNewData:
+      mlWorkerStartWoring()
+    default:break
+    }
+  }
   
   
   private func catchViewModelResponse(response: NewCompansationObjectScreen.Model.Response.ResponseType) {
@@ -162,26 +179,15 @@ extension NewCompansationObjectScreenPresenter {
     if sugar.isEmpty == false,let currentSugar = viewModel.sugarCellVM.currentSugar {
       
       
-      let test = ShugarCorrectorWorker.shared.getSugasrTrainData(currentSugar: currentSugar.toDouble())
-      print("Sugar Comming",currentSugar)
-      print(test,"Sugar Test Data")
-
-      
+      let test = sugarCorrectorWorker.getSugasrTrainData(currentSugar: currentSugar.toDouble())
       let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [test])
       guard let firstPred = predictSugarCompansation.first else {return}
-      viewModel.sugarCellVM.correctionSugarKoeff = firstPred
-      viewModel.addMealCellVM.dinnerProductListVM.compansationSugarInsulin = firstPred
+      // Тут нужно понимать что надо присвоить знак компенсации либо минус либо +
+      let signCompansation:Float = currentSugar < sugarCorrectorWorker.optimalSugarLevel.toFloat() ? -1.0 : 1.0
+      
+      viewModel.sugarCellVM.correctionSugarKoeff = firstPred * signCompansation
+      viewModel.addMealCellVM.dinnerProductListVM.compansationSugarInsulin = firstPred * signCompansation
     }
-    
-    
-    
-//    if viewModel.sugarCellVM.cellState == .currentLayerAndCorrectionLayer {
-//
-//      let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [Float(viewModel.sugarCellVM.currentSugar!)])
-//
-//      viewModel.sugarCellVM.correctionSugarKoeff = predictSugarCompansation.first!
-//    }
-    
     
     checkSaveButton()
 
@@ -303,6 +309,7 @@ extension NewCompansationObjectScreenPresenter {
   }
   
   private func getPredictUnsulinByProduct(index: Int) {
+    
      let testData = viewModel.addMealCellVM.dinnerProductListVM.productsData[index].carboInPortion
       let predictInsulin = mlWorkerByFood.getPredict(testData: [Float(testData)])
      
@@ -331,7 +338,7 @@ extension NewCompansationObjectScreenPresenter {
       viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel = resultViewModel
       
       // Каждый раз я также буду пересчитывать долю продукта по углеводам в обеде
-      let totalCarboInMeal = resultViewModel.sumCarboFloat.toDouble()
+//      let totalCarboInMeal = resultViewModel.sumCarboFloat.toDouble()
       
       
 //      // MARK: To Do here
@@ -363,7 +370,7 @@ extension NewCompansationObjectScreenPresenter {
      saveButtonValidator.isMealSwitcherEnabled = viewModel.addMealCellVM.cellState == .productListState
      
      if let sugarFloat = viewModel.sugarCellVM.currentSugar {
-       saveButtonValidator.sugarCorrection = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat)
+       saveButtonValidator.sugarCorrection = sugarCorrectorWorker.getWayCorrectPosition(sugar: sugarFloat)
      }
      
      updateEnabledSaveButton(isEnabled: saveButtonValidator.isValid)
@@ -537,6 +544,50 @@ extension NewCompansationObjectScreenPresenter {
   
   
   
+}
+
+
+ // MARK:  ML Worker start Working
+
+extension NewCompansationObjectScreenPresenter {
+  
+ 
+  
+  
+  private func mlWorkerStartWoring() {
+    // Сначало подготовим предыдущий обед и обогатим данными его
+    preparingCompObjToLearnToML()
+    // Теперь мы готовы брать данные и переобучать модель - Получать обновленные веса
+    
+    learnByNewData()
+  }
+  
+  private func preparingCompObjToLearnToML() {
+    let compRealmManager = CompObjRealmManager.shared
+    guard let compObjToLearnInMl = compRealmManager.fetchSecondOnTheEndCompObj() else {return}
+    
+    DataEnrichmentWorker.shared.prepareCompObj(compObj: compObjToLearnInMl)
+  }
+  
+  private func learnByNewData() {
+    
+    let compRealmManager = CompObjRealmManager.shared
+    
+    let sugarTrainData  = compRealmManager.fetchTrainSugar()
+    let sugarTargetData = compRealmManager.fetchTargetSugar()
+    
+    // Learn and Set New Weights
+    mlWorkerByCorrection.trainModelAndSetWeights(trainData: sugarTrainData, target: sugarTargetData)
+    
+    // Нужно прокинуть эти данные в презентер или получить их из презентера
+    
+    let carboTrainData  = compRealmManager.fetchTrainCarbo()
+    let carboTargetData = compRealmManager.fetchTargetCarbo()
+    
+    // Learn and Set new Weights
+    mlWorkerByFood.trainModelAndSetWeights(trainData: carboTrainData, target: carboTargetData)
+    
+  }
 }
 
 

@@ -19,8 +19,11 @@ class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusiness
   var updateCompObj: CompansationObjectRelam!
   
   
+  // For Work with Realm
   
-  
+  var compRealmManager  = CompObjRealmManager.shared
+  var sugarRealmManager = SugarRealmManager.shared
+
   func makeRequest(request: NewCompansationObjectScreen.Model.Request.RequestType) {
     
     
@@ -81,14 +84,21 @@ extension NewCompansationObjectScreenInteractor {
 
       } else {
         // Создаем новые объекте
-        print("Add New Obj")
         let compObj    = convertViewModelToCompObjRealm(viewModel: viewModel)
         let sugarRealm = convertModelToSugarRealm(compObj: compObj)
         saveCompObjToRealm(compObj  : compObj)
         saveSugarToRealm(sugarRealm : sugarRealm)
         
         // MARK: Start Ml Learning
-        preparingCompObjToLearnToML()
+        // Пусть эта работа идет в Асинхронном потоке! Так как мы взаимодействуем с Реалмом то можем взять только main.async
+        DispatchQueue.main.async {
+          // Метод запускающий обучение по данным
+          
+          self.presenter?.presentData(response: .learnMlForNewData)
+          
+        }
+        
+        
         
         presenter?.presentData(response: .passCompObjIdAndSugarRealmIdToVC(compObjId: compObj.id, sugarRealmId: sugarRealm.id))
         
@@ -101,23 +111,18 @@ extension NewCompansationObjectScreenInteractor {
     
   }
   
-  // MARK: Preparing CompObj To ML Worker
   
-  private func preparingCompObjToLearnToML() {
-    
-    guard let compObjToLearnInMl = CompObjRealmManager.shared.fetchSecondOnTheEndCompObj() else {return}
-    
-    DataEnrichmentWorker.shared.prepareCompObj(compObj: compObjToLearnInMl)
-  }
+  
+  
   
   // MARK: Save Data to Realm
   private func saveCompObjToRealm(compObj: CompansationObjectRelam) {
 
-    CompObjRealmManager.shared.addOrUpdateNewCompObj(compObj: compObj)
+    compRealmManager.addOrUpdateNewCompObj(compObj: compObj)
   }
   
   private func saveSugarToRealm(sugarRealm: SugarRealm) {
-    SugarRealmManager.shared.addOrUpdateNewSugarRealm(sugarRealm: sugarRealm)
+    sugarRealmManager.addOrUpdateNewSugarRealm(sugarRealm: sugarRealm)
   }
   
   
@@ -196,35 +201,16 @@ extension NewCompansationObjectScreenInteractor {
   }
   
   private func updatingCompObj(viewModel: NewCompObjViewModel) {
-    
-//    let sugarBefore  = Double(viewModel.sugarCellVM.currentSugar!).roundToDecimal(2)
-//    let typeObject   = viewModel.resultFooterVM.typeCompansationObject
-//    //    let totalInsulin = Double(viewModel.resultFooterVM.totalInsulin).roundToDecimal(2)
-//    let insulinCarbo = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumInsulinFloat).roundToDecimal(2)
-//    let insulinCorrect = Double(viewModel.sugarCellVM.correctionSugarKoeff ?? 0).roundToDecimal(2)
-//    let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
-//    let placeInjections = viewModel.injectionCellVM.titlePlace
-//    let productsVM = viewModel.addMealCellVM.dinnerProductListVM.productsData
-//    let productsRealm = productsVM.map(converToProductRealm)
-//
-//    let transportTuple:TransportTuple = (
-//                          sugarBefore     : sugarBefore,
-//                          typeObjectEnum  : typeObject,
-//                          insulinCarbo    : insulinCarbo,
-//                          insulinCorrect  : insulinCorrect,
-//                          totalCarbo      : totalCarbo,
-//                          placeInjections : placeInjections,
-//                          productsRealm   : productsRealm)
-    
+
     let transportTuple = getTransportTuple(viewModel: viewModel)
     
    
-    CompObjRealmManager.shared.updateCompObj(
+    compRealmManager.updateCompObj(
       transportTuple : transportTuple,
       compObjId      : updateCompObj.id)
     
     // После обновления и записи в реамл я получу обновленный объект
-    updateCompObj = CompObjRealmManager.shared.fetchCompObjByPrimeryKey(compObjPrimaryKey: updateCompObj.id)
+    updateCompObj = compRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: updateCompObj.id)
   }
   
 }
@@ -238,23 +224,9 @@ extension NewCompansationObjectScreenInteractor {
   
   private func convertViewModelToCompObjRealm(viewModel: NewCompObjViewModel) -> CompansationObjectRelam {
 
-//    let sugarBefore  = Double(viewModel.sugarCellVM.currentSugar!).roundToDecimal(2)
-//    let typeObject   = viewModel.resultFooterVM.typeCompansationObject
-//    //    let totalInsulin = Double(viewModel.resultFooterVM.totalInsulin).roundToDecimal(2)
-//    let insulinCarbo = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumInsulinFloat).roundToDecimal(2)
-//    let insulinCorrect = Double(viewModel.sugarCellVM.correctionSugarKoeff ?? 0).roundToDecimal(2)
-//    let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
-//    let placeInjections = viewModel.injectionCellVM.titlePlace
     
     let transportTuple = getTransportTuple(viewModel: viewModel)
     
-//    let compansationObjectRealm = CompansationObjectRelam(
-//      typeObject               : transportTuple,
-//      sugarBefore              : sugarBefore,
-//      insulinOnTotalCarbo      : insulinCarbo,
-//      insulinInCorrectionSugar : insulinCorrect,
-//      totalCarbo               : totalCarbo,
-//      placeInjections          : placeInjections)
     
     let compansationObjectRealm = CompansationObjectRelam(
       typeObject                  : transportTuple.typeObjectEnum,
@@ -263,12 +235,7 @@ extension NewCompansationObjectScreenInteractor {
       insulinInCorrectionSugar    : transportTuple.insulinCorrect,
       totalCarbo                  : transportTuple.totalCarbo,
       placeInjections             : transportTuple.placeInjections)
-    
-    
-    
-    
-    // тут мне теперь нужна трансформация realmProduct
-//    let productsVM = viewModel.addMealCellVM.dinnerProductListVM.productsData
+
     
     compansationObjectRealm.listProduct.append(objectsIn: transportTuple.productsRealm)
     
@@ -335,6 +302,8 @@ extension NewCompansationObjectScreenInteractor {
   
   
 }
+
+
 
 
 
