@@ -33,8 +33,16 @@ enum UserDefaultsKey: String {
   case lowSugarLevel
   case higherSugarLevel
   
-  case correctSugarByInsulinWeights
-  case correctCarboByInsulinWeights
+  case correctSugarByInsulinWeights  // Weights
+  case correctCarboByInsulinWeights  // Weights
+  
+  
+  case sugarCorrectTrainBaseData
+  case sugarCorrectTargetBaseData
+  
+  case carboCorrectTrainBaseData
+  case carboCorrectTargetBaseData
+  
 }
 
 

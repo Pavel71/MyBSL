@@ -1,4 +1,4 @@
-framework module Pods_InsulinProjectBSL {
+module Pods_InsulinProjectBSL {
   umbrella header "Pods-InsulinProjectBSL-umbrella.h"
 
   export *

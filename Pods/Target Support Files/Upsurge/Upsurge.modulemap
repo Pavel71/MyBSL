@@ -1,4 +1,4 @@
-framework module Upsurge {
+module Upsurge {
   umbrella header "Upsurge-umbrella.h"
 
   export *

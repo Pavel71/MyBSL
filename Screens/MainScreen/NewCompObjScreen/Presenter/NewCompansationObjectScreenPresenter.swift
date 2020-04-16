@@ -571,18 +571,49 @@ extension NewCompansationObjectScreenPresenter {
   
   private func learnByNewData() {
     
-    let compRealmManager = CompObjRealmManager.shared
+    // Тут нужна проверка на то что у нас должно быть больше 1 ого объекта в базе!
+    // Больше 1ого с продууктами и больше 1ого с
     
-    let sugarTrainData  = compRealmManager.fetchTrainSugar()
-    let sugarTargetData = compRealmManager.fetchTargetSugar()
+    let compRealmManager = CompObjRealmManager.shared
+    // делаем проверку что у нас есть хотя бы 1 обед! Я вот думаю если прибавлять это к тренингу
+    // Как только у нас объектов Больше 4 мы можем начинать обновлять веса!
+//    guard compRealmManager.isDBHaveEnothObjectToLearn() else {return}
+    let userDefaults = UserDefaults.standard
+    
+    let baseSugarTrain :[Float] = userDefaults.array(forKey: UserDefaultsKey.sugarCorrectTrainBaseData.rawValue) as! [Float]
+    let baseSugarTarget:[Float] = userDefaults.array(forKey: UserDefaultsKey.sugarCorrectTargetBaseData.rawValue) as! [Float]
+    
+    let baseCarboTrain :[Float] = userDefaults.array(forKey: UserDefaultsKey.carboCorrectTrainBaseData.rawValue) as! [Float]
+    let baseCarboTarget:[Float] = userDefaults.array(forKey: UserDefaultsKey.carboCorrectTargetBaseData.rawValue) as! [Float]
+    
+
+    print("Base Carbo",baseCarboTrain,baseCarboTarget)
+    print("Base Sugar Correct",baseSugarTrain,baseSugarTarget)
+    
+    print("Пошло обучение Модели")
+    
+    var sugarTrainData  = compRealmManager.fetchTrainSugar()
+    sugarTrainData.append(contentsOf: baseSugarTrain)
+    
+    var sugarTargetData = compRealmManager.fetchTargetSugar()
+    sugarTargetData.append(contentsOf: baseSugarTarget)
+    
+    print(sugarTrainData,"Sugar Train Data")
+    print(sugarTargetData, "sugarTargetData")
     
     // Learn and Set New Weights
     mlWorkerByCorrection.trainModelAndSetWeights(trainData: sugarTrainData, target: sugarTargetData)
     
     // Нужно прокинуть эти данные в презентер или получить их из презентера
     
-    let carboTrainData  = compRealmManager.fetchTrainCarbo()
-    let carboTargetData = compRealmManager.fetchTargetCarbo()
+    var carboTrainData  = compRealmManager.fetchTrainCarbo()
+    print(carboTrainData,"carboTrainData")
+    carboTrainData.append(contentsOf: baseCarboTrain)
+    var carboTargetData = compRealmManager.fetchTargetCarbo()
+    print(carboTargetData,"carboTargetData")
+    carboTargetData.append(contentsOf: baseCarboTarget)
+    
+    
     
     // Learn and Set new Weights
     mlWorkerByFood.trainModelAndSetWeights(trainData: carboTrainData, target: carboTargetData)

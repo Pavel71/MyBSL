@@ -54,7 +54,7 @@ class SimpleRegresiionModel {
       // For Production Period
       
       let weightsArr = getWeightsFromUD(userDefKey: typeWeights)
-      print(weightsArr,"Get Weights")
+      print(weightsArr,"Get Weights",typeWeights.rawValue)
       return (weightsArr[0],weightsArr[1])
       
       // For Testing Period
@@ -121,7 +121,7 @@ extension SimpleRegresiionModel {
 
     // Посмотреть на ошибку!
     let rss = linearModel.RSS(train, output: target, slope: weights.0, intercept: weights.1)
-    print("Rss",rss)
+    print("Rss",rss,typeWeights)
     
     
      

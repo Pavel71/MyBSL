@@ -28,6 +28,20 @@ final class CompObjRealmManager {
   
 }
 
+// MARK: IS Methods
+
+extension CompObjRealmManager {
+  
+  func isDBHaveEnothObjectToLearn() -> Bool {
+    
+    // вообще это достаточно коряво! все таки!
+    
+    let typeObject = TypeCompansationObject.mealObject.rawValue
+    let comCarboObjs = fetchAllCompObj().filter("(typeObject == %@)",typeObject)
+    return comCarboObjs.count > 4
+  }
+}
+
 
 // MARK: Fetch CompansationObjectRelam From Realm
 extension CompObjRealmManager {
@@ -407,9 +421,9 @@ extension CompObjRealmManager {
   func fetchTrainCarbo() -> [Float] {
     // Идея просто забрать все объекты и вытащить от туда показатели
     let allMealObj = fetchAllCompObj().dropLast()
-    var carboTrain : [Float] = allMealObj.flatMap{$0.listProduct.map{$0.carboInPortion}}
+    let carboTrain : [Float] = allMealObj.flatMap{$0.listProduct.map{$0.carboInPortion}}
     
-    carboTrain.setZeroValue()
+    
     return carboTrain
     
   }
@@ -417,8 +431,8 @@ extension CompObjRealmManager {
   func fetchTargetCarbo() -> [Float] {
     
     let allMealObj = fetchAllCompObj().dropLast()
-    var insulinList:[Float] = allMealObj.flatMap{$0.listProduct.map{$0.insulinOnCarboToML}}
-    insulinList.setZeroValue()
+    let insulinList:[Float] = allMealObj.flatMap{$0.listProduct.map{$0.insulinOnCarboToML}}
+    
     
     return insulinList
   }
@@ -428,8 +442,8 @@ extension CompObjRealmManager {
   func fetchTrainSugar() -> [Float] {
     
     let allMealObj = fetchAllCompObj().dropLast()
-    var trainSugarData : [Float] = allMealObj.map{$0.sugarDiffToOptimaForMl}
-    trainSugarData.setZeroValue()
+    let trainSugarData : [Float] = allMealObj.compactMap{$0.sugarDiffToOptimaForMl}
+    
     
     return trainSugarData
   }
@@ -437,45 +451,11 @@ extension CompObjRealmManager {
   func fetchTargetSugar() -> [Float] {
     
     let allMealObj = fetchAllCompObj().dropLast()
-    var targetSugarInsulin : [Float] = allMealObj.map{$0.insulinToCorrectSugarML}
-    targetSugarInsulin.setZeroValue()
+    let targetSugarInsulin : [Float] = allMealObj.compactMap{$0.insulinToCorrectSugarML}
+    
     
     return targetSugarInsulin
     
   }
-  
-  
-  
-  
-//   func fetchAllMealCompObj() -> [Float] {
-//
-//    let allMealObj = fetchCompObjByTypeCompObj(typeObj: .mealObject, compFase: .good)
-//    let carboList:[Float] = allMealObj.flatMap{$0.listProduct.map{$0.carboInPortion}}
-//
-//    return carboList
-//  }
-//
-//  // Target Meal
-//   func fetchAllInsulinOnCarboMl() -> [Float] {
-//
-//    let allMealObj = fetchCompObjByTypeCompObj(typeObj: .mealObject, compFase: .good)
-//    let insulinList:[Float] = allMealObj.flatMap{$0.listProduct.map{$0.insulinOnCarboToML}}
-//
-//    return insulinList
-//  }
-//
-//  // Train Sugar
-//
-//  // Здесь по идеи я должен выбирать по позиции хорошо компенсированные!
-//
-//   func fetchAllSugarDiffML() -> [Float] {
-//    let allMealObj = fetchAllCompObj()
-//    return allMealObj.map{$0.sugarDiffToOptimaForMl}
-//  }
-//  // Test Sugar
-//   func fetchAllInsulinCorrectSugarML() -> [Float] {
-//    let allMealObj = fetchAllCompObj()
-//    return allMealObj.map{$0.insulinToCorrectSugarML}
-//  }
   
 }

@@ -5,12 +5,12 @@ PODS:
   - Koyomi (1.2.7)
   - MachineLearningKit (0.1.8):
     - Upsurge
-  - ProgressHUD (2.60)
-  - Realm (3.19.0):
-    - Realm/Headers (= 3.19.0)
-  - Realm/Headers (3.19.0)
-  - RealmSwift (3.19.0):
-    - Realm (= 3.19.0)
+  - ProgressHUD (2.70)
+  - Realm (4.4.0):
+    - Realm/Headers (= 4.4.0)
+  - Realm/Headers (4.4.0)
+  - RealmSwift (4.4.0):
+    - Realm (= 4.4.0)
   - Upsurge (0.10.2)
 
 DEPENDENCIES:
@@ -34,11 +34,11 @@ SPEC CHECKSUMS:
   Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
   Koyomi: f03615b8d2bb5a5a4752c6404a9794ed7ef7b327
   MachineLearningKit: a2b08488977e79eb075c771c7154ef044f95d5f8
-  ProgressHUD: 4e4efbaf4f5de8bd32e0c4c3b6644a90ea1a8c3e
-  Realm: 995d585bcf699aaff226715886c849a29dd3d07f
-  RealmSwift: 35f284a537989f2187b413e5917091948cb87a3f
+  ProgressHUD: e603e8b8622c47d8818b9fb38b3cfe9d3e7ca421
+  Realm: e125f464884cda953ebefe70c671b75b03b81b9b
+  RealmSwift: 33656a42bd300959a081fc13347376bc478071af
   Upsurge: 5866beadc3da27f91c5df4ac795deb3f3238d678
 
-PODFILE CHECKSUM: 5be2fc57f976230791b7de697dab2611a863699c
+PODFILE CHECKSUM: 554ae9f75c87842ec0330f816ad38762e7e4e58a
 
 COCOAPODS: 1.8.3

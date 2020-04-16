@@ -28,10 +28,13 @@ class OnBoardViewController: UIPageViewController {
   
   fileprivate lazy var pages: [UIViewController] = {
     return [
+      
       HelloVC(),
+      
       LearnByCorrectionVC(
         didIsNextButtonValid: didIsNextButtonValid!,
         viewModel: onBoardVM.learnByCorrectionVM),
+      
       LearnByFoodVC(
         didIsNextButtonValid: didIsNextButtonValid!,
         viewModel: onBoardVM.learnByFoodVM)
@@ -42,21 +45,18 @@ class OnBoardViewController: UIPageViewController {
   var numberPage: Int = 0 {
     didSet {
       pageController.currentPage = numberPage
+     
     }
   }
   
   
   
   
-  var pageController       : UIPageControl!
+  var pageController : UIPageControl!
   var nextButton     : UIBarButtonItem!
   
-//  var nextButton : UIButton = {
-//    let b = UIButton(type: .system)
-//    b.setTitle("Дальше", for: .normal)
-//    b.addTarget(self, action: #selector(nextScreen), for: .touchUpInside)
-//    return b
-//  }()
+  var buttonsTappedCount: Int = 0
+  
   
   
   var isNextButtonValid    : Bool = true {
@@ -73,19 +73,19 @@ class OnBoardViewController: UIPageViewController {
     self.delegate   = self
     
     self.disableSwipeGesture()
+    self.removeGestureRecognizers()
+    
+
+    
+    
     setUpViews()
-    
-    
-    
+
     
     if let firstVC = pages.first
     {
       setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
     }
-    
-    
-    
-    
+     
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -112,6 +112,9 @@ class OnBoardViewController: UIPageViewController {
   // MARK: Save Button
   
   @objc private func nextScreen() {
+    
+    buttonsTappedCount += 1
+    
     
     
     if numberPage == pages.count - 1 {
@@ -148,7 +151,6 @@ extension OnBoardViewController {
   
   func setUpViews() {
     view.backgroundColor = .white
-//    configureNextButton()
     decoratePageControl()
   }
   
@@ -159,12 +161,14 @@ extension OnBoardViewController {
     pageController = UIPageControl(frame: .init(x: 0, y: 0, width: 150, height: 50))
     pageController.numberOfPages = pages.count
     pageController.currentPage   = numberPage
-    pageController.currentPageIndicatorTintColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-    pageController.pageIndicatorTintColor        = .gray
+    pageController.currentPageIndicatorTintColor = .white
+    pageController.pageIndicatorTintColor = .gray
+
     
     self.view.addSubview(pageController)
     pageController.centerXInSuperview()
-    pageController.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
+    pageController.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+    
 
     
   }
@@ -180,29 +184,39 @@ extension OnBoardViewController: UIPageViewControllerDataSource {
   
   
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+
+//    guard let viewControllerIndex = pages.firstIndex(of: viewController ) else { return nil }
+//
+//    let previousIndex = viewControllerIndex - 1
+//
+//    guard previousIndex >= 0          else { return nil }
+//
+//    //         guard pages.count > previousIndex else { return nil        }
+//
+//    return pages[previousIndex]
     
-    guard let viewControllerIndex = pages.firstIndex(of: viewController ) else { return nil }
+    return nil
     
-    let previousIndex = viewControllerIndex - 1
     
-    guard previousIndex >= 0          else { return nil }
-    
-    //         guard pages.count > previousIndex else { return nil        }
-    
-    return pages[previousIndex]
   }
   
   func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController?
   {
+    guard buttonsTappedCount > 0 else {return nil}
+    buttonsTappedCount = 0
+    
     guard let viewControllerIndex = pages.firstIndex(of: viewController) else { return nil }
-    
+
     let nextIndex = viewControllerIndex + 1
-    
+
     guard nextIndex < pages.count else { return nil }
-    
+
     //         guard pages.count > nextIndex else { return nil         }
-    
+
     return pages[nextIndex]
+    
+    
+    
   }
   
   

@@ -49,6 +49,10 @@ extension OnBoardVM {
     
     let correctionData    = fetchInsulinValueByCorrectionSugar()
     let insulinByFoodData = fetchInsulinValueByFoodData()
+    
+    saveBaseTrainAndTargetDataInUserDefaultsCorrectSugar(train: correctionData.train, target: correctionData.target)
+    
+    saveBaseTrainAndTargetDataInUserDefaultsCorrectCarbo(train: insulinByFoodData.train, target: insulinByFoodData.target)
 
     trainModel(traing: correctionData.train, target: correctionData.target, keyWeights: .correctSugarByInsulinWeights)
     
@@ -66,9 +70,24 @@ extension OnBoardVM {
   }
   
   private func saveSugarLevelInUserDefaults() {
+    
     let userDefaults = UserDefaults.standard
     userDefaults.set(learnByCorrectionVM.sugarLevelVM.sugarLowerLevel, forKey: UserDefaultsKey.lowSugarLevel.rawValue)
     userDefaults.set(learnByCorrectionVM.sugarLevelVM.sugarHigherLevel, forKey: UserDefaultsKey.higherSugarLevel.rawValue)
+  }
+  
+  private func saveBaseTrainAndTargetDataInUserDefaultsCorrectSugar(train:[Float],target: [Float]) {
+
+    let userDefaults = UserDefaults.standard
+    userDefaults.set(train, forKey: UserDefaultsKey.sugarCorrectTrainBaseData.rawValue)
+    userDefaults.set(target, forKey: UserDefaultsKey.sugarCorrectTargetBaseData.rawValue)
+  }
+  
+  private func saveBaseTrainAndTargetDataInUserDefaultsCorrectCarbo(train:[Float],target: [Float]) {
+
+    let userDefaults = UserDefaults.standard
+    userDefaults.set(train, forKey: UserDefaultsKey.carboCorrectTrainBaseData.rawValue)
+    userDefaults.set(target, forKey: UserDefaultsKey.carboCorrectTargetBaseData.rawValue)
   }
   
 //  private func saveWeightsinUserDefaults(weights:(Float,Float), key:String) {
@@ -99,7 +118,7 @@ extension OnBoardVM {
     
 
     
-    var train  = learnByCorrectionVM.tableData.map{Float(abs($0.sugar - learnByCorrectionVM.sugarLevelVM.optimalSugarLevel))}
+    var train :[Float] = learnByCorrectionVM.tableData.map(prepareMlData)
     var target = learnByCorrectionVM.tableData.map{Float($0.correctionInsulin!)}
     
     // Обогатим данные идеальным сахаром и инмсулином на этот сахар
@@ -110,9 +129,18 @@ extension OnBoardVM {
     return (train:train,target:target)
   }
   
+  private func prepareMlData(viewModel:LearnByCorrectionModal) -> Float {
+    
+    let sugar = viewModel.sugar.toFloat()
+    let oprimalSugar = learnByCorrectionVM.sugarLevelVM.optimalSugarLevel
+    
+    
+    return abs(sugar - oprimalSugar)
+  }
+  
   private func fetchInsulinValueByFoodData() -> (train:[Float],target:[Float]) {
-    var train  = learnByFoodVM.tableData.map{Float($0.carbo)}
-    var target = learnByFoodVM.tableData.map{Float($0.insulin!)}
+    var train  = learnByFoodVM.tableData.map{$0.carbo.toFloat()}
+    var target = learnByFoodVM.tableData.map{$0.insulin!.toFloat()}
     // При нулевых углеводах = 0 инсулина
     train.insert(0, at: 0)
     target.insert(0, at: 0)

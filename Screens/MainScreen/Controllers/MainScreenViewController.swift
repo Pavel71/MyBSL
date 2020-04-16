@@ -88,7 +88,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     
     setViews()
     
-//    interactor?.makeRequest(request: .checkLastDayInDB)
+    interactor?.makeRequest(request: .checkLastDayInDB)
 //    getBlankDay()
   }
   

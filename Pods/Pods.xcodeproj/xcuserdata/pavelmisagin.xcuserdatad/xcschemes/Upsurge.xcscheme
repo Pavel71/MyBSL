@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5BFE7CD58C2C80280F96E42DFEDC5803"
-               BuildableName = "Upsurge.framework"
+               BuildableName = "libUpsurge.a"
                BlueprintName = "Upsurge"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

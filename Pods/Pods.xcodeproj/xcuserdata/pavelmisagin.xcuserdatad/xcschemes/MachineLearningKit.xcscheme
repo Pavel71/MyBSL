@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FD146E4EAEF3EC13A46F66D31B949A72"
-               BuildableName = "MachineLearningKit.framework"
+               BuildableName = "libMachineLearningKit.a"
                BlueprintName = "MachineLearningKit"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

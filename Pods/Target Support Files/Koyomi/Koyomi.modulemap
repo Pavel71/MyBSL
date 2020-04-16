@@ -1,4 +1,4 @@
-framework module Koyomi {
+module Koyomi {
   umbrella header "Koyomi-umbrella.h"
 
   export *

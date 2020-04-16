@@ -69,8 +69,8 @@ class SugarLevelView: UIView {
 extension  SugarLevelView {
   
   func setViewModel(viewModel:SugarLevelModel) {
-    lowerLabel.text  = "\(viewModel.sugarLowerLevel)"
-    higherLabel.text = "\(viewModel.sugarHigherLevel)"
+    lowerLabel.text  = "\(viewModel.sugarLowerLevel.roundToDecimal(1))"
+    higherLabel.text = "\(viewModel.sugarHigherLevel.roundToDecimal(1))"
   }
   
 }

@@ -40,8 +40,8 @@ class LearnByCorrectionVM {
   // MARK: Sugar LEvel Models
   
   var sugarLevelVM = SugarLevelModel(
-    lowerSliderValue: 4.5,
-    higherSliderValue: 7.5)
+    lowerSliderValue: 0.3,
+    higherSliderValue: 0.5)
   
   
   

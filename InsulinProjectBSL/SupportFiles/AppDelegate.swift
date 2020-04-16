@@ -20,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ProductRealm(name: "Творог", category: "Молочные продукты", carboIn100Grm: 3, isFavorits: false),
     ProductRealm(name: "Апельсин", category: "Фрукты и овощи", carboIn100Grm: 8, isFavorits: false),
     ProductRealm(name: "Абрикос", category: "Фрукты и овощи", carboIn100Grm: 11, isFavorits: false),
-    ProductRealm(name: "Мандарин", category: "Печенья", carboIn100Grm: 11, isFavorits: false),
-    ProductRealm(name: "Бананы", category: "Сладости", carboIn100Grm: 11, isFavorits: false),
+    ProductRealm(name: "Мандарин", category: "Фрукты и овощи", carboIn100Grm: 11, isFavorits: false),
+    ProductRealm(name: "Бананы", category: "Фрукты и овощи", carboIn100Grm: 25, isFavorits: false),
 
   ]
   
@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 //    initDinners()
     
-//    initDaysRealm()
+    initDaysRealm()
     
     root()
     
@@ -176,12 +176,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   private func initSugarRealm() {
+    
     let realm = RealmProvider.sugarProvider.realm
     
-        try! realm.write {
-          realm.deleteAll()
-    //      realm.add(dinners)
-        }
+    guard  realm.isEmpty else {return}
+    
+    let blankDay = DayRealm()
+    
+    do {
+      realm.beginWrite()
+      
+      realm.add(blankDay, update: .all)
+      
+      try realm.commitWrite()
+      print(realm.configuration.fileURL?.absoluteURL as Any,"Day in DB")
+      
+    } catch {
+      print(error.localizedDescription)
+    }
+    
+//        try! realm.write {
+//          realm.deleteAll()
+//    //      realm.add(dinners)
+//        }
     
   }
   

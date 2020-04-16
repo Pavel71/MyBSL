@@ -23,6 +23,7 @@ extension UIPageViewController {
         for view in self.view.subviews {
             if let subView = view as? UIScrollView {
                 subView.isScrollEnabled = true
+
             }
         }
     }
@@ -32,16 +33,24 @@ extension UIPageViewController {
         for view in self.view.subviews {
             if let subView = view as? UIScrollView {
                 subView.isScrollEnabled = false
+              
             }
         }
     }
   
+  func removeGestureRecognizers(){
+      self.gestureRecognizers.forEach({ (gesture) in
+          view.removeGestureRecognizer(gesture)
+      })
+  }
+  
   
    func goToNextPage(animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
-           if let currentViewController = viewControllers?[0] {
-               if let nextPage = dataSource?.pageViewController(self, viewControllerAfter: currentViewController) {
+    
+           if let currentViewController = viewControllers?[0],let nextPage = dataSource?.pageViewController(self, viewControllerAfter: currentViewController) {
+                
                    setViewControllers([nextPage], direction: .forward, animated: animated, completion: completion)
                }
-           }
+           
        }
 }
