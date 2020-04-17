@@ -59,6 +59,7 @@ extension MainMenuProductListViewController {
 //    let productListResultViewModel = ConfirmProductListResultViewModel.calculateProductListResultViewModel(data: tableViewData)
     
     let productListResultViewModel = ProductListResultWorker.shared.getRusultViewModelByProducts(data: tableViewData)
+    
     footerView.resultsView.setViewModel(viewModel: productListResultViewModel,withInsulin: false)
     
     tableView.reloadData()
@@ -72,6 +73,7 @@ extension MainMenuProductListViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
     let cell = tableView.dequeueReusableCell(withIdentifier: MainMenuProductListCell.cellId, for: indexPath) as! MainMenuProductListCell
     
     let viewModel = tableViewData[indexPath.row]

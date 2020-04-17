@@ -764,6 +764,9 @@ extension MealViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   }
   
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    
+    
+    guard pickerData.isEmpty == false else {return}
     newMealView.setCategory(typeOfMeal: pickerData[row])
     
   }

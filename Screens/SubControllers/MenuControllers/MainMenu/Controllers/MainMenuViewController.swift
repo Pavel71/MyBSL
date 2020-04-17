@@ -308,7 +308,7 @@ extension MainMenuViewController: UITableViewDataSource, UITableViewDelegate {
   
   
 }
-
+// MARK: Search Bar
 extension MainMenuViewController: UISearchBarDelegate {
   
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -325,5 +325,20 @@ extension MainMenuViewController: UISearchBarDelegate {
     
     tableView.reloadData()
     
+  }
+}
+
+//  MARK:  Header In Section
+extension MainMenuViewController {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let header = ProductListHeaderInSection(withInsulinLabel: false,temaColor: .white)
+    // Если продуктов нет то скрой хеадер
+    header.isHidden = tableViewProductsData.isEmpty
+    
+    return header
+  }
+  
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return Constants.ProductList.headerInSectionHeight
   }
 }

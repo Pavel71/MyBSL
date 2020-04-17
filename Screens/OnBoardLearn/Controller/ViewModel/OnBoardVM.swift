@@ -63,8 +63,8 @@ extension OnBoardVM {
 //
 //    let insulinByFoodsWeights = getWeightsByData(traing: insulinByFoodData.train, target: insulinByFoodData.target)
   
-    
-
+    // Сохраняем то что мы прошил онбоардинг
+    UserDefaults.standard.set(true, forKey: UserDefaultsKey.isOnBoardingComplete.rawValue)
 
     
   }

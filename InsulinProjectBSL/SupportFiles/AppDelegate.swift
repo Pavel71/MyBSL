@@ -37,27 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
-//    let breakFast = SectionMealTypeRealm(name: "Завтраки")
-//    let launch = SectionMealTypeRealm(name: "Обеды")
-//
-//
-//    let meals1 = MealRealm(name: "Гречка с грибами",typeMeal: "Завтрак")
-//    meals1.listProduct.append(ProductRealm(name: "Грибы", category:"Грибы", carboIn100Grm: 2, isFavorits: false))
-//    meals1.listProduct.append(ProductRealm(name: "Гречка", category:"Крупы", carboIn100Grm: 65, isFavorits: false))
-//    meals1.listProduct.append(ProductRealm(name: "Салат овощной", category:"Овощи", carboIn100Grm: 2, isFavorits: false))
-//    meals.append(meals1)
-//    let meals2 = MealRealm(name: "Омлет с горошком", typeMeal: "Обед")
-//    meals2.listProduct.append(ProductRealm(name: "Омлет", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
-//    meals2.listProduct.append(ProductRealm(name: "Зеленый горошек", category:"Консервый", carboIn100Grm: 7, isFavorits: false))
-//    meals2.listProduct.append(ProductRealm(name: "Сыр", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
-//    meals2.listProduct.append(ProductRealm(name: "Сыр Капченный", category:"Молочные продукты", carboIn100Grm: 2, isFavorits: false))
-//    meals.append(meals2)
-//
-//    breakFast.mealsData.append(meals1)
-//    launch.mealsData.append(meals2)
-//
-//    sectionType.append(breakFast)
-//    sectionType.append(launch)
+
     
     
     initializeRealm()
@@ -65,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 //    initDinners()
     
-    initDaysRealm()
+//    deInitDaysRealm()
     
     root()
     
@@ -98,14 +78,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     appStateService.mainWindow?.makeKeyAndVisible()
     
     
-    appStateService.secondWindow = UIWindow(frame: UIScreen.main.bounds)
+    let isOnBoardingComplete = UserDefaults.standard.bool(forKey: UserDefaultsKey.isOnBoardingComplete.rawValue)
+    if isOnBoardingComplete == false {
+         appStateService.secondWindow = UIWindow(frame: UIScreen.main.bounds)
+
+          let onBoardController = UINavigationController(rootViewController: OnBoardViewController(transitionStyle: .scroll, navigationOrientation: .horizontal))
+          
+          appStateService.secondWindow?.rootViewController = onBoardController
+
+      //     Это сделаю при запуске приложения первый раз!
+          appStateService.secondWindow?.makeKeyAndVisible()
+    }
     
-    let onBoardController = UINavigationController(rootViewController: OnBoardViewController(transitionStyle: .scroll, navigationOrientation: .horizontal))
-    
-    appStateService.secondWindow?.rootViewController = onBoardController
-    
-//     Это сделаю при запуске приложения первый раз!
-    appStateService.secondWindow?.makeKeyAndVisible()
+ 
     
     
   }
@@ -138,23 +123,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
   }
-  
-  private func initDinners() {
-    let realm = RealmProvider.dinners.realm
-//    guard realm.isEmpty else { return }
 
-//    let dummyDinner = DinnerRealm(shugarBefore: 0, shugarAfter: 0, timeShugarBefore: Date(), timeShugarAfter: nil, placeInjection: "", trainName: "", correctionInsulin: 0, totalInsulin: 0,isPreviosDinner: false)
-//    dinners.append(dummyDinner)
-    
-    try! realm.write {
-      realm.deleteAll()
-//      realm.add(dinners)
-    }
-    
-  }
-  
-  private func initDaysRealm() {
+  private func deInitDaysRealm() {
     let realm = RealmProvider.day.realm
+//    print("Init Day Realm")
+////    guard  realm.isEmpty else {return}
+//
+//    print("База Данных пустая!")
+//      let blankDay = DayRealm()
+//
+//      do {
+//        realm.beginWrite()
+//        realm.deleteAll()
+//        realm.add(blankDay, update: .all)
+//
+//        try realm.commitWrite()
+//        print(realm.configuration.fileURL?.absoluteURL as Any,"Day in DB")
+//
+//      } catch {
+//        print(error.localizedDescription)
+//      }
     
         try! realm.write {
           realm.deleteAll()
@@ -179,26 +167,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let realm = RealmProvider.sugarProvider.realm
     
-    guard  realm.isEmpty else {return}
+  
     
-    let blankDay = DayRealm()
-    
-    do {
-      realm.beginWrite()
-      
-      realm.add(blankDay, update: .all)
-      
-      try realm.commitWrite()
-      print(realm.configuration.fileURL?.absoluteURL as Any,"Day in DB")
-      
-    } catch {
-      print(error.localizedDescription)
-    }
-    
-//        try! realm.write {
-//          realm.deleteAll()
-//    //      realm.add(dinners)
-//        }
+        try! realm.write {
+          realm.deleteAll()
+    //      realm.add(dinners)
+        }
     
   }
   

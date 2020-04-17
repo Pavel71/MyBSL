@@ -43,6 +43,9 @@ enum UserDefaultsKey: String {
   case carboCorrectTrainBaseData
   case carboCorrectTargetBaseData
   
+  
+  case isOnBoardingComplete
+  
 }
 
 

@@ -67,7 +67,11 @@ extension NewDayRealmManager {
   // MARK: Get CurrentDay
   func getCurrentDay() -> DayRealm {
     
-    return currentDay
+    // Здесь могут быть проблемы Лучше это день обновить
+    // из базы данных
+    guard let currentDay = fetchDayByDate(dayDate: Date()) else {return DayRealm()}
+    self.currentDay = currentDay
+    return self.currentDay
     
   }
   

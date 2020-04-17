@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainMenuProductListCell: BaseProductListCell {
+final class MainMenuProductListCell: BaseProductListCell {
   
   static let cellId = "CellId"
   
@@ -19,13 +19,9 @@ class MainMenuProductListCell: BaseProductListCell {
     
     selectionStyle = .none
     
-    portionTextField.isUserInteractionEnabled = false
-    portionTextField.backgroundColor = .clear
-    portionTextField.withCornerLayer = false
+    setUpViews()
     
-    portionTextField.textColor = .white
-    carboInPortionLabel.textColor = .white
-    nameLabel.textColor = .white
+                        
   }
 
   
@@ -40,4 +36,20 @@ class MainMenuProductListCell: BaseProductListCell {
     fatalError("init(coder:) has not been implemented")
   }
   
+}
+
+
+// MARK: Set Up Views
+extension MainMenuProductListCell {
+  
+  private func setUpViews() {
+    
+      portionTextField.isUserInteractionEnabled = false
+      portionTextField.backgroundColor          = .clear
+      portionTextField.withCornerLayer          = false
+               
+      portionTextField.textColor                = .white
+      carboInPortionLabel.textColor             = .white
+      nameLabel.textColor                       = .white
+  }
 }

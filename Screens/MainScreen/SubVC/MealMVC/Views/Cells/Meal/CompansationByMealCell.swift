@@ -24,6 +24,7 @@ class CompansationByMealCell: CompansationCVBaseCell {
   static let cellId = "InsulinInjectionsCollectionViewCell"
   
   let productTableViewController = MealProductsVC()
+  
   let resultView = MealProductsFooterView(frame: .init(x: 0, y: 0, width: 0, height: Constants.ProductList.TableFooterView.footerHeight))
   
   

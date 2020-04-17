@@ -463,6 +463,7 @@ extension FoodViewController {
     headerInSection = CustomHeaderInSectionView()
     
     headerInSection.setData(isExpanded: isExpand, isOnlyOneSection: isOnlyOneSection, sectionName:category,rightLabelName: "Углеводы на 100гр.", section: section, isFavoritSegment: currentSegment == .favorits)
+    
     headerInSection.didTapHeaderSectionButton = didTapButtonHeaderInSection
     
     

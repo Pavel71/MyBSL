@@ -27,8 +27,8 @@ class ProductListInMealViewController: BaseProductList {
   //2. тексфилды не нужны только Лаблы
   
   
-  init(isTemaColorDark: Bool) {
-    valueColor  = isTemaColorDark ? .white : .darkGray
+  override init() {
+    
     super.init()
   }
   
@@ -204,7 +204,7 @@ extension ProductListInMealViewController {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     
     
-    let header = ProductListHeaderInSection(withInsulinLabel: false, temaColor: valueColor)
+    let header = ProductListHeaderInSection(withInsulinLabel: false, temaColor: UIColor.black)
     // Если продуктов нет то скрой хеадер
     header.isHidden = tableViewData.isEmpty
     

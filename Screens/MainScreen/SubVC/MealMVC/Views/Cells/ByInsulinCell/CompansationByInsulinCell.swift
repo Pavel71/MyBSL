@@ -60,7 +60,7 @@ extension CompansationByInsulinCell {
       topButtonView,
       imageView
     ])
-    topButtonView.constrainHeight(constant: 20)
+    topButtonView.constrainHeight(constant: 30)
     stackView.axis         = .vertical
     stackView.distribution = .fill
     stackView.spacing      = 5

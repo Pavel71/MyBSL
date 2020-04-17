@@ -84,23 +84,25 @@ class FoodCell: UITableViewCell {
     verticalStackView.axis = .vertical
 
     
-    let carboStackView = UIStackView(arrangedSubviews: [imageStarFavorit,massaLabel,carboLabel])
+    let rightStackView = UIStackView(arrangedSubviews: [imageStarFavorit,massaLabel,carboLabel])
 
-    carboStackView.alignment = .center
-    carboStackView.distribution = .fillEqually
+    rightStackView.alignment = .center
+    rightStackView.distribution = .fillEqually
     
 
     let horizontalStackView = UIStackView(arrangedSubviews: [
       verticalStackView,
-      carboStackView
+      rightStackView
       ])
     
-    verticalStackView.constrainWidth(constant: Constants.Food.TableViewHeaderInSection.nameLabelWidth)
+    rightStackView.constrainWidth(constant: Constants.Food.TableViewHeaderInSection.rightStackViewWidth)
+    
+//    verticalStackView.constrainWidth(constant: )
     
     addSubview(horizontalStackView)
     
     horizontalStackView.spacing = 5
-    horizontalStackView.distribution = .fillProportionally
+    horizontalStackView.distribution = .fill
     
     
     horizontalStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding: Constants.cellMargin)

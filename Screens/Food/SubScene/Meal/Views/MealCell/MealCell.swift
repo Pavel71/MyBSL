@@ -67,7 +67,7 @@ class MealCell: UITableViewCell {
     return button
   }()
   
-  var productListViewController = ProductListInMealViewController(isTemaColorDark: true)
+  var productListViewController = ProductListInMealViewController()
 
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

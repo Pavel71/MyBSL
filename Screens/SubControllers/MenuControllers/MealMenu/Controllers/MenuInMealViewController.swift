@@ -214,16 +214,32 @@ extension MenuInMealViewController: UITableViewDelegate, UITableViewDataSource {
     
   }
   
-  // Header In Section
+
   
 //  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 //    let header = MenuFoodListheaderInSectionView()
-//    header.showPortionLabel(isFavoritsSegment: currentSegment == .favorits)
+////    header.showPortionLabel(isFavoritsSegment: currentSegment == .favorits)
 //    return header
 //  }
-//  
+//
 //  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 //    return Constants.MenuController.TableView.headerInSectionHeight
 //  }
   
+  
+  
+}
+//  MARK:  Header In Section
+extension MenuInMealViewController {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let header = ProductListHeaderInSection(withInsulinLabel: false,temaColor: .white)
+    // Если продуктов нет то скрой хеадер
+    header.isHidden = tableViewData.isEmpty
+    
+    return header
+  }
+  
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return Constants.ProductList.headerInSectionHeight
+  }
 }

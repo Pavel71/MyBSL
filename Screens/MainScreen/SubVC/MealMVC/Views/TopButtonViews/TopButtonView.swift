@@ -144,14 +144,14 @@ extension TopButtonView {
   
   func setViewModel(viewModel:TopButtonViewModalable) {
     
-    sugarBeforeLabel.text = "\(viewModel.sugarBefore)"
-    sugarAfterLabel.text  = "\(viewModel.sugarAfter)"
+    sugarBeforeLabel.text = "\(viewModel.sugarBefore.roundToDecimal(2))"
+    sugarAfterLabel.text  = "\(viewModel.sugarAfter.roundToDecimal(2))"
     
     switch viewModel.type {
     case .correctSugarByCarbo:
       
       
-      carboCorrectionLabel.text               = "\(viewModel.carbo)"
+      carboCorrectionLabel.text               = "\(viewModel.carbo.roundToDecimal(2))"
       
       correctSugarByInsulinStackView.isHidden = true
       correctSugarByCarboStackView.isHidden   = false
@@ -160,7 +160,7 @@ extension TopButtonView {
     case .correctSugarByInsulin:
       
       
-      injectionResultLabel.text               = "\(viewModel.insulin)"
+      injectionResultLabel.text               = "\(viewModel.insulin.roundToDecimal(2))"
       
       correctSugarByInsulinStackView.isHidden = false
       correctSugarByCarboStackView.isHidden   = true
@@ -169,8 +169,8 @@ extension TopButtonView {
     case .mealObject:
       
       
-      carboInMealLabel.text                   = "\(viewModel.carbo)"
-      injectionResultLabel.text               = "\(viewModel.insulin)"
+      carboInMealLabel.text                   = "\(viewModel.carbo.roundToDecimal(2))"
+      injectionResultLabel.text               = "\(viewModel.insulin.roundToDecimal(2))"
       
       correctSugarByInsulinStackView.isHidden = false
       correctSugarByCarboStackView.isHidden   = true
@@ -226,8 +226,8 @@ extension TopButtonView {
     sugarAfterStackView
     
     ])
-    allStackView.distribution = .fillEqually
-    allStackView.spacing      = 5
+    allStackView.distribution = .equalSpacing
+
     
     
      
@@ -236,7 +236,7 @@ extension TopButtonView {
      ])
     
     stackView.distribution = .equalSpacing
-    stackView.spacing = 5
+
     
      addSubview(stackView)
      stackView.fillSuperview()
@@ -249,7 +249,7 @@ extension TopButtonView {
     
     ])
     sugarBeforeStackView.distribution = .fillEqually
-    sugarBeforeStackView.spacing      = 5
+    sugarBeforeStackView.spacing      = 3
   }
   
   private func configurateSugarAfterStackView() {
@@ -259,7 +259,7 @@ extension TopButtonView {
     
     ])
     sugarAfterStackView.distribution = .fillEqually
-    sugarAfterStackView.spacing      = 5
+    sugarAfterStackView.spacing      = 3
     
     sugarAfterStackView.isHidden = true
   }
@@ -272,7 +272,7 @@ extension TopButtonView {
     
     ])
     correctSugarByInsulinStackView.distribution = .fillEqually
-    correctSugarByInsulinStackView.spacing      = 5
+    correctSugarByInsulinStackView.spacing      = 3
     
     
   }
@@ -283,7 +283,7 @@ extension TopButtonView {
     carboMealResultButton,carboInMealLabel
     ])
     mealObjectStackView.distribution = .fillEqually
-    mealObjectStackView.spacing      = 5
+    mealObjectStackView.spacing      = 3
     
 
     
@@ -297,7 +297,7 @@ extension TopButtonView {
       
     ])
     correctSugarByCarboStackView.distribution = .fillEqually
-    correctSugarByCarboStackView.spacing = 5
+    correctSugarByCarboStackView.spacing = 3
     
     
   }

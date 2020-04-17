@@ -38,24 +38,20 @@ class MenuFoodListCell: UITableViewCell {
   
   private let carboLabel: UILabel = {
     let label = UILabel()
-    
-    
+
     label.font = Constants.Font.valueFont
-    label.textColor = Constants.Text.textColorDarkGray
+
     label.textAlignment = .center
-    
+    label.textColor = .white
     label.numberOfLines = 0
     return label
   }()
   
   private let portionLabel: UILabel = {
     let label = UILabel()
-    
-    
     label.font = Constants.Font.valueFont
-    label.textColor = Constants.Text.textColorDarkGray
     label.textAlignment = .center
-    
+    label.textColor = .white
     label.numberOfLines = 0
     return label
   }()
@@ -111,9 +107,23 @@ class MenuFoodListCell: UITableViewCell {
       ])
     leftStackView.spacing = 2
     containerView.constrainWidth(constant: 30)
+    
+    
+    rightStackView = UIStackView(arrangedSubviews: [
+    carboLabel,portionLabel
+    ])
+    
+    carboLabel.constrainWidth(constant: Constants.ProductList.labelValueWidth)
+    portionLabel.constrainWidth(constant: Constants.ProductList.labelValueWidth)
+    rightStackView.distribution = .fill
+    
+    
+    let generalStackView = UIStackView(arrangedSubviews: [leftStackView,rightStackView])
+    
+    generalStackView.distribution = .fill
 
-    addSubview(leftStackView)
-    leftStackView.fillSuperview(padding: Constants.cellMargin)
+    addSubview(generalStackView)
+    generalStackView.fillSuperview(padding: Constants.cellMargin)
 
 
   }
@@ -122,27 +132,14 @@ class MenuFoodListCell: UITableViewCell {
   
   func setViewModel(viewModel:MenuFoodListCellViewModelable, isFavoritsSegment: Bool) {
     
-    nameLabel.text = viewModel.name
-    carboLabel.text = viewModel.carboOn100Grm
+    nameLabel.text     = viewModel.name
+    carboLabel.text    = viewModel.carboOn100Grm
     categoryLabel.text = viewModel.category
     
     
     portionLabel.text = viewModel.portion
     
-    
-    // здесь мне нужно растенуть левый stack до CarboLabel а в другом случае до PortionLabel
-//    portionLabel.isHidden = !isFavoritsSegment
-    portionLabel.alpha = isFavoritsSegment ? 1:0
-    
-    
-//    if isFavoritsSegment {
-//      leftStackViewTrailingConstraintToPortion.isActive = false
-//      leftStackViewTrailingConstraintToCarbo.isActive = true
-//    } else {
-//      leftStackViewTrailingConstraintToPortion.isActive = true
-//      leftStackViewTrailingConstraintToCarbo.isActive = false
-//    }
-    
+  
 
     
     chooseImageView.image = viewModel.isChoosen ? #imageLiteral(resourceName: "circular-shape-silhouette").withRenderingMode(.alwaysTemplate) : #imageLiteral(resourceName: "circumference").withRenderingMode(.alwaysTemplate)

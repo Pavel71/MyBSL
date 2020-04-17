@@ -103,9 +103,13 @@ class CustomHeaderInSectionView: UIView {
       portionLabel,
       carboOn100Label
       ])
-
+//    carboOn100Label.constrainWidth(constant: 70)
+    
+    rightStackView.alignment = .center
     rightStackView.distribution = .fillEqually
-    rightStackView.spacing = 5
+
+//    rightStackView.distribution = .fillEqually
+//    rightStackView.spacing = 5
     
     
     let stackView = UIStackView(arrangedSubviews: [
@@ -113,8 +117,10 @@ class CustomHeaderInSectionView: UIView {
       rightStackView
       ])
     
-    sectionNameLabel.constrainWidth(constant: Constants.Food.TableViewHeaderInSection.nameLabelWidth)
+//    sectionNameLabel.constrainWidth(constant: Constants.Food.TableViewHeaderInSection.nameLabelWidth)
+    rightStackView.constrainWidth(constant: Constants.Food.TableViewHeaderInSection.rightStackViewWidth)
     stackView.distribution = .fill
+    
     addSubview(stackView)
     stackView.fillSuperview(padding: Constants.cellMargin)
     

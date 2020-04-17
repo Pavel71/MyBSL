@@ -64,8 +64,8 @@ struct Constants {
     static let tableViewHeaderHeight: CGFloat = 50
     
     struct TableViewHeaderInSection {
-      static let carbloLabelWidth: CGFloat = 100
-      static let nameLabelWidth: CGFloat = 150
+      static let rightStackViewWidth: CGFloat = 180
+      static let nameLabelWidth: CGFloat = 120
     }
     
   }

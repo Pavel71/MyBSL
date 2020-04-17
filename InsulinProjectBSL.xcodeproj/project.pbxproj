@@ -558,12 +558,28 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		050D32CA2449EE0C00FAC3A0 /* Depricated */ = {
+			isa = PBXGroup;
+			children = (
+				05C0C62F238D5331001B2664 /* DayRealmManager.swift */,
+			);
+			path = Depricated;
+			sourceTree = "<group>";
+		};
 		052B4E8B2355A9F500464A6C /* Container */ = {
 			isa = PBXGroup;
 			children = (
 				055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */,
 			);
 			path = Container;
+			sourceTree = "<group>";
+		};
+		052BD9B72449E25700F3AD6D /* Depricated */ = {
+			isa = PBXGroup;
+			children = (
+				05A4F1B0233A0B7F00DFE4D7 /* DinnerCollection */,
+			);
+			path = Depricated;
 			sourceTree = "<group>";
 		};
 		052C33E1237A8CF700B4B29A /* AlertWorker */ = {
@@ -1301,7 +1317,6 @@
 				054B5C31235466810061D705 /* ContainerController */,
 				05510CC5234DECB70076FB92 /* MenuControllers */,
 				05952A4D233BB0E300EE996E /* ProductList */,
-				05A4F1B0233A0B7F00DFE4D7 /* DinnerCollection */,
 			);
 			path = SubControllers;
 			sourceTree = "<group>";
@@ -1317,6 +1332,7 @@
 		05952A4D233BB0E300EE996E /* ProductList */ = {
 			isa = PBXGroup;
 			children = (
+				052BD9B72449E25700F3AD6D /* Depricated */,
 				F1CC2D68232FB3D800EF7D18 /* View */,
 				0509FD02233FB0F000B04B30 /* Controllers */,
 				0509FD01233FB08500B04B30 /* Model */,
@@ -1969,7 +1985,7 @@
 		05C0C63B238FE33E001B2664 /* DayRealmManager */ = {
 			isa = PBXGroup;
 			children = (
-				05C0C62F238D5331001B2664 /* DayRealmManager.swift */,
+				050D32CA2449EE0C00FAC3A0 /* Depricated */,
 				057E26212437341D0081CE56 /* NewDayRealmManager.swift */,
 			);
 			path = DayRealmManager;
