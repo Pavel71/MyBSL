@@ -190,20 +190,7 @@ extension MainScreenViewController {
     
   }
   
-  //Calenar CLousers
-  
-//  private func setCalendarViewClousers() {
-//
-//    calendarView.didTapCLoseCalendar = {[weak self] in
-//      self?.closeCalendar()
-//    }
-//
-//    calendarView.didTapDateClouser = {[weak self] date in
-//      self?.interactor?.makeRequest(request: .selectDayByCalendar(date:date))
-//
-//      self?.closeCalendar()
-//    }
-//  }
+
   
   // Top Buttons Clouser
   private func setCompansationObjectCellTopButtons() {
@@ -276,16 +263,16 @@ extension MainScreenViewController {
       self?.showRobotMenu()
     }
     
-//    navBarView.didTapNextDateClouser = {[weak self] nextDate in
-//      
-//      
-//      self?.interactor?.makeRequest(request: .selectDayByCalendar(date: nextDate))
-//    }
-//    
-//    navBarView.didTapPreviosDateClouser = {[weak self] prevDate in
-//      
-//      self?.interactor?.makeRequest(request: .selectDayByCalendar(date: prevDate))
-//    }
+    navBarView.didTapNextDateClouser = {[weak self] nextDate in
+      
+      self?.interactor?.makeRequest(request: .selectDayByCalendar(date: nextDate))
+    
+    }
+    
+    navBarView.didTapPreviosDateClouser = {[weak self] prevDate in
+      
+      self?.interactor?.makeRequest(request: .selectDayByCalendar(date: prevDate))
+    }
   }
   
   // NewSugarView Clousers

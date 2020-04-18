@@ -41,7 +41,7 @@ extension Date {
     }
   
   func compareDate(with date : Date) -> Bool {
-    let order = NSCalendar.current.compare(self, to: date, toGranularity: .hour)
+    let order = NSCalendar.current.compare(self, to: date, toGranularity: .day)
       switch order {
       case .orderedSame:
           return true

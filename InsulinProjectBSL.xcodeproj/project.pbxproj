@@ -696,6 +696,13 @@
 			path = SwipeView;
 			sourceTree = "<group>";
 		};
+		053BA99B244B4D4900DF16E5 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		053BAB50233B56C10080359B /* Validatable */ = {
 			isa = PBXGroup;
 			children = (
@@ -1863,6 +1870,7 @@
 			isa = PBXGroup;
 			children = (
 				05A7CAEA23827C8E0075D04E /* MainScreenView.swift */,
+				053BA99B244B4D4900DF16E5 /* New Group */,
 				05B6E809242B71F80009F7EA /* CalendarView */,
 				05A4F1A02339F29100DFE4D7 /* CustomNavBar */,
 				0544720C239653320020C0DC /* NewSugarDataView */,

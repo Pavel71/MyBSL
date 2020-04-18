@@ -213,8 +213,6 @@ extension MainCustomNavBar {
     let date = DateWorker.shared.getDayMonthYearWeek(date: viewModel.titleDate)
     titleLabel.text = date
     
-//    print("Last Swvwn Days", viewModel.lastSevenDays)
-//    print("Ttitle Date",viewModel.titleDate)
     
     if viewModel.lastSevenDays.count > 1 {
 
@@ -227,7 +225,7 @@ extension MainCustomNavBar {
         viewModel.titleDate.compareDate(with: lastElement) ? 0 : 1
       
       
-//      addNewDinnerButton.isEnabled = viewModel.titleDate.compareDate(with:lastElement)
+      addNewDinnerButton.isEnabled = viewModel.titleDate.compareDate(with:lastElement)
     } else {
       previosDayButton.alpha = 0
       nextDayButton.alpha    = 0

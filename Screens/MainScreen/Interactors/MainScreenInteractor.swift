@@ -86,14 +86,25 @@ extension MainScreenInteractor {
       if newDayRealmManager.isNowLastDayInDB() == false {
         print("Сегодняшнего дня нет в базе поэтому добавляю новый день")
         newDayRealmManager.addBlankDay()
+      } else {
+        
+        // Есть сегодняшний день то сетим его в current
+        newDayRealmManager.setDayByDate(date: Date())
       }
       
       passDayRealmToConvertInVMInPresenter()
       
       
+    case .selectDayByCalendar(let date):
+      // нам приходит запрос выбрать предыдущий день
+      newDayRealmManager.setDayByDate(date: date)
+      passDayRealmToConvertInVMInPresenter()
+      
     case .reloadDay:
       
       passDayRealmToConvertInVMInPresenter()
+      
+    
       
     default:break
     }

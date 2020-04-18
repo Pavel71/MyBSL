@@ -48,7 +48,8 @@ extension NewDayRealmManager {
   }
   
   func fetchDayByDate(dayDate: Date) -> DayRealm? {
-    return fetchAllDays().first(where: {$0.date.compareDate(with: dayDate)})
+    let allDays = fetchAllDays()
+    return allDays.first(where: {$0.date.compareDate(with: dayDate)})
   }
   
   func fetchLastSevenDaysDate() -> [Date] {
@@ -67,12 +68,14 @@ extension NewDayRealmManager {
   // MARK: Get CurrentDay
   func getCurrentDay() -> DayRealm {
     
-    // Здесь могут быть проблемы Лучше это день обновить
-    // из базы данных
-    guard let currentDay = fetchDayByDate(dayDate: Date()) else {return DayRealm()}
-    self.currentDay = currentDay
     return self.currentDay
     
+  }
+  
+  func setDayByDate(date: Date) {
+    guard let day  = fetchDayByDate(dayDate: date) else {return}
+    
+    self.currentDay = day
   }
   
   func isNowLastDayInDB() -> Bool {

@@ -31,6 +31,8 @@ enum MainScreen {
         
         case reloadDay
         
+        case selectDayByCalendar(date: Date)
+        
       }
     }
     
