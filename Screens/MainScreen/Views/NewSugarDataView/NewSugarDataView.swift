@@ -65,14 +65,6 @@ class NewSugarDataView: AddNewElementView {
     }
   }
   
-  // Configure PickerView
-//  private func configurePickerView() {
-//    sugarTextField.inputView    = sugarPickerView
-//    // Set Clouser
-//    sugarPickerView.passValueFromPickerView = {[weak self] sugar in
-//      self?.catchValueFromPickerView(value: sugar)
-//       }
-//  }
   // Configure TextFields
   private func configureTextFields() {
     sugarTextField.delegate       = self

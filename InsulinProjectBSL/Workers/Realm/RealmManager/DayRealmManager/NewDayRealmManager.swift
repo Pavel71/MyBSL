@@ -24,7 +24,7 @@ class NewDayRealmManager {
   
   var realm : Realm {provider.realm}
   
-  private init(provider: RealmProvider = RealmProvider.day) {
+   init(provider: RealmProvider = RealmProvider.day) {
     self.provider = provider
     
   }
@@ -72,21 +72,20 @@ extension NewDayRealmManager {
     
   }
   
+  // может просто стоит переписать этот метод и добавлять последний
+  
   func setDayByDate(date: Date) {
     guard let day  = fetchDayByDate(dayDate: date) else {return}
-    
     self.currentDay = day
   }
   
   func isNowLastDayInDB() -> Bool {
     
       let days = fetchAllDays()
-  
       guard let lastDay = days.last else {return false}
-  
       let dateNow = Date()
-  
-      return lastDay.date.onlyDate()! == dateNow.onlyDate()!
+      return lastDay.date.compareDate(with: dateNow)
+//      return lastDay.date.onlyDate()! == dateNow.onlyDate()!
   
     }
   
@@ -100,7 +99,7 @@ extension NewDayRealmManager {
   
   func addBlankDay() {
     
-    currentDay = DayRealm(date: Date())
+    self.currentDay = DayRealm(date: Date())
     addOrUpdateNewDay(dayRealm: currentDay)
     
   }
@@ -108,6 +107,7 @@ extension NewDayRealmManager {
   func addOrUpdateNewDay(dayRealm: DayRealm) {
     
     do {
+      
       self.realm.beginWrite()
       self.realm.add(dayRealm, update: .all)
       
@@ -128,8 +128,7 @@ extension NewDayRealmManager {
 
   // ADD and Update
   func addNewCompObjId(compObjId: String) {
-    
-    
+
       
       do {
         self.realm.beginWrite()
@@ -149,6 +148,8 @@ extension NewDayRealmManager {
   }
   
   //Delete
+  
+  
   
   func deleteCompObjById(compObjId: String) {
     

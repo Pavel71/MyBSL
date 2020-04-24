@@ -32,8 +32,10 @@ class MainCustomNavBar: UIView {
     let button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "plus").withRenderingMode(.alwaysTemplate), for: .normal)
     button.addTarget(self, action: #selector(handleAddNewDinner), for: .touchUpInside)
+    
     return button
   }()
+  
   
   let robotButton: UIButton = {
     let button = UIButton(type: .system)
@@ -108,39 +110,33 @@ class MainCustomNavBar: UIView {
     
   }
   
-
+// MARK: Set Up Views
   
   private func setUpViews() {
-    
-//    let leftStack = UIStackView(arrangedSubviews: [robotButton])
-//    leftStack.distribution = .fillEqually
-//    leftStack.spacing = 20
-    
+
     
     let centralStack = UIStackView(arrangedSubviews: [
     
     previosDayButton,titleLabel,nextDayButton
     ])
-//    centralStack.spacing = 5
+
     centralStack.distribution = .fill
     
     let stackView = UIStackView(arrangedSubviews: [
     robotButton, centralStack, addNewDinnerButton
     ])
-    
+    addNewDinnerButton.constrainWidth(constant: 50)
+    addNewDinnerButton.constrainHeight(constant: 40)
     
     stackView.distribution = .equalCentering
     
     addSubview(stackView)
-    stackView.fillSuperview(padding: .init(top: 10, left: 10, bottom: 10, right: 10))
+    stackView.fillSuperview(padding: .init(top: 10, left: 10, bottom: 5, right: 0))
   }
   
   
   // MARK: Button Signals
-  
-//  @objc private func handleCalendarButton() {
-//    didTapCalendarClouser!()
-//  }
+
   
   // Add New Dinner
   @objc private func handleAddNewDinner() {

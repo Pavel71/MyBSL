@@ -310,10 +310,20 @@ extension NewCompansationObjectScreenPresenter {
   
   private func getPredictUnsulinByProduct(index: Int) {
     
-     let testData = viewModel.addMealCellVM.dinnerProductListVM.productsData[index].carboInPortion
-      let predictInsulin = mlWorkerByFood.getPredict(testData: [Float(testData)])
+     let carboData = viewModel.addMealCellVM.dinnerProductListVM.productsData[index].carboInPortion
      
-     viewModel.addMealCellVM.dinnerProductListVM.productsData[index].insulinValue = predictInsulin.first
+    // Если углеводов нет то сетим руками 0
+    
+    var predictInsulin:Float?
+    
+    if  carboData != 0 {
+      let predictInsulinArray = mlWorkerByFood.getPredict(testData: [Float(carboData)])
+      predictInsulin = predictInsulinArray.first
+    } else {
+      predictInsulin = 0
+    }
+     
+     viewModel.addMealCellVM.dinnerProductListVM.productsData[index].insulinValue = predictInsulin
      
   }
     

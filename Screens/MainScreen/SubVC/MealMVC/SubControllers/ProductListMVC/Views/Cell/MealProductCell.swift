@@ -57,9 +57,9 @@ extension MealProductCell {
   func setViewModel(viewModel: MealProductCellable) {
     
     nameLabel.text           = viewModel.name
-    carboInPortionLabel.text = String(viewModel.carboInPortion)
+    carboInPortionLabel.text = String(viewModel.carboInPortion.roundToDecimal(2))
     portionLabel.text        = String(viewModel.portion)
-    insulinLabel.text        = String(viewModel.factInsulin)
+    insulinLabel.text        = String(viewModel.factInsulin.roundToDecimal(2))
   }
 }
 

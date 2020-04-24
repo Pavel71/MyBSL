@@ -226,16 +226,15 @@ extension TopButtonView {
     sugarAfterStackView
     
     ])
-    allStackView.distribution = .equalSpacing
+    allStackView.distribution = .fillEqually
+    allStackView.spacing = 2
 
-    
-    
      
      let stackView = UIStackView(arrangedSubviews: [
        deleteButton,allStackView,updateButton
      ])
     
-    stackView.distribution = .equalSpacing
+    stackView.distribution = .equalCentering
 
     
      addSubview(stackView)

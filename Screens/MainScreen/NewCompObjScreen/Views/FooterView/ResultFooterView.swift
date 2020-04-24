@@ -229,15 +229,14 @@ class ResultFooterView : UIView {
   
 }
 
-// MARK: Set up ViewModel
+// MARK: Set  ViewModel
 
 extension ResultFooterView {
   
   func setViewModel(viewModel: ResultFooterViewable) {
     
-    
     resultLabel.text = viewModel.message
-    resultValue.text = viewModel.totalInsulinValue
+    resultValue.text = String(viewModel.totalInsulinValue.prefix(4))
     
     hidden(state: viewModel.viewState)
     

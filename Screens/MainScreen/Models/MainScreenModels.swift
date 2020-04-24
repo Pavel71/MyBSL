@@ -33,6 +33,8 @@ enum MainScreen {
         
         case selectDayByCalendar(date: Date)
         
+        case setInsulinSupplyValue(insulinSupplyValue: Int)
+        
       }
     }
     
@@ -40,6 +42,7 @@ enum MainScreen {
       enum ResponseType {
         case prepareViewModel(realmData:DayRealm)
         case passCompansationObj(compObj: CompansationObjectRelam)
+        
         
       }
     }

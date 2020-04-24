@@ -13,6 +13,47 @@ import Foundation
 
 class InsulinSupplyWorker {
   
+  var userDefaults = UserDefaults.standard
+  
+  static let shared = {InsulinSupplyWorker()}()
+  
+  
+  
+}
+
+
+// MARK: Calculated InsulinSupplyValue
+
+extension InsulinSupplyWorker {
+  
+  enum InsulinSupplyCalculatedType {
+    case add,delete,update
+  }
+  
+  func updateInsulinSupplyValue(totalInsulin: Float,updatedType: InsulinSupplyCalculatedType) {
+    
+    let currentSupplyValue = userDefaults.integer(forKey: UserDefaultsKey.insulinSupplyValue.rawValue).toFloat()
+    
+    switch updatedType {
+      
+      case .add:
+        
+        userDefaults.set((currentSupplyValue - totalInsulin).rounded(.toNearestOrAwayFromZero).toInt(), forKey: UserDefaultsKey.insulinSupplyValue.rawValue)
+      
+      case .delete:
+        
+        userDefaults.set((currentSupplyValue + totalInsulin).rounded(.toNearestOrAwayFromZero).toInt(), forKey: UserDefaultsKey.insulinSupplyValue.rawValue)
+      
+      case .update:
+        
+        userDefaults.set((currentSupplyValue + totalInsulin).rounded(.toNearestOrAwayFromZero).toInt(), forKey: UserDefaultsKey.insulinSupplyValue.rawValue)
+        
+        
+        
+    }
+
+  }
+  
   
   
 }

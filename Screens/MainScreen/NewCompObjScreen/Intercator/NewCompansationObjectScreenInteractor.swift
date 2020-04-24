@@ -21,8 +21,10 @@ class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusiness
   
   // For Work with Realm
   
-  var compRealmManager  = CompObjRealmManager.shared
-  var sugarRealmManager = SugarRealmManager.shared
+  var compRealmManager    = CompObjRealmManager.shared
+  var sugarRealmManager   = SugarRealmManager.shared
+  var userDefaults        = UserDefaults.standard
+  var insulinSupplyWorker = InsulinSupplyWorker.shared
 
   func makeRequest(request: NewCompansationObjectScreen.Model.Request.RequestType) {
     
@@ -70,12 +72,15 @@ extension NewCompansationObjectScreenInteractor {
 
       if updateCompObj != nil {
         
-        print("Update")
+        
+        let totalInsulinBefore = updateCompObj.totalInsulin.toFloat()
+        let totalInsulinAfter  = viewModel.resultFooterVM.totalInsulin
+        
+        insulinSupplyWorker.updateInsulinSupplyValue(totalInsulin: totalInsulinBefore - totalInsulinAfter, updatedType: .update)
         
         updatingCompObj(viewModel: viewModel)
         updatingSugarRealm(compObj: updateCompObj)
-        
-        
+
         self.updateCompObj = nil
         
         presenter?.presentData(response: .updateSugarRealmAndCompObjSucsess)
@@ -88,6 +93,10 @@ extension NewCompansationObjectScreenInteractor {
         let sugarRealm = convertModelToSugarRealm(compObj: compObj)
         saveCompObjToRealm(compObj  : compObj)
         saveSugarToRealm(sugarRealm : sugarRealm)
+        
+        insulinSupplyWorker.updateInsulinSupplyValue(
+          totalInsulin: viewModel.resultFooterVM.totalInsulin,
+          updatedType: .add)
         
         // MARK: Start Ml Learning
         // Пусть эта работа идет в Асинхронном потоке! Так как мы взаимодействуем с Реалмом то можем взять только main.async
@@ -154,6 +163,9 @@ extension NewCompansationObjectScreenInteractor {
   
   
 }
+
+
+
 
 // MARK: Update CurrentObjects
 

@@ -31,12 +31,13 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   // Properties
   
 //  var tableView = UITableView(frame: .zero, style: .plain)
-  var mainScreenView    : MainScreenView!
-  var navBarView        : MainCustomNavBar!
-  var chartVC           : ChartViewController!
-  var mealCollectionVC  : MealCollectionVC!
-  var insulinSupplyView : InsulinSupplyView!
-  var newSugarDataView  : NewSugarDataView!
+  var mainScreenView          : MainScreenView!
+  var navBarView              : MainCustomNavBar!
+  var chartVC                 : ChartViewController!
+  var mealCollectionVC        : MealCollectionVC!
+  var insulinSupplyView       : InsulinSupplyView!
+  var newSugarDataView        : NewSugarDataView!
+  var addNewInsulinSupplyView : AddNewInsulinSupplyView!
 //  var calendarView      : CalendarView!
   
   // For KeyboardNotification
@@ -87,17 +88,16 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     super.viewDidLoad()
     
     setViews()
-    
+    print("View DId Load")
     interactor?.makeRequest(request: .checkLastDayInDB)
-//    getBlankDay()
+
   }
   
-  private func getBlankDay() {
-    interactor?.makeRequest(request: .getBlankViewModel)
-  }
+
   
   // MARK: Activate Application
   func activateApplication() {
+    
     print("Activate application")
     
     // На старте мы просто перезапишим балнк модель и все! в остальное время будет все норм!
@@ -105,17 +105,13 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
 
   }
   
-
-  
-  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
     print("Main Screen View Will Appear")
     
     interactor?.makeRequest(request: .checkLastDayInDB)
-    
-    
+
     navigationController?.navigationBar.isHidden = true
     setKeyboardNotification()
     // Сделаем запрос в реалм чтобы получить новые данные по ViewModel
@@ -156,12 +152,13 @@ extension MainScreenViewController {
   
    private func setViews() {
     
-    mainScreenView    = MainScreenView()
-    navBarView        = mainScreenView.navBar
-    chartVC           = mainScreenView.chartView.chartVC
-    mealCollectionVC  = mainScreenView.mealCollectionView.collectionVC
-    insulinSupplyView = mainScreenView.insulinSupplyView
-    newSugarDataView  = mainScreenView.newSugarView
+    mainScreenView          = MainScreenView()
+    navBarView              = mainScreenView.navBar
+    chartVC                 = mainScreenView.chartView.chartVC
+    mealCollectionVC        = mainScreenView.mealCollectionView.collectionVC
+    insulinSupplyView       = mainScreenView.insulinSupplyView
+    newSugarDataView        = mainScreenView.newSugarView
+    addNewInsulinSupplyView = mainScreenView.addNewInsulinSupplyView
 //    calendarView      = mainScreenView.calendareView
     
     
@@ -188,11 +185,45 @@ extension MainScreenViewController {
     
     setCompansationObjectCellTopButtons()
     
+    setAddNewInsulinSupplyViewClousers()
+    
+  }
+  
+  
+  //MARK: AddNewInsulinSupplyClousers
+  private func setAddNewInsulinSupplyViewClousers() {
+    
+    addNewInsulinSupplyView.didTapCancelButton = { [weak self] in
+      
+      self?.hideAddNewInsulinSupplyValue()
+      
+    }
+    
+    addNewInsulinSupplyView.didTapSaveButton = { [weak self] in
+      
+      guard let supplyUserSet = self?.addNewInsulinSupplyView.insulinSupplyValue else {return}
+      // теперь нам нужно прокинуть это значение в модель! и работать с ней! А что если мы скипаем приложение эти данные не доолжны исчезнуть!
+      // Значит нам надо сохранить их в памяти
+      self?.interactor?.makeRequest(request: .setInsulinSupplyValue(insulinSupplyValue: supplyUserSet))
+      
+      self?.hideAddNewInsulinSupplyValue()
+    }
+    
+
+  }
+  
+  private func hideAddNewInsulinSupplyValue() {
+    AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(
+    newElementView: self.addNewInsulinSupplyView,
+    blurView:self.mainScreenView.blurView ,
+    customNavBar: self.navBarView,
+    tabbarController: self.tabBarController!,
+    isShow: false)
   }
   
 
   
-  // Top Buttons Clouser
+  //MARK:  Top Buttons Clouser
   private func setCompansationObjectCellTopButtons() {
     
     mealCollectionVC.didDeleteCompasationObject = {[weak self] id in
@@ -232,7 +263,7 @@ extension MainScreenViewController {
   
   
   
-  // ChartVC Clousers
+  //MARK: ChartVC Clousers
   private func setChartVCClousers() {
     chartVC.passCompansationObjectId = { [weak self] mealId in
       self?.catchMealIdFromChart(mealId: mealId)
@@ -244,8 +275,11 @@ extension MainScreenViewController {
       self?.catchMealIDFromMealVCThanScrolled(mealId: mealId)
     }
   }
-  // InsulinSupplyView Clousers
+  //MARK:  InsulinSupplyView Clousers
+  
+  
   private func setInsulinSupplyClousers() {
+    
     insulinSupplyView.passSiganlLowSupplyLevel  = {[weak self] in
       self?.catchInsulinViewSupplyLevelLow()
     }
@@ -253,8 +287,21 @@ extension MainScreenViewController {
     insulinSupplyView.passSignalShowSupplyLevel = {[weak self] in
       self?.catchInsulinViewShowSupplyLevel()
     }
+    
+    insulinSupplyView.didTapReloadInsulinSupplyButtons = {[weak self] in
+      // Нужно показать AddNewInsulinSupplyView
+      AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(
+        newElementView: self!.addNewInsulinSupplyView,
+        blurView:self!.mainScreenView.blurView ,
+        customNavBar: self!.navBarView,
+        tabbarController: self!.tabBarController!,
+        isShow: true)
+    }
+    
+    
+    
   }
-  // NavBarClousers
+  //MARK: NavBarClousers
   private func setNavBarClousers() {
     navBarView.didTapAddNewDataClouser = {[weak self] in
       self?.addNewData()
@@ -275,7 +322,7 @@ extension MainScreenViewController {
     }
   }
   
-  // NewSugarView Clousers
+  //MARK: NewSugarView Clousers
   
   private func setNewSugarDataViewClousers() {
     newSugarDataView.didTapSaveButtonClouser = { [weak self] sugarVM in
@@ -383,7 +430,7 @@ extension MainScreenViewController {
    private func catchInsulinViewShowSupplyLevel() {
      
      let supplyLevel = mainScreenViewModel.insulinSupplyVM.insulinSupply
-     self.showAlertController(title: "Инсулина в картридже.", message: "\(supplyLevel)ед.")
+     self.showAlertController(title: "Инсулина в картридже. ", message: "\(supplyLevel) ед.")
    }
 }
 

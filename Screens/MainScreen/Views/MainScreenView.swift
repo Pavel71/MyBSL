@@ -26,11 +26,12 @@ protocol MainScreenViewModelable {
 class MainScreenView: UIView {
   
   // TopBar
-  let navBar             = MainCustomNavBar(frame: MainCustomNavBar.sizeBar)
-  let insulinSupplyView  = InsulinSupplyView()
-  let chartView          = ChartView()
-  let mealCollectionView = MealCollectionView()
-  let newSugarView       = NewSugarDataView(frame: NewSugarDataView.sizeView)
+  let navBar                  = MainCustomNavBar(frame: MainCustomNavBar.sizeBar)
+  let insulinSupplyView       = InsulinSupplyView()
+  let addNewInsulinSupplyView = AddNewInsulinSupplyView(frame: AddNewInsulinSupplyView.sizeView)
+  let chartView               = ChartView()
+  let mealCollectionView      = MealCollectionView()
+  let newSugarView            = NewSugarDataView(frame: NewSugarDataView.sizeView)
 //  let calendareView      = CalendarView(frame: CalendarView.sizeView)
   
   var blurView: UIVisualEffectView = {
@@ -59,6 +60,10 @@ class MainScreenView: UIView {
     
     mealCollectionView.collectionVC.setViewModel(viewModel : viewModel.dayVM.collectionVCVM)
     
+    insulinSupplyView.setViewModel(viewModel: viewModel.insulinSupplyVM)
+    addNewInsulinSupplyView.updateInsulinSupplyValue(insulinSuppValue: viewModel.insulinSupplyVM.insulinSupply)
+    
+    
   }
   
   required init?(coder: NSCoder) {
@@ -80,7 +85,7 @@ extension MainScreenView {
     setUpBlurEffect()
 //    setCalendarView()
     setNewSugarDataView()
-    
+    setAddNewInsulinSupplyView()
   }
   
   
@@ -126,6 +131,21 @@ extension MainScreenView {
     
 
   }
+  
+  private func setAddNewInsulinSupplyView() {
+    
+     addSubview(addNewInsulinSupplyView)
+     addNewInsulinSupplyView.centerInSuperview()
+    
+    addNewInsulinSupplyView.constrainWidth(constant: AddNewInsulinSupplyView.sizeView.width)
+    addNewInsulinSupplyView.constrainHeight(constant: AddNewInsulinSupplyView.sizeView.height)
+    
+     
+     // Убираем вправый угол!
+     addNewInsulinSupplyView.hideViewOnTheRightCorner()
+     
+
+   }
   
 //  private func setCalendarView() {
 //

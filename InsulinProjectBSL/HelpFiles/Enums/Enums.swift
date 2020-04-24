@@ -46,6 +46,8 @@ enum UserDefaultsKey: String {
   
   case isOnBoardingComplete
   
+  case insulinSupplyValue
+  
 }
 
 

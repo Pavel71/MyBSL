@@ -38,6 +38,7 @@ class MainDinnerProductListCell: BaseProductListCell {
   var didChangePortionFromPickerView: TextFieldPassClouser?
   
   
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
@@ -47,22 +48,28 @@ class MainDinnerProductListCell: BaseProductListCell {
     portionTextField.delegate = self
     insulinTextField.delegate = self
     
+    portionTextField.keyboardType = .numberPad
+    insulinTextField.keyboardType = .decimalPad
+    
+    
+    portionTextField.addTarget(self, action: #selector(textFieldChanging), for: .editingChanged)
+    insulinTextField.addTarget(self, action: #selector(textFieldChanging), for: .editingChanged)
     // Set Picker View
-    portionTextField.inputView = portionPickerView
-    insulinTextField.inputView = insulinPickerView
+//    portionTextField.inputView = portionPickerView
+//    insulinTextField.inputView = insulinPickerView
     
     
-    portionPickerView.passValueFromPickerView = {[weak self] value in
-      
-      
-      self?.portionTextField.text = "\(Int(value))"
-      self?.didChangePortionFromPickerView!(self!.portionTextField)
-    }
-    
-    insulinPickerView.passValueFromPickerView = {[weak self] value in
-      self?.insulinTextField.text = "\(value)"
-      self?.didChangeInsulinFromPickerView!(self!.insulinTextField)
-    }
+//    portionPickerView.passValueFromPickerView = {[weak self] value in
+//
+//
+//      self?.portionTextField.text = "\(Int(value))"
+//      self?.didChangePortionFromPickerView!(self!.portionTextField)
+//    }
+//
+//    insulinPickerView.passValueFromPickerView = {[weak self] value in
+//      self?.insulinTextField.text = "\(value)"
+//      self?.didChangeInsulinFromPickerView!(self!.insulinTextField)
+//    }
     
 //    pickerView.delegate = self
 //    pickerView.dataSource = self
@@ -128,7 +135,8 @@ class MainDinnerProductListCell: BaseProductListCell {
 extension MainDinnerProductListCell: UITextFieldDelegate {
   
   func textFieldDidEndEditing(_ textField: UITextField) {
-
+    
+    print("End Editiing")
     switch textField {
 
     case insulinTextField:
@@ -146,23 +154,36 @@ extension MainDinnerProductListCell: UITextFieldDelegate {
     }
 
   }
+  
+  @objc private func textFieldChanging(textFIeld: UITextField) {
+    
+    print(textFIeld.text,"Changing")
+    
+    switch textFIeld {
+    case insulinTextField:
+      self.didChangeInsulinFromPickerView!(insulinTextField)
+    case portionTextField:
+      self.didChangePortionFromPickerView!(portionTextField)
+    default:break
+    }
+  }
+  
+  
 
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
-  
+    
+    print("Start Editing")
+    guard let text = textField.text else {return}
+    
+    if text.floatValue() == 0 {
+      textField.text = ""
+    }
+    
     // Отправляем в main Controller
     didBeginEditingTextField!(textField)
   }
   
 }
 
-// MARK: Accessuary View Signals
 
-extension MainDinnerProductListCell {
-
-  
-  @objc private func doneButtonAction() {
-    print("Done Button")
-    self.endEditing(true)
-  }
-}

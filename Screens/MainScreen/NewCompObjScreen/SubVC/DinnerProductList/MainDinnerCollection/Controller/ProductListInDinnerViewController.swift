@@ -80,7 +80,7 @@ class ProductListInDinnerViewController: BaseProductList {
   // Clousers
   var didSelectTextFieldCellClouser: TextFieldPassClouser?
   var didDeleteProductClouser:(([ProductRealm]) -> Void)?
-  
+  var didTapDoneButton: EmptyClouser?
   
   
   
@@ -158,11 +158,12 @@ extension ProductListInDinnerViewController {
 extension ProductListInDinnerViewController {
   
   @objc private func doneButtonAction() {
+    self.didTapDoneButton!()
     self.view.endEditing(true)
   }
   
   func setAllInsulinLabelValue(allInsulin: Float) {
-    insulinLabel.text = "\(allInsulin)"
+    insulinLabel.text = "\(allInsulin.roundToDecimal(2))"
     insulinLabel.sizeToFit()
     
   }
@@ -197,6 +198,15 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     
     return cell
   }
+  
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let cell = tableView.cellForRow(at: indexPath) as? MainDinnerProductListCell else {return}
+    cell.portionTextField.becomeFirstResponder()
+    tableView.deselectRow(at: indexPath, animated: true)
+  }
+  
+  
   // MARK: Set Cell CLousers
   private func setCellClousers(cell:MainDinnerProductListCell) {
     
@@ -234,9 +244,7 @@ extension ProductListInDinnerViewController: UITableViewDataSource {
     }
   }
   
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    tableView.deselectRow(at: indexPath, animated: true)
-  }
+
   
   
 }
@@ -277,7 +285,7 @@ extension ProductListInDinnerViewController: UITextFieldDelegate {
 
     
     guard let insulin  = getPredictInsulinByCarbo(carbo: Float(carboInPortion)) else {return}
-    cell.insulinTextField.text = "\(insulin)"
+    cell.insulinTextField.text = "\(insulin.roundToDecimal(2))"
     let sum = CalculateValueTextField.calculateSumInsulin(insulin: insulin, indexPath: indexPath, tableViewData: &tableViewData)
     footerView.resultsView.insulinResultLabel.text = "\(floatTwo: sum)"
     
@@ -295,9 +303,19 @@ extension ProductListInDinnerViewController: UITextFieldDelegate {
   
   
   private func getPredictInsulinByCarbo(carbo: Float) -> Float? {
-     let insulinByCarbo = mlWorkerByFood.getPredict(testData: [Float(carbo)])
     
-    return insulinByCarbo.first?.roundToDecimal(2)
+    var predictInsulin:Float?
+    
+    if  carbo != 0 {
+      let predictInsulinArray = mlWorkerByFood.getPredict(testData: [Float(carbo)])
+      predictInsulin = predictInsulinArray.first
+    } else {
+      predictInsulin = 0
+    }
+    
+//     let insulinByCarbo = mlWorkerByFood.getPredict(testData: [Float(carbo)])
+    
+    return predictInsulin
   }
   
   // MARK: DidChange InsulinFiedl
@@ -305,8 +323,9 @@ extension ProductListInDinnerViewController: UITextFieldDelegate {
 
     
     guard let (insulin,indexPath) = getValueAndRowTextField(textField: textField) else {return}
-    let cell = tableView.cellForRow(at: indexPath) as! MainDinnerProductListCell
-    cell.insulinTextField.text = "\(insulin)"
+    
+//    let cell = tableView.cellForRow(at: indexPath) as! MainDinnerProductListCell
+//    cell.insulinTextField.text = "\(insulin)"
     
     let sum = CalculateValueTextField.calculateSumInsulin(insulin: insulin, indexPath: indexPath, tableViewData: &tableViewData)
     footerView.resultsView.insulinResultLabel.text = "\(floatTwo: sum)"

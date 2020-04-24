@@ -37,7 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
-
+    
+    iniitServiceLocator()
     
     
     initializeRealm()
@@ -59,6 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
     // Здесь мне нужно сделать проверку на дату! и передать информацию в ViewController - сделать какойнить класс с оперативкой
     let appStateService: AppState = AppState.shared
+    
     let tabBarController = appStateService.mainWindow?.rootViewController as! BaseTabBarController
     
     let mainScreenController:MainScreenViewController = tabBarController.viewControllers?.filter{$0.children[0] is MainScreenViewController}[0].children[0] as! MainScreenViewController
@@ -66,6 +68,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     mainScreenController.activateApplication()
     
   }
+  
+  
   
   func root() {
     
@@ -79,6 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     let isOnBoardingComplete = UserDefaults.standard.bool(forKey: UserDefaultsKey.isOnBoardingComplete.rawValue)
+    
     if isOnBoardingComplete == false {
          appStateService.secondWindow = UIWindow(frame: UIScreen.main.bounds)
 
@@ -96,88 +101,103 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
  
-  
-  
-  private func initializeRealm() {
-    // Здесь указываем с какой схемой Realm работаем!
-    let realm = RealmProvider.products.realm
-    guard realm.isEmpty else { return }
-
-    try! realm.write {
-//      realm.deleteAll()
-      items.forEach({ (product) in
-        realm.add(product)
-      })
-
-    }
-  }
-  
-  private func initMeals() {
-    let realm = RealmProvider.meals.realm
  
-    guard realm.isEmpty else { return }
+  
+
+
+
+}
+
+
+// Help Func
+
+extension AppDelegate {
+  
+   private func iniitServiceLocator() {
     
-    try! realm.write {
-//      realm.deleteAll()
-      realm.add(meals)
+    let locator = ServiceLocator.shared
+    
+    locator.addService(service: UserDefaults.standard)
+//    locator.addService(service: NewDayRealmManager() )
+      
     }
     
-  }
+    private func initializeRealm() {
+      // Здесь указываем с какой схемой Realm работаем!
+      let realm = RealmProvider.products.realm
+      guard realm.isEmpty else { return }
 
-  private func deInitDaysRealm() {
-    let realm = RealmProvider.day.realm
-//    print("Init Day Realm")
-////    guard  realm.isEmpty else {return}
-//
-//    print("База Данных пустая!")
-//      let blankDay = DayRealm()
-//
-//      do {
-//        realm.beginWrite()
-//        realm.deleteAll()
-//        realm.add(blankDay, update: .all)
-//
-//        try realm.commitWrite()
-//        print(realm.configuration.fileURL?.absoluteURL as Any,"Day in DB")
-//
-//      } catch {
-//        print(error.localizedDescription)
-//      }
-    
-        try! realm.write {
-          realm.deleteAll()
-    //      realm.add(dinners)
-        }
-    
-    initCompObjRealm()
-    initSugarRealm()
-  }
-  
-  private func initCompObjRealm() {
-    let realm = RealmProvider.compObjProvider.realm
-    
-        try! realm.write {
-          realm.deleteAll()
-    //      realm.add(dinners)
-        }
-    
-  }
-  
-  private func initSugarRealm() {
-    
-    let realm = RealmProvider.sugarProvider.realm
-    
-  
-    
-        try! realm.write {
-          realm.deleteAll()
-    //      realm.add(dinners)
-        }
-    
-  }
-  
+      try! realm.write {
+  //      realm.deleteAll()
+        items.forEach({ (product) in
+          realm.add(product)
+        })
 
+      }
+    }
+    
+    private func initMeals() {
+      let realm = RealmProvider.meals.realm
+   
+      guard realm.isEmpty else { return }
+      
+      try! realm.write {
+  //      realm.deleteAll()
+        realm.add(meals)
+      }
+      
+    }
 
-
+    private func deInitDaysRealm() {
+      let realm = RealmProvider.day.realm
+  //    print("Init Day Realm")
+  ////    guard  realm.isEmpty else {return}
+  //
+  //    print("База Данных пустая!")
+  //      let blankDay = DayRealm()
+  //
+  //      do {
+  //        realm.beginWrite()
+  //        realm.deleteAll()
+  //        realm.add(blankDay, update: .all)
+  //
+  //        try realm.commitWrite()
+  //        print(realm.configuration.fileURL?.absoluteURL as Any,"Day in DB")
+  //
+  //      } catch {
+  //        print(error.localizedDescription)
+  //      }
+      
+          try! realm.write {
+            realm.deleteAll()
+      //      realm.add(dinners)
+          }
+      
+      initCompObjRealm()
+      initSugarRealm()
+    }
+    
+    private func initCompObjRealm() {
+      let realm = RealmProvider.compObjProvider.realm
+      
+          try! realm.write {
+            realm.deleteAll()
+      //      realm.add(dinners)
+          }
+      
+    }
+    
+    private func initSugarRealm() {
+      
+      let realm = RealmProvider.sugarProvider.realm
+      
+    
+      
+          try! realm.write {
+            realm.deleteAll()
+      //      realm.add(dinners)
+          }
+      
+    }
 }
 

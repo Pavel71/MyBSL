@@ -16,6 +16,8 @@ class MainScreenPresenter: MainScreenPresentationLogic {
   
   weak var viewController: MainScreenDisplayLogic?
   
+  var userDefaults = UserDefaults.standard
+  
   func presentData(response: MainScreen.Model.Response.ResponseType) {
     
     catchViewModelResponse(response: response)
@@ -53,6 +55,7 @@ extension MainScreenPresenter {
       let dayViewModel = getViewModel(realmData: realmData)
       
       viewController?.displayData(viewModel: .setViewModel(viewModel: dayViewModel))
+
     default: break
     }
   }
@@ -124,7 +127,10 @@ extension MainScreenPresenter {
   
   // MARK: Insulin SUpply VM
   private func getInsulinSupplyVM() -> InsulinSupplyViewModel {
-    InsulinSupplyViewModel(insulinSupply: 300)
+    
+    let insulinSupplyValue = userDefaults.integer(forKey: UserDefaultsKey.insulinSupplyValue.rawValue)
+    
+    return InsulinSupplyViewModel(insulinSupply: Float(insulinSupplyValue))
   }
   
   

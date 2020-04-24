@@ -134,7 +134,7 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
     case .updateCompObjAndSugarRealmSucsess:
       didUpdateCompObjAndSugarRealm!()
       
-    default:break
+    
     }
   }
   
@@ -334,18 +334,22 @@ extension NewCompansationObjectScreenViewController {
     productListVC.didPortionTextFieldEndEditingToDinnerController = {[weak self] portion, index in
 
       self?.interactor?.makeRequest(request: .updatePortionInProduct(portion: portion,index: index))
-      self?.updateMealCell()
+//      self?.updateMealCell()
     }
       
     productListVC.didInsulinTextFieldEndEditingToDinnerController = {[weak self] insulin,index in
-    
+      // Мы делаем обновление ячейки! Что в целом не обязательно делать! ТОгда не будет слитать Клавиатура
       self?.interactor?.makeRequest(request: .updateInsulinByPerson(insulin: insulin, index: index))
-      self?.updateMealCell()
+//      self?.updateMealCell()
     }
     
     productListVC.didDeleteProductClouser = {[weak self] products in
       self?.deleteProducts(products: products)
     }
+    productListVC.didTapDoneButton = {[weak self] in
+      self?.updateMealCell()
+    }
+    
     
   }
 }

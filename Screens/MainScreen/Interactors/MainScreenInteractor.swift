@@ -17,8 +17,10 @@ class MainScreenInteractor: MainScreenBusinessLogic {
   var presenter: MainScreenPresentationLogic?
   
 //  let dayRealmManager = DayRealmManager()
-  let newDayRealmManager = NewDayRealmManager.shared
-  
+  let newDayRealmManager   = NewDayRealmManager.shared
+  let userDefaults         = UserDefaults.standard
+  let insulinSupplyWorker  = InsulinSupplyWorker.shared
+  let compObjRealmManager  = CompObjRealmManager.shared
   
   
   func makeRequest(request: MainScreen.Model.Request.RequestType) {
@@ -69,8 +71,13 @@ extension MainScreenInteractor {
       
     case .deleteCompansationObj(let compObjId):
       
+      guard let compObj = compObjRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: compObjId) else {return}
+      let totalInsulin = compObj.totalInsulin
+      
       newDayRealmManager.deleteCompObjById(compObjId: compObjId)
       newDayRealmManager.deleteSugarByCompObjId(sugarCompObjId: compObjId)
+      
+      insulinSupplyWorker.updateInsulinSupplyValue(totalInsulin: totalInsulin.toFloat(), updatedType: .delete)
 
       passDayRealmToConvertInVMInPresenter()
       
@@ -83,11 +90,12 @@ extension MainScreenInteractor {
     case .checkLastDayInDB:
       // Если true то мы ничего не трогаем и возвращаем нашу модель как есть
       
+      
       if newDayRealmManager.isNowLastDayInDB() == false {
         print("Сегодняшнего дня нет в базе поэтому добавляю новый день")
         newDayRealmManager.addBlankDay()
       } else {
-        
+        print("Сегодня есть в базе, просто сетим его")
         // Есть сегодняшний день то сетим его в current
         newDayRealmManager.setDayByDate(date: Date())
       }
@@ -131,8 +139,21 @@ extension MainScreenInteractor {
       newDayRealmManager.addBlankDay()
       passDayRealmToConvertInVMInPresenter()
       
+    case .setInsulinSupplyValue(let insulinSupplyValue):
+      
+      setInsulinSupplyValueInUserDefaults(insulinSupply: insulinSupplyValue)
+      passDayRealmToConvertInVMInPresenter()
+      
     default:break
     }
+  }
+}
+
+// MARK: Set InsulinSupply In User Defaults
+extension MainScreenInteractor {
+  
+  private func setInsulinSupplyValueInUserDefaults(insulinSupply: Int) {
+    userDefaults.set(insulinSupply, forKey: UserDefaultsKey.insulinSupplyValue.rawValue)
   }
 }
 

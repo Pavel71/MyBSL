@@ -31,4 +31,15 @@ extension Float {
   func toDouble() -> Double {
     return Double(self)
   }
- }
+  
+  func toInt() -> Int {
+    return Int(self)
+  }
+}
+
+extension Int {
+  
+  func toFloat() -> Float{
+    return Float(self)
+  }
+}

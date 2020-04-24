@@ -34,6 +34,7 @@ class MLWorker {
 //  var categoryLabelOrdinalDict:[String: Int] = [:]
   
   func getPredict(testData: [Float]) -> [Float] {
+    
     let predicts = simpleRegressionModel.getPredict(test: testData)
     return predicts
   }

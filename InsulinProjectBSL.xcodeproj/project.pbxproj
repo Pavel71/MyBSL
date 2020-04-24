@@ -35,6 +35,8 @@
 		054471BF2395213B0020C0DC /* InsulinSupplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054471BE2395213B0020C0DC /* InsulinSupplyView.swift */; };
 		054471C1239531410020C0DC /* InsulinSupplyWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054471C0239531410020C0DC /* InsulinSupplyWorker.swift */; };
 		0544720E2396536E0020C0DC /* NewSugarDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0544720D2396536E0020C0DC /* NewSugarDataView.swift */; };
+		05460F83244F0294008B4ABF /* AddNewInsulinSupplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05460F82244F0294008B4ABF /* AddNewInsulinSupplyView.swift */; };
+		05460F862452EA4B008B4ABF /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05460F852452EA4B008B4ABF /* ServiceLocator.swift */; };
 		0550AEA82418FADF00140254 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0550AEA72418FADF00140254 /* Double+Extensions.swift */; };
 		0550AEAB241BC10D00140254 /* ConvertCompObjRealmToVMWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0550AEAA241BC10D00140254 /* ConvertCompObjRealmToVMWorker.swift */; };
 		0550B801234636E500D88732 /* ListTrainsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0550B800234636E500D88732 /* ListTrainsViewController.swift */; };
@@ -136,7 +138,6 @@
 		05AAFF14238C0169002AE3D9 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AAFF13238C0169002AE3D9 /* ChartViewController.swift */; };
 		05AD21532361B784008E6BB0 /* DateWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD21522361B784008E6BB0 /* DateWorker.swift */; };
 		05B1DEB4237ECD0B0015E4E6 /* MainScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEAD237ECD0A0015E4E6 /* MainScreenPresenter.swift */; };
-		05B1DEB5237ECD0B0015E4E6 /* MainScreenWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEAE237ECD0A0015E4E6 /* MainScreenWorker.swift */; };
 		05B1DEB6237ECD0B0015E4E6 /* MainScreenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEAF237ECD0A0015E4E6 /* MainScreenRouter.swift */; };
 		05B1DEB7237ECD0B0015E4E6 /* MainScreenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEB0237ECD0A0015E4E6 /* MainScreenModels.swift */; };
 		05B1DEB8237ECD0B0015E4E6 /* MainScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEB1237ECD0A0015E4E6 /* MainScreenViewController.swift */; };
@@ -295,6 +296,8 @@
 		054471BE2395213B0020C0DC /* InsulinSupplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsulinSupplyView.swift; sourceTree = "<group>"; };
 		054471C0239531410020C0DC /* InsulinSupplyWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsulinSupplyWorker.swift; sourceTree = "<group>"; };
 		0544720D2396536E0020C0DC /* NewSugarDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSugarDataView.swift; sourceTree = "<group>"; };
+		05460F82244F0294008B4ABF /* AddNewInsulinSupplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewInsulinSupplyView.swift; sourceTree = "<group>"; };
+		05460F852452EA4B008B4ABF /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		0550AEA72418FADF00140254 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		0550AEAA241BC10D00140254 /* ConvertCompObjRealmToVMWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertCompObjRealmToVMWorker.swift; sourceTree = "<group>"; };
 		0550B800234636E500D88732 /* ListTrainsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTrainsViewController.swift; sourceTree = "<group>"; };
@@ -396,7 +399,6 @@
 		05AAFF13238C0169002AE3D9 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
 		05AD21522361B784008E6BB0 /* DateWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateWorker.swift; sourceTree = "<group>"; };
 		05B1DEAD237ECD0A0015E4E6 /* MainScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenPresenter.swift; sourceTree = "<group>"; };
-		05B1DEAE237ECD0A0015E4E6 /* MainScreenWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenWorker.swift; sourceTree = "<group>"; };
 		05B1DEAF237ECD0A0015E4E6 /* MainScreenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenRouter.swift; sourceTree = "<group>"; };
 		05B1DEB0237ECD0A0015E4E6 /* MainScreenModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenModels.swift; sourceTree = "<group>"; };
 		05B1DEB1237ECD0A0015E4E6 /* MainScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewController.swift; sourceTree = "<group>"; };
@@ -696,13 +698,6 @@
 			path = SwipeView;
 			sourceTree = "<group>";
 		};
-		053BA99B244B4D4900DF16E5 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
-			sourceTree = "<group>";
-		};
 		053BAB50233B56C10080359B /* Validatable */ = {
 			isa = PBXGroup;
 			children = (
@@ -730,6 +725,7 @@
 		054471BD239521280020C0DC /* InsulinSupplyView */ = {
 			isa = PBXGroup;
 			children = (
+				05460F81244F0272008B4ABF /* AddNewInsulinSupplyView */,
 				054471BE2395213B0020C0DC /* InsulinSupplyView.swift */,
 			);
 			path = InsulinSupplyView;
@@ -742,6 +738,22 @@
 				0544720D2396536E0020C0DC /* NewSugarDataView.swift */,
 			);
 			path = NewSugarDataView;
+			sourceTree = "<group>";
+		};
+		05460F81244F0272008B4ABF /* AddNewInsulinSupplyView */ = {
+			isa = PBXGroup;
+			children = (
+				05460F82244F0294008B4ABF /* AddNewInsulinSupplyView.swift */,
+			);
+			path = AddNewInsulinSupplyView;
+			sourceTree = "<group>";
+		};
+		05460F842452EA39008B4ABF /* ServiceLocator */ = {
+			isa = PBXGroup;
+			children = (
+				05460F852452EA4B008B4ABF /* ServiceLocator.swift */,
+			);
+			path = ServiceLocator;
 			sourceTree = "<group>";
 		};
 		054B5C2F235466270061D705 /* NewViewAnimated */ = {
@@ -1870,7 +1882,6 @@
 			isa = PBXGroup;
 			children = (
 				05A7CAEA23827C8E0075D04E /* MainScreenView.swift */,
-				053BA99B244B4D4900DF16E5 /* New Group */,
 				05B6E809242B71F80009F7EA /* CalendarView */,
 				05A4F1A02339F29100DFE4D7 /* CustomNavBar */,
 				0544720C239653320020C0DC /* NewSugarDataView */,
@@ -1902,7 +1913,6 @@
 		05B1DEBF237ECD450015E4E6 /* Workers */ = {
 			isa = PBXGroup;
 			children = (
-				05B1DEAE237ECD0A0015E4E6 /* MainScreenWorker.swift */,
 				054471C0239531410020C0DC /* InsulinSupplyWorker.swift */,
 			);
 			path = Workers;
@@ -2891,6 +2901,7 @@
 		F1E78CF5230D34F500592AB8 /* HelpFiles */ = {
 			isa = PBXGroup;
 			children = (
+				05460F842452EA39008B4ABF /* ServiceLocator */,
 				F14953302328D0650027E655 /* Protocols */,
 				F13B352223190FB20020AD26 /* Enums */,
 				F1E78D07230D54E900592AB8 /* Aliases */,
@@ -3180,7 +3191,6 @@
 				05B6E80B242B72120009F7EA /* CalendarView.swift in Sources */,
 				05664803244324570085F542 /* LearnByCorrectionView.swift in Sources */,
 				05C0C62C238D40EF001B2664 /* DinnersRealm.swift in Sources */,
-				05B1DEB5237ECD0B0015E4E6 /* MainScreenWorker.swift in Sources */,
 				F1E78CD7230D338A00592AB8 /* SettingsWorker.swift in Sources */,
 				0553F12B23FE6CD90069BD81 /* ResultsListModel.swift in Sources */,
 				F1932B42231FB009003DC351 /* UITableView + Extension.swift in Sources */,
@@ -3265,6 +3275,7 @@
 				0537370D234B256700411C46 /* DinnerData.swift in Sources */,
 				0509FD06233FCA9700B04B30 /* DinnerRealm.swift in Sources */,
 				05A7CAF52382A3F70075D04E /* MealProductsVC.swift in Sources */,
+				05460F862452EA4B008B4ABF /* ServiceLocator.swift in Sources */,
 				F150DBF22317DD2300380AE0 /* MealRouter.swift in Sources */,
 				F1E78D09230D54F500592AB8 /* Aliases.swift in Sources */,
 				F111632B231E8F71000C79FA /* CustomHeaderInSectionView.swift in Sources */,
@@ -3297,6 +3308,7 @@
 				F1103B63232A735D009A338A /* NewMealViewWorker.swift in Sources */,
 				F1E78CB8230D334B00592AB8 /* FoodPresenter.swift in Sources */,
 				05515D0423699D0800A298AA /* MLWorker.swift in Sources */,
+				05460F83244F0294008B4ABF /* AddNewInsulinSupplyView.swift in Sources */,
 				0533B98E23F40F78008E13DE /* PortionPickerView.swift in Sources */,
 				05A7CAFC2382BB3D0075D04E /* MealProductCell.swift in Sources */,
 				F1E78D06230D54C900592AB8 /* CustomTextField.swift in Sources */,

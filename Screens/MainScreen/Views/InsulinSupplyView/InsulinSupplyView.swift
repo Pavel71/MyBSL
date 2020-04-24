@@ -20,6 +20,7 @@ protocol InsulinSupplyViewModable {
 class InsulinSupplyView: UIView {
   
   
+  // MARK: Propertys
   
   let progressView: UIProgressView = {
     
@@ -49,10 +50,15 @@ class InsulinSupplyView: UIView {
   }()
   
   
-  // CLousers
+  // MARK: Clousers
   
   var passSiganlLowSupplyLevel  : EmptyClouser?
   var passSignalShowSupplyLevel : EmptyClouser?
+  
+  var didTapReloadInsulinSupplyButtons: EmptyClouser?
+  
+  
+  // MARK: Init
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -81,8 +87,11 @@ class InsulinSupplyView: UIView {
     
   }
   
-  private func setViewModel(viewModel:InsulinSupplyViewModable) {
-    progressValue = viewModel.insulinSupply
+  func setViewModel(viewModel:InsulinSupplyViewModable) {
+    
+    let progressValue = viewModel.insulinSupply / 300
+    
+    self.progressValue = progressValue
     setTrackColor()
     setProgress()
   }
@@ -92,8 +101,8 @@ class InsulinSupplyView: UIView {
   
   // Reload Button handler
   @objc private func hadnleReloadProgressButton(button: UIButton) {
-//    setProgress(insulinDelete: 0.1)
-    // Show View With textField Than User can set Supply and push ok
+    didTapReloadInsulinSupplyButtons!()
+    
   }
   
   // Show Supply Button Handler
