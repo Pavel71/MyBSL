@@ -21,14 +21,29 @@ final class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPre
   
   var isAutoCalculateInsulin = true
   // ViewModel
+  
   private var viewModel: NewCompObjViewModel!
+  
   private var saveButtonValidator  = SaveButtonValidator()
   
-  private var sugarCorrectorWorker = ShugarCorrectorWorker.shared
   
   
   private var mlWorkerByCorrection = MLWorker(typeWeights: .correctSugarByInsulinWeights)
   private var mlWorkerByFood       = MLWorker(typeWeights: .correctCarboByInsulinWeights)
+  
+  private var sugarCorrectorWorker  : ShugarCorrectorWorker!
+  private var compObjRealmManager   : CompObjRealmManager!
+  private var dateEnriachmentWorker : DataEnrichmentWorker!
+  let userDefaults = UserDefaults.standard
+  
+  init() {
+    let locator = ServiceLocator.shared
+    sugarCorrectorWorker  = locator.getService()
+    compObjRealmManager   = locator.getService()
+    dateEnriachmentWorker = locator.getService()
+    
+  }
+  
   
   func presentData(response: NewCompansationObjectScreen.Model.Response.ResponseType) {
     
@@ -78,7 +93,12 @@ extension NewCompansationObjectScreenPresenter {
         setSugarData(sugar: sugar)
        
         throwViewModelToVC()
-        
+      
+    case .updateCopmansationSugarInsulin(let compInsulin):
+      
+      updateCompSugarInsulinUserSet(compInsulin: compInsulin)
+        throwViewModelToVC()
+      
       case .updateAddMealStateInVM(let isNeed):
         updateMealCellState(isNeed: isNeed)
         
@@ -167,6 +187,16 @@ extension NewCompansationObjectScreenPresenter {
   
  // MARK: Get ML Predict
   
+  private func updateCompSugarInsulinUserSet(compInsulin: String) {
+    
+    let compInsulinFloat = compInsulin.floatValue()
+    
+    viewModel.sugarCellVM.correctionSugarKoeff = compInsulinFloat
+    
+    updateResultViewModel()
+    
+  }
+  
   private func setSugarData(sugar: String) {
     
     
@@ -180,13 +210,27 @@ extension NewCompansationObjectScreenPresenter {
       
       
       let test = sugarCorrectorWorker.getSugasrTrainData(currentSugar: currentSugar.toDouble())
-      let predictSugarCompansation = mlWorkerByCorrection.getPredict(testData: [test])
-      guard let firstPred = predictSugarCompansation.first else {return}
-      // Тут нужно понимать что надо присвоить знак компенсации либо минус либо +
+      
+      
+      
+      // Добавим проверку на то что тест не отклоняется от идела на много
+      // Если отклоняется то уже просим сделать предсказание
+      var predictInsulin:Float?
+      
+      if case 0...0.3 = test {
+        predictInsulin = 0
+      } else {
+        let predictInsulinArray = mlWorkerByCorrection.getPredict(testData: [test])
+        predictInsulin = predictInsulinArray.first
+      }
+
+      guard let predInsul = predictInsulin  else {return}
+      
+      
       let signCompansation:Float = currentSugar < sugarCorrectorWorker.optimalSugarLevel.toFloat() ? -1.0 : 1.0
       
-      viewModel.sugarCellVM.correctionSugarKoeff = firstPred * signCompansation
-      viewModel.addMealCellVM.dinnerProductListVM.compansationSugarInsulin = firstPred * signCompansation
+      viewModel.sugarCellVM.correctionSugarKoeff = predInsul * signCompansation
+      viewModel.addMealCellVM.dinnerProductListVM.compansationSugarInsulin = predInsul * signCompansation
     }
     
     checkSaveButton()
@@ -346,13 +390,6 @@ extension NewCompansationObjectScreenPresenter {
       
       // Set
       viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel = resultViewModel
-      
-      // Каждый раз я также буду пересчитывать долю продукта по углеводам в обеде
-//      let totalCarboInMeal = resultViewModel.sumCarboFloat.toDouble()
-      
-      
-//      // MARK: To Do here
-//      viewModel.addMealCellVM.dinnerProductListVM.productsData.forEach{$0.totalCarboInMeal = totalCarboInMeal}
       
 
       updateResultViewModel()
@@ -573,10 +610,10 @@ extension NewCompansationObjectScreenPresenter {
   }
   
   private func preparingCompObjToLearnToML() {
-    let compRealmManager = CompObjRealmManager.shared
-    guard let compObjToLearnInMl = compRealmManager.fetchSecondOnTheEndCompObj() else {return}
     
-    DataEnrichmentWorker.shared.prepareCompObj(compObj: compObjToLearnInMl)
+    guard let compObjToLearnInMl = compObjRealmManager.fetchSecondOnTheEndCompObj() else {return}
+    
+    dateEnriachmentWorker.prepareCompObj(compObj: compObjToLearnInMl)
   }
   
   private func learnByNewData() {
@@ -584,11 +621,11 @@ extension NewCompansationObjectScreenPresenter {
     // Тут нужна проверка на то что у нас должно быть больше 1 ого объекта в базе!
     // Больше 1ого с продууктами и больше 1ого с
     
-    let compRealmManager = CompObjRealmManager.shared
+    
     // делаем проверку что у нас есть хотя бы 1 обед! Я вот думаю если прибавлять это к тренингу
     // Как только у нас объектов Больше 4 мы можем начинать обновлять веса!
 //    guard compRealmManager.isDBHaveEnothObjectToLearn() else {return}
-    let userDefaults = UserDefaults.standard
+//    let userDefaults = UserDefaults.standard
     
     let baseSugarTrain :[Float] = userDefaults.array(forKey: UserDefaultsKey.sugarCorrectTrainBaseData.rawValue) as! [Float]
     let baseSugarTarget:[Float] = userDefaults.array(forKey: UserDefaultsKey.sugarCorrectTargetBaseData.rawValue) as! [Float]
@@ -602,10 +639,10 @@ extension NewCompansationObjectScreenPresenter {
     
     print("Пошло обучение Модели")
     
-    var sugarTrainData  = compRealmManager.fetchTrainSugar()
+    var sugarTrainData  = compObjRealmManager.fetchTrainSugar()
     sugarTrainData.append(contentsOf: baseSugarTrain)
     
-    var sugarTargetData = compRealmManager.fetchTargetSugar()
+    var sugarTargetData = compObjRealmManager.fetchTargetSugar()
     sugarTargetData.append(contentsOf: baseSugarTarget)
     
     print(sugarTrainData,"Sugar Train Data")
@@ -616,10 +653,10 @@ extension NewCompansationObjectScreenPresenter {
     
     // Нужно прокинуть эти данные в презентер или получить их из презентера
     
-    var carboTrainData  = compRealmManager.fetchTrainCarbo()
+    var carboTrainData  = compObjRealmManager.fetchTrainCarbo()
     print(carboTrainData,"carboTrainData")
     carboTrainData.append(contentsOf: baseCarboTrain)
-    var carboTargetData = compRealmManager.fetchTargetCarbo()
+    var carboTargetData = compObjRealmManager.fetchTargetCarbo()
     print(carboTargetData,"carboTargetData")
     carboTargetData.append(contentsOf: baseCarboTarget)
     

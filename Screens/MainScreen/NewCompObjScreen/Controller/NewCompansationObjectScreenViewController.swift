@@ -301,6 +301,10 @@ extension NewCompansationObjectScreenViewController {
       self?.showAlertController(title: "Коррекция инсулином", message: "Корректировка высокого сахар инсулином")
     }
     
+    cell.didUserSetCopmansationInsulin = {[weak self] userInsuliData in
+      self?.interactor?.makeRequest(request: .passCopmansationSugarInsulin(compInsulin: userInsuliData))
+    }
+    
   }
   
   // Meal Cell Clousers

@@ -21,10 +21,19 @@ class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusiness
   
   // For Work with Realm
   
-  var compRealmManager    = CompObjRealmManager.shared
-  var sugarRealmManager   = SugarRealmManager.shared
-  var userDefaults        = UserDefaults.standard
-  var insulinSupplyWorker = InsulinSupplyWorker.shared
+  var compRealmManager    : CompObjRealmManager!
+  var sugarRealmManager   : SugarRealmManager!
+  var userDefaults        : UserDefaults!
+  var insulinSupplyWorker : InsulinSupplyWorker!
+  
+  
+  init() {
+    let locator = ServiceLocator.shared
+    compRealmManager    = locator.getService()
+    sugarRealmManager   = locator.getService()
+    userDefaults        = locator.getService()
+    insulinSupplyWorker = locator.getService()
+  }
 
   func makeRequest(request: NewCompansationObjectScreen.Model.Request.RequestType) {
     
@@ -56,6 +65,9 @@ extension NewCompansationObjectScreenInteractor {
       
     case .passCurrentSugar(let sugar):
       presenter?.presentData(response: .updateCurrentSugarInVM(sugar: sugar))
+      
+    case .passCopmansationSugarInsulin(let compansatSugarInsulin):
+      presenter?.presentData(response: .updateCopmansationSugarInsulin(compInsulin: compansatSugarInsulin))
       
     case .passIsNeedProductList(let isNeed):
       presenter?.presentData(response: .updateAddMealStateInVM(isNeed: isNeed))
@@ -208,7 +220,7 @@ extension NewCompansationObjectScreenInteractor {
   
   private func updatingSugarRealm(compObj: CompansationObjectRelam) {
     
-    SugarRealmManager.shared.updateSugarRealmByCompObj(compObj: compObj)
+    sugarRealmManager.updateSugarRealmByCompObj(compObj: compObj)
 
   }
   

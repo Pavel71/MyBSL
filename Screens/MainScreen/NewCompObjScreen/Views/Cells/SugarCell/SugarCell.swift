@@ -135,12 +135,13 @@ class SugarCell: UITableViewCell {
   }
   
   
-  // MARK: Buttons Signals
+  // MARK: Clousers
   
   
   var didTapCurrentSugarButton      : EmptyClouser?
   var didTapCorrectionInsulinButton : EmptyClouser?
   var didTapRobotInfoButton         : EmptyClouser?
+  var didUserSetCopmansationInsulin : StringPassClouser?
   
   @objc private func tapButton(button: UIButton) {
     switch button {
@@ -336,7 +337,9 @@ extension SugarCell: UITextFieldDelegate {
     
     switch textField {
     case correctionTextField:
-      print("Editing CorrectionTextField")
+      
+      didUserSetCopmansationInsulin!(text)
+      
     case currentSugarTextField:
       
       passCurrentSugarClouser!(text)

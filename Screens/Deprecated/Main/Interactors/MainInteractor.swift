@@ -166,15 +166,15 @@ extension MainInteractor {
   
   func updatePrevDinnerInRealmAndSendMessageIfNeed(shugar: Float) {
 
-    let isGoodCompansation = !ShugarCorrectorWorker.shared.isPreviosDinnerFalledCompansation(shugarValue: shugar)
-    let compansation: CompansationPosition = isGoodCompansation ? .good : .bad
-    dinnerRealmManager.updateShugarAfterInPreviosDinner(shugar: shugar, compansation: compansation)
-    
-    // Теперь останется отправить запрос на контроллер если надо чтобы показали алерт
-
-    if !isGoodCompansation {
-      presenter?.presentData(response: .showMessageAboutBadCompansation)
-    }
+//    let isGoodCompansation = !ShugarCorrectorWorker.shared.isPreviosDinnerFalledCompansation(shugarValue: shugar)
+//    let compansation: CompansationPosition = isGoodCompansation ? .good : .bad
+//    dinnerRealmManager.updateShugarAfterInPreviosDinner(shugar: shugar, compansation: compansation)
+//    
+//    // Теперь останется отправить запрос на контроллер если надо чтобы показали алерт
+//
+//    if !isGoodCompansation {
+//      presenter?.presentData(response: .showMessageAboutBadCompansation)
+//    }
 
 
   }

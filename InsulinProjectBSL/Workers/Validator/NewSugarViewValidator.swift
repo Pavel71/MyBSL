@@ -21,6 +21,15 @@ class NewSugarViewValidator: Validateble {
   
   var sugar: String? { didSet {checkForm()} }
   
+  var sugarCorrectorWorker: ShugarCorrectorWorker!
+  
+  
+  init() {
+    let locator  = ServiceLocator.shared
+    sugarCorrectorWorker = locator.getService()
+  }
+  
+  
   func checkForm() {
     isValidate = sugar?.isEmpty == false
     
@@ -37,7 +46,7 @@ class NewSugarViewValidator: Validateble {
     guard let sugar = self.sugar else {return .dontCorrect}
     let sugarFloat = (sugar as NSString).floatValue
     
-    return ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat)
+    return sugarCorrectorWorker.getWayCorrectPosition(sugar: sugarFloat)
 
   }
   

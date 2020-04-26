@@ -16,6 +16,7 @@ class OnBoardVM {
   
   var learnByCorrectionVM : LearnByCorrectionVM
   var learnByFoodVM       : LearnByFoodVM
+  let userDefaults       = UserDefaults.standard
   
   
   init() {
@@ -64,28 +65,26 @@ extension OnBoardVM {
 //    let insulinByFoodsWeights = getWeightsByData(traing: insulinByFoodData.train, target: insulinByFoodData.target)
   
     // Сохраняем то что мы прошил онбоардинг
-    UserDefaults.standard.set(true, forKey: UserDefaultsKey.isOnBoardingComplete.rawValue)
+    userDefaults.set(true, forKey: UserDefaultsKey.isOnBoardingComplete.rawValue)
 
     
   }
   
   private func saveSugarLevelInUserDefaults() {
     
-    let userDefaults = UserDefaults.standard
+    
     userDefaults.set(learnByCorrectionVM.sugarLevelVM.sugarLowerLevel, forKey: UserDefaultsKey.lowSugarLevel.rawValue)
     userDefaults.set(learnByCorrectionVM.sugarLevelVM.sugarHigherLevel, forKey: UserDefaultsKey.higherSugarLevel.rawValue)
   }
   
   private func saveBaseTrainAndTargetDataInUserDefaultsCorrectSugar(train:[Float],target: [Float]) {
 
-    let userDefaults = UserDefaults.standard
     userDefaults.set(train, forKey: UserDefaultsKey.sugarCorrectTrainBaseData.rawValue)
     userDefaults.set(target, forKey: UserDefaultsKey.sugarCorrectTargetBaseData.rawValue)
   }
   
   private func saveBaseTrainAndTargetDataInUserDefaultsCorrectCarbo(train:[Float],target: [Float]) {
 
-    let userDefaults = UserDefaults.standard
     userDefaults.set(train, forKey: UserDefaultsKey.carboCorrectTrainBaseData.rawValue)
     userDefaults.set(target, forKey: UserDefaultsKey.carboCorrectTargetBaseData.rawValue)
   }
@@ -135,7 +134,9 @@ extension OnBoardVM {
     let oprimalSugar = learnByCorrectionVM.sugarLevelVM.optimalSugarLevel
     
     
-    return abs(sugar - oprimalSugar)
+    let mlSugarDiffData = abs(sugar - oprimalSugar)
+    
+    return mlSugarDiffData
   }
   
   private func fetchInsulinValueByFoodData() -> (train:[Float],target:[Float]) {

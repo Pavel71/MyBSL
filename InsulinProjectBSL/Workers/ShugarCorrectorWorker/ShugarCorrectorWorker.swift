@@ -12,14 +12,17 @@ import Foundation
 
 final class ShugarCorrectorWorker {
   
+  
+  let userDefaults = UserDefaults.standard
+  
   // Эти значения будут браться из Настроек пользователя!
   private var bottomShugarLevel: Float {
-    4.5 // Test
-//    UserDefaults.standard.float(forKey: UserDefaultsKey.lowSugarLevel.rawValue)
+    
+    userDefaults.float(forKey: UserDefaultsKey.lowSugarLevel.rawValue)
   }
   private var higherShuagrLevel: Float {
-    8.0 // Test
-//    UserDefaults.standard.float(forKey: UserDefaultsKey.higherSugarLevel.rawValue)
+    
+    userDefaults.float(forKey: UserDefaultsKey.higherSugarLevel.rawValue)
   }
   
   var optimalSugarLevel : Double {
@@ -38,7 +41,7 @@ final class ShugarCorrectorWorker {
   
   // Singleton
   
-  static let shared: ShugarCorrectorWorker = { ShugarCorrectorWorker()
+//  static let shared: ShugarCorrectorWorker = { ShugarCorrectorWorker()
     
     // Эти показатели будут браться из Настроек
     
@@ -49,12 +52,11 @@ final class ShugarCorrectorWorker {
     
     
     
-  }()
+//  }()
   
-//  init(bottomShugarLevel: Float,higherShuagrLevel: Float) {
-//    self.bottomShugarLevel = bottomShugarLevel
-//    self.higherShuagrLevel = higherShuagrLevel
-//  }
+  init() {
+    
+  }
 //
 
   
@@ -75,6 +77,9 @@ final class ShugarCorrectorWorker {
   
   func getWayCorrectPosition(sugar: Float) -> CorrectInsulinPosition {
     
+    print("Bottom Sugsar LEvel",bottomShugarLevel)
+    print("Higher Sugar LEvel",higherShuagrLevel)
+    
     if sugar < bottomShugarLevel && sugar > 0 {
       return .correctUp
       
@@ -91,7 +96,7 @@ final class ShugarCorrectorWorker {
   
   func getSugasrTrainData(currentSugar: Double) -> Float {
     
-    return abs(optimalSugarLevel - currentSugar).toFloat()
+    return abs(optimalSugarLevel - currentSugar.roundToDecimal(2)).toFloat()
   }
 
   

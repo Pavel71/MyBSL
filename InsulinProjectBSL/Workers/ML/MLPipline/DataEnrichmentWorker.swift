@@ -22,10 +22,20 @@ class DataEnrichmentWorker {
 
   
     
-    static let shared: DataEnrichmentWorker = {DataEnrichmentWorker()}()
+//    static let shared: DataEnrichmentWorker = {DataEnrichmentWorker()}()
+  
+  let locator = ServiceLocator.shared
+  
+  var sugarCorrectorWorker : ShugarCorrectorWorker!
+  var compObjRealmManger   : CompObjRealmManager!
+  
+  init() {
+    sugarCorrectorWorker = locator.getService()
+    compObjRealmManger   = locator.getService()
+  }
     
-    var sugarCorrectWorker = ShugarCorrectorWorker.shared
-    var compObjRealmManager = CompObjRealmManager.shared
+//    var sugarCorrectWorker = ShugarCorrectorWorker.shared
+//    var compObjRealmManager = CompObjRealmManager.shared
 
     
     func prepareCompObj(compObj: CompansationObjectRelam)  {
@@ -97,7 +107,7 @@ extension  DataEnrichmentWorker {
       case .correctDown:
         // Сахар Высокий нужно было сделать Больше инсулина
         
-      let sugarError = sugarAfter - Double(sugarCorrectWorker.optimalSugarLevel)
+      let sugarError = sugarAfter - Double(sugarCorrectorWorker.optimalSugarLevel)
       
       let meanInsulinOnSugar = getMeanInsulinValueOnCorrectSugar(compObj: compObj)
       let addingInsulin = meanInsulinOnSugar * sugarError
@@ -113,7 +123,7 @@ extension  DataEnrichmentWorker {
       case .correctUp:
         // Сахар Низкий нужно было сделать меньше инсулина
         
-        let sugarError = Double(sugarCorrectWorker.optimalSugarLevel) - sugarAfter
+        let sugarError = Double(sugarCorrectorWorker.optimalSugarLevel) - sugarAfter
         
         let meanInsulinOnSugar = getMeanInsulinValueOnCorrectSugar(compObj: compObj)
         
@@ -140,7 +150,7 @@ extension  DataEnrichmentWorker {
       correctInsulin : Double,
       compPosition   : CompansationPosition) {
       
-      compObjRealmManager.writeCorrectSugarInsuilin(
+      compObjRealmManger.writeCorrectSugarInsuilin(
         compObj              : compObj,
         correctSugarMl       : correctInsulin,
       changeTypeCompPosition : compPosition)
@@ -176,7 +186,7 @@ extension  DataEnrichmentWorker {
       
       case .good:
         
-        CompObjRealmManager.shared.compensationSuccessWriteMlData(compObj: compObj)
+        compObjRealmManger.compensationSuccessWriteMlData(compObj: compObj)
         
       case .bad:
         
@@ -204,12 +214,13 @@ extension  DataEnrichmentWorker {
       let meanInsulinByCarbo = allInsulinByCarboMLSum / allProductCarboSum
       
       
-      if sugarCorrectWorker.optimalSugarLevel.isLess(than: compObj.sugarAfter) {
+      if sugarCorrectorWorker.optimalSugarLevel.isLess(than: compObj.sugarAfter) {
         //
-        let sugarError = Float(compObj.sugarAfter - sugarCorrectWorker.optimalSugarLevel)
+        let sugarError = Float(compObj.sugarAfter - sugarCorrectorWorker.optimalSugarLevel)
+        
         let shouldHaveDoneInsulinOnMeal = meanInsulinByCarbo * sugarError
         
-        compObjRealmManager.writeInsulinOnCarboInProducts(
+        compObjRealmManger.writeInsulinOnCarboInProducts(
           compObj            : compObj,
           correctKoeficient  : shouldHaveDoneInsulinOnMeal,
           isPlus: true)
@@ -217,10 +228,10 @@ extension  DataEnrichmentWorker {
        
       } else {
         
-        let sugarError = Float(sugarCorrectWorker.optimalSugarLevel - compObj.sugarAfter)
+        let sugarError = Float(sugarCorrectorWorker.optimalSugarLevel - compObj.sugarAfter)
         let shouldHaveDoneInsulinOnMeal = meanInsulinByCarbo * sugarError
         
-        compObjRealmManager.writeInsulinOnCarboInProducts(
+        compObjRealmManger.writeInsulinOnCarboInProducts(
         compObj            : compObj,
         correctKoeficient  : shouldHaveDoneInsulinOnMeal,
         isPlus             : false)

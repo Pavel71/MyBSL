@@ -52,8 +52,8 @@ class LearnByFoodVM {
     
     let pasta = LearnByFoodModel(
       carbo: 25,
-      name: "Макаронны",
-      portion: 50,
+      name: "Макаронны отварные",
+      portion: 100,
       image: #imageLiteral(resourceName: "spaghetti"),
       insulin: nil)
     
@@ -66,8 +66,8 @@ class LearnByFoodVM {
     
     let rice = LearnByFoodModel(
       carbo: 30,
-      name: "Рис",
-      portion: 40,
+      name: "Рис отварной",
+      portion: 100,
       image: #imageLiteral(resourceName: "rice"),
       insulin: nil)
     

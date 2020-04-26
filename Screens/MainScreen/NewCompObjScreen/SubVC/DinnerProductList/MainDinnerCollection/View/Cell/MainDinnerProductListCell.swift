@@ -76,6 +76,7 @@ class MainDinnerProductListCell: BaseProductListCell {
     
   }
   
+  // MARK: Set View Model
   
   func setViewModel(viewModel: ProductListViewModelCell) {
     

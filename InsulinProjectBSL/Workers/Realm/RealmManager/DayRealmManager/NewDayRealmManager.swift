@@ -15,7 +15,14 @@ import RealmSwift
 class NewDayRealmManager {
   
   
-  static var shared: NewDayRealmManager = {NewDayRealmManager()}()
+//  static var shared: NewDayRealmManager = {NewDayRealmManager()}()
+  
+//  let locator = ServiceLocator.shared
+  
+  
+  private var compObjrealm      : CompObjRealmManager!
+  private var sugarRealmManager : SugarRealmManager!
+  
   
   
   private var currentDay: DayRealm!
@@ -24,8 +31,12 @@ class NewDayRealmManager {
   
   var realm : Realm {provider.realm}
   
-   init(provider: RealmProvider = RealmProvider.day) {
+  init(provider: RealmProvider = RealmProvider.day) {
     self.provider = provider
+    
+    let locator = ServiceLocator.shared
+    compObjrealm      = locator.getService()
+    sugarRealmManager = locator.getService()
     
   }
   
@@ -166,7 +177,8 @@ extension NewDayRealmManager {
       print(error.localizedDescription)
     }
     
-    CompObjRealmManager.shared.deleteCompObgById(compObjId: compObjId)
+    
+    compObjrealm.deleteCompObgById(compObjId: compObjId)
   }
 
 }
@@ -195,7 +207,11 @@ extension NewDayRealmManager {
   
   func deleteSugarByCompObjId(sugarCompObjId: String) {
     
-    guard let sugarRealm = SugarRealmManager.shared.fetchSugarByCompansationId(sugarCompObjId: sugarCompObjId) else {return}
+    guard
+      let sugarRealm = sugarRealmManager.fetchSugarByCompansationId(sugarCompObjId: sugarCompObjId)
+      else {return}
+    
+//    sugarRealmManager.fetchSugarByCompansationId(sugarCompObjId: sugarCompObjId) else {return}
     
     
     guard let deleteIndex = currentDay.listSugarID.index(of:sugarRealm.id) else {return}
@@ -211,7 +227,7 @@ extension NewDayRealmManager {
       print(error.localizedDescription)
     }
     
-    SugarRealmManager.shared.deleteSugarByCompObjId(sugarCompObjId: sugarCompObjId)
+    sugarRealmManager.deleteSugarByCompObjId(sugarCompObjId: sugarCompObjId)
   }
   
  

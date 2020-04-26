@@ -16,7 +16,20 @@ class MainScreenPresenter: MainScreenPresentationLogic {
   
   weak var viewController: MainScreenDisplayLogic?
   
-  var userDefaults = UserDefaults.standard
+  
+  let sugarRealmManager : SugarRealmManager!
+  let compObjRealmManger: CompObjRealmManager!
+  
+  let newDayRealmManger : NewDayRealmManager!
+  let userDefaults = UserDefaults.standard
+  
+  
+  init() {
+    let locator = ServiceLocator.shared
+    sugarRealmManager  = locator.getService()
+    compObjRealmManger = locator.getService()
+    newDayRealmManger  = locator.getService()
+  }
   
   func presentData(response: MainScreen.Model.Response.ResponseType) {
     
@@ -51,8 +64,10 @@ extension MainScreenPresenter {
     switch response {
     case .prepareViewModel(let realmData):
       
-      // Здесь нужно получить ищ реалма модельку с данными и отправить ее на контроллер Дальше только обновить экран
-      let dayViewModel = getViewModel(realmData: realmData)
+      
+      
+      let dayViewModel = getViewModel(
+        realmData          : realmData)
       
       viewController?.displayData(viewModel: .setViewModel(viewModel: dayViewModel))
 
@@ -67,13 +82,13 @@ extension MainScreenPresenter {
 extension MainScreenPresenter {
   
   // MAin View Model
-  private func getViewModel(realmData: DayRealm) -> MainScreenViewModel {
+  private func getViewModel(realmData : DayRealm) -> MainScreenViewModel {
     
     // Test
     
-    let listSugar = realmData.listSugarID.compactMap(SugarRealmManager.shared.fetchSugarByPrimeryKey(sugarPrimaryKey:))
+    let listSugar = realmData.listSugarID.compactMap(sugarRealmManager.fetchSugarByPrimeryKey(sugarPrimaryKey:))
     
-    let listCopmObj = realmData.listCompObjID.compactMap(CompObjRealmManager.shared.fetchCompObjByPrimeryKey(compObjPrimaryKey:))
+    let listCopmObj = realmData.listCompObjID.compactMap(compObjRealmManger.fetchCompObjByPrimeryKey(compObjPrimaryKey:))
     
     // Charts
     let chartViewModel = ChartVCViewModel(
@@ -110,12 +125,14 @@ extension MainScreenPresenter {
   
   // MARK: Calendar VM
   
-  private func getMainNavBarVM(realmDay: DayRealm) -> MainNavBarVM {
+  private func getMainNavBarVM(
+    realmDay           : DayRealm
+  ) -> MainNavBarVM {
     
     // Здесь мне нужно сделать запрос к базе данных полуичить все дни в текущем месяце которые есть у нас в заполненных!
     
 //    let datesinThisMoth = DayRealmManager().getDaysInThisMonth()
-    let lastSevenDates = NewDayRealmManager.shared.fetchLastSevenDaysDate()
+   let lastSevenDates = newDayRealmManger.fetchLastSevenDaysDate()
     
    let mainNavBarVM = MainNavBarVM(
     lastSevenDays : lastSevenDates,

@@ -17,12 +17,18 @@ final class CompObjRealmManager {
   
   let provider: RealmProvider
   
-  static var shared:CompObjRealmManager = {CompObjRealmManager()}()
+//  static var shared:CompObjRealmManager = {CompObjRealmManager()}()
   
   var realm : Realm {provider.realm}
   
+  var sugarCorrectorWorker: ShugarCorrectorWorker!
+  
   init(provider: RealmProvider = RealmProvider.compObjProvider) {
     self.provider = provider
+    
+    let locator = ServiceLocator.shared
+    
+    sugarCorrectorWorker = locator.getService()
     
   }
   
@@ -290,7 +296,7 @@ extension CompObjRealmManager {
   
   private func getCompObjStateBySugarAfter(sugarAfter: Double) -> CompansationPosition {
      
-     let sugarCompansation = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: Float(sugarAfter))
+     let sugarCompansation = sugarCorrectorWorker.getWayCorrectPosition(sugar: Float(sugarAfter))
      
      var compPosition: CompansationPosition
      

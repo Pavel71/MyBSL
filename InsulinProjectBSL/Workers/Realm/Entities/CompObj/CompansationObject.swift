@@ -34,8 +34,11 @@ import RealmSwift
   dynamic var sugarDiffToOptimaForMl       : Float = 0
   dynamic var insulinToCorrectSugarML      : Float = 0 // Для Машинного обучения
   
+  
+  var sugarCorrectorWorker : ShugarCorrectorWorker!
+  
   var correctSugarPosition : CorrectInsulinPosition {
-    ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: Float(sugarBefore))
+    sugarCorrectorWorker.getWayCorrectPosition(sugar: Float(sugarBefore))
   }
   
   
@@ -78,18 +81,23 @@ import RealmSwift
     
     ) {
       self.init()
-    self.typeObject               = typeObject.rawValue
-    self.sugarBefore              = sugarBefore
-    self.compansationFase         = CompansationPosition.progress.rawValue
-    self.totalCarbo               = totalCarbo
-    self.insulinOnTotalCarbo      = insulinOnTotalCarbo
+    self.typeObject                   = typeObject.rawValue
+    self.sugarBefore                  = sugarBefore
+    self.compansationFase             = CompansationPosition.progress.rawValue
+    self.totalCarbo                   = totalCarbo
+    self.insulinOnTotalCarbo          = insulinOnTotalCarbo
     self.userSetInsulinToCorrectSugar = insulinInCorrectionSugar
-    self.placeInjections          = placeInjections
+    self.placeInjections              = placeInjections
     
-    if ShugarCorrectorWorker.shared.optimalSugarLevel.isLess(than: sugarBefore) {
-      sugarDiffToOptimaForMl = Float(sugarBefore - ShugarCorrectorWorker.shared.optimalSugarLevel)
+    
+    let locator = ServiceLocator.shared
+    self.sugarCorrectorWorker = locator.getService()
+    
+    
+    if sugarCorrectorWorker.optimalSugarLevel.isLess(than: sugarBefore) {
+      sugarDiffToOptimaForMl = Float(sugarBefore - sugarCorrectorWorker.optimalSugarLevel)
     } else {
-      sugarDiffToOptimaForMl = Float(ShugarCorrectorWorker.shared.optimalSugarLevel - sugarBefore)
+      sugarDiffToOptimaForMl = Float(sugarCorrectorWorker.optimalSugarLevel - sugarBefore)
     }
 
     

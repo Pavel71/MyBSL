@@ -13,6 +13,7 @@ import Foundation
 
 class SugarCellVMWorker {
   
+  static let locator = ServiceLocator.shared
   
   static  func getSugarVM(sugar: String) -> SugarCellModel {
   
@@ -21,6 +22,9 @@ class SugarCellVMWorker {
   }
   
   static private func updateCompansationLabelAndCellState(sugar: String) -> SugarCellModel {
+    
+    
+    guard let sugarCorrectorWorker:ShugarCorrectorWorker = locator.getService() else { fatalError()}
     
     var sugarCellVm = SugarCellModel()
     
@@ -39,7 +43,7 @@ class SugarCellVMWorker {
     
     sugarCellVm.currentSugar = sugarFloat
     
-    let wayCorrectPosition = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugarFloat)
+    let wayCorrectPosition = sugarCorrectorWorker.getWayCorrectPosition(sugar: sugarFloat)
     
     sugarCellVm.sugarState = wayCorrectPosition
     

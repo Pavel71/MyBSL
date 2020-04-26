@@ -29,13 +29,13 @@ final class ServiceLocator: ServiceLocating {
 
     func addService<T>(service: T) {
         let key = typeName(some: T.self)
-        print(key)
+//        print(key)
         services[key] = service
     }
 
     func getService<T>() -> T? {
         let key = typeName(some: T.self)
-        print(key)
+//        print(key)
         return services[key] as? T
     }
 }

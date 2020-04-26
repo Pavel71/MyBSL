@@ -14,6 +14,7 @@ import Upsurge
 class SimpleRegresiionModel {
   
   let linearModel = SimpleLinearRegression()
+  let userDefaults = UserDefaults.standard
   
   
   // Test Period
@@ -130,15 +131,12 @@ extension SimpleRegresiionModel {
   
   private func saveWeightsinUserDefaults(weights:(Float,Float), key:String) {
     
-    let userDefault = UserDefaults.standard
-    
-    userDefault.set([weights.0,weights.1], forKey: key)
+    userDefaults.set([weights.0,weights.1], forKey: key)
   }
   
   private func getWeightsFromUD(userDefKey: UserDefaultsKey) -> [Float] {
-//    return []
-    let userDefault = UserDefaults.standard
-    return userDefault.array(forKey: userDefKey.rawValue) as! [Float]
+
+    return userDefaults.array(forKey: userDefKey.rawValue) as! [Float]
     
   }
 }

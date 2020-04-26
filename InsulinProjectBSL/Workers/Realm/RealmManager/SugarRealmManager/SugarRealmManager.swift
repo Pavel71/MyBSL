@@ -17,7 +17,7 @@ class SugarRealmManager {
   
   let provider: RealmProvider
   
-  static var shared:SugarRealmManager = {SugarRealmManager()}()
+//  static var shared:SugarRealmManager = {SugarRealmManager()}()
   
   var realm : Realm {provider.realm}
   

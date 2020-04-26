@@ -13,11 +13,7 @@ import Foundation
 
 class InsulinSupplyWorker {
   
-  var userDefaults = UserDefaults.standard
-  
-  static let shared = {InsulinSupplyWorker()}()
-  
-  
+  let userDefaults = UserDefaults.standard
   
 }
 
@@ -31,6 +27,7 @@ extension InsulinSupplyWorker {
   }
   
   func updateInsulinSupplyValue(totalInsulin: Float,updatedType: InsulinSupplyCalculatedType) {
+    
     
     let currentSupplyValue = userDefaults.integer(forKey: UserDefaultsKey.insulinSupplyValue.rawValue).toFloat()
     

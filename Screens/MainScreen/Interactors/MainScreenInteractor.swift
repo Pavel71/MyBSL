@@ -15,15 +15,36 @@ protocol MainScreenBusinessLogic {
 class MainScreenInteractor: MainScreenBusinessLogic {
 
   var presenter: MainScreenPresentationLogic?
+
+
+  let newDayRealmManager  : NewDayRealmManager!
+  let userDefaults        = UserDefaults.standard
+  let insulinSupplyWorker : InsulinSupplyWorker!
+  let compObjRealmManager : CompObjRealmManager!
+  let sugarRealmManger    : SugarRealmManager!
+    
   
-//  let dayRealmManager = DayRealmManager()
-  let newDayRealmManager   = NewDayRealmManager.shared
-  let userDefaults         = UserDefaults.standard
-  let insulinSupplyWorker  = InsulinSupplyWorker.shared
-  let compObjRealmManager  = CompObjRealmManager.shared
+  
+  init() {
+    
+    let locator = ServiceLocator.shared
+    
+    newDayRealmManager  = locator.getService()
+    
+    insulinSupplyWorker = locator.getService()
+    compObjRealmManager = locator.getService()
+    sugarRealmManger    = locator.getService()
+  }
+  
+//  let userDefaults         = UserDefaults.standard
+//  let insulinSupplyWorker  = InsulinSupplyWorker.shared
+//  let compObjRealmManager  = CompObjRealmManager.shared
   
   
   func makeRequest(request: MainScreen.Model.Request.RequestType) {
+    
+    
+    
     
     catchRealmRequests(request: request)
     catchViewModelRequests(request: request)
@@ -54,7 +75,7 @@ extension MainScreenInteractor {
       // Сохранил сахара в базе данных
       
       newDayRealmManager.addNewSugarId(sugarId: sugarRealm.id)
-      SugarRealmManager.shared.addOrUpdateNewSugarRealm(sugarRealm: sugarRealm)
+      sugarRealmManger.addOrUpdateNewSugarRealm(sugarRealm: sugarRealm)
 
       passDayRealmToConvertInVMInPresenter()
       // Просто передаю модель
@@ -83,7 +104,7 @@ extension MainScreenInteractor {
       
     case .getCompansationObj(let compObjId):
       
-      guard let compObj = CompObjRealmManager.shared.fetchCompObjByPrimeryKey(compObjPrimaryKey: compObjId) else {return}
+      guard let compObj = compObjRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: compObjId) else {return}
       
       presenter?.presentData(response: .passCompansationObj(compObj: compObj))
 

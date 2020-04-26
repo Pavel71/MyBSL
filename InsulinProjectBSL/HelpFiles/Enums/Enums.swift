@@ -28,7 +28,7 @@ enum State {
 
 // MARK: User Defaults Enums
 
-enum UserDefaultsKey: String {
+enum UserDefaultsKey: String,CaseIterable {
   
   case lowSugarLevel
   case higherSugarLevel

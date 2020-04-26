@@ -128,11 +128,21 @@ class ShugarSetView: UIView {
   
   var didSetCorrectionShugarByInsulinClouser: FloatPassClouser?
   
+  
+  
+  
+  //Workers
+  
+  var sugarCorrectorWorker: ShugarCorrectorWorker!
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
     drawViews()
     
+    let locator = ServiceLocator.shared
+    
+    sugarCorrectorWorker = locator.getService()
     
   }
   
@@ -305,7 +315,7 @@ extension ShugarSetView {
   // здесь мне также нужно установить знак для моей компенсации! ЧТо бы было сразу понятно куда мы идем
   private func setCorrectionImageAndCorrectionSign(sugar:Float) {
     
-    let wayCorrectPosition = ShugarCorrectorWorker.shared.getWayCorrectPosition(sugar: sugar)
+    let wayCorrectPosition = sugarCorrectorWorker.getWayCorrectPosition(sugar: sugar)
     
     switch wayCorrectPosition {
     case .correctDown:
@@ -534,7 +544,7 @@ extension ShugarSetView: UITextFieldDelegate {
     let timeBefore = setTimeBeforTime()
     let shugarFloat = (text as NSString).floatValue
 
-    let correctInsulinBySugarPosition = ShugarCorrectorWorker.shared.getCorrectInsulinBySugarPosition(sugar: shugarFloat)
+    let correctInsulinBySugarPosition = sugarCorrectorWorker.getCorrectInsulinBySugarPosition(sugar: shugarFloat)
     
 //    setCorrectionImage(sugar: shugarFloat)
     

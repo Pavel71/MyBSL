@@ -18,6 +18,7 @@ enum NewCompansationObjectScreen {
         case updateCompansationObject(compObjRealm: CompansationObjectRelam)
         
         case passCurrentSugar(sugar: String)
+        case passCopmansationSugarInsulin(compInsulin: String)
         case passIsNeedProductList(isNeed: Bool)
         
         case addProductsInProductList(products: [ProductRealm])
@@ -39,6 +40,7 @@ enum NewCompansationObjectScreen {
         case convertCompObjRealmToVM(compObjRealm:CompansationObjectRelam)
         
         case updateCurrentSugarInVM(sugar: String)
+        case updateCopmansationSugarInsulin(compInsulin: String)
         case updateAddMealStateInVM(isNeed: Bool)
         
         case addProductsInProductListVM(products: [ProductRealm])

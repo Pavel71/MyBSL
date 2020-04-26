@@ -45,13 +45,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     initMeals()
     
 //    initDinners()
-    
+//    
 //    deInitDaysRealm()
+//    clearUserDefaultsFields()
     
     root()
     
     
     return true
+  }
+  
+  private func clearUserDefaultsFields() {
+    
+    UserDefaultsKey.allCases.forEach{UserDefaults.standard.removeObject(forKey: $0.rawValue)}
+    
+    
   }
   
   
@@ -111,14 +119,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 // Help Func
 
+// MARK: Register Services
+
 extension AppDelegate {
   
    private func iniitServiceLocator() {
     
     let locator = ServiceLocator.shared
     
-    locator.addService(service: UserDefaults.standard)
-//    locator.addService(service: NewDayRealmManager() )
+    locator.addService(service: ShugarCorrectorWorker())
+    
+    locator.addService(service: CompObjRealmManager())
+    locator.addService(service: SugarRealmManager())
+    locator.addService(service: NewDayRealmManager())
+    locator.addService(service: InsulinSupplyWorker())
+    locator.addService(service: DataEnrichmentWorker())
+    
       
     }
     
