@@ -9,7 +9,7 @@
 
 
 import UIKit
-import ProgressHUD
+
 
 
 
@@ -180,7 +180,9 @@ extension ProductListInMealViewController: UITextFieldDelegate {
     
     if text.isEmpty {
       textField.text = "0"
-      ProgressHUD.showError("Продукт не будет учтен при расчете так как вы оставили поле пустым!")
+      
+      showErrorMessage(text: "Продукт не будет учтен при расчете так как вы оставили поле пустым!")
+//      ProgressHUD.showError("Продукт не будет учтен при расчете так как вы оставили поле пустым!")
 
     } else {
        guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return }

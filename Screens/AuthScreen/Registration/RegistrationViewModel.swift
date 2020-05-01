@@ -22,7 +22,11 @@ class RegistrationViewModel {
   
   func checkFormValidity() {
     
-    let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false && bindableImage.value != nil
+    guard let email = self.email else {return}
+    let isEmailValid = email.isValidEmailRFC5322()
+    
+    let isFormValid = isEmailValid && password?.isEmpty == false
+    
     bindableISFormValid.value = isFormValid
   }
   
@@ -34,26 +38,28 @@ class RegistrationViewModel {
     guard let email = email else {return}
     guard let password = password else {return}
     
-//    RegisterService.createUser(email: email, password: password) { result in
-//
-//      switch result {
-//
-//      case .failure(let error):
-//        complation(.failure(error))
-//
-//      case .success(let res):
-//        print("Succesful:", res.user.uid)
-//
-//        self.loadDataInStorage(complation: complation)
-//      }
-//
-//    }
+    print("Пошла регистрация Юзера с данными",email,password)
+    
+    RegisterService.createUser(email: email, password: password) { result in
+
+      switch result {
+
+      case .failure(let error):
+        complation(.failure(error))
+
+      case .success(let res):
+        print("Succesful:", res.user.uid)
+        complation(.success(true))
+        
+      }
+
+    }
     
   }
   
-  private func loadDataInStorage(complation: @escaping ((Result<Bool,Error>) -> Void)) {
-    
-    guard let image = bindableImage.value else {return}
+//  private func loadDataInStorage(complation: @escaping ((Result<Bool,Error>) -> Void)) {
+//
+//    guard let image = bindableImage.value else {return}
     
 //    SaveService.saveImageInStorage(image: image) { (result) in
 //      switch result {
@@ -65,7 +71,7 @@ class RegistrationViewModel {
 //        self.saveDataInFireStore(imageUrlString: urlString, complation: complation)
 //      }
 //    }
-  }
+//  }
   
   private func saveDataInFireStore(imageUrlString: String, complation: @escaping ((Result<Bool,Error>) -> Void)) {
     

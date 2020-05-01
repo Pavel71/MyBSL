@@ -10,9 +10,13 @@ target 'InsulinProjectBSL' do
 
   # Pods for InsulinProjectBSL
   pod 'RealmSwift'
-  pod 'ProgressHUD'
   pod 'MachineLearningKit'
-  pod 'Charts'
+  pod 'Charts' , '= 3.4.0'
   pod 'Koyomi'
-
+  pod 'JGProgressHUD'
+  pod 'Firebase/Firestore’
+  pod 'Firebase/Auth’
+  pod 'Firebase/Core’
+  pod 'BoringSSL-GRPC', '= 0.0.3', :modular_headers => false
+  pod 'gRPC-Core', '= 1.21.0', :modular_headers => false
 end

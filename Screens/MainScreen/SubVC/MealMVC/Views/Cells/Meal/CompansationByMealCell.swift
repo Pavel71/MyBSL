@@ -69,7 +69,16 @@ extension CompansationByMealCell {
   
   private func setUpViews() {
     
-    // topButtonView,
+//    addSubview(topButtonView)
+//    topButtonView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: 5, left: 5, bottom: 0, right: 5))
+//    topButtonView.constrainHeight(constant: 30)
+//
+//
+//    addSubview(productTableViewController.view)
+//    productTableViewController.view.anchor(top: topButtonView.bottomAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor,padding:MainScreenConstants.CollectionView.contentInCellPadding)
+    
+    
+//    // topButtonView,
     let stackView = UIStackView(arrangedSubviews: [
     topButtonView,
     productTableViewController.view
@@ -77,10 +86,9 @@ extension CompansationByMealCell {
     ])
     topButtonView.constrainHeight(constant: 30)
 
-    
     stackView.axis = .vertical
     stackView.spacing = 5
-    
+
     addSubview(stackView)
     stackView.fillSuperview(padding: MainScreenConstants.CollectionView.contentInCellPadding)
   }

@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL-resources.sh
 ${PODS_ROOT}/ProgressHUD/ProgressHUD/ProgressHUD/ProgressHUD.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates-Cpp.bundle

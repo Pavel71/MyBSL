@@ -47,7 +47,7 @@ extension MealProductsFooterView {
   func setViewModel(viewModel: ProductListResultViewModelable) {
 
 
-    insulinLabel.text = String(viewModel.sumInsulinValue)
+    insulinLabel.text = viewModel.sumInsulinValue
     carboLabel.text   = viewModel.sumCarboValue
     portionLabel.text = viewModel.sumPortionValue
   }

@@ -81,7 +81,7 @@ class ProductListResultWorker {
       return productViewModel.insulinValue ?? 0
     }
     
-    sumInsulin = arrayInsulin.reduce(0,+)
+    sumInsulin = arrayInsulin.reduce(0,+).roundToDecimal(2)
     
   }
   

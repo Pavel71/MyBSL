@@ -8,7 +8,8 @@
 
 import UIKit
 import RealmSwift
-import ProgressHUD
+
+import JGProgressHUD
 
 
 protocol FoodDisplayLogic: class {
@@ -33,6 +34,8 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
       }
     }
   }
+  
+
   
 
   // MARK: Object lifecycle
@@ -156,6 +159,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
         AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: true)
       
       case .displayAlertSaveNewProduct(let success):
+        
         saveNewProduct(success: success)
     }
 
@@ -173,13 +177,22 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   // MARK: Display Methods
   private func saveNewProduct(success: Bool) {
     
-    if success {
-      let successString = updateProductId == nil ? "Продукт сохранен!" : "Продукт обновленн!"
-      didCancelNewProduct()
-      ProgressHUD.showSuccess(successString)
-    } else {
-      ProgressHUD.showError("Такое имя уже есть, Отредактируйте продукт или создайте новый!")
-    }
+    
+        if success {
+          let successString = self.updateProductId == nil ? "Продукт сохранен!" : "Продукт обновленн!"
+          self.didCancelNewProduct()
+          
+          showSuccesMessage(text: successString)
+
+//          ProgressHUD.showSuccess(successString)
+        } else {
+          showErrorMessage(text: "Такое имя уже есть, Отредактируйте продукт или создайте новый!")
+          
+//          ProgressHUD.showError("Такое имя уже есть, Отредактируйте продукт или создайте новый!")
+        }
+     
+    
+    
   }
 
   
@@ -299,7 +312,8 @@ extension FoodViewController {
     
     if let alertString = alertString {
       // Ошибка в данных!
-      ProgressHUD.showError(alertString)
+      showErrorMessage(text: alertString)
+      
     } else {
       // Если мы выбрали индекс и хотим обновить продукт то нужно обновить! Если нет индекса то создать новый!
       if let productId = updateProductId {

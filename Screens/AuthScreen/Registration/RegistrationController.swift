@@ -8,7 +8,7 @@
 
 
 import UIKit
-//import JGProgressHUD
+import JGProgressHUD
 
 class RegistrationController: UIViewController {
   
@@ -43,7 +43,6 @@ class RegistrationController: UIViewController {
     registrationView.emailTextField.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
     
     registrationView.passwordTextField.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
-    registrationView.fullNameTextField.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
     
     registrationView.registerButton.addTarget(self, action: #selector(handleRegistrationButton), for: .touchUpInside)
     
@@ -75,9 +74,9 @@ class RegistrationController: UIViewController {
   
   @objc private func handleGoToLogin() {
     
-//    let loginController = LoginController()
-//    navigationController?.pushViewController(loginController, animated: true)
-    navigationController?.popViewController(animated: true)
+    let loginController = LoginController()
+    navigationController?.pushViewController(loginController, animated: true)
+//    navigationController?.popViewController(animated: true)
 
   }
   
@@ -95,7 +94,7 @@ class RegistrationController: UIViewController {
     
     registrationViewModel.bindableISFormValid.bind(observer: chekForm)
     
-//    registrationViewModel.bindableImage.bind(observer: setChooseImage)
+
 
   }
   
@@ -107,7 +106,7 @@ class RegistrationController: UIViewController {
     registrationView.registerButton.isEnabled = isFormValid
     if isFormValid {
       registerButton.setTitleColor(.white, for: .normal)
-      registerButton.backgroundColor = #colorLiteral(red: 0.8327895403, green: 0.09347004443, blue: 0.3214370608, alpha: 1)
+      registerButton.backgroundColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
     } else {
       registerButton.setTitleColor(.black, for: .normal)
       registerButton.backgroundColor = .lightGray
@@ -120,8 +119,6 @@ class RegistrationController: UIViewController {
     
     switch textField {
       
-    case registrationView.fullNameTextField:
-      registrationViewModel.fullName = textField.text
     case registrationView.emailTextField:
       registrationViewModel.email = textField.text
     case registrationView.passwordTextField:
@@ -133,30 +130,30 @@ class RegistrationController: UIViewController {
   }
   
   // MARK: Registration in Firebase
-//  var registerHUD: JGProgressHUD = {
-//    let hud = JGProgressHUD(style: .dark)
-//    hud.textLabel.text = "Register"
-//    return hud
-//  }()
+  var registerHUD: JGProgressHUD = {
+    let hud = JGProgressHUD(style: .dark)
+    hud.textLabel.text = "Register"
+    return hud
+  }()
   
   @objc private func handleRegistrationButton() {
     // Убрать клавиатуру
     handleTapView()
     
-//    registerHUD.show(in: view)
+    registerHUD.show(in: view)
     
     registrationViewModel.performRegistration { (result) in
      
       
-//      switch result {
-//      case .failure(let error):
-//        self.showHUDWithError(error)
-//      case .success(_):
-//        self.registerHUD.dismiss()
-//        print("Registration Sucsess!")
-//
+      switch result {
+      case .failure(let error):
+        self.showHUDWithError(error)
+      case .success(_):
+        self.registerHUD.dismiss()
+        print("Registration Sucsess!")
+
 //        self.present(MainController(), animated: true, completion: nil)
-//      }
+      }
     }
 
     
@@ -164,13 +161,13 @@ class RegistrationController: UIViewController {
   
   fileprivate func showHUDWithError(_ error: Error) {
     
-//    registerHUD.dismiss()
-//
-//    let hud = JGProgressHUD(style: .dark)
-//    hud.textLabel.text = "Failed registration"
-//    hud.detailTextLabel.text = error.localizedDescription
-//    hud.show(in: self.view)
-//    hud.dismiss(afterDelay: 4)
+    registerHUD.dismiss()
+
+    let hud = JGProgressHUD(style: .dark)
+    hud.textLabel.text = "Failed registration"
+    hud.detailTextLabel.text = error.localizedDescription
+    hud.show(in: self.view)
+    hud.dismiss(afterDelay: 4)
   }
   
 
@@ -201,8 +198,11 @@ extension RegistrationController {
     let bottomGapFromStackViewAndBotton = view.frame.height - overallStackView.frame.origin.y - overallStackView.frame.height
     
     let difference = keyBoardFrame.height - bottomGapFromStackViewAndBotton
+    
+    if  difference > 0 {
 
-    Animator.springTranslated(view: view, cgaTransform: CGAffineTransform(translationX: 0, y: -difference - 8))
+      Animator.springTranslated(view: registrationView, cgaTransform: CGAffineTransform(translationX: 0, y: -difference - 10))
+    }
     
   }
   

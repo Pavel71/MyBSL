@@ -26,7 +26,7 @@ class BaseTabBarController: UITabBarController {
     
     let productController = createNavController(productViewController,name: "Products", imageName: "diet")
     
-    let registerController = LoginController()
+    let registerController = RegistrationController()
 
     let statsController = createNavController(registerController, name: "Register", imageName: "clipboard" )
     

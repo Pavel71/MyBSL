@@ -426,7 +426,8 @@ extension CompObjRealmManager {
   
   func fetchTrainCarbo() -> [Float] {
     // Идея просто забрать все объекты и вытащить от туда показатели
-    let allMealObj = fetchAllCompObj().dropLast()
+    // нельзя брать объекты которые не идут в рассчет или плохо компенсированны
+    let allMealObj = fetchCompObjToMLLearning()
     let carboTrain : [Float] = allMealObj.flatMap{$0.listProduct.map{$0.carboInPortion}}
     
     
@@ -436,11 +437,19 @@ extension CompObjRealmManager {
   
   func fetchTargetCarbo() -> [Float] {
     
-    let allMealObj = fetchAllCompObj().dropLast()
+    let allMealObj = fetchCompObjToMLLearning()
     let insulinList:[Float] = allMealObj.flatMap{$0.listProduct.map{$0.insulinOnCarboToML}}
     
     
     return insulinList
+  }
+  
+  private func fetchCompObjToMLLearning() -> [CompansationObjectRelam] {
+    let filteredData : [CompansationObjectRelam] = fetchAllCompObj().dropLast().filter { (compObjRealm) -> Bool in
+      compObjRealm.compansationFaseEnum != .dontCalculated
+    }
+   
+    return filteredData
   }
   
   // Train Sugar

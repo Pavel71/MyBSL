@@ -73,6 +73,12 @@
 		055BE0DA2344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */; };
 		055BE0DD2344DB290029D298 /* WillActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BE0DC2344DB290029D298 /* WillActiveView.swift */; };
 		0561C15723F53054002167A2 /* UIPageViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0561C15623F53054002167A2 /* UIPageViewController+Extension.swift */; };
+		0561F37D245C1B3E00A236E6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0561F37C245C1B3E00A236E6 /* GoogleService-Info.plist */; };
+		0561F380245C208B00A236E6 /* RegisterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0561F37F245C208B00A236E6 /* RegisterService.swift */; };
+		0561F382245C20E900A236E6 /* NetworkEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0561F381245C20E900A236E6 /* NetworkEnum.swift */; };
+		0561F384245C234100A236E6 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0561F383245C234100A236E6 /* LoginService.swift */; };
+		0561F387245C2E3900A236E6 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0561F386245C2E3900A236E6 /* ForgotPasswordView.swift */; };
+		0561F389245C42EB00A236E6 /* ResetPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0561F388245C42EB00A236E6 /* ResetPasswordService.swift */; };
 		0562D5322375597E0014A8F4 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D5312375597E0014A8F4 /* MainViewModel.swift */; };
 		0562D536237559D00014A8F4 /* MainHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D535237559D00014A8F4 /* MainHeaderViewModel.swift */; };
 		0562D53923759CE60014A8F4 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0562D53823759CE60014A8F4 /* DummyData.swift */; };
@@ -341,6 +347,12 @@
 		055BE0D92344AC430029D298 /* ChoosePlaceInjectionsViewAnimated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePlaceInjectionsViewAnimated.swift; sourceTree = "<group>"; };
 		055BE0DC2344DB290029D298 /* WillActiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WillActiveView.swift; sourceTree = "<group>"; };
 		0561C15623F53054002167A2 /* UIPageViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+Extension.swift"; sourceTree = "<group>"; };
+		0561F37C245C1B3E00A236E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0561F37F245C208B00A236E6 /* RegisterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterService.swift; sourceTree = "<group>"; };
+		0561F381245C20E900A236E6 /* NetworkEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkEnum.swift; sourceTree = "<group>"; };
+		0561F383245C234100A236E6 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
+		0561F386245C2E3900A236E6 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
+		0561F388245C42EB00A236E6 /* ResetPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordService.swift; sourceTree = "<group>"; };
 		0562D5312375597E0014A8F4 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		0562D535237559D00014A8F4 /* MainHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderViewModel.swift; sourceTree = "<group>"; };
 		0562D53823759CE60014A8F4 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
@@ -1199,6 +1211,25 @@
 			path = WillActivy;
 			sourceTree = "<group>";
 		};
+		0561F37E245C206900A236E6 /* NetworkService */ = {
+			isa = PBXGroup;
+			children = (
+				0561F381245C20E900A236E6 /* NetworkEnum.swift */,
+				0561F37F245C208B00A236E6 /* RegisterService.swift */,
+				0561F383245C234100A236E6 /* LoginService.swift */,
+				0561F388245C42EB00A236E6 /* ResetPasswordService.swift */,
+			);
+			path = NetworkService;
+			sourceTree = "<group>";
+		};
+		0561F385245C2E1B00A236E6 /* ForgotPasswordView */ = {
+			isa = PBXGroup;
+			children = (
+				0561F386245C2E3900A236E6 /* ForgotPasswordView.swift */,
+			);
+			path = ForgotPasswordView;
+			sourceTree = "<group>";
+		};
 		0562D533237559980014A8F4 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -1421,6 +1452,7 @@
 		0597668E2455C77200ED7AF6 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				0561F385245C2E1B00A236E6 /* ForgotPasswordView */,
 				0597668F2455C78300ED7AF6 /* LoginController.swift */,
 				059766912455C7EC00ED7AF6 /* LoginViewModel.swift */,
 				059766932455C87C00ED7AF6 /* LoginView.swift */,
@@ -2812,6 +2844,7 @@
 		F1E78CAD230D321800592AB8 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
+				0561F37C245C1B3E00A236E6 /* GoogleService-Info.plist */,
 				F1E78CA7230D31E900592AB8 /* Info.plist */,
 				F1E78CA4230D31E900592AB8 /* LaunchScreen.storyboard */,
 				F1E78CA2230D31E900592AB8 /* Assets.xcassets */,
@@ -2983,6 +3016,7 @@
 		F1E78D00230D546500592AB8 /* Workers */ = {
 			isa = PBXGroup;
 			children = (
+				0561F37E245C206900A236E6 /* NetworkService */,
 				05733CE223FAAAB1004197B2 /* AppState */,
 				05515D0223699CF000A298AA /* ML */,
 				05D26A3C2360721700155F31 /* ShugarCorrectorWorker */,
@@ -3160,6 +3194,7 @@
 			files = (
 				F1E78CA6230D31E900592AB8 /* LaunchScreen.storyboard in Resources */,
 				F1E78CA3230D31E900592AB8 /* Assets.xcassets in Resources */,
+				0561F37D245C1B3E00A236E6 /* GoogleService-Info.plist in Resources */,
 				05CBEBAB23A21FF2001D9EEA /* NewCompObjScreenTasks in Resources */,
 				F1E78D22230D811700592AB8 /* Tasks in Resources */,
 				05D1469823979E0C00E6E6EA /* NewSugarTask in Resources */,
@@ -3302,6 +3337,7 @@
 				05AD21532361B784008E6BB0 /* DateWorker.swift in Sources */,
 				059D7E7E23506C3200286E57 /* CalculateDistance.swift in Sources */,
 				05D1469A2397A7D600E6E6EA /* NewSugarViewValidator.swift in Sources */,
+				0561F380245C208B00A236E6 /* RegisterService.swift in Sources */,
 				05A0E46823A0F96C005476DD /* CompansationObjCollectionWorker.swift in Sources */,
 				05515CFF236840B300A298AA /* TotalInsulinView.swift in Sources */,
 				05A0E46B23A0FC38005476DD /* CompansationByCarboCell.swift in Sources */,
@@ -3328,6 +3364,7 @@
 				05A7CAEF23827F9F0075D04E /* MainScreenMiddleView.swift in Sources */,
 				05CBEBB423A22595001D9EEA /* CompansationObjectView.swift in Sources */,
 				05A7CAFA2382B0510075D04E /* TopButtonView.swift in Sources */,
+				0561F384245C234100A236E6 /* LoginService.swift in Sources */,
 				F150DBF02317DD2300380AE0 /* MealPresenter.swift in Sources */,
 				0562D536237559D00014A8F4 /* MainHeaderViewModel.swift in Sources */,
 				F1EC85A0233104EB00E14D33 /* MenuModel.swift in Sources */,
@@ -3348,6 +3385,7 @@
 				05460F8C2455A327008B4ABF /* RegistrationViewModel.swift in Sources */,
 				F1E78CB8230D334B00592AB8 /* FoodPresenter.swift in Sources */,
 				05515D0423699D0800A298AA /* MLWorker.swift in Sources */,
+				0561F387245C2E3900A236E6 /* ForgotPasswordView.swift in Sources */,
 				05460F83244F0294008B4ABF /* AddNewInsulinSupplyView.swift in Sources */,
 				0533B98E23F40F78008E13DE /* PortionPickerView.swift in Sources */,
 				05A7CAFC2382BB3D0075D04E /* MealProductCell.swift in Sources */,
@@ -3362,6 +3400,7 @@
 				05A6C81C23F55CDC00E27CE9 /* LearnByCorrectionVM.swift in Sources */,
 				F1E78D1E230D688900592AB8 /* FoodRealmManager.swift in Sources */,
 				05B1DEB7237ECD0B0015E4E6 /* MainScreenModels.swift in Sources */,
+				0561F382245C20E900A236E6 /* NetworkEnum.swift in Sources */,
 				05515D0123687F2400A298AA /* SettingsWorkerForML.swift in Sources */,
 				059766972455C8F500ED7AF6 /* VerticalStackView.swift in Sources */,
 				057B9848234F6B4C002EAD68 /* PointSearcher.swift in Sources */,
@@ -3371,6 +3410,7 @@
 				05CBEBA623A21FD9001D9EEA /* NewCompansationObjectScreenModels.swift in Sources */,
 				05A4F1C2233A3D1500DFE4D7 /* CustomValueTextField.swift in Sources */,
 				0552E63D237EC19A00499168 /* MiddleCell.swift in Sources */,
+				0561F389245C42EB00A236E6 /* ResetPasswordService.swift in Sources */,
 				055BE0D2234359680029D298 /* ForceGestureRecogniser.swift in Sources */,
 				F150DBF82317DE5100380AE0 /* MealView.swift in Sources */,
 				056647FE24431FE70085F542 /* RangeSlider.swift in Sources */,

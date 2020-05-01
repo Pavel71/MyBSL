@@ -1,4 +1,4 @@
-//
+
 //  LoginController.swift
 //  InsulinProjectBSL
 //
@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import JGProgressHUD
+
 
 
 class LoginController: UIViewController {
@@ -15,18 +17,19 @@ class LoginController: UIViewController {
   var loginView = LoginView()
   let loginModelView = LoginModelView()
   
-//  var jgProgressHud: JGProgressHUD = {
-//    let jgp = JGProgressHUD(style: .dark)
-//    jgp.textLabel.text = "Log In"
-//    return jgp
-//  }()
+  var jgProgressHud: JGProgressHUD = {
+    let jgp = JGProgressHUD(style: .dark)
+    jgp.textLabel.text = "Log In"
+    return jgp
+  }()
+  
   // Clousers
   var didFinishLogInClouser: (() -> Void)?
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    navigationController?.isNavigationBarHidden = true
+    
     setLoginView()
     setViewObserver()
     setModelViewObserver()
@@ -36,6 +39,7 @@ class LoginController: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    navigationController?.isNavigationBarHidden = true
     setKeyboardNotification()
   }
   
@@ -49,64 +53,111 @@ class LoginController: UIViewController {
     view.addSubview(loginView)
     loginView.fillSuperview()
   }
-  
-  // MARK: Set Observer
-  private func setViewObserver() {
-    loginView.didTapGoToBackRegistration = tapGoToBackRegisterController
-    loginView.didTextChangeClouser = textFieldDidChange
-    loginView.didTapLoginButtonClouser = tapLoginButton
-  }
-  
-  private func setModelViewObserver() {
-    loginModelView.isValidForm.observer = checkForm
-    loginModelView.isLogIn.observer = logIn
-  }
-  
-  // MARK: TapGestureTecogniser
-  private func setTapGestureRecogniser() {
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapView))
-    loginView.addGestureRecognizer(tapGesture)
-  }
-  
-  @objc private func handleTapView() {
-    loginView.endEditing(true)
-  }
-  
-  // MARK: Keyboard Notififcation
-  
-  private func setKeyboardNotification() {
-    
-    NotificationCenter.default.addObserver(self, selector: #selector(handleKeyBoardWillUP), name: UIResponder.keyboardWillShowNotification, object: nil)
-    
-    NotificationCenter.default.addObserver(self, selector: #selector(handleKeyBoardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-  }
-  
-  @objc private func handleKeyBoardWillUP(notification: Notification) {
 
-    guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
-    let keyboardFrame = value.cgRectValue
-    
-    let gapBottomFromStackViewAndBottom = loginView.frame.height - loginView.overAllStackView.frame.height - loginView.overAllStackView.frame.origin.y
-    
-    let diff = keyboardFrame.height - gapBottomFromStackViewAndBottom
-    
-    Animator.springTranslated(view: loginView, cgaTransform: CGAffineTransform(translationX: 0, y: -diff))
+  private func loginButtonAble() {
+    loginView.loginButton.backgroundColor = #colorLiteral(red: 0.03137254902, green: 0.3294117647, blue: 0.5647058824, alpha: 1)
+    loginView.loginButton.setTitleColor(.white, for: .normal)
   }
   
-  @objc private func handleKeyBoardWillHide(notification: Notification) {
-    Animator.springTranslated(view: loginView, cgaTransform:.identity)
+  private func loginButtonDisable() {
+    loginView.loginButton.backgroundColor = .lightGray
+    loginView.loginButton.setTitleColor(.black, for: .disabled)
   }
+  
+  
+  
+}
+
+
+// MARK: Set View Observer
+
+extension LoginController {
+  
+  
+  private func setViewObserver() {
+    loginView.didTapGoToBackRegistration = {[weak self] in self?.tapGoToBackRegisterController()}
+    loginView.didTextChangeClouser       = {[weak self] textField in self?.textFieldDidChange(textField:textField)}
+    loginView.didTapLoginButtonClouser   = {[weak self] in self?.tapLoginButton()}
+    loginView.didResetPasswordButton     = {[weak self] in self?.tapResetPasswordButton()}
+    
+    loginView.forrgotPasswordView.didTapCancelButtonCLouser = {[weak self] in
+      self?.handleCancelForgotPasswordButton()
+    }
+    loginView.forrgotPasswordView.didInputEmailChanging = {[weak self] email in
+      self?.validInputEmailToResetPassword(email: email)
+    }
+    
+    loginView.forrgotPasswordView.didTapSaveButtonClouser = {[weak self] validEmail in
+      self?.tapSendEmailToChangePassword(email: validEmail)
+    }
+    
+  }
+  
+  
   
   // MARK: TextFieldDIDChange
   
   private func textFieldDidChange(textField: UITextField) {
-
+    
     switch textField {
     case loginView.emailTextField:
       loginModelView.email = textField.text
     default:
       loginModelView.password = textField.text
     }
+  }
+  
+  private func tapGoToBackRegisterController() {
+    //    let registrationController = RegistrationController()
+    //    navigationController?.pushViewController(registrationController, animated: true)
+    navigationController?.popViewController(animated: true)
+  }
+  
+  // MARK: Tap LoginButton
+  private func tapLoginButton() {
+    // Здесь нужно запустить метода передачи данных в firebase!
+    
+    loginModelView.performSignIn { (result) in
+      
+      switch result {
+        
+      case .failure(let error):
+        
+        self.showAlert(title: "Ошибка входа", message: error.localizedDescription)
+        self.loginModelView.isLogIn.value = false
+        
+      case .success(_):
+        
+        print("Login Success")
+        
+        
+        self.loginModelView.isLogIn.value = false
+        
+        
+        // Когда Логин success - я должен буду собрать все данные по этому юзеру и загрузить их в теелфон запихать все
+        
+        // 1. Сохранить UserDefaults
+        // 2. Сохранить В Realm
+        
+        //        self.dismiss(animated: true, completion: {
+        //          // После перехода запусти на Main Controllere подгрузку данных
+        //          self.didFinishLogInClouser!()
+        //
+        //        })
+        
+      }
+    }
+    
+  }
+}
+
+// MARK: Set ViewModel Observer
+
+extension LoginController {
+  
+  private func setModelViewObserver() {
+    loginModelView.isValidForm.observer = checkForm
+    loginModelView.isLogIn.observer = logIn
   }
   
   // MARK: CheckForm
@@ -128,57 +179,119 @@ class LoginController: UIViewController {
   private func logIn(logIn: Bool?) {
     
     guard let logIn = logIn else {return}
-//    if logIn {
-//      jgProgressHud.show(in: loginView)
-//      loginButtonDisable()
-//    } else {
-//      jgProgressHud.dismiss()
-//      loginButtonAble()
-//    }
+    if logIn {
+      jgProgressHud.show(in: loginView)
+      loginButtonDisable()
+    } else {
+      jgProgressHud.dismiss()
+      loginButtonAble()
+    }
     
   }
   
-  private func loginButtonAble() {
-    loginView.loginButton.backgroundColor = #colorLiteral(red: 0.8327895403, green: 0.09347004443, blue: 0.3214370608, alpha: 1)
-    loginView.loginButton.setTitleColor(.white, for: .normal)
-  }
-  
-  private func loginButtonDisable() {
-    loginView.loginButton.backgroundColor = .lightGray
-    loginView.loginButton.setTitleColor(.black, for: .disabled)
-  }
-  
-  
-  
-  // MARK: Tap LoginButton
-  private func tapLoginButton() {
-    // Здесь нужно запустить метода передачи данных в firebase!
+}
 
-//    loginModelView.performSignIn { (result) in
-//      switch result {
-//      case .failure(let error):
-//        self.showAlert(title: "Ошибка входа", message: error.localizedDescription)
-//        self.loginModelView.isLogIn.value = false
-//      case .success(_):
-//
-//        self.dismiss(animated: true, completion: {
-//          // После перехода запусти на Main Controllere подгрузку данных
-//          self.didFinishLogInClouser!()
-//
-//        })
-//
-//      }
-//    }
+
+//MARK: Reset Password View Signals
+
+extension LoginController {
+  
+  private func tapSendEmailToChangePassword(email: String) {
+    print("Запускаем процесс восстановления пароля")
+    
+    
+    ResetPasswordService.resetPassword(email: email) { (result) in
+      
+      switch result {
+        
+      case .success(_):
+        print("Success")
+        
+        self.showSuccesMessage(text: "Проверьте почту")
+
+      case .failure(let error):
+        self.showErrorMessage(text: "Email не найден")
+        print(error.localizedDescription)
+      }
+    }
+  }
+  
+  private func validInputEmailToResetPassword(email: String) {
+    
+    let isEmailValid = email.isValidEmailRFC5322()
+    loginView.forrgotPasswordView.validateInputEmailToResetPasswordTextField(isCanSave: isEmailValid)
     
   }
   
-  private func tapGoToBackRegisterController() {
-    let registrationController = RegistrationController()
-    navigationController?.pushViewController(registrationController, animated: true)
-//    navigationController?.popViewController(animated: true)
+  
+  private func tapResetPasswordButton() {
+    
+    
+    AddNewElementViewAnimated.showOrDismissUnderBottomInCenterNewView(
+      newElementView: loginView.forrgotPasswordView,
+      blurView: loginView.blurView,
+      customNavBar: nil,
+      tabbarController: nil,
+      isShow: true)
+    // Теперь нужно дать текстфилд с вводом email
+    
   }
   
+  private func handleCancelForgotPasswordButton() {
+    AddNewElementViewAnimated.showOrDismissUnderBottomInCenterNewView(
+         newElementView: loginView.forrgotPasswordView,
+         blurView: loginView.blurView,
+         customNavBar: nil,
+         tabbarController: nil,
+         isShow: false)
+  }
+}
+
+
+// MARK: TapGestureTecogniser
+extension LoginController {
   
   
- 
+  private func setTapGestureRecogniser() {
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapView))
+    loginView.addGestureRecognizer(tapGesture)
+  }
+  
+  @objc private func handleTapView() {
+    loginView.endEditing(true)
+  }
+}
+
+// MARK: Keyboard Notififcation
+extension LoginController {
+  
+  
+  private func setKeyboardNotification() {
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(handleKeyBoardWillUP), name: UIResponder.keyboardWillShowNotification, object: nil)
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(handleKeyBoardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+  }
+  
+  @objc private func handleKeyBoardWillUP(notification: Notification) {
+    
+    guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
+    let keyboardFrame = value.cgRectValue
+    
+    let padding: CGFloat = 10
+    let gapBottomFromStackViewAndBottom = loginView.frame.height - loginView.overAllStackView.frame.height - loginView.overAllStackView.frame.origin.y - padding
+    
+    let diff = keyboardFrame.height - gapBottomFromStackViewAndBottom
+    
+    if  diff > 0 {
+
+      Animator.springTranslated(view: loginView, cgaTransform: CGAffineTransform(translationX: 0, y: -diff))
+    }
+    
+    
+  }
+  
+  @objc private func handleKeyBoardWillHide(notification: Notification) {
+    Animator.springTranslated(view: loginView, cgaTransform:.identity)
+  }
 }

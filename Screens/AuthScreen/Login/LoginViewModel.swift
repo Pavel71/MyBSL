@@ -7,8 +7,7 @@
 //
 
 import UIKit
-
-//import FIreBase
+import Firebase
 
 class LoginModelView {
   
@@ -19,17 +18,21 @@ class LoginModelView {
   var isLogIn = Bindable<Bool>()
   
   func checkForm() {
-    isValidForm.value = email?.isEmpty == false && password?.isEmpty == false
+    guard let email = self.email else {return}
+    let isValidemail = email.isValidEmailRFC5322()
+    isValidForm.value = isValidemail && password?.isEmpty == false
   }
   
-//  func performSignIn(complation: @escaping (Result<AuthDataResult, NetworkFirebaseError>) -> Void) {
-//    isLogIn.value = true
-//    guard let email = self.email else {return}
-//    guard let password = self.password else {return}
-//
-//    LoginService.sigIn(email: email, password: password, complation: complation)
-//  }
-//
+  func performSignIn(complation: @escaping (Result<AuthDataResult, NetworkFirebaseError>) -> Void) {
+    
+    isLogIn.value = true
+    
+    guard let email = self.email else {return}
+    guard let password = self.password else {return}
+
+    LoginService.sigIn(email: email, password: password, complation: complation)
+  }
+
   
   
 }

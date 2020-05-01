@@ -8,7 +8,7 @@
 
 import UIKit
 import RealmSwift
-import ProgressHUD
+
 
 protocol MealDisplayLogic: class {
   func displayData(viewModel: Meal.Model.ViewModel.ViewModelData)
@@ -195,9 +195,13 @@ class MealViewController: UIViewController, MealDisplayLogic,MainControllerInCon
     
     if success {
       cancelNewMealView()
-      ProgressHUD.showSuccess("Обед обновленн!")
+      showSuccesMessage(text: "Обед обновленн!")
+      
+//      ProgressHUD.showSuccess("Обед обновленн!")
     } else {
-      ProgressHUD.showError("Ошибка которая никогда не произойдет")
+      showErrorMessage(text: "Ошибка которая никогда не произойдет")
+     
+//      ProgressHUD.showError("Ошибка которая никогда не произойдет")
     }
   }
   
@@ -205,9 +209,13 @@ class MealViewController: UIViewController, MealDisplayLogic,MainControllerInCon
     
     if success {
       cancelNewMealView()
-      ProgressHUD.showSuccess("Новый обед созданн!")
+      showSuccesMessage(text: "Новый обед созданн!")
+    
+//      ProgressHUD.showSuccess("Новый обед созданн!")
     } else {
-      ProgressHUD.showError("Такое имя обеда уже есть!")
+      showErrorMessage(text: "Такое имя обеда уже есть!")
+
+//      ProgressHUD.showError("Такое имя обеда уже есть!")
     }
   }
   

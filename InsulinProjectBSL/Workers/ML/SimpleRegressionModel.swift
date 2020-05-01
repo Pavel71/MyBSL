@@ -100,9 +100,7 @@ extension SimpleRegresiionModel {
   
   // Predict
   func getPredict(test:[Float]) -> [Float] {
-    
     return test.map(predict)
-    
   }
   
   private func predict(test: Float) -> Float {

@@ -81,9 +81,12 @@ extension NewCompansationObjectScreenInteractor {
       // Пришла модель с обнволенными данными!
       // Мы должны проверить что у нас туту Новый объект или Update?
       
+      // прежде чем записать все изменения я должен внести корректировку в 1 элемент это компенсация Разницы в сахаре между Идеальным и текущим
+      
+      
+      
 
       if updateCompObj != nil {
-        
         
         let totalInsulinBefore = updateCompObj.totalInsulin.toFloat()
         let totalInsulinAfter  = viewModel.resultFooterVM.totalInsulin
@@ -193,7 +196,7 @@ extension NewCompansationObjectScreenInteractor {
     let typeObject   = viewModel.resultFooterVM.typeCompansationObject
     //    let totalInsulin = Double(viewModel.resultFooterVM.totalInsulin).roundToDecimal(2)
     let insulinCarbo = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumInsulinFloat).roundToDecimal(2)
-    let insulinCorrect = Double(viewModel.sugarCellVM.correctionSugarKoeff ?? 0).roundToDecimal(2)
+    let insulinCorrect = abs(Double(viewModel.sugarCellVM.correctionSugarKoeff ?? 0).roundToDecimal(2))
     let totalCarbo   = Double(viewModel.addMealCellVM.dinnerProductListVM.resultsViewModel.sumCarboFloat).roundToDecimal(2)
     let placeInjections = viewModel.injectionCellVM.titlePlace
     

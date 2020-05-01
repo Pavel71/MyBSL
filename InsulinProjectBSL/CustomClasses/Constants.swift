@@ -33,7 +33,7 @@ struct Constants {
   }
   
   struct Font {
-    static let textFont  = UIFont(name: "DINCondensed-Bold", size: 18)
+    static let textFont  = UIFont(name: "DINCondensed-Bold", size: 20)
     static let valueFont = UIFont(name: "DINCondensed-Bold", size: 16)
   }
   
@@ -150,6 +150,10 @@ struct Constants {
     static let transformUpRightCorner: CGAffineTransform = CGAffineTransform(translationX: UIScreen.main.bounds.maxX, y: -UIScreen.main.bounds.maxY).concatenating(CGAffineTransform(scaleX: 0.3, y: 0.3))
     
     static let transformUpLeftCorner: CGAffineTransform = CGAffineTransform(translationX: UIScreen.main.bounds.minX, y: -UIScreen.main.bounds.maxY).concatenating(CGAffineTransform(scaleX: 0.3, y: 0.3))
+    
+     static let transformUnderBottomInCenter: CGAffineTransform = CGAffineTransform(translationX: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.maxY + 200).concatenating(CGAffineTransform(scaleX: 0.3, y: 0.3))
   }
+  
+ 
   
 }

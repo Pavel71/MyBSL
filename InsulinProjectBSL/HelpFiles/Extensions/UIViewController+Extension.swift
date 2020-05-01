@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 extension UIViewController {
   
@@ -20,6 +21,16 @@ extension UIViewController {
 //    alertController.addAction(cancelAction)
     present(alertController, animated: true, completion: nil)
     
+  }
+  
+  func showAlert(title: String, message: String) {
+    
+    let alertControlelr = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    
+    let alertAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+    
+    alertControlelr.addAction(alertAction)
+    present(alertControlelr, animated: true, completion: nil)
   }
   
   
@@ -47,5 +58,33 @@ extension UIViewController {
 
   
   
+  
+}
+
+// MARK: HGProgressUd
+extension  UIViewController {
+  
+  func showSuccesMessage(text: String) {
+    
+    DispatchQueue.main.async {
+       let jcg = JGProgressHUD(style: .dark)
+         jcg.indicatorView = JGProgressHUDSuccessIndicatorView()
+         jcg.detailTextLabel.text = text
+         jcg.show(in: self.view)
+         jcg.dismiss(afterDelay: 2)
+    }
+
+   
+  }
+  
+  func showErrorMessage(text: String) {
+     DispatchQueue.main.async {
+        let jcg = JGProgressHUD(style: .dark)
+        jcg.indicatorView = JGProgressHUDErrorIndicatorView()
+        jcg.detailTextLabel.text = text
+        jcg.show(in: self.view)
+        jcg.dismiss(afterDelay: 2)
+        }
+  }
   
 }

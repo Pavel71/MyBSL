@@ -19,7 +19,7 @@ struct MainScreenConstants {
   
   struct CollectionView {
     
-    static let contentInCellPadding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    static let contentInCellPadding = UIEdgeInsets(top: 5, left: 10, bottom: 10, right: 10)
     
   }
   

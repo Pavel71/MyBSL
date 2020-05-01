@@ -13,14 +13,14 @@ class RegistrationView: UIView {
   
   
   
-  let fullNameTextField: CustomTextField = {
-      
-      
-      let tf = CustomTextField(padding: 16, placeholder: "Введите Имя",cornerRaduis:10)
-  
-      tf.backgroundColor = .white
-      return tf
-    }()
+//  let fullNameTextField: CustomTextField = {
+//
+//
+//      let tf = CustomTextField(padding: 16, placeholder: "Введите Имя",cornerRaduis:10)
+//
+//      tf.backgroundColor = .white
+//      return tf
+//    }()
     
     let emailTextField: CustomTextField = {
       let tf = CustomTextField(padding: 16,placeholder: "Введите email",cornerRaduis:10)
@@ -54,7 +54,7 @@ class RegistrationView: UIView {
     
     let goToLoginButton: UIButton = {
       let button = UIButton(type: .system)
-      button.setTitle("Войти", for: .normal)
+      button.setTitle("Уже есть Логин?", for: .normal)
       button.setTitleColor(.white, for: .normal)
    
       button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
@@ -67,7 +67,7 @@ class RegistrationView: UIView {
     
     lazy var verticalStackView:UIStackView = {
       let sv = UIStackView(arrangedSubviews: [
-        fullNameTextField,
+        
         emailTextField,
         passwordTextField,
         registerButton
