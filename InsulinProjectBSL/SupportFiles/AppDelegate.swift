@@ -58,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   private func activateFirebase() {
     FirebaseApp.configure()
+    
   }
   
   private func clearUserDefaultsFields() {

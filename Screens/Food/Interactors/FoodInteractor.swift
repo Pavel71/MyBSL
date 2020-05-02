@@ -93,9 +93,18 @@ class FoodInteractor: FoodBusinessLogic {
       
     case .addNewProductInRealm(let viewModel):
       
-      realmManager.addNewProduct(viewModel: viewModel) { [weak self] (succes) in
-        self?.presenter?.presentData(response: .succesAddNewProduct(succes: succes))
+      var isAddNewProduct = false
+      
+      if realmManager.isCheckProductByName(name: viewModel.name) {
+        realmManager.addNewProduct(viewModel: viewModel)
+        isAddNewProduct = true
       }
+      
+      self.presenter?.presentData(response: .succesAddNewProduct(succes: isAddNewProduct))
+      
+//      realmManager.addNewProduct(viewModel: viewModel) { [weak self] (succes) in
+//        self?.presenter?.presentData(response: .succesAddNewProduct(succes: succes))
+//      }
       
     case .updateCurrentProductInRealm(let viewModel):
       

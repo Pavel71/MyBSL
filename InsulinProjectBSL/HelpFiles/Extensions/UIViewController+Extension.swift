@@ -64,27 +64,30 @@ extension UIViewController {
 // MARK: HGProgressUd
 extension  UIViewController {
   
-  func showSuccesMessage(text: String) {
+  func showSuccesMessage(text: String,detailText: String? = nil) {
     
-    DispatchQueue.main.async {
+    
        let jcg = JGProgressHUD(style: .dark)
          jcg.indicatorView = JGProgressHUDSuccessIndicatorView()
-         jcg.detailTextLabel.text = text
+         jcg.textLabel.text = text
+         jcg.detailTextLabel.text = detailText
          jcg.show(in: self.view)
          jcg.dismiss(afterDelay: 2)
-    }
+    
 
    
   }
   
-  func showErrorMessage(text: String) {
-     DispatchQueue.main.async {
+  func showErrorMessage(text: String,detailText: String? = nil) {
+     
         let jcg = JGProgressHUD(style: .dark)
         jcg.indicatorView = JGProgressHUDErrorIndicatorView()
-        jcg.detailTextLabel.text = text
+        jcg.textLabel.text = text
+        jcg.detailTextLabel.text = detailText
+
         jcg.show(in: self.view)
         jcg.dismiss(afterDelay: 2)
-        }
+        
   }
   
 }

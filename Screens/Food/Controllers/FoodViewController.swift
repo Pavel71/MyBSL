@@ -169,9 +169,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   
   private func reloadTableView() {
     self.tableView.reloadData()
-//    UIView.transition(with: tableView, duration: 0.2, options: [.curveEaseOut,.transitionCrossDissolve], animations: {
-//      self.tableView.reloadData()
-//    }, completion: nil)
+
   }
   
   // MARK: Display Methods
@@ -180,15 +178,13 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     
         if success {
           let successString = self.updateProductId == nil ? "Продукт сохранен!" : "Продукт обновленн!"
-          self.didCancelNewProduct()
           
+          self.didCancelNewProduct()
           showSuccesMessage(text: successString)
 
-//          ProgressHUD.showSuccess(successString)
         } else {
           showErrorMessage(text: "Такое имя уже есть, Отредактируйте продукт или создайте новый!")
-          
-//          ProgressHUD.showError("Такое имя уже есть, Отредактируйте продукт или создайте новый!")
+
         }
      
     
@@ -316,14 +312,20 @@ extension FoodViewController {
       
     } else {
       // Если мы выбрали индекс и хотим обновить продукт то нужно обновить! Если нет индекса то создать новый!
-      if let productId = updateProductId {
-        var viewModel = newProductViewModel
-        viewModel.id = productId
-        interactor?.makeRequest(request: .updateCurrentProductInRealm(viewModel: viewModel))
-      } else {
-        // Создаем новый продукт!
-        interactor?.makeRequest(request: .addNewProductInRealm(viewModel: newProductViewModel))
-      }
+      
+      
+        if let productId = self.updateProductId {
+          
+          var viewModel = newProductViewModel
+          viewModel.id = productId
+          self.interactor?.makeRequest(request: .updateCurrentProductInRealm(viewModel: viewModel))
+        } else {
+          // Создаем новый продукт!
+          self.interactor?.makeRequest(request: .addNewProductInRealm(viewModel: newProductViewModel))
+        }
+      
+      
+      
       
     }
     

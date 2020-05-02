@@ -123,7 +123,8 @@ extension LoginController {
         
       case .failure(let error):
         
-        self.showAlert(title: "Ошибка входа", message: error.localizedDescription)
+        
+        self.showErrorMessage(text: "Ошибка входа",detailText: error.localizedDescription )
         self.loginModelView.isLogIn.value = false
         
       case .success(_):

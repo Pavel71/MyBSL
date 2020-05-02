@@ -249,7 +249,7 @@ class NewProductView: AddNewElementView {
     setAnimateSegmentView()
   }
 
-  // Add Button
+  // MARK: Save
   var didTapSaveButton: ((String?,FoodCellViewModel) -> Void)?
   override func handleSaveButton() {
     
