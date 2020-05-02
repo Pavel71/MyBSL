@@ -145,7 +145,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     case .setViewModel(let viewModel):
       
       foodViewModel = headerInSectionWorker.updateViewModelByExpandSection(newViewModel:viewModel, with: currentSegment) as! [FoodViewModel]
-      
+      reloadTableView()
       
     case .setDataToNewProductView(let viewModel):
       
@@ -163,7 +163,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     }
     
     // Задача здесь простая если какие то секции открыты то после перезагрузки отсавить их!
-    reloadTableView()
+    
   }
   
   private func reloadTableView() {
@@ -346,7 +346,7 @@ extension FoodViewController {
   //MARK: Cancel Button
   @objc private func didCancelNewProduct() {
     
-    print("Cancel New Product View")
+    
    
     self.pickerView.isHidden = true
     
@@ -359,7 +359,7 @@ extension FoodViewController {
         tabbarController:  self.tabBarController!,
         
         isShow: false) { _ in
-          print("Анимация законченна")
+          
           // Внеси эти изменения после анимации
           self.newProductView.clearAllFieldsInView()
           self.updateProductId = nil
@@ -575,6 +575,7 @@ extension FoodViewController {
   
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     
+    
     //  В Избранном нет кнопки удалить продукт!
     switch  currentSegment {
       
@@ -585,6 +586,7 @@ extension FoodViewController {
         let cell = tableView.cellForRow(at: indexPath) as! FoodCell
         let productID = cell.getProductID()
         self.interactor?.makeRequest(request: .deleteProduct(productId: productID))
+        
         success(true)
       })
       return UISwipeActionsConfiguration(actions: [deleteAction])
@@ -593,6 +595,8 @@ extension FoodViewController {
     case .meals:
       return UISwipeActionsConfiguration(actions: [])
     }
+    
+    
     
   }
   

@@ -83,7 +83,13 @@ class FoodValidator: Validateble {
     alertMassaString = nil
   }
   
+  
+  var updateName:String?
+  
   func setFieldsFromViewModel(viewModel: NewProductViewModelable) {
+    
+    updateName = viewModel.name!
+    
     name       = viewModel.name!
     category   = viewModel.category!
     carbo      = viewModel.carbo!
@@ -97,7 +103,13 @@ class FoodValidator: Validateble {
     
     guard let name = name else {return}
     
-    alertNameString = foodRealmManger.isCheckProductByName(name: name) ? nil : "Продукт с таким именем уже есть!"
+    if updateName == name {
+      print("Имя не изменилось с обновления ничего не делаею")
+    } else {
+      alertNameString = foodRealmManger.isCheckProductByName(name: name) ? nil : "Продукт с таким именем уже есть!"
+    }
+    
+    
     
   }
   

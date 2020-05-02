@@ -83,7 +83,7 @@ class FoodInteractor: FoodBusinessLogic {
       guard let product = realmManager.getProductById(id: productId) else {return}
       realmManager.deleteProduct(product: product)
       // можно и не обновлять так как он сделает красивую анимацию
-//      didChangeProductDB()
+      didChangeProductDB()
       
     case .updateFavoritsField(let productId):
       
@@ -97,19 +97,12 @@ class FoodInteractor: FoodBusinessLogic {
         
         didChangeProductDB()
 
-//      else {
-//
-//        self.presenter?.presentData(response: .succesAddNewProduct(succes: isAddNewProduct))
-//      }
-      
-      
-      
       
     case .updateCurrentProductInRealm(let viewModel):
       
       realmManager.updateAllFields(viewModel: viewModel)
       didChangeProductDB()
-//      presenter?.presentData(response: .succesAddNewProduct(succes: true))
+
       
     default: break
     }

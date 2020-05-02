@@ -178,8 +178,6 @@ extension FoodRealmManager {
   // Check By Name
   func isCheckProductByName(name: String) -> Bool  {
     
-    print("Проверка имени по базе")
-    
     let realm = productProvider.realm
     
     return realm.objects(ProductRealm.self).filter("name == %@",name).isEmpty
@@ -209,7 +207,7 @@ extension FoodRealmManager {
     let realm = productProvider.realm
     
     guard let product = getProductById(id: viewModel.id) else {return}
-    DispatchQueue.main.async {
+    
       do {
         
         realm.beginWrite()
@@ -225,7 +223,6 @@ extension FoodRealmManager {
       } catch let error {
         print("Update Current Product in Realm Error",error)
       }
-    }
     
   }
   
