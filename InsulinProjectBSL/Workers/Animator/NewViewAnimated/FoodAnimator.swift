@@ -16,17 +16,12 @@ class AddNewElementViewAnimated {
     newElementView: UIView,
     blurView: UIVisualEffectView,
     customNavBar: UIView,
-    tabbarController: UITabBarController, isShow: Bool) {
-    
-//    guard let view = newElementView.superview else {return}
-//    UIStatusBarManager
-//    let statusBarWindow = UIApplication.shared.value(forKey: "statusBarWindow") as? UIWindow
+    tabbarController: UITabBarController,
+    isShow: Bool,
+    completion: ((Bool) -> Void)? = nil) {
 
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseOut, animations: {
       
-      // Alpha
-
-//      statusBarWindow?.alpha = isShow ? 0 : 1
       
       tabbarController.tabBar.alpha = isShow ? 0: 1
       
@@ -35,11 +30,10 @@ class AddNewElementViewAnimated {
       
       // Translation
       customNavBar.transform = isShow ? CGAffineTransform(translationX:0, y: -100) : .identity
-//      tabbarController.tabBar.transform = isShow ? CGAffineTransform(translationX:0, y: 100) : .identity
       
       newElementView.transform = isShow ? .identity : Constants.Animate.transformUpRightCorner
       
-    }, completion: nil)
+    }, completion: completion)
     
   }
   

@@ -18,7 +18,7 @@ enum Food {
         // Realm Case
         case fetchAllProducts
         case fetchProductByFavorits
-        case setRealmObserverToken
+        
         
         // Realm
         case filterProductByName(name: String)
@@ -45,13 +45,13 @@ enum Food {
       enum ResponseType {
         
         case prepareDataFromRealmToViewModel(items: Results<ProductRealm>, bySections: Bool)
-//        case reloadTableView(deletions:[Int]?,insertions:[Int]?,updates: [Int]?)
+
         
         
-        case passRealmObserver(productRealmObserver: NotificationToken)
+        
         case prepareDataToFillNewProductViewModel(categorylist: [String], updateProduct: ProductRealm?)
         case succesAddNewProduct(succes: Bool)
-//        case passCurrentItemsToSort(items: Results<ProductRealm>)
+
     
       }
     }
@@ -60,7 +60,7 @@ enum Food {
       enum ViewModelData {
         
         case setViewModel(viewModel: [FoodViewModel])
-        case setProductRealmObserver(productRealmObserver: NotificationToken)
+        
         case setDataToNewProductView(viewModel: NewProductViewModel)
         case displayAlertSaveNewProduct(succes: Bool)
         

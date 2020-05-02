@@ -56,11 +56,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return true
   }
   
+  // MARK: ACTIVATE FIREBASE
   private func activateFirebase() {
     FirebaseApp.configure()
     
   }
-  
+  // MARK: CLEAR USERDEFAULTS Fields
   private func clearUserDefaultsFields() {
     
     UserDefaultsKey.allCases.forEach{UserDefaults.standard.removeObject(forKey: $0.rawValue)}
@@ -137,6 +138,7 @@ extension AppDelegate {
     
     locator.addService(service: CompObjRealmManager())
     locator.addService(service: SugarRealmManager())
+    locator.addService(service: FoodRealmManager())
     locator.addService(service: NewDayRealmManager())
     locator.addService(service: InsulinSupplyWorker())
     locator.addService(service: DataEnrichmentWorker())

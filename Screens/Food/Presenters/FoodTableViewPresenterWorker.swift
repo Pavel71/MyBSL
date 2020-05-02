@@ -17,6 +17,7 @@ class FoodTableViewPresenterWorker {
     
     var foodViewModel: [FoodViewModel]
     
+    print("Пошла работа по обработке данных в ViewModel")
     if isDefaultList {
       
       let defaultViewModel = prepareDataToDefaultList(productsRealmArray: Array(items))
@@ -58,9 +59,8 @@ class FoodTableViewPresenterWorker {
   // Default List
   private static func prepareDataToDefaultList(productsRealmArray: [ProductRealm]) -> FoodViewModel {
     
-    let cells = productsRealmArray.map { product in
-      return cellViewModel(product: product)
-    }
+    let cells = productsRealmArray.map(cellViewModel)
+    
     let foodViewModel = FoodViewModel.init(items: cells)
     
     return foodViewModel
@@ -73,7 +73,13 @@ class FoodTableViewPresenterWorker {
     let carboString = "\(product.carboIn100grm)"
     let massaString = "\(product.portion)"
     
-    return FoodViewModel.Cell.init(id: product.id, name: product.name, category: product.category, isFavorit: product.isFavorits, carbo: carboString, portion: massaString)
+    return FoodViewModel.Cell.init(
+      id: product.id,
+      name: product.name,
+      category: product.category,
+      isFavorit: product.isFavorits,
+      carbo: carboString,
+      portion: massaString)
   }
   
 }

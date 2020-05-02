@@ -17,11 +17,11 @@ protocol FoodDisplayLogic: class {
 }
 
 class FoodViewController: UIViewController, FoodDisplayLogic {
-
+  
   var interactor: FoodBusinessLogic?
   var router: (NSObjectProtocol & FoodRoutingLogic)?
   
-//  var arraySectionExpanded = [Bool]()
+  //  var arraySectionExpanded = [Bool]()
   
   
   // При каждом сете проверяем какие секции были раскрыты какие закрыты! Что бы отобразить так это оставил Юзер
@@ -35,16 +35,16 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     }
   }
   
-
   
-
+  
+  
   // MARK: Object lifecycle
   var currentSegment: Segment = .allProducts
   
   var foodView: FoodView!
   var customNavBar: CustomNavBar!
   
-//  var newProductView: NewProductView!
+  //  var newProductView: NewProductView!
   var newProductView: NewProductView!
   
   
@@ -56,7 +56,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
   var headerInSectionWorker = HeaderInSectionWorker()
   
   
-  var realmObserverTokken: NotificationToken!
+  //  var realmObserverTokken: NotificationToken!
   // Это нужно для анимации
   var addViewBottomY: CGFloat!
   // Если мы обновляем продукт то вот его индекс
@@ -94,17 +94,18 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     router.viewController     = viewController
   }
   
-  // MARK: Routing
-
+  
+  
   
   // MARK: View lifecycle
   
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    
     setUpView()
-//    fetchProductBySegment(segment: currentSegment)
-
+    //    fetchProductBySegment(segment: currentSegment)
+    interactor?.makeRequest(request: .fetchAllProducts)
+    
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -115,82 +116,82 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     navigationController?.navigationBar.isHidden = true
     setKeyboardNotification()
     
-    interactor?.makeRequest(request: .setRealmObserverToken)
-
+    //    interactor?.makeRequest(request: .setRealmObserverToken)
+    
     // Пока вот так коряво но это работает
     foodView.headerTableView.setsegmentIndex = currentSegment.rawValue
-
+    
     
   }
   
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     
-    realmObserverTokken.invalidate()
+    //    realmObserverTokken.invalidate()
     NotificationCenter.default.removeObserver(self)
   }
   
-
   
-
   
-  // MARK: Display
+  
+  
+   // MARK: Display Methods
   
   func displayData(viewModel: Food.Model.ViewModel.ViewModelData) {
     
     // Set View Model
     switch viewModel {
       
-      case .setViewModel(let viewModel):
-
-        foodViewModel = headerInSectionWorker.updateViewModelByExpandSection(newViewModel:viewModel, with: currentSegment) as! [FoodViewModel]
+    case .setViewModel(let viewModel):
       
-      case .setProductRealmObserver(let productRealmObserver):
-        realmObserverTokken = productRealmObserver
+      foodViewModel = headerInSectionWorker.updateViewModelByExpandSection(newViewModel:viewModel, with: currentSegment) as! [FoodViewModel]
       
-      case .setDataToNewProductView(let viewModel):
-        
-        newProductView.set(viewModel: viewModel)
-        pickerData = viewModel.listCategory
-        
-        pickerView.isHidden = true
-        
-        
-        AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: true)
       
-      case .displayAlertSaveNewProduct(let success):
-        
-        saveNewProduct(success: success)
+    case .setDataToNewProductView(let viewModel):
+      
+      newProductView.set(viewModel: viewModel)
+      pickerData = viewModel.listCategory
+      
+      pickerView.isHidden = true
+      
+      
+      AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: true)
+      
+    case .displayAlertSaveNewProduct(let success):
+      
+      saveNewProduct(success: success)
     }
-
+    
     // Задача здесь простая если какие то секции открыты то после перезагрузки отсавить их!
     reloadTableView()
   }
   
   private func reloadTableView() {
     self.tableView.reloadData()
-
+    
   }
   
-  // MARK: Display Methods
+ 
+  // MARK: Show Message
   private func saveNewProduct(success: Bool) {
     
+    if success {
+      
+      let successString = self.updateProductId == nil ? "Продукт сохранен!" : "Продукт обновленн!"
+      
+      self.didCancelNewProduct()
+      
+      showSuccesMessage(text: successString)
+      
+    } else {
+      
+      showErrorMessage(text: "Такое имя уже есть, Отредактируйте продукт или создайте новый!")
+    }
     
-        if success {
-          let successString = self.updateProductId == nil ? "Продукт сохранен!" : "Продукт обновленн!"
-          
-          self.didCancelNewProduct()
-          showSuccesMessage(text: successString)
-
-        } else {
-          showErrorMessage(text: "Такое имя уже есть, Отредактируйте продукт или создайте новый!")
-
-        }
-     
     
     
   }
-
+  
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -263,11 +264,19 @@ extension FoodViewController {
     
     newProductView = foodView.newProductView
     
-    newProductView.cancelButton.addTarget(self, action: #selector(didCancelNewProduct), for: .touchUpInside)
+    
+    newProductView.didTapCancelButton = {[weak self] in
+      self?.didCancelNewProduct()
+    }
+    
     
     newProductView.categoryWithButtonTextFiled.rightButton.addTarget(self, action: #selector(didTapShowListCategory), for: .touchUpInside)
     
-    newProductView.didTapSaveButton = {[weak self] alertString, newFoodViewModel in self?.didSaveNewProduct(alertString: alertString, newProductViewModel: newFoodViewModel) }
+    newProductView.didTapSaveButton = {[weak self]  in
+      
+      self?.didSaveNewProduct()
+      
+    }
     
     newProductView.foodValidator.isValidCallBack = {[weak self] isCanSave in self?.textFiledsValidateCanSave(isCanSave: isCanSave) }
     
@@ -304,45 +313,66 @@ extension FoodViewController {
   // MARK: New Product Button Handle
   
   // Save Button
-  private func didSaveNewProduct(alertString: String?, newProductViewModel: FoodCellViewModel) {
+  private func didSaveNewProduct() {
     
-    if let alertString = alertString {
+    
+    let alertString = newProductView.foodValidator.alertString
+    
+    if alertString.isEmpty == false {
       // Ошибка в данных!
       showErrorMessage(text: alertString)
       
     } else {
-      // Если мы выбрали индекс и хотим обновить продукт то нужно обновить! Если нет индекса то создать новый!
       
+      guard var viewModel = self.newProductView.getViewModel() else {return}
       
-        if let productId = self.updateProductId {
-          
-          var viewModel = newProductViewModel
-          viewModel.id = productId
-          self.interactor?.makeRequest(request: .updateCurrentProductInRealm(viewModel: viewModel))
-        } else {
-          // Создаем новый продукт!
-          self.interactor?.makeRequest(request: .addNewProductInRealm(viewModel: newProductViewModel))
-        }
+      if let productId = self.updateProductId  {
+        
+        viewModel.id = productId
+        self.interactor?.makeRequest(request: .updateCurrentProductInRealm(viewModel: viewModel))
+        
+      } else {
+        
+        self.interactor?.makeRequest(request: .addNewProductInRealm(viewModel: viewModel))
+      }
       
-      
-      
-      
+      self.didCancelNewProduct()
+
     }
     
   }
   
   
-  // Cancel Button
+  //MARK: Cancel Button
   @objc private func didCancelNewProduct() {
     
-    AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: false)
+    print("Cancel New Product View")
+   
+    self.pickerView.isHidden = true
     
-    newProductView.clearAllFieldsInView()
+    DispatchQueue.main.async {
+
+      AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(
+        newElementView:    self.newProductView,
+        blurView:          self.blurView,
+        customNavBar:      self.customNavBar,
+        tabbarController:  self.tabBarController!,
+        
+        isShow: false) { _ in
+          print("Анимация законченна")
+          // Внеси эти изменения после анимации
+          self.newProductView.clearAllFieldsInView()
+          self.updateProductId = nil
+          
+          self.view.endEditing(true)
+      }
+
+      
+    }
     
-    pickerView.isHidden = true
-    updateProductId = nil
     
-    view.endEditing(true)
+
+    
   }
   
   @objc private func didTapShowListCategory() {
@@ -460,7 +490,7 @@ extension FoodViewController: UISearchBarDelegate {
     } else {
       interactor?.makeRequest(request: .filterProductByName(name: searchText))
     }
-
+    
   }
   
 }
@@ -471,7 +501,7 @@ extension FoodViewController: UISearchBarDelegate {
 extension FoodViewController {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-
+    
     let isExpand = foodViewModel[section].isExpanded
     let isOnlyOneSection = foodViewModel.count > 1
     
@@ -595,7 +625,7 @@ extension FoodViewController {
 
 // MARK: Set Up Keyboard Notification
 extension FoodViewController {
-
+  
   private func setKeyboardNotification() {
     NotificationCenter.default.addObserver(self, selector: #selector(handleKeyBoardWillUP), name: UIResponder.keyboardWillShowNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDismiss), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -631,7 +661,7 @@ extension FoodViewController {
   // Meal update Header Worker After return from Meal
   func updateHeaderWorkerInSection(headerWorkerInSection: HeaderInSectionWorker) {
     self.headerInSectionWorker = headerWorkerInSection
-
+    
   }
 }
 
@@ -659,7 +689,7 @@ extension FoodViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     newProductView.setCategory(category: pickerData[row])
-
+    
   }
   
   

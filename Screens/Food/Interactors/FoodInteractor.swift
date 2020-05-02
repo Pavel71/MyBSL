@@ -22,6 +22,8 @@ protocol FoodBusinessLogic {
 class FoodInteractor: FoodBusinessLogic {
 
   var presenter: FoodPresentationLogic?
+  
+  
   var realmManager: FoodRealmManager!
   
   
@@ -29,7 +31,7 @@ class FoodInteractor: FoodBusinessLogic {
 
 //  var items: Results<ProductRealm>!
   
-  var service: FoodService?
+  
   
   var isDefaultList: Bool = true
   
@@ -37,15 +39,14 @@ class FoodInteractor: FoodBusinessLogic {
   
   var items: Results<ProductRealm>!
   
+  
+  init() {
+    let locator = ServiceLocator.shared
+    realmManager = locator.getService()
+  }
+  
+  
   func makeRequest(request: Food.Model.Request.RequestType) {
-    
-    if realmManager == nil {
-      
-      realmManager = FoodRealmManager()
-      // set clouser DB Cnahge
-      realmManager.didChangeRealmDB = {[weak self] in self?.didChangeProductDB()}
-//      items = realmManager.getItems()
-    }
     
     workWithTableViewViewModel(request: request)
     workWithNewFoodViewViewModel(request: request)
@@ -59,11 +60,7 @@ class FoodInteractor: FoodBusinessLogic {
     changeDB(request: request)
     
     switch request {
-      // Realm Observer
-      case .setRealmObserverToken:
-        
-        let realmObserverToken = realmManager.setObserverToken()
-        presenter?.presentData(response: .passRealmObserver(productRealmObserver: realmObserverToken))
+
       
       // Section Button Push
       case .showListProductsBySection(let isDefaultList):
@@ -85,31 +82,34 @@ class FoodInteractor: FoodBusinessLogic {
       
       guard let product = realmManager.getProductById(id: productId) else {return}
       realmManager.deleteProduct(product: product)
+      // можно и не обновлять так как он сделает красивую анимацию
+//      didChangeProductDB()
       
     case .updateFavoritsField(let productId):
       
       guard let product = realmManager.getProductById(id: productId) else {return}
       realmManager.updateProductFavoritField(product: product)
+      didChangeProductDB()
       
     case .addNewProductInRealm(let viewModel):
-      
-      var isAddNewProduct = false
-      
-      if realmManager.isCheckProductByName(name: viewModel.name) {
+
         realmManager.addNewProduct(viewModel: viewModel)
-        isAddNewProduct = true
-      }
-      
-      self.presenter?.presentData(response: .succesAddNewProduct(succes: isAddNewProduct))
-      
-//      realmManager.addNewProduct(viewModel: viewModel) { [weak self] (succes) in
-//        self?.presenter?.presentData(response: .succesAddNewProduct(succes: succes))
+        
+        didChangeProductDB()
+
+//      else {
+//
+//        self.presenter?.presentData(response: .succesAddNewProduct(succes: isAddNewProduct))
 //      }
+      
+      
+      
       
     case .updateCurrentProductInRealm(let viewModel):
       
       realmManager.updateAllFields(viewModel: viewModel)
-      presenter?.presentData(response: .succesAddNewProduct(succes: true))
+      didChangeProductDB()
+//      presenter?.presentData(response: .succesAddNewProduct(succes: true))
       
     default: break
     }
@@ -165,7 +165,7 @@ class FoodInteractor: FoodBusinessLogic {
   }
   
   
-  // Than Change DB
+  // MARK: Update ViewModel
   private func didChangeProductDB() {
     
     // Суть в чем после измененей получи свежые данные в своем сегменте

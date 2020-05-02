@@ -30,30 +30,30 @@ class FoodRealmManager {
   
   // Че то это все очень медленно работает! Надо переписать руками обновление!
   
-  func setObserverToken() -> NotificationToken {
-    
-    // Просто этот клоузер почему то завхватывает значения на момент инициализации
-    // Поэтому здеь работать с itesm не лучший вариант
-    let realmObserverToken = items.observe({  (change) in
-      
-      switch change {
-      case .error(let error):
-        print(error)
-      case .initial(_):
-        
-        self.didChangeRealmDB!()
-      case .update(_, deletions: let deletions, insertions: let insertions, modifications: let updates):
-        print("change Food Db")
-        
-        //        tableView.applyChanges(deletions: deletions, insertions: insertions, updates: updates) // Это почему то не работает
-        
-        self.didChangeRealmDB!()
-      }
-      self.productProvider.realm.refresh() // Обновляю реалм схему
-    })
-    
-    return realmObserverToken
-  }
+//  func setObserverToken() -> NotificationToken {
+//
+//    // Просто этот клоузер почему то завхватывает значения на момент инициализации
+//    // Поэтому здеь работать с itesm не лучший вариант
+//    let realmObserverToken = items.observe({  (change) in
+//
+//      switch change {
+//      case .error(let error):
+//        print(error)
+//      case .initial(_):
+//
+//        self.didChangeRealmDB!()
+//      case .update(_, deletions: let deletions, insertions: let insertions, modifications: let updates):
+//        print("change Food Db")
+//
+//        //        tableView.applyChanges(deletions: deletions, insertions: insertions, updates: updates) // Это почему то не работает
+//
+//        self.didChangeRealmDB!()
+//      }
+//      self.productProvider.realm.refresh() // Обновляю реалм схему
+//    })
+//
+//    return realmObserverToken
+//  }
   
   func setItems() {
     items = allProducts()
@@ -154,7 +154,9 @@ extension FoodRealmManager {
   
   private func addProduct(product: ProductRealm) {
     let realm = productProvider.realm
-    DispatchQueue.main.async {
+    
+    print("Добавляем продукт")
+    
       do {
         
         realm.beginWrite()
@@ -162,19 +164,22 @@ extension FoodRealmManager {
         
         try realm.commitWrite()
         
+        print(realm.configuration.fileURL?.absoluteURL as Any,"Food in DB")
+        
       } catch let error {
         print("Add  a New Product  in RealmError",error)
-      }
+      
     }
-    
-    
-    
+
   }
   
   
   
   // Check By Name
   func isCheckProductByName(name: String) -> Bool  {
+    
+    print("Проверка имени по базе")
+    
     let realm = productProvider.realm
     
     return realm.objects(ProductRealm.self).filter("name == %@",name).isEmpty
@@ -196,9 +201,6 @@ extension FoodRealmManager {
     } catch let error {
       print("Update Favorits",error)
     }
-    //    try! realm.write {
-    //      product.isFavorits = !product.isFavorits
-    //    }
   }
   
   // Update allFields

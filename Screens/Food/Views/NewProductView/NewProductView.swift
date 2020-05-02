@@ -188,13 +188,26 @@ class NewProductView: AddNewElementView {
     
   }
   
-  func getViewModel() -> FoodCellViewModel {
-    
-    let massa: String = foodValidator.isFavorit ? foodValidator.massa! : "100"
-//    let massaInt = Int(massa)
-//    let carboInt = Int(foodValidator.carbo!)!
+  func getViewModel() -> FoodCellViewModel? {
 
-    return FoodViewModel.Cell.init(id: nil, name: foodValidator.name!, category: foodValidator.category!, isFavorit: foodValidator.isFavorit, carbo: foodValidator.carbo!, portion: massa)
+    let isFavorit = switchSegmentController.selectedSegmentIndex == 1
+//    let massa: String = isFavorit ? foodValidator.massa! : "100"
+    
+    guard
+      let name      = nameTextField.text,
+      let category  = categoryWithButtonTextFiled.text,
+      let carbo     = carboTextField.text,
+      let massa     = massaTextField.text
+      else {return nil}
+
+
+    return FoodViewModel.Cell.init(
+      id        : nil,
+      name      : name,
+      category  : category,
+      isFavorit : isFavorit,
+      carbo     : carbo,
+      portion   : massa.isEmpty ? "100" : massa)
     
   }
   
@@ -248,16 +261,20 @@ class NewProductView: AddNewElementView {
     foodValidator.isFavorit = segment.selectedSegmentIndex == 1
     setAnimateSegmentView()
   }
+  
+  // MARK: Cancel
+  
+  var didTapCancelButton: EmptyClouser?
+  override func handleCancelButton() {
+//    clearAllFieldsInView()
+    didTapCancelButton!()
+  }
 
   // MARK: Save
-  var didTapSaveButton: ((String?,FoodCellViewModel) -> Void)?
+  var didTapSaveButton: (() -> Void)?
   override func handleSaveButton() {
-    
-    // Нужно собрать данные из этой View! и передать их котнроллеру
-    foodValidator.checkCarboAndMassa()
-    let viewModel = getViewModel()
-    
-    didTapSaveButton!(foodValidator.alertString, viewModel)
+
+    didTapSaveButton!()
   }
 
   

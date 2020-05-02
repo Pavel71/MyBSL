@@ -10,11 +10,25 @@ import UIKit
 
 
 class FoodValidator: Validateble {
+  
+  
+  var foodRealmManger: FoodRealmManager!
 
-  var name: String? { didSet {checkForm()} }
+  var name: String? { didSet {
+    checkForm()
+    checkName()
+    } }
   var category: String? { didSet {checkForm()} }
-  var carbo: String? { didSet {checkForm()} }
-  var massa: String? { didSet {checkForm()} }
+  
+  var carbo: String? { didSet {
+    checkForm()
+    checkCarbo()
+    } }
+  
+  var massa: String? { didSet {
+    checkForm()
+    checkMassa()
+    }}
   
   
   var isFavorit: Bool = false { didSet {checkForm()} }
@@ -28,7 +42,21 @@ class FoodValidator: Validateble {
   }
   
   // Alert
-  var alertString: String?
+  var alertString: String{
+    set {}
+    get {
+      "\(alertNameString ?? "")" + "\(alertCarboString ?? "")" + "\(alertMassaString ?? "")"
+    }
+  }
+  
+  var alertNameString  : String?
+  var alertCarboString : String?
+  var alertMassaString : String?
+  
+  init() {
+    let locator = ServiceLocator.shared
+    foodRealmManger = locator.getService()
+  }
   
   
   func checkForm() {
@@ -45,52 +73,60 @@ class FoodValidator: Validateble {
 
   
   func setDefault() {
-    name = nil
-    category = nil
-    carbo = nil
-    massa = nil
-    isFavorit = false
+    name        = nil
+    category    = nil
+    carbo       = nil
+    massa       = nil
+    isFavorit   = false
+    alertNameString  = nil
+    alertCarboString = nil
+    alertMassaString = nil
   }
   
   func setFieldsFromViewModel(viewModel: NewProductViewModelable) {
-    name = viewModel.name!
-    category = viewModel.category!
-    carbo = viewModel.carbo!
-    massa = viewModel.massa!
-    isFavorit = viewModel.isFavorits
+    name       = viewModel.name!
+    category   = viewModel.category!
+    carbo      = viewModel.carbo!
+    massa      = viewModel.massa!
+    isFavorit  = viewModel.isFavorits
   }
   
-  func checkCarboAndMassa() {
-    alertString = nil
-    checkCarbo()
-    checkMassa()
+
+  
+  func checkName() {
+    
+    guard let name = name else {return}
+    
+    alertNameString = foodRealmManger.isCheckProductByName(name: name) ? nil : "Продукт с таким именем уже есть!"
+    
   }
   
   func checkCarbo(){
     
-    guard let carboInt = Int(carbo!) else {
-      alertString = "Данные введены не коректно"
+    guard let carbo = carbo,let carboInt = Int(carbo) else {
+      alertCarboString = "Данные по углеводам некорректны"
       return
       
     }
     if carboInt > 100 {
-      alertString = "В 100 гр. продукта не может быть больше 100гр. углеводов!"
+      alertCarboString = "В 100 гр. продукта не может быть больше 100гр. углеводов!"
+    } else {
+      alertCarboString = nil
     }
+    
   }
   
   func checkMassa() {
     
-    if massa != nil {
-      
-      guard let massaInt = Int(massa!) else {
-        alertString = "Данные введены не коректно"
-        return
-      }
-      
-      if massaInt > 1000 {
-        alertString = "Убедитесь что данные по массе продукта верны!"
-      }
-      
+    guard let massa = massa,let massaInt = Int(massa) else {
+      alertMassaString = "Данные по массе не коректно"
+      return
+    }
+    
+    if massaInt > 1000 {
+      alertMassaString = "Убедитесь что данные по массе продукта верны!"
+    } else {
+      alertMassaString = nil
     }
    
   }

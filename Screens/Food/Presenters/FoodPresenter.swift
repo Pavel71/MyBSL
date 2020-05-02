@@ -39,7 +39,9 @@ class FoodPresenter: FoodPresentationLogic {
     switch response {
       case .prepareDataToFillNewProductViewModel(let categoryList, let updateProduct):
         
-        let newProductViewModel = NewFoodViewPresenterWorker.prepareDataToNewProductView(listCategory: categoryList, updateProduct: updateProduct)
+        let newProductViewModel = NewFoodViewPresenterWorker.prepareDataToNewProductView(
+          listCategory: categoryList,
+          updateProduct: updateProduct)
         
         viewController?.displayData(viewModel: .setDataToNewProductView(viewModel: newProductViewModel))
     default:break
@@ -53,13 +55,12 @@ class FoodPresenter: FoodPresentationLogic {
       // TableView Model
       case .prepareDataFromRealmToViewModel(let items, let isDefaultList):
         
-        let foodViewModel = FoodTableViewPresenterWorker.getViewModelBySection(items: items, isDefaultList: isDefaultList)
+        let foodViewModel = FoodTableViewPresenterWorker.getViewModelBySection(
+          items: items, isDefaultList: isDefaultList)
+        
+        print("Закончили обработку ViewModel")
         viewController?.displayData(viewModel: .setViewModel(viewModel: foodViewModel))
       
-      // Realm Observer Token
-      case .passRealmObserver(let productRealmObserverToken):
-        
-        viewController?.displayData(viewModel: .setProductRealmObserver(productRealmObserver: productRealmObserverToken))
       
     default: break
     }
