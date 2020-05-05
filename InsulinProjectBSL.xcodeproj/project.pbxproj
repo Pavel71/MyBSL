@@ -102,6 +102,9 @@
 		058F5F9123A39CB300717042 /* AddMealCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9023A39CB300717042 /* AddMealCell.swift */; };
 		058F5F9323A3A16E00717042 /* NewCompansationObjConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */; };
 		058F5F9523A76B5100717042 /* SugarCellHeightWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058F5F9423A76B5100717042 /* SugarCellHeightWorker.swift */; };
+		05908DA324615F94002DDAFC /* NetworkTasks in Resources */ = {isa = PBXBuildFile; fileRef = 05908DA224615F94002DDAFC /* NetworkTasks */; };
+		05908DA524616697002DDAFC /* SaveService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05908DA424616697002DDAFC /* SaveService.swift */; };
+		05908DA72461A4E4002DDAFC /* FetchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05908DA62461A4E4002DDAFC /* FetchService.swift */; };
 		05952A4F233BB0FD00EE996E /* BaseProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A4E233BB0FD00EE996E /* BaseProductList.swift */; };
 		05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A51233BB22B00EE996E /* ProductListProtocol.swift */; };
 		05952A58233BB51600EE996E /* ProductListInDinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */; };
@@ -377,6 +380,9 @@
 		058F5F9023A39CB300717042 /* AddMealCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMealCell.swift; sourceTree = "<group>"; };
 		058F5F9223A3A16E00717042 /* NewCompansationObjConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCompansationObjConstants.swift; sourceTree = "<group>"; };
 		058F5F9423A76B5100717042 /* SugarCellHeightWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarCellHeightWorker.swift; sourceTree = "<group>"; };
+		05908DA224615F94002DDAFC /* NetworkTasks */ = {isa = PBXFileReference; lastKnownFileType = text; path = NetworkTasks; sourceTree = "<group>"; };
+		05908DA424616697002DDAFC /* SaveService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveService.swift; sourceTree = "<group>"; };
+		05908DA62461A4E4002DDAFC /* FetchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchService.swift; sourceTree = "<group>"; };
 		05952A4E233BB0FD00EE996E /* BaseProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductList.swift; sourceTree = "<group>"; };
 		05952A51233BB22B00EE996E /* ProductListProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListProtocol.swift; sourceTree = "<group>"; };
 		05952A57233BB51600EE996E /* ProductListInDinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInDinnerViewController.swift; sourceTree = "<group>"; };
@@ -1216,10 +1222,13 @@
 		0561F37E245C206900A236E6 /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
+				05908DA224615F94002DDAFC /* NetworkTasks */,
 				0561F381245C20E900A236E6 /* NetworkEnum.swift */,
 				0561F37F245C208B00A236E6 /* RegisterService.swift */,
 				0561F383245C234100A236E6 /* LoginService.swift */,
 				0561F388245C42EB00A236E6 /* ResetPasswordService.swift */,
+				05908DA424616697002DDAFC /* SaveService.swift */,
+				05908DA62461A4E4002DDAFC /* FetchService.swift */,
 			);
 			path = NetworkService;
 			sourceTree = "<group>";
@@ -3206,6 +3215,7 @@
 				05373718234B2F5500411C46 /* Tasks in Resources */,
 				05B5C2CB245C7C9E001249F8 /* FoodScreenTask in Resources */,
 				05408F62240CEE2B00226A14 /* FooterViewReadme in Resources */,
+				05908DA324615F94002DDAFC /* NetworkTasks in Resources */,
 				05460F942455AEC0008B4ABF /* AuthTasks in Resources */,
 				05C0C62E238D43C6001B2664 /* Realm Task in Resources */,
 				05F7C4A923F2B6D4009EE9C5 /* OnBoardTasks in Resources */,
@@ -3435,6 +3445,7 @@
 				F1E78D03230D549E00592AB8 /* FoodAnimator.swift in Sources */,
 				053BAB54233B5ACA0080359B /* DinnerViewModel.swift in Sources */,
 				F1E78D0C230D55C400592AB8 /* CustomNavBar.swift in Sources */,
+				05908DA72461A4E4002DDAFC /* FetchService.swift in Sources */,
 				05A4F1962338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift in Sources */,
 				F1E78CB0230D325600592AB8 /* BaseTabBarController.swift in Sources */,
 				05C16D66233F4E6100486CAE /* RobotView.swift in Sources */,
@@ -3467,6 +3478,7 @@
 				059D7E802350A88800286E57 /* SeacrhBar+Extensions.swift in Sources */,
 				F13B352423190FC20020AD26 /* Enums.swift in Sources */,
 				F1E78CF8230D353E00592AB8 /* UIView+ Extension.swift in Sources */,
+				05908DA524616697002DDAFC /* SaveService.swift in Sources */,
 				F1E78D0E230D565300592AB8 /* FoodTableViewHeader.swift in Sources */,
 				055A727323A8F046002CA9A7 /* NewProductListViewModel.swift in Sources */,
 				05952A5A233BB7A900EE996E /* ProductListInDinnerViewModel.swift in Sources */,

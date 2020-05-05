@@ -90,7 +90,8 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     setViews()
     print("View DId Load")
     interactor?.makeRequest(request: .checkLastDayInDB)
-
+    
+    
   }
   
 

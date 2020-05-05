@@ -44,8 +44,6 @@ enum UserDefaultsKey: String,CaseIterable {
   case carboCorrectTargetBaseData
   
   
-  case isOnBoardingComplete
-  
   case insulinSupplyValue
   
 }

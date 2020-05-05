@@ -150,6 +150,13 @@ class RegistrationController: UIViewController {
         self.showHUDWithError(error)
       case .success(_):
         self.registerHUD.dismiss()
+        
+        // Регистрация пройдена успешно нужно запустить OnBoardingScreen
+        
+        let appState = AppState.shared
+        appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
+        appState.toogleMinorWindow(minorWindow: appState.onBoardingWindow)
+        
         print("Registration Sucsess!")
 
 //        self.present(MainController(), animated: true, completion: nil)
@@ -164,8 +171,8 @@ class RegistrationController: UIViewController {
     registerHUD.dismiss()
 
     let hud = JGProgressHUD(style: .dark)
-    hud.textLabel.text = "Failed registration"
-    hud.detailTextLabel.text = error.localizedDescription
+    hud.textLabel.text = "Ошибка Регистрации"
+    hud.detailTextLabel.text = "Такой емаил уже есть в базе"
     hud.show(in: self.view)
     hud.dismiss(afterDelay: 4)
   }
@@ -208,7 +215,7 @@ extension RegistrationController {
   
   // Клавиатура Скрылась
   @objc private func handleKeyBoardHide(notification: Notification) {
-    Animator.springTranslated(view: view, cgaTransform: .identity)
+    Animator.springTranslated(view: registrationView, cgaTransform: .identity)
   }
   
   // MARK: Tap View Gesture

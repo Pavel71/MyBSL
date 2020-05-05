@@ -17,39 +17,46 @@ final class AppState {
   
   static var shared = AppState()
   
-  var mainWindow   : UIWindow?
-  var secondWindow : UIWindow?
+  var mainWindow          : UIWindow?
+  var onBoardingWindow    : UIWindow?
+  var loginRegisterWindow : UIWindow?
   
   private init () {}
+
   
   
-  func toogleChartWindow() {
-    
-    
-    if let window2 = secondWindow {
-      
-      
+  func toogleMinorWindow(minorWindow: UIWindow?) {
+
+    if let window2 = minorWindow {
+
           if window2.isKeyWindow {
-//            self.mainWindow?.makeKeyAndVisible()
-            
+
             UIView.animate(withDuration: 1.0, animations: {
+              
               window2.alpha = 0
               self.mainWindow?.makeKeyAndVisible()
+
             }) { (_) in
+
               window2.isHidden = true
             }
-            
-            
+
             } else {
+            
+            UIView.animate(withDuration: 1.0, animations: {
+              
               window2.makeKeyAndVisible()
               window2.isHidden = false
-              
+
+            })
+
             }
-      
-      
-    
+
     }
   }
+  
+  
+
   
 }
 

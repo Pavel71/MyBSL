@@ -58,14 +58,7 @@ extension OnBoardVM {
     trainModel(traing: correctionData.train, target: correctionData.target, keyWeights: .correctSugarByInsulinWeights)
     
     trainModel(traing: insulinByFoodData.train, target: insulinByFoodData.target, keyWeights: .correctCarboByInsulinWeights)
-    
-    
-//    let correctionWeights = getWeightsByData(traing: correctionData.train, target: correctionData.target)
-//
-//    let insulinByFoodsWeights = getWeightsByData(traing: insulinByFoodData.train, target: insulinByFoodData.target)
-  
-    // Сохраняем то что мы прошил онбоардинг
-    userDefaults.set(true, forKey: UserDefaultsKey.isOnBoardingComplete.rawValue)
+
 
     
   }

@@ -10,18 +10,28 @@ import Foundation
 
 
 enum NetworkFirebaseError: Error {
+  
   case createUserError
-  case loadDataInStorageError
-  case getImageUrlError
-  case saveDocumentError
-  case fetchingUserError
-  case fetchUserImageError
-  case fetchCurrentUserError
-  case saveDataFromSettingsError
   case signInError
-  case saveSwipeToFirestore
-  case fetchSwipes
+
+  case saveDocumentError
+  case saveUserDefaultsDataError
   
-  
+  case fetchAllDataFromFireStoreError
+
   case resetPasswordError
+}
+
+enum FirebaseKeyPath: String {
+  
+  case users = "Users"
+  
+  enum Users: String {
+    
+    case userDefaultsData
+    case realmData
+    
+  }
+  
+  
 }

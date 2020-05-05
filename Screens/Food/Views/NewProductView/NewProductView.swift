@@ -64,6 +64,7 @@ class NewProductView: AddNewElementView {
     let textField = CustomTextField(padding: padding, placeholder: placeholder,cornerRaduis: cornerRaduis)
     textField.addTarget(self, action: #selector(textDidChanged(textField:)), for: .editingChanged)
     textField.delegate = self
+    textField.addDoneButtonOnKeyboard()
     return textField
   }
   

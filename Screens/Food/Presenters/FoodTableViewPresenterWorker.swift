@@ -17,7 +17,7 @@ class FoodTableViewPresenterWorker {
     
     var foodViewModel: [FoodViewModel]
     
-    print("Пошла работа по обработке данных в ViewModel")
+    
     if isDefaultList {
       
       let defaultViewModel = prepareDataToDefaultList(productsRealmArray: Array(items))

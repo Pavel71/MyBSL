@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 
 // Нужно добавить pageController!
@@ -22,6 +23,13 @@ protocol PagesViewControllerable: UIViewController {
 
 
 class OnBoardViewController: UIPageViewController {
+  
+  
+  var savingHUD: JGProgressHUD = {
+     let hud = JGProgressHUD(style: .dark)
+     hud.textLabel.text = "Сохраняю данные"
+     return hud
+   }()
   
   
   var onBoardVM = OnBoardVM()
@@ -123,8 +131,29 @@ class OnBoardViewController: UIPageViewController {
       // Теперь нам нужно пробежатся по всем моделькам и собрать с них данные ! Дальше нужно будет дисмиснуть экран и появится основной экарн!
       onBoardVM.learnML()
       
-      let appStateService: AppState = AppState.shared
-      appStateService.toogleChartWindow()
+      // Здесь нужно запустить процесс сохранения данных юзера в FireBase
+      
+      
+      savingHUD.show(in: pages.last!.view)
+      
+      SaveService.saveUserDataToFirebase { (result) in
+        
+        switch result {
+        case .failure(let error):
+          
+          self.showErrorMessage(text: error.localizedDescription)
+          
+        case .success(_):
+          self.savingHUD.dismiss()
+          // СОхранение данных прошло успешно
+          
+          let appStateService: AppState = AppState.shared
+          appStateService.toogleMinorWindow(minorWindow: appStateService.onBoardingWindow)
+        }
+        
+        
+      }
+      
       
       
     } else {

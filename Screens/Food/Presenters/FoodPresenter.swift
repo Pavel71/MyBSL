@@ -22,14 +22,7 @@ class FoodPresenter: FoodPresentationLogic {
     
     workWithNewFoodViewModel(response: response)
     workWithTableViewViewModel(response: response)
-    switch response {
 
-      case .succesAddNewProduct(let succes):
-        viewController?.displayData(viewModel: .displayAlertSaveNewProduct(succes: succes))
-    
-    default:break
-      
-    }
     
   }
   
@@ -58,7 +51,7 @@ class FoodPresenter: FoodPresentationLogic {
         let foodViewModel = FoodTableViewPresenterWorker.getViewModelBySection(
           items: items, isDefaultList: isDefaultList)
         
-        print("Закончили обработку ViewModel")
+        
         viewController?.displayData(viewModel: .setViewModel(viewModel: foodViewModel))
       
       

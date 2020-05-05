@@ -46,10 +46,8 @@ enum Food {
         
         case prepareDataFromRealmToViewModel(items: Results<ProductRealm>, bySections: Bool)
 
-        
-        
-        
         case prepareDataToFillNewProductViewModel(categorylist: [String], updateProduct: ProductRealm?)
+        
         case succesAddNewProduct(succes: Bool)
 
     
@@ -62,7 +60,8 @@ enum Food {
         case setViewModel(viewModel: [FoodViewModel])
         
         case setDataToNewProductView(viewModel: NewProductViewModel)
-        case displayAlertSaveNewProduct(succes: Bool)
+        
+//        case displayAlertSaveNewProduct(succes: Bool)
         
 //        case reloadeTableView(deletions:[Int]?,insertions:[Int]?,updates: [Int]?)
 

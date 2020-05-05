@@ -23,6 +23,12 @@ class LoginController: UIViewController {
     return jgp
   }()
   
+  var fetchDataHud: JGProgressHUD = {
+    let jgp = JGProgressHUD(style: .dark)
+    jgp.textLabel.text = "Загрузка данных"
+    return jgp
+  }()
+  
   // Clousers
   var didFinishLogInClouser: (() -> Void)?
   
@@ -130,21 +136,28 @@ extension LoginController {
       case .success(_):
         
         print("Login Success")
-        
-        
         self.loginModelView.isLogIn.value = false
         
         
-        // Когда Логин success - я должен буду собрать все данные по этому юзеру и загрузить их в теелфон запихать все
+        self.fetchDataHud.show(in: self.loginView, animated: true)
         
-        // 1. Сохранить UserDefaults
-        // 2. Сохранить В Realm
+        FetchService.fetchAllDataFromFireBase { (result) in
+          
+          switch result {
+          case .failure(let error):
+            self.showErrorMessage(text: error.localizedDescription)
+            
+          case .success(_):
+            
+            self.fetchDataHud.dismiss()
+            
+            let appState = AppState.shared
+            appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
+            print("Данные загруженны!")
+          }
+        }
         
-        //        self.dismiss(animated: true, completion: {
-        //          // После перехода запусти на Main Controllere подгрузку данных
-        //          self.didFinishLogInClouser!()
-        //
-        //        })
+
         
       }
     }
@@ -259,7 +272,7 @@ extension LoginController {
   }
   
   @objc private func handleTapView() {
-    loginView.endEditing(true)
+    view.endEditing(true)
   }
 }
 

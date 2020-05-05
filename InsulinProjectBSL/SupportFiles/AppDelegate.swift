@@ -26,13 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   ]
   
-  var meals: [MealRealm] = [
 
-  ]
   
-  var dinners: [DinnerRealm] = [
-
-  ]
+  let appStateService: AppState = AppState.shared
   
 //  var sectionType: [SectionMealTypeRealm] = []
   
@@ -43,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     initializeRealm()
-    initMeals()
+//    initMeals()
     
 //    initDinners()
 //    
@@ -51,6 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    clearUserDefaultsFields()
     
     root()
+    
+    checkLoginIN()
     
     
     return true
@@ -61,6 +59,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     FirebaseApp.configure()
     
   }
+  
+  
+  private func checkLoginIN() {
+    
+    if Auth.auth().currentUser == nil {
+      
+      // Не залогинены
+      appStateService.loginRegisterWindow?.makeKeyAndVisible()
+      
+    } else {
+      
+      appStateService.mainWindow?.makeKeyAndVisible()
+    }
+  }
+  
   // MARK: CLEAR USERDEFAULTS Fields
   private func clearUserDefaultsFields() {
     
@@ -78,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let tabBarController = appStateService.mainWindow?.rootViewController as! BaseTabBarController
     
-    let mainScreenController:MainScreenViewController = tabBarController.viewControllers?.filter{$0.children[0] is MainScreenViewController}[0].children[0] as! MainScreenViewController
+    let mainScreenController: MainScreenViewController = tabBarController.viewControllers?.filter{$0.children[0] is MainScreenViewController}[0].children[0] as! MainScreenViewController
     
     mainScreenController.activateApplication()
     
@@ -90,29 +103,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // Здесь нужно использовать AppState
     
-    let appStateService: AppState = AppState.shared
+   
     
+    // Set MainWindow
     appStateService.mainWindow = UIWindow(frame: UIScreen.main.bounds)
     appStateService.mainWindow?.rootViewController = BaseTabBarController()
-    appStateService.mainWindow?.makeKeyAndVisible()
-    
-    
-    let isOnBoardingComplete = UserDefaults.standard.bool(forKey: UserDefaultsKey.isOnBoardingComplete.rawValue)
-    
-    if isOnBoardingComplete == false {
-         appStateService.secondWindow = UIWindow(frame: UIScreen.main.bounds)
 
-          let onBoardController = UINavigationController(rootViewController: OnBoardViewController(transitionStyle: .scroll, navigationOrientation: .horizontal))
-          
-          appStateService.secondWindow?.rootViewController = onBoardController
+    
+    
+    // Set LoginRegister Window
+    appStateService.loginRegisterWindow = UIWindow(frame: UIScreen.main.bounds)
+    
+    let loginRegisterController = UINavigationController(rootViewController: RegistrationController())
+    appStateService.loginRegisterWindow?.rootViewController = loginRegisterController
+    
+    
+    
+    
+    // Set OnBoarding Window
+    appStateService.onBoardingWindow = UIWindow(frame: UIScreen.main.bounds)
 
-      //     Это сделаю при запуске приложения первый раз!
-          appStateService.secondWindow?.makeKeyAndVisible()
-    }
+    let onBoardController = UINavigationController(rootViewController: OnBoardViewController(transitionStyle: .scroll, navigationOrientation: .horizontal))
     
- 
-    
-    
+    appStateService.onBoardingWindow?.rootViewController = onBoardController
+
+
   }
   
  
@@ -133,6 +148,8 @@ extension AppDelegate {
    private func iniitServiceLocator() {
     
     let locator = ServiceLocator.shared
+    
+    
     
     locator.addService(service: ShugarCorrectorWorker())
     
@@ -160,17 +177,17 @@ extension AppDelegate {
       }
     }
     
-    private func initMeals() {
-      let realm = RealmProvider.meals.realm
-   
-      guard realm.isEmpty else { return }
-      
-      try! realm.write {
-  //      realm.deleteAll()
-        realm.add(meals)
-      }
-      
-    }
+//    private func initMeals() {
+//      let realm = RealmProvider.meals.realm
+//
+//      guard realm.isEmpty else { return }
+//
+//      try! realm.write {
+//  //      realm.deleteAll()
+//        realm.add(meals)
+//      }
+//
+//    }
 
     private func deInitDaysRealm() {
       let realm = RealmProvider.day.realm

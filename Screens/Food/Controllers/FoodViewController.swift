@@ -145,7 +145,8 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     case .setViewModel(let viewModel):
       
       foodViewModel = headerInSectionWorker.updateViewModelByExpandSection(newViewModel:viewModel, with: currentSegment) as! [FoodViewModel]
-      reloadTableView()
+      
+//      reloadTableView()
       
     case .setDataToNewProductView(let viewModel):
       
@@ -157,9 +158,6 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
       
       AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: true)
       
-    case .displayAlertSaveNewProduct(let success):
-      
-      saveNewProduct(success: success)
     }
     
     // Задача здесь простая если какие то секции открыты то после перезагрузки отсавить их!
@@ -171,26 +169,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     
   }
   
- 
-  // MARK: Show Message
-  private func saveNewProduct(success: Bool) {
-    
-    if success {
-      
-      let successString = self.updateProductId == nil ? "Продукт сохранен!" : "Продукт обновленн!"
-      
-      self.didCancelNewProduct()
-      
-      showSuccesMessage(text: successString)
-      
-    } else {
-      
-      showErrorMessage(text: "Такое имя уже есть, Отредактируйте продукт или создайте новый!")
-    }
-    
-    
-    
-  }
+
   
   
   required init?(coder aDecoder: NSCoder) {
@@ -337,6 +316,7 @@ extension FoodViewController {
       }
       
       self.didCancelNewProduct()
+      self.reloadTableView()
 
     }
     
@@ -585,7 +565,10 @@ extension FoodViewController {
         // Здесь нам нужно удалять по id и в избранное тоже по id
         let cell = tableView.cellForRow(at: indexPath) as! FoodCell
         let productID = cell.getProductID()
+        
+        
         self.interactor?.makeRequest(request: .deleteProduct(productId: productID))
+        self.tableView.deleteRows(at: [indexPath], with: .automatic)
         
         success(true)
       })
@@ -618,6 +601,7 @@ extension FoodViewController {
       self.currentSection = indexPath.section
       
       self.interactor?.makeRequest(request: .updateFavoritsField(productId: productID))
+      self.tableView.reloadRows(at: [indexPath], with: .automatic)
       
       success(true)
     })
