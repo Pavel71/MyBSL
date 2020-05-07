@@ -136,7 +136,15 @@ class OnBoardViewController: UIPageViewController {
       
       savingHUD.show(in: pages.last!.view)
       
-      SaveService.saveUserDataToFirebase { (result) in
+      let locator = ServiceLocator.shared
+      
+      let addService:AddService! = locator.getService()
+      let userDefaultsWorker: UserDefaultsWorker! = locator.getService()
+      
+      let userDefDataDict = userDefaultsWorker.getAllDataFromUserDefaults()
+      
+      addService.addUserDefaultsDataToFirebase(
+      userDefaltsData: userDefDataDict) { (result) in
         
         switch result {
         case .failure(let error):

@@ -18,10 +18,11 @@ class MainScreenInteractor: MainScreenBusinessLogic {
 
 
   let newDayRealmManager  : NewDayRealmManager!
-  let userDefaults        = UserDefaults.standard
   let insulinSupplyWorker : InsulinSupplyWorker!
   let compObjRealmManager : CompObjRealmManager!
   let sugarRealmManger    : SugarRealmManager!
+  let updateService       : UpdateService!
+  let userDefaultsWorker  : UserDefaultsWorker!
     
   
   
@@ -34,18 +35,12 @@ class MainScreenInteractor: MainScreenBusinessLogic {
     insulinSupplyWorker = locator.getService()
     compObjRealmManager = locator.getService()
     sugarRealmManger    = locator.getService()
+    updateService       = locator.getService()
+    userDefaultsWorker  = locator.getService()
   }
   
-//  let userDefaults         = UserDefaults.standard
-//  let insulinSupplyWorker  = InsulinSupplyWorker.shared
-//  let compObjRealmManager  = CompObjRealmManager.shared
-  
-  
   func makeRequest(request: MainScreen.Model.Request.RequestType) {
-    
-    
-    
-    
+
     catchRealmRequests(request: request)
     catchViewModelRequests(request: request)
     
@@ -53,7 +48,6 @@ class MainScreenInteractor: MainScreenBusinessLogic {
   
   private func passDayRealmToConvertInVMInPresenter() {
     
-//    let updateDay = dayRealmManager.getCurrentDay()
     
      let day = newDayRealmManager.getCurrentDay()
      presenter?.presentData(response: .prepareViewModel(realmData: day))
@@ -98,7 +92,9 @@ extension MainScreenInteractor {
       newDayRealmManager.deleteCompObjById(compObjId: compObjId)
       newDayRealmManager.deleteSugarByCompObjId(sugarCompObjId: compObjId)
       
-      insulinSupplyWorker.updateInsulinSupplyValue(totalInsulin: totalInsulin.toFloat(), updatedType: .delete)
+      updateInsulinSupplyValue(totalInsulin: totalInsulin.toFloat(), updatedType: .delete)
+      
+    
 
       passDayRealmToConvertInVMInPresenter()
       
@@ -163,6 +159,13 @@ extension MainScreenInteractor {
     case .setInsulinSupplyValue(let insulinSupplyValue):
       
       setInsulinSupplyValueInUserDefaults(insulinSupply: insulinSupplyValue)
+      
+      
+      print("Пошло обновление в FireBase Insulin Supply")
+      self.updateService.updateInsulinSupplyDataInFireBase(supplyInsulin: insulinSupplyValue)
+      
+     
+      
       passDayRealmToConvertInVMInPresenter()
       
     default:break
@@ -170,11 +173,25 @@ extension MainScreenInteractor {
   }
 }
 
-// MARK: Set InsulinSupply In User Defaults
+// MARK: Update Insulin Supply Value
+
 extension MainScreenInteractor {
   
   private func setInsulinSupplyValueInUserDefaults(insulinSupply: Int) {
-    userDefaults.set(insulinSupply, forKey: UserDefaultsKey.insulinSupplyValue.rawValue)
+    
+    userDefaultsWorker.setInsulinSupplyValue(insulinSupply: insulinSupply)
+    
+  }
+  
+  private func updateInsulinSupplyValue(
+    totalInsulin: Float,
+    updatedType: InsulinSupplyWorker.InsulinSupplyCalculatedType) {
+    
+    insulinSupplyWorker.updateInsulinSupplyValue(
+      totalInsulin         : totalInsulin,
+      updatedType          : updatedType)
+    
+    
   }
 }
 

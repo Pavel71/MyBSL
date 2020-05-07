@@ -72,13 +72,7 @@ class MainCustomNavBar: UIView {
   var viewModel: MainNavBarVM!
   
   var indexSelectedDay: Int {
-    
-//    var indexG: Int = 0
-//    viewModel.lastSevenDays.enumerated().forEach { (index,date)  in
-//      if date.compareDate(with: viewModel.titleDate) {
-//        indexG = index
-//      }
-//    }
+
     
     var indexG: Int = 0
 

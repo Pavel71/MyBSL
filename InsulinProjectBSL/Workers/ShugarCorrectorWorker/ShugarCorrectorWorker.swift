@@ -13,16 +13,17 @@ import Foundation
 final class ShugarCorrectorWorker {
   
   
-  let userDefaults = UserDefaults.standard
+  let userDefaultsWorker: UserDefaultsWorker!
   
   // Эти значения будут браться из Настроек пользователя!
   private var bottomShugarLevel: Float {
     
-    userDefaults.float(forKey: UserDefaultsKey.lowSugarLevel.rawValue)
+    userDefaultsWorker.getSugarLevel(sugarLevelKey: .lowSugarLevel)
+//    userDefaults.float(forKey: UserDefaultsKey.lowSugarLevel.rawValue)
   }
   private var higherShuagrLevel: Float {
-    
-    userDefaults.float(forKey: UserDefaultsKey.higherSugarLevel.rawValue)
+    userDefaultsWorker.getSugarLevel(sugarLevelKey: .higherSugarLevel)
+//    userDefaults.float(forKey: UserDefaultsKey.higherSugarLevel.rawValue)
   }
   
   var optimalSugarLevel : Double {
@@ -38,24 +39,11 @@ final class ShugarCorrectorWorker {
   
   var correctionInsulinByShugar: Float? 
 
-  
-  // Singleton
-  
-//  static let shared: ShugarCorrectorWorker = { ShugarCorrectorWorker()
-    
-    // Эти показатели будут браться из Настроек
-    
-    // Пока что для тестинга я возму дефолтные значения
-    
-//    let bottomLevel:Float = UserDefaults.standard.float(forKey: UserDefaultsKey.lowSugarLevel.rawValue)
-//    let higherLevel:Float = UserDefaults.standard.float(forKey: UserDefaultsKey.higherSugarLevel.rawValue)
-    
-    
-    
-//  }()
+
   
   init() {
-    
+    let locator = ServiceLocator.shared
+    userDefaultsWorker = locator.getService()
   }
 //
 

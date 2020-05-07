@@ -26,26 +26,6 @@ enum State {
   }
 }
 
-// MARK: User Defaults Enums
 
-enum UserDefaultsKey: String,CaseIterable {
-  
-  case lowSugarLevel
-  case higherSugarLevel
-  
-  case correctSugarByInsulinWeights  // Weights
-  case correctCarboByInsulinWeights  // Weights
-  
-  
-  case sugarCorrectTrainBaseData
-  case sugarCorrectTargetBaseData
-  
-  case carboCorrectTrainBaseData
-  case carboCorrectTargetBaseData
-  
-  
-  case insulinSupplyValue
-  
-}
 
 

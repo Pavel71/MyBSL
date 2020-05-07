@@ -15,7 +15,8 @@ import Firebase
 final class FetchService {
   
   
-  static func fetchAllDataFromFireBase(complation: @escaping (Result<Bool,NetworkFirebaseError>) -> Void) {
+  
+  func fetchAllDataFromFireBase(complation: @escaping (Result<[String: Any],NetworkFirebaseError>) -> Void) {
     
     print("Пошла загрузка данных")
     
@@ -29,17 +30,9 @@ final class FetchService {
       
       snpashot?.documents.forEach({ (doc) in
         let userData = doc.data()
-        print(userData)
-        saveDataToUserDefaults(data: userData)
+        complation(.success(userData))
+      
       })
-      
-      // Теперь эти данные можно сохранить в UserDefaults или создать структуру UserSettings
-      
-      
-      let userDefaults = UserDefaults.standard
-      print("Test Save UserDefaults Data Insulin Supply 300",userDefaults.float(forKey: UserDefaultsKey.insulinSupplyValue.rawValue))
-      
-      complation(.success(true))
       
       
     }
@@ -47,16 +40,6 @@ final class FetchService {
     
   }
   
-  static private func saveDataToUserDefaults(data: [String: Any]) {
-    
-    let userDefaults = UserDefaults.standard
-    
-    UserDefaultsKey.allCases.forEach { (key) in
-    
-      userDefaults.set(data[key.rawValue], forKey: key.rawValue)
-      
-    }
-    
-  }
+
   
 }

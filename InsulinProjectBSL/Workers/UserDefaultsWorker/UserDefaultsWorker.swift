@@ -1,46 +1,70 @@
 //
-//  SaveService.swift
+//  UserDefaultsWorker.swift
 //  InsulinProjectBSL
 //
-//  Created by Павел Мишагин on 05.05.2020.
+//  Created by Павел Мишагин on 07.05.2020.
 //  Copyright © 2020 PavelM. All rights reserved.
 //
 
 import Foundation
-import Firebase
+
+// Класс Оболочка - отвечает за сохранение и изъятие данных из UserDefaults
 
 
-// Класс отвечает за сохранение данных в FIrebase
 
-final class SaveService {
+
+
+final class UserDefaultsWorker {
+  
+  let userDefaults = UserDefaults.standard
   
   
-  static func saveUserDataToFirebase(completion: @escaping ((Result<Bool,NetworkFirebaseError>)) -> Void) {
+}
+
+// MARK: SET DATA
+extension UserDefaultsWorker {
+  
+  func setDataToUserDefaults(data: [String: Any]) {
     
+    UserDefaultsKey.allCases.forEach { (key) in
     
-    // 1. Нужно достать все данные из userDefaults
-    
-    let userDefDict = fetchAllDataFromUserDefaults()
-    
-    
-    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
-    
-    Firestore.firestore().collection(FirebaseKeyPath.users.rawValue).document(currentUserID).collection(FirebaseKeyPath.Users.userDefaultsData.rawValue).document(currentUserID).setData(userDefDict) { (error) in
-      
-      if error != nil {
-        completion(.failure(.saveUserDefaultsDataError))
-      }
-      
-      completion(.success(true))
+      userDefaults.set(data[key.rawValue], forKey: key.rawValue)
       
     }
     
   }
   
+  func setInsulinSupplyValue(insulinSupply: Int) {
+    userDefaults.set(insulinSupply, forKey: UserDefaultsKey.insulinSupplyValue.rawValue)
+
+  }
   
-  private static func fetchAllDataFromUserDefaults() -> [String: Any] {
+  func setSugarLevel(key: UserDefaultsKey,value: Float) {
+//    userDefaults.
+  }
+  
+}
+
+// MARK: GET DATA
+
+extension UserDefaultsWorker {
+  
+  func getSugarLevel(sugarLevelKey: UserDefaultsKey) -> Float {
+    userDefaults.float(forKey: sugarLevelKey.rawValue)
+  }
+  
+  func getInsulinSupply() -> Int {
+    userDefaults.integer(forKey: UserDefaultsKey.insulinSupplyValue.rawValue)
+  }
+  
+  func getArrayData(typeDataKey: UserDefaultsKey) -> [Float] {
+    userDefaults.array(forKey: typeDataKey.rawValue) as! [Float]
+  }
+  
+  
+  
+  func getAllDataFromUserDefaults() -> [String: Any] {
     
-    let userDefaults = UserDefaults.standard
     
     var dataDict = [String: Any]()
     
@@ -97,5 +121,6 @@ final class SaveService {
     
 
   }
+  
   
 }

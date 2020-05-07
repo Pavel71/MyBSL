@@ -16,7 +16,16 @@ class SettingsPresenter: SettingsPresentationLogic {
   weak var viewController: SettingsDisplayLogic?
   
   func presentData(response: Settings.Model.Response.ResponseType) {
+    
+    switch response {
+    case .logOut(let result):
+      viewController?.displayData(viewModel: .logOut(result: result))
+    default:break
+    }
   
   }
+  
+  
+  
   
 }

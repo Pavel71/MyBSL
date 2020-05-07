@@ -34,13 +34,15 @@ final class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPre
   private var sugarCorrectorWorker  : ShugarCorrectorWorker!
   private var compObjRealmManager   : CompObjRealmManager!
   private var dateEnriachmentWorker : DataEnrichmentWorker!
-  let userDefaults = UserDefaults.standard
+  private var userDefaultsWorker    : UserDefaultsWorker!
+//  let userDefaults = UserDefaults.standard
   
   init() {
     let locator = ServiceLocator.shared
     sugarCorrectorWorker  = locator.getService()
     compObjRealmManager   = locator.getService()
     dateEnriachmentWorker = locator.getService()
+    userDefaultsWorker    = locator.getService()
     
   }
   
@@ -258,10 +260,6 @@ extension NewCompansationObjectScreenPresenter {
   }
   
 }
-
-
-
-
 
 // MARK: Work With Meal Cell
 
@@ -617,21 +615,16 @@ extension NewCompansationObjectScreenPresenter {
   }
   
   private func learnByNewData() {
+
     
-    // Тут нужна проверка на то что у нас должно быть больше 1 ого объекта в базе!
-    // Больше 1ого с продууктами и больше 1ого с
+    let baseSugarTrain = userDefaultsWorker.getArrayData(typeDataKey: .sugarCorrectTrainBaseData)
+
+    let baseSugarTarget = userDefaultsWorker.getArrayData(typeDataKey: .sugarCorrectTargetBaseData)
     
     
-    // делаем проверку что у нас есть хотя бы 1 обед! Я вот думаю если прибавлять это к тренингу
-    // Как только у нас объектов Больше 4 мы можем начинать обновлять веса!
-//    guard compRealmManager.isDBHaveEnothObjectToLearn() else {return}
-//    let userDefaults = UserDefaults.standard
+    let baseCarboTrain  = userDefaultsWorker.getArrayData(typeDataKey: .carboCorrectTrainBaseData)
     
-    let baseSugarTrain :[Float] = userDefaults.array(forKey: UserDefaultsKey.sugarCorrectTrainBaseData.rawValue) as! [Float]
-    let baseSugarTarget:[Float] = userDefaults.array(forKey: UserDefaultsKey.sugarCorrectTargetBaseData.rawValue) as! [Float]
-    
-    let baseCarboTrain :[Float] = userDefaults.array(forKey: UserDefaultsKey.carboCorrectTrainBaseData.rawValue) as! [Float]
-    let baseCarboTarget:[Float] = userDefaults.array(forKey: UserDefaultsKey.carboCorrectTargetBaseData.rawValue) as! [Float]
+    let baseCarboTarget = userDefaultsWorker.getArrayData(typeDataKey: .carboCorrectTargetBaseData)
     
 
     print("Base Carbo",baseCarboTrain,baseCarboTarget)

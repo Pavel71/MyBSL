@@ -140,22 +140,27 @@ extension LoginController {
         
         
         self.fetchDataHud.show(in: self.loginView, animated: true)
-        
-        FetchService.fetchAllDataFromFireBase { (result) in
+
+        self.loginModelView.fetchDataFromFirebase { (result) in
           
-          switch result {
-          case .failure(let error):
-            self.showErrorMessage(text: error.localizedDescription)
+           switch result {
             
-          case .success(_):
-            
-            self.fetchDataHud.dismiss()
-            
-            let appState = AppState.shared
-            appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
-            print("Данные загруженны!")
-          }
+             case .failure(let error):
+               self.showErrorMessage(text: error.localizedDescription)
+               
+             case .success(_):
+               
+               self.fetchDataHud.dismiss()
+ 
+               self.view.endEditing(true)
+               
+               let appState = AppState.shared
+               appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
+
+             }
         }
+        
+   
         
 
         

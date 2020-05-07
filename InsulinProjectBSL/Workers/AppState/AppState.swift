@@ -31,13 +31,12 @@ final class AppState {
 
           if window2.isKeyWindow {
 
+
             UIView.animate(withDuration: 1.0, animations: {
-              
               window2.alpha = 0
               self.mainWindow?.makeKeyAndVisible()
 
             }) { (_) in
-
               window2.isHidden = true
             }
 
@@ -45,6 +44,7 @@ final class AppState {
             
             UIView.animate(withDuration: 1.0, animations: {
               
+              window2.alpha = 1
               window2.makeKeyAndVisible()
               window2.isHidden = false
 

@@ -152,7 +152,7 @@ class RegistrationController: UIViewController {
         self.registerHUD.dismiss()
         
         // Регистрация пройдена успешно нужно запустить OnBoardingScreen
-        
+         self.view.endEditing(true)
         let appState = AppState.shared
         appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
         appState.toogleMinorWindow(minorWindow: appState.onBoardingWindow)

@@ -11,15 +11,26 @@ import Foundation
 
 enum NetworkFirebaseError: Error {
   
+  
+  // Register Login
   case createUserError
   case signInError
-
-  case saveDocumentError
+  case signOutError
+  case resetPasswordError
+  
+  // Add
+  
   case saveUserDefaultsDataError
+  
+  // Update
+  
+  case updateInsulinSupplyDataErroe
+  
+  // Fetch
   
   case fetchAllDataFromFireStoreError
 
-  case resetPasswordError
+  
 }
 
 enum FirebaseKeyPath: String {

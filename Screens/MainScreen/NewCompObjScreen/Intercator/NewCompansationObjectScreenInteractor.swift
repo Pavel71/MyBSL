@@ -23,16 +23,18 @@ class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusiness
   
   var compRealmManager    : CompObjRealmManager!
   var sugarRealmManager   : SugarRealmManager!
-  var userDefaults        : UserDefaults!
+//  var userDefaultsWorker  : UserDefaultsWorker!
   var insulinSupplyWorker : InsulinSupplyWorker!
   
   
   init() {
     let locator = ServiceLocator.shared
+    
     compRealmManager    = locator.getService()
     sugarRealmManager   = locator.getService()
-    userDefaults        = locator.getService()
+//    userDefaultsWorker  = locator.getService()
     insulinSupplyWorker = locator.getService()
+
   }
 
   func makeRequest(request: NewCompansationObjectScreen.Model.Request.RequestType) {
@@ -176,6 +178,11 @@ extension NewCompansationObjectScreenInteractor {
     
   }
   
+  
+}
+
+// MARK: Update Insulin Supply Value
+extension NewCompansationObjectScreenInteractor {
   
 }
 

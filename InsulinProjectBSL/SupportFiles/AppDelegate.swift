@@ -98,6 +98,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   
+  // MARK: Root
   
   func root() {
     
@@ -147,10 +148,13 @@ extension AppDelegate {
   
    private func iniitServiceLocator() {
     
+    setNetWorkService()
+
+    
     let locator = ServiceLocator.shared
     
     
-    
+    locator.addService(service: UserDefaultsWorker())
     locator.addService(service: ShugarCorrectorWorker())
     
     locator.addService(service: CompObjRealmManager())
@@ -160,8 +164,19 @@ extension AppDelegate {
     locator.addService(service: InsulinSupplyWorker())
     locator.addService(service: DataEnrichmentWorker())
     
-      
+          
     }
+  
+  private func setNetWorkService() {
+    
+    let locator = ServiceLocator.shared
+    
+    locator.addService(service: AddService())
+    locator.addService(service: UpdateService())
+    locator.addService(service: FetchService())
+    
+    
+  }
     
     private func initializeRealm() {
       // Здесь указываем с какой схемой Realm работаем!

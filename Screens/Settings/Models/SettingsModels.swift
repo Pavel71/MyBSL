@@ -13,17 +13,17 @@ enum Settings {
   enum Model {
     struct Request {
       enum RequestType {
-        case some
+        case logOut
       }
     }
     struct Response {
       enum ResponseType {
-        case some
+        case logOut(result: Result<Bool,NetworkFirebaseError>)
       }
     }
     struct ViewModel {
       enum ViewModelData {
-        case some
+        case logOut(result: Result<Bool,NetworkFirebaseError>)
       }
     }
   }
