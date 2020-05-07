@@ -11,6 +11,7 @@ import RealmSwift
 
 
 
+
 // здесь происходят все изменение на items
 // дальше они передаются презентеру и он уже отображает данные
 
@@ -24,7 +25,9 @@ class FoodInteractor: FoodBusinessLogic {
   var presenter: FoodPresentationLogic?
   
   
-  var realmManager: FoodRealmManager!
+  var realmManager  : FoodRealmManager!
+  var addService    : AddService!
+  var deleteService : DeleteService!
   
   
   // Realm Objects
@@ -42,7 +45,9 @@ class FoodInteractor: FoodBusinessLogic {
   
   init() {
     let locator = ServiceLocator.shared
-    realmManager = locator.getService()
+    realmManager  = locator.getService()
+    addService    = locator.getService()
+    deleteService = locator.getService()
   }
   
   
@@ -82,6 +87,7 @@ class FoodInteractor: FoodBusinessLogic {
       
       guard let product = realmManager.getProductById(id: productId) else {return}
       realmManager.deleteProduct(product: product)
+      deleteService.deleteProducts(productId: productId)
       // можно и не обновлять так как он сделает красивую анимацию
       didChangeProductDB()
       
@@ -92,8 +98,12 @@ class FoodInteractor: FoodBusinessLogic {
       didChangeProductDB()
       
     case .addNewProductInRealm(let viewModel):
-
-        realmManager.addNewProduct(viewModel: viewModel)
+        
+        let realmProduct = createNewRealmProduct(viewModel: viewModel)
+        realmManager.addNewProduct(product: realmProduct)
+        
+        let productToFireBase = createNewFireBaseProduct(productRealm: realmProduct)
+        addService.addProductToFireBase(product: productToFireBase)
         
         didChangeProductDB()
 
@@ -177,5 +187,46 @@ class FoodInteractor: FoodBusinessLogic {
 
   
 
+  
+}
+
+
+// MARK: Prepare Data To Add
+
+
+extension FoodInteractor {
+  
+  private func createNewRealmProduct(viewModel: FoodCellViewModel) -> ProductRealm {
+     
+     let name       = viewModel.name
+     let category   = viewModel.category
+     let carbo      = Int(viewModel.carbo)!
+     let isFavorits = viewModel.isFavorit
+     let massa      = Int(viewModel.portion)!
+     
+     return ProductRealm.init(
+       name            : name,
+       category        : category,
+       carboIn100Grm   : carbo,
+       isFavorits      : isFavorits,
+       portion         : massa
+     )
+   }
+  
+  private func createNewFireBaseProduct(productRealm: ProductRealm) -> ProductNetworkModel {
+    
+    
+    
+    return ProductNetworkModel(
+      id                     : productRealm.id,
+      name                   : productRealm.name,
+      category               : productRealm.category,
+      carboIn100grm          : productRealm.carboIn100grm,
+      portion                : productRealm.portion,
+      percantageCarboInMeal  : productRealm.percantageCarboInMeal,
+      userSetInsulinOnCarbo  : productRealm.userSetInsulinOnCarbo,
+      insulinOnCarboToML     : productRealm.insulinOnCarboToML,
+      isFavorits             : productRealm.isFavorits)
+  }
   
 }

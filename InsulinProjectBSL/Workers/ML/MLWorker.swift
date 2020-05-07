@@ -20,13 +20,20 @@ import CoreML
 
 class MLWorker {
   
-
-  private let simpleRegressionModel:SimpleRegresiionModel
+  var userDefaultsWorker            : UserDefaultsWorker!
+  var updateService                 : UpdateService!
+  private let simpleRegressionModel : SimpleRegresiionModel
   
+  var typeWeights                   : UserDefaultsKey
   
   
   init(typeWeights: UserDefaultsKey) {
-    self.simpleRegressionModel = SimpleRegresiionModel(typeWeights: typeWeights)
+    
+    let locator                = ServiceLocator.shared
+    userDefaultsWorker         = locator.getService()
+    updateService              = locator.getService()
+    self.typeWeights           = typeWeights
+    self.simpleRegressionModel = SimpleRegresiionModel()
   }
   
   
@@ -34,19 +41,29 @@ class MLWorker {
 //  var categoryLabelOrdinalDict:[String: Int] = [:]
   
   func getPredict(testData: [Float]) -> [Float] {
+
+    
+    let weights = userDefaultsWorker.getArrayData(typeDataKey: typeWeights)
+    simpleRegressionModel.setWeights(weights: (weights[0],weights[1]))
     
     let predicts = simpleRegressionModel.getPredict(test: testData)
     return predicts
   }
   
   func trainModelAndSetWeights(trainData:[Float],target:[Float]) {
-    simpleRegressionModel.trainModelAndSetNewWeights(train: trainData, target: target)
+    
+    let weights = simpleRegressionModel.trainModelAndSetNewWeights(train: trainData, target: target)
+    let arrWeaights = [weights.0,weights.1]
+    
+    userDefaultsWorker.setWeights(weights: arrWeaights, key: typeWeights)
+    updateService.updateMLWeights(weights: arrWeaights, key: typeWeights)
+    
   }
   
-  func getRegressionWeights() -> (Float,Float) {
-    return simpleRegressionModel.getWeights()
-  }
-  
+//  func getRegressionWeights() -> (Float,Float) {
+//    return simpleRegressionModel.getWeights()
+//  }
+//
   
 
 

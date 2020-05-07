@@ -22,7 +22,7 @@ final class FetchService {
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
     
-    Firestore.firestore().collection(FirebaseKeyPath.users.rawValue).document(currentUserID).collection(FirebaseKeyPath.Users.userDefaultsData.rawValue).getDocuments { (snpashot, error) in
+    Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.UserDefaults.collectionName).getDocuments { (snpashot, error) in
       
       if error != nil {
         complation(.failure(.fetchAllDataFromFireStoreError))

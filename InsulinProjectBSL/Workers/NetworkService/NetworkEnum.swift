@@ -21,6 +21,7 @@ enum NetworkFirebaseError: Error {
   // Add
   
   case saveUserDefaultsDataError
+  case addProductToFireBaseError
   
   // Update
   
@@ -33,16 +34,51 @@ enum NetworkFirebaseError: Error {
   
 }
 
-enum FirebaseKeyPath: String {
+enum FirebaseKeyPath {
   
-  case users = "Users"
-  
-  enum Users: String {
+  struct Users {
     
-    case userDefaultsData
-    case realmData
+    static let collectionName = "Users"
     
+    struct UserDefaults {
+      static let collectionName   = "UserDefaults"
+      static let userDefaultsData = "userDefaultsData"
+      
+    }
+    
+    struct RealmData {
+      static let collectionName  = "RealmData"
+      
+      struct Products {
+        static let collectionName = "Products"
+      }
+    
+      
+    }
   }
-  
-  
 }
+
+//enum FirebaseKeyPath {
+//  
+//
+//  enum Users  {
+//    
+//    var collectionName: String {"Users"}
+//    
+//    enum UserDefaults: String {
+//      
+//      var collectionName: String {"UserDefaults"}
+//      case userDefaultsData
+//    }
+//
+//    enum RealmData: String {
+//      
+//      var collectionName :String {"RealmData"}
+//      
+//      case products
+//    }
+//    
+//  }
+//  
+//  
+//}

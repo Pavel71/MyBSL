@@ -38,9 +38,9 @@ extension UserDefaultsWorker {
     userDefaults.set(insulinSupply, forKey: UserDefaultsKey.insulinSupplyValue.rawValue)
 
   }
-  
-  func setSugarLevel(key: UserDefaultsKey,value: Float) {
-//    userDefaults.
+
+  func setWeights(weights:[Float],key: UserDefaultsKey) {
+    userDefaults.set(weights, forKey: key.rawValue)
   }
   
 }

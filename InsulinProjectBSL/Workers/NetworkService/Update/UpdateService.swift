@@ -14,6 +14,7 @@ import Firebase
 final class UpdateService {
   
   // MARK: Update Insulin Supply
+
   
   
   func updateInsulinSupplyDataInFireBase(supplyInsulin: Int)  {
@@ -22,24 +23,43 @@ final class UpdateService {
       
       let updateData = [UserDefaultsKey.insulinSupplyValue.rawValue : supplyInsulin]
       
-      guard let currentUserID = Auth.auth().currentUser?.uid else {return}
-        
-        // мне по большому счету не нужно получать никаких сообщений отправили данные на сохранение и ладно!
+      self.updateFireStore(updateData: updateData)
       
-      Firestore.firestore().collection(FirebaseKeyPath.users.rawValue).document(currentUserID).collection(FirebaseKeyPath.Users.userDefaultsData.rawValue).document(currentUserID).updateData(updateData) { (error) in
-        
-          if error != nil {
-            print("Ошибка обновления insulinSupply")
-
-          }
-          
-
-        }
+  
     }
   
   
-    
+  }
   
+  // MARK: Update ML Weights
+  
+  func updateMLWeights(weights: [Float],key: UserDefaultsKey) {
+    
+    DispatchQueue.global(qos: .default).async {
+      
+      let updateData = [key.rawValue: weights]
+      
+      self.updateFireStore(updateData: updateData)
+      
+    }
+    
+  }
+  
+  private func updateFireStore(updateData:[String: Any]) {
+    
+    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+    
+    
+
+    Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.UserDefaults.collectionName).document(currentUserID).updateData(updateData) { (error) in
+      
+        if error != nil {
+          print("Ошибка обновления Данных")
+
+        }
+        
+
+      }
   }
   
 

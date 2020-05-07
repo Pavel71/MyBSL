@@ -14,7 +14,18 @@ import Upsurge
 class SimpleRegresiionModel {
   
   let linearModel = SimpleLinearRegression()
-  let userDefaults = UserDefaults.standard
+  let userDefaultsWorker: UserDefaultsWorker!
+  
+  private var weights:(Float,Float)  = (0,0)
+  
+  
+  init() {
+    
+    let locator = ServiceLocator.shared
+    userDefaultsWorker = locator.getService()
+    
+    
+  }
   
   
   // Test Period
@@ -33,62 +44,14 @@ class SimpleRegresiionModel {
   
   // Когда мы жмем получить вес мы должны достать его из юзер дефолтса! Когда сохраняем вес мы должны сохранить их в UserDefaults
   // Получается нам сюда нужно передать только ключ по которому мы получим веса!
-  private var weights:(Float,Float) {
-    
-    set {
-      
-      saveWeightsinUserDefaults(weights: newValue, key: typeWeights.rawValue)
-      print(weights,"Set Weights")
-//      switch typeWeights {
-//        case .correctionSugar:
-//          saveWeightsinUserDefaults(weights: newValue, key: typeWeights.rawValue)
-//
-//        case.insulinByFood:
-//          saveWeightsinUserDefaults(weights: newValue, key: typeWeights.rawValue)
-//      }
-      
-    }
-    
-    get {
-      // Так тут будет сделанна подгрузка из Юзер дефолтса
-      
-      // For Production Period
-      
-      let weightsArr = getWeightsFromUD(userDefKey: typeWeights)
-      print(weightsArr,"Get Weights",typeWeights.rawValue)
-      return (weightsArr[0],weightsArr[1])
-      
-      // For Testing Period
-      
-//      if typeWeights == .correctCarboByInsulinWeights {
-//        return testInsulinByFoodWeights
-//      } else {
-//        return testInsulinByCorrectionSugarWeights
-//      }
-      
-//      switch typeWeights {
-//
-//      case .correctSugarByInsulinWeights:
-//          // Достань из юзердефолтса
-//          return testInsulinByCorrectionSugarWeights
-//        case .correctCarboByInsulinWeights:
-//          return testInsulinByFoodWeights
-//
-//      default: break
-//
-//      }
-    }
-  }
   
-  
-  var typeWeights: UserDefaultsKey
-  
-  init(typeWeights: UserDefaultsKey) {
-    self.typeWeights = typeWeights
-  }
-  
+
   func getWeights() -> (Float,Float) {
     return weights
+  }
+  
+  func setWeights(weights:(Float,Float)) {
+    self.weights = weights
   }
   
 }
@@ -100,6 +63,7 @@ extension SimpleRegresiionModel {
   
   // Predict
   func getPredict(test:[Float]) -> [Float] {
+    
     return test.map(predict)
   }
   
@@ -114,29 +78,31 @@ extension SimpleRegresiionModel {
 
 extension SimpleRegresiionModel {
   
-  func trainModelAndSetNewWeights(train:[Float],target:[Float]){
+  func trainModelAndSetNewWeights(train:[Float],target:[Float]) -> (Float,Float){
     
     weights = linearModel.train(train, output: target)
 
     // Посмотреть на ошибку!
     let rss = linearModel.RSS(train, output: target, slope: weights.0, intercept: weights.1)
-    print("Rss",rss,typeWeights)
+    print("Rss",rss)
     
+    return weights
     
      
    }
   
   
-  private func saveWeightsinUserDefaults(weights:(Float,Float), key:String) {
-    
-    userDefaults.set([weights.0,weights.1], forKey: key)
-  }
+//  private func saveWeightsinUserDefaults(weights:(Float,Float), key:String) {
+//
+//    userDefaults.set([weights.0,weights.1], forKey: key)
+//  }
+//
+//  private func getWeightsFromUD(userDefKey: UserDefaultsKey) -> [Float] {
+//
+//    return userDefaults.array(forKey: userDefKey.rawValue) as! [Float]
+//
+//  }
   
-  private func getWeightsFromUD(userDefKey: UserDefaultsKey) -> [Float] {
-
-    return userDefaults.array(forKey: userDefKey.rawValue) as! [Float]
-    
-  }
 }
 
 

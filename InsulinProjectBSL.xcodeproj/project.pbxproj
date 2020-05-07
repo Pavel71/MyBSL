@@ -93,6 +93,9 @@
 		057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */; };
 		057B9841234F5054002EAD68 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9840234F5054002EAD68 /* ContainerController.swift */; };
 		057B9848234F6B4C002EAD68 /* PointSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B9847234F6B4C002EAD68 /* PointSearcher.swift */; };
+		057CC7A924643F7F0049DFD3 /* NetworkModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057CC7A824643F7F0049DFD3 /* NetworkModels.swift */; };
+		057CC7AB24644AF60049DFD3 /* EncodeDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057CC7AA24644AF60049DFD3 /* EncodeDecode.swift */; };
+		057CC7AE246450110049DFD3 /* DeleteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057CC7AD246450110049DFD3 /* DeleteService.swift */; };
 		057E261E24372F7B0081CE56 /* CompObjRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E261D24372F7B0081CE56 /* CompObjRealmManager.swift */; };
 		057E262024372FA40081CE56 /* SugarRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E261F24372FA40081CE56 /* SugarRealmManager.swift */; };
 		057E26222437341D0081CE56 /* NewDayRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E26212437341D0081CE56 /* NewDayRealmManager.swift */; };
@@ -376,6 +379,9 @@
 		057B983E234F4985002EAD68 /* ShowMenuAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMenuAnimator.swift; sourceTree = "<group>"; };
 		057B9840234F5054002EAD68 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		057B9847234F6B4C002EAD68 /* PointSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointSearcher.swift; sourceTree = "<group>"; };
+		057CC7A824643F7F0049DFD3 /* NetworkModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkModels.swift; sourceTree = "<group>"; };
+		057CC7AA24644AF60049DFD3 /* EncodeDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodeDecode.swift; sourceTree = "<group>"; };
+		057CC7AD246450110049DFD3 /* DeleteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteService.swift; sourceTree = "<group>"; };
 		057E261D24372F7B0081CE56 /* CompObjRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompObjRealmManager.swift; sourceTree = "<group>"; };
 		057E261F24372FA40081CE56 /* SugarRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarRealmManager.swift; sourceTree = "<group>"; };
 		057E26212437341D0081CE56 /* NewDayRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDayRealmManager.swift; sourceTree = "<group>"; };
@@ -1232,12 +1238,14 @@
 		0561F37E245C206900A236E6 /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
+				057CC7AC24644FFF0049DFD3 /* Delete */,
+				057CC7A724643F670049DFD3 /* Models */,
+				05908DA224615F94002DDAFC /* NetworkTasks */,
 				0561F381245C20E900A236E6 /* NetworkEnum.swift */,
 				05BDB58E246413E200D60C57 /* Update */,
 				05BDB58D246413DA00D60C57 /* Fetch */,
 				05BDB58C246413CD00D60C57 /* Add */,
 				05BDB58B246413C000D60C57 /* RegisterLogin */,
-				05908DA224615F94002DDAFC /* NetworkTasks */,
 			);
 			path = NetworkService;
 			sourceTree = "<group>";
@@ -1365,6 +1373,22 @@
 				057B9847234F6B4C002EAD68 /* PointSearcher.swift */,
 			);
 			path = PointSercher;
+			sourceTree = "<group>";
+		};
+		057CC7A724643F670049DFD3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				057CC7A824643F7F0049DFD3 /* NetworkModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		057CC7AC24644FFF0049DFD3 /* Delete */ = {
+			isa = PBXGroup;
+			children = (
+				057CC7AD246450110049DFD3 /* DeleteService.swift */,
+			);
+			path = Delete;
 			sourceTree = "<group>";
 		};
 		058F5F4823A2490700717042 /* Cells */ = {
@@ -3128,6 +3152,7 @@
 				05733CE023FA8512004197B2 /* Array+ Extensions.swift */,
 				0550AEA72418FADF00140254 /* Double+Extensions.swift */,
 				0516E03A242B72BB00F26FAD /* Date + Extension.swift */,
+				057CC7AA24644AF60049DFD3 /* EncodeDecode.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3439,6 +3464,7 @@
 				052B4E8D2355D09E00464A6C /* MenuMealListCell.swift in Sources */,
 				055A3A382355EBDE0080628C /* MainMenuProductListCell.swift in Sources */,
 				055BE0CF23434AEE0029D298 /* CalculateValueTextField.swift in Sources */,
+				057CC7AB24644AF60049DFD3 /* EncodeDecode.swift in Sources */,
 				F1E78D20230D68DC00592AB8 /* ProductRealm.swift in Sources */,
 				05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */,
 				F1E78D16230D57FA00592AB8 /* FoodCell.swift in Sources */,
@@ -3518,6 +3544,7 @@
 				05C1F63E23F2BC5300BECDEB /* LearnByCorrectionVC.swift in Sources */,
 				F112845723278CDF00416AF4 /* AddNewElementView.swift in Sources */,
 				055BE0D723448C0D0029D298 /* ChoosePlaceInjectionsRowView.swift in Sources */,
+				057CC7A924643F7F0049DFD3 /* NetworkModels.swift in Sources */,
 				F1E78CFF230D544C00592AB8 /* CustomLabels.swift in Sources */,
 				059766922455C7EC00ED7AF6 /* LoginViewModel.swift in Sources */,
 				05952A5F233E873E00EE996E /* TouchesPassView.swift in Sources */,
@@ -3637,6 +3664,7 @@
 				F1103B60232A726F009A338A /* MealTableViewPresenterWorker.swift in Sources */,
 				0544720E2396536E0020C0DC /* NewSugarDataView.swift in Sources */,
 				0516E03B242B72BB00F26FAD /* Date + Extension.swift in Sources */,
+				057CC7AE246450110049DFD3 /* DeleteService.swift in Sources */,
 				05A6C81F23F567DA00E27CE9 /* LearnByFoodVM.swift in Sources */,
 				057B983F234F4985002EAD68 /* ShowMenuAnimator.swift in Sources */,
 				05373713234B2B1700411C46 /* MenuView.swift in Sources */,

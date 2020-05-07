@@ -14,7 +14,31 @@ import Firebase
 
 final class AddService {
 
+  var encoder: JSONEncoder {
+    let encod = JSONEncoder()
+    return encod
+  }
     
+}
+
+// MARK: Add Product To Firebase
+
+extension AddService {
+  
+  func addProductToFireBase(product: ProductNetworkModel) {
+    
+    DispatchQueue.global(qos: .default).async {
+      guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+      
+      let data = product.dictionary
+
+      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Products.collectionName).document(product.id).setData(data)
+    }
+    
+    
+    
+  }
+  
 }
 
 
@@ -30,7 +54,7 @@ extension AddService {
 
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
     
-    Firestore.firestore().collection(FirebaseKeyPath.users.rawValue).document(currentUserID).collection(FirebaseKeyPath.Users.userDefaultsData.rawValue).document(currentUserID).setData(userDefaltsData) { (error) in
+    Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.UserDefaults.collectionName).document(currentUserID).setData(userDefaltsData) { (error) in
       
       if error != nil {
         completion(.failure(.saveUserDefaultsDataError))

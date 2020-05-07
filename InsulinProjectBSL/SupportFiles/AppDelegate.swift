@@ -174,6 +174,7 @@ extension AppDelegate {
     locator.addService(service: AddService())
     locator.addService(service: UpdateService())
     locator.addService(service: FetchService())
+    locator.addService(service: DeleteService())
     
     
   }

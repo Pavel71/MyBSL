@@ -127,30 +127,13 @@ extension FoodRealmManager {
 
 extension FoodRealmManager {
   
-  func addNewProduct(viewModel: FoodCellViewModel) {
-    
-    let newProduct = createNewProduct(viewModel: viewModel)
-    addProduct(product: newProduct)
-    
-    
+  func addNewProduct(product: ProductRealm) {
+  
+    addProduct(product: product)
+
   }
   
-  private func createNewProduct(viewModel: FoodCellViewModel) -> ProductRealm {
-    
-    let name       = viewModel.name
-    let category   = viewModel.category
-    let carbo      = Int(viewModel.carbo)!
-    let isFavorits = viewModel.isFavorit
-    let massa      = Int(viewModel.portion)!
-    
-    return ProductRealm.init(
-      name            : name,
-      category        : category,
-      carboIn100Grm   : carbo,
-      isFavorits      : isFavorits,
-      portion         : massa
-    )
-  }
+
   
   private func addProduct(product: ProductRealm) {
     let realm = productProvider.realm
