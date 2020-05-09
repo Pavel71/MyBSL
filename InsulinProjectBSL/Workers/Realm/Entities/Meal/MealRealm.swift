@@ -17,13 +17,13 @@ import RealmSwift
   
   
   
-  dynamic var id: String = UUID().uuidString
-  dynamic var name: String = ""
+  dynamic var id           : String = UUID().uuidString
+  dynamic var name         : String = ""
   
-  dynamic var typeMeal: String = ""
-  dynamic var isExpandMeal: Bool = false// Это здесь под вопросом! По идеи это поле не должно здесь быть
+  dynamic var typeMeal     : String = ""
+  dynamic var isExpandMeal : Bool = false// Это здесь под вопросом! По идеи это поле не должно здесь быть
   
-  let listProduct = List<ProductRealm>()
+  let listProduct          =  List<ProductRealm>()
 
   
   convenience init(name: String,typeMeal: String,isExpandMeal: Bool = false ) {

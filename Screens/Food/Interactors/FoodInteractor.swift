@@ -28,7 +28,7 @@ class FoodInteractor: FoodBusinessLogic {
   var realmManager  : FoodRealmManager!
   var addService    : AddService!
   var deleteService : DeleteService!
-  
+  var updateService : UpdateService!
   
   // Realm Objects
 
@@ -48,6 +48,7 @@ class FoodInteractor: FoodBusinessLogic {
     realmManager  = locator.getService()
     addService    = locator.getService()
     deleteService = locator.getService()
+    updateService = locator.getService()
   }
   
   
@@ -87,7 +88,8 @@ class FoodInteractor: FoodBusinessLogic {
       
       guard let product = realmManager.getProductById(id: productId) else {return}
       realmManager.deleteProduct(product: product)
-      deleteService.deleteProducts(productId: productId)
+      
+      deleteProductFromFireBase(productId: productId)
       // можно и не обновлять так как он сделает красивую анимацию
       didChangeProductDB()
       
@@ -95,6 +97,10 @@ class FoodInteractor: FoodBusinessLogic {
       
       guard let product = realmManager.getProductById(id: productId) else {return}
       realmManager.updateProductFavoritField(product: product)
+      
+      let updateData = [ProductNetworkModel.CodingKeys.isFavorits.rawValue: product.isFavorits]
+      
+      updateProductInFireBase(productId: productId, updateData: updateData)
       didChangeProductDB()
       
     case .addNewProductInRealm(let viewModel):
@@ -102,15 +108,19 @@ class FoodInteractor: FoodBusinessLogic {
         let realmProduct = createNewRealmProduct(viewModel: viewModel)
         realmManager.addNewProduct(product: realmProduct)
         
-        let productToFireBase = createNewFireBaseProduct(productRealm: realmProduct)
-        addService.addProductToFireBase(product: productToFireBase)
+        addProductToFireBase(productRealm: realmProduct)
         
         didChangeProductDB()
 
       
     case .updateCurrentProductInRealm(let viewModel):
+      guard let id = viewModel.id else {return}
       
-      realmManager.updateAllFields(viewModel: viewModel)
+      guard let dataDict:[String: Any] = getDataDict(viewModel: viewModel) else {return}
+      
+      realmManager.updateAllFields(dataDict: dataDict, productId: id)
+      
+      updateProductInFireBase(productId: id, updateData: dataDict)
       didChangeProductDB()
 
       
@@ -168,7 +178,8 @@ class FoodInteractor: FoodBusinessLogic {
   }
   
   
-  // MARK: Update ViewModel
+  // MARK: Update View
+  
   private func didChangeProductDB() {
     
     // Суть в чем после измененей получи свежые данные в своем сегменте
@@ -227,6 +238,47 @@ extension FoodInteractor {
       userSetInsulinOnCarbo  : productRealm.userSetInsulinOnCarbo,
       insulinOnCarboToML     : productRealm.insulinOnCarboToML,
       isFavorits             : productRealm.isFavorits)
+  }
+  
+}
+
+
+// MARK: Work With FireBase
+
+extension FoodInteractor {
+  
+ private func addProductToFireBase(productRealm:ProductRealm) {
+    
+    let productToFireBase = createNewFireBaseProduct(productRealm: productRealm)
+    addService.addProductToFireBase(product: productToFireBase)
+  }
+  
+  private func deleteProductFromFireBase(productId: String) {
+    
+    deleteService.deleteProducts(productId: productId)
+  }
+  
+  private func updateProductInFireBase(productId: String,updateData:[String:Any]) {
+    
+    updateService.updateProductRealm(productId: productId, data: updateData)
+  }
+  
+  private func getDataDict(viewModel: FoodCellViewModel) -> [String: Any]? {
+    
+    guard
+      let carbo   = Int(viewModel.carbo),
+      let portion = Int(viewModel.portion)
+      else {return nil}
+      
+    
+    return [
+      ProductNetworkModel.CodingKeys.name.rawValue          : viewModel.name,
+      ProductNetworkModel.CodingKeys.carboIn100grm.rawValue : carbo,
+      ProductNetworkModel.CodingKeys.category.rawValue      : viewModel.category,
+      ProductNetworkModel.CodingKeys.isFavorits.rawValue    : viewModel.isFavorit,
+      ProductNetworkModel.CodingKeys.portion.rawValue       : portion
+    ]
+    
   }
   
 }

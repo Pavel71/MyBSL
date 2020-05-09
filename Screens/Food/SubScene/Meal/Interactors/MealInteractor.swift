@@ -15,8 +15,8 @@ protocol MealBusinessLogic {
 
 class MealInteractor: MealBusinessLogic {
   
-  var presenter: MealPresentationLogic?
-  var realmManager: MealRealmManager!
+  var presenter    : MealPresentationLogic?
+  var realmManager : MealRealmManager!
   
 //  var items: Results<MealRealm>!
   

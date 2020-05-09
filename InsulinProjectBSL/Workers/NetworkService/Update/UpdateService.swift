@@ -17,13 +17,40 @@ final class UpdateService {
 
   
   
+  
+  
+
+  
+}
+
+// MARK: Update Realm
+
+extension UpdateService {
+  
+  func updateProductRealm(productId: String,data:[String: Any]) {
+    
+    DispatchQueue.global(qos: .default).async {
+    
+    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+    
+      
+    Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Products.collectionName).document(productId).updateData(data)
+    }
+  }
+  
+}
+
+
+// MARK: Update UserDefaults
+extension UpdateService {
+  
   func updateInsulinSupplyDataInFireBase(supplyInsulin: Int)  {
     
     DispatchQueue.global(qos: .default).async {
       
       let updateData = [UserDefaultsKey.insulinSupplyValue.rawValue : supplyInsulin]
       
-      self.updateFireStore(updateData: updateData)
+      self.updateUserDefaultsDataFireStore(updateData: updateData)
       
   
     }
@@ -39,18 +66,17 @@ final class UpdateService {
       
       let updateData = [key.rawValue: weights]
       
-      self.updateFireStore(updateData: updateData)
+      self.updateUserDefaultsDataFireStore(updateData: updateData)
       
     }
     
   }
   
-  private func updateFireStore(updateData:[String: Any]) {
+  private func updateUserDefaultsDataFireStore(updateData:[String: Any]) {
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
     
     
-
     Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.UserDefaults.collectionName).document(currentUserID).updateData(updateData) { (error) in
       
         if error != nil {
@@ -61,7 +87,5 @@ final class UpdateService {
 
       }
   }
-  
-
   
 }

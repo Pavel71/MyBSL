@@ -185,20 +185,21 @@ extension FoodRealmManager {
   }
   
   // Update allFields
-  func updateAllFields(viewModel: FoodCellViewModel) {
+  func updateAllFields(dataDict: [String: Any],productId: String) {
     
     let realm = productProvider.realm
     
-    guard let product = getProductById(id: viewModel.id) else {return}
+    guard let product = getProductById(id: productId) else {return}
     
       do {
         
         realm.beginWrite()
-        product.name           = viewModel.name
-        product.carboIn100grm  = Int(viewModel.carbo)!
-        product.category       = viewModel.category
-        product.isFavorits     = viewModel.isFavorit
-        product.portion        =  Int(viewModel.portion)!
+        
+        product.name           = dataDict[ProductNetworkModel.CodingKeys.name.rawValue] as! String
+        product.carboIn100grm  = dataDict[ProductNetworkModel.CodingKeys.carboIn100grm.rawValue] as! Int
+        product.category       = dataDict[ProductNetworkModel.CodingKeys.category.rawValue] as! String
+        product.isFavorits     = dataDict[ProductNetworkModel.CodingKeys.isFavorits.rawValue] as! Bool
+        product.portion        =  dataDict[ProductNetworkModel.CodingKeys.portion.rawValue] as! Int
         
         try realm.commitWrite()
         
