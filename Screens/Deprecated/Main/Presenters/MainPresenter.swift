@@ -306,13 +306,14 @@ extension MainPresenter {
   private func createProductListViewModel(product:ProductRealm) -> ProductListViewModel {
     
     return ProductListViewModel(
-      insulinValue:   product.userSetInsulinOnCarbo,
-      isFavorit:      product.isFavorits,
-      carboIn100Grm:  product.carboIn100grm,
-      category:       product.category,
-      name:           product.name,
-      portion:        product.portion,
-      totalCarboInMeal: 0
+      id               : product.id,
+      insulinValue     : product.userSetInsulinOnCarbo,
+      isFavorit        : product.isFavorits,
+      carboIn100Grm    : product.carboIn100grm,
+      category         : product.category,
+      name             : product.name,
+      portion          : product.portion,
+      totalCarboInMeal : 0
     )
   }
   

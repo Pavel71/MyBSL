@@ -94,6 +94,7 @@ extension ConvertCompObjRealmToVMWorker {
   private static func getProductListVM(productRealm: ProductRealm) -> ProductListViewModel {
     
     return ProductListViewModel(
+      id                  : productRealm.id,
       correctInsulinValue : productRealm.userSetInsulinOnCarbo,
       insulinValue        : productRealm.userSetInsulinOnCarbo,
       isFavorit           : productRealm.isFavorits,

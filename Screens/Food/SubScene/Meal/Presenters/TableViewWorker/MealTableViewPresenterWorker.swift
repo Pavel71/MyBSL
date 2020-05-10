@@ -44,7 +44,12 @@ class MealTableViewPresenterWorker {
   
   private static func getMealsViewModel(meal:MealRealm) -> MealViewModel {
     
-    var mealViewModel = MealViewModel.init(isExpand:meal.isExpandMeal, name: meal.name, typeMeal: meal.typeMeal, products: [], mealId: meal.id)
+    var mealViewModel = MealViewModel.init(
+      isExpand : meal.isExpandMeal,
+      name     : meal.name,
+      typeMeal : meal.typeMeal,
+      products : [],
+      mealId   : meal.id)
 
     mealViewModel.products = meal.listProduct.map(getProductListViewModel)
     return mealViewModel
@@ -52,7 +57,15 @@ class MealTableViewPresenterWorker {
   
   private static func getProductListViewModel(product: ProductRealm) -> ProductListViewModel {
     
-    let product = ProductListViewModel.init(insulinValue: nil, isFavorit: product.isFavorits, carboIn100Grm: product.carboIn100grm, category: product.category, name: product.name, portion: product.portion, totalCarboInMeal: 0)
+    let product = ProductListViewModel.init(
+      id               : product.id,
+      insulinValue     : nil,
+      isFavorit        : product.isFavorits,
+      carboIn100Grm    : product.carboIn100grm,
+      category         : product.category,
+      name             : product.name,
+      portion          : product.portion,
+      totalCarboInMeal : 0)
     
     return product
     

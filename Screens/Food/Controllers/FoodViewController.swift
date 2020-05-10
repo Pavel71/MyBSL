@@ -326,9 +326,27 @@ extension FoodViewController {
   //MARK: Cancel Button
   @objc private func didCancelNewProduct() {
     
-    
-   
-    self.pickerView.isHidden = true
+//    DispatchQueue.main.async {
+//      self.view.endEditing(true)
+//      self.pickerView.isHidden = true
+//    }
+//    
+//      
+//    AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(
+//      newElementView:    self.newProductView,
+//      blurView:          self.blurView,
+//      customNavBar:      self.customNavBar,
+//      tabbarController:  self.tabBarController!,
+//      
+//      isShow: false) { _ in
+//      
+//                // Внеси эти изменения после анимации
+//                self.newProductView.clearAllFieldsInView()
+//                self.updateProductId = nil
+//      
+//                
+//            }
+
     
     DispatchQueue.main.async {
 
@@ -337,17 +355,17 @@ extension FoodViewController {
         blurView:          self.blurView,
         customNavBar:      self.customNavBar,
         tabbarController:  self.tabBarController!,
-        
+
         isShow: false) { _ in
-          
+
           // Внеси эти изменения после анимации
           self.newProductView.clearAllFieldsInView()
           self.updateProductId = nil
-          
+
           self.view.endEditing(true)
       }
 
-      
+
     }
     
     

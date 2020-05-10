@@ -17,11 +17,11 @@ import RealmSwift
   
   dynamic var id                    : String = UUID().uuidString
   dynamic var name                  : String = ""
-  dynamic var category              : String  = ""
-  dynamic var carboIn100grm         : Int = 0
-  dynamic var portion               : Int = 100
+  dynamic var category              : String = ""
+  dynamic var carboIn100grm         : Int    = 0
+  dynamic var portion               : Int    = 100
   
-  dynamic var percantageCarboInMeal : Double  = 0
+  dynamic var percantageCarboInMeal : Float = 0
   
   
   var carboInPortion: Float {
@@ -29,8 +29,8 @@ import RealmSwift
   }
   
   var setPercentageCarboInMeal: Double {
-    set{percantageCarboInMeal = Double(carboInPortion) / newValue}
-    get{return self.setPercentageCarboInMeal}
+    set{percantageCarboInMeal = carboInPortion / newValue.toFloat()}
+    get{return Double(self.percantageCarboInMeal)}
   }
   
   dynamic var userSetInsulinOnCarbo : Float = 0

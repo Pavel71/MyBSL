@@ -296,6 +296,7 @@ extension NewCompansationObjectScreenPresenter {
     // ПО сути здесь уже мы можем сделать первый расчет! Но это пока не особо важно!
       
     return ProductListViewModel(
+      id                  : product.id,
       correctInsulinValue : nil,
       insulinValue        : insulinValue,
       isFavorit           : product.isFavorits,

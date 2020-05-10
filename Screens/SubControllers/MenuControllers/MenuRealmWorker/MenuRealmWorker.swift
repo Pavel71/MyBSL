@@ -86,7 +86,13 @@ extension MenuRealmWorker {
   
   private func getMealsViewModel(meal:MealRealm) -> MenuModel.MenuMealViewModel {
     
-    var mealViewModel = MenuModel.MenuMealViewModel(isChoosen: false, mealId: meal.id, isExpanded: meal.isExpandMeal, name: meal.name, typeMeal: meal.typeMeal, products: [])
+    var mealViewModel = MenuModel.MenuMealViewModel(
+      isExpanded: meal.isExpandMeal,
+      isChoosen: false,
+      mealId: meal.id,
+      name: meal.name,
+      typeMeal: meal.typeMeal,
+      products: [])
     
 //    var mealViewModel = MealViewModel.init(isExpand:meal.isExpandMeal, name: meal.name, typeMeal: meal.typeMeal, products: [], mealId: meal.id)
     
@@ -96,7 +102,7 @@ extension MenuRealmWorker {
   
   private func getProductListViewModel(product: ProductRealm) -> ProductListViewModel {
     
-    let product = ProductListViewModel.init(insulinValue: nil, isFavorit: product.isFavorits, carboIn100Grm: product.carboIn100grm, category: product.category, name: product.name, portion: product.portion, totalCarboInMeal: 0)
+    let product = ProductListViewModel.init(id: product.id, insulinValue: nil, isFavorit: product.isFavorits, carboIn100Grm: product.carboIn100grm, category: product.category, name: product.name, portion: product.portion, totalCarboInMeal: 0)
     
     return product
     

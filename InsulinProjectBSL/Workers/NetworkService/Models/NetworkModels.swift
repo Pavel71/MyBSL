@@ -44,7 +44,7 @@ struct ProductNetworkModel : Codable {
    var carboIn100grm         : Int
    var portion               : Int
   
-   var percantageCarboInMeal : Double
+   var percantageCarboInMeal : Float
 
    var userSetInsulinOnCarbo : Float
    var insulinOnCarboToML    : Float
@@ -62,6 +62,34 @@ struct ProductNetworkModel : Codable {
       case userSetInsulinOnCarbo
       case insulinOnCarboToML
       case isFavorits
+  }
+  
+}
+
+// MARK: Meal
+
+
+// Самое интересное как
+
+struct MealNetworkModel: Codable {
+  
+  var id           : String
+  var isExpandMeal : Bool
+  var name         : String
+  var typeMeal     : String
+
+  
+  let listProduct  : [ProductNetworkModel]
+  
+  enum CodingKeys: String, CodingKey {
+    
+      case id
+      case isExpandMeal
+      case name
+      case typeMeal
+      
+      case listProduct
+
   }
   
 }

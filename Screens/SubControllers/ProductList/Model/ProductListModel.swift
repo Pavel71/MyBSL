@@ -25,7 +25,7 @@ protocol ProductListViewModalable {
 
 struct ProductListViewModel: ProductListViewModelCell {
   
-  
+  var id: String
   // CorrectInsulinIfActualIsBad
   var correctInsulinValue: Float?
   

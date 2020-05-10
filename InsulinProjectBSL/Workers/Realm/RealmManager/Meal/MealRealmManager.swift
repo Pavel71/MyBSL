@@ -32,14 +32,14 @@ class MealRealmManager {
     let realmObserverToken = items.observe({ (change) in
       
       switch change {
-        case .error(let error):
-          print(error)
-        case .initial(_):
-          
-          self.didChangeRealmDB!(self.items)
-        case .update(_, deletions: let deletions, insertions: let insertions, modifications: let updates):
-          
-          self.didChangeRealmDB!(self.items)
+      case .error(let error):
+        print(error)
+      case .initial(_):
+        
+        self.didChangeRealmDB!(self.items)
+      case .update(_, deletions: let deletions, insertions: let insertions, modifications: let updates):
+        
+        self.didChangeRealmDB!(self.items)
       }
       
       self.provider.realm.refresh() // Обновляю реалм схему
@@ -47,8 +47,6 @@ class MealRealmManager {
     
     return realmObserverToken
   }
-  
-  
 
   
   private func setItems() {
@@ -56,7 +54,7 @@ class MealRealmManager {
     items = realm.objects(MealRealm.self)
   }
   
-
+  
   
 }
 
@@ -90,9 +88,18 @@ extension MealRealmManager {
     
     guard let mealById = getMealById(mealId: mealId) else {return}
     
-    try! realm.write {
-      realm.delete(mealById)
-    }
+    do {
+         realm.beginWrite()
+         
+          realm.delete(mealById)
+         
+         try realm.commitWrite()
+
+       } catch let error {
+         
+         print("Update Current Product in Realm Error",error)
+       }
+
   }
   
   // Change Expanded Fields
@@ -101,9 +108,21 @@ extension MealRealmManager {
     
     guard let mealById = getMealById(mealId: mealId) else {return}
     
-    try! realm.write {
-      mealById.isExpandMeal = !mealById.isExpandMeal
+    do {
+      
+      realm.beginWrite()
+      
+       mealById.isExpandMeal = !mealById.isExpandMeal
+      
+      try realm.commitWrite()
+      
+      
+      
+    } catch let error {
+      
+      print("Update Current Product in Realm Error",error)
     }
+     
     
   }
   
@@ -116,12 +135,14 @@ extension MealRealmManager {
     guard let meal = getMealById(mealId: viewModel.mealId!) else {return}
     
     do {
-      try realm.write {
-        
-        meal.name = viewModel.name
-        meal.typeMeal = viewModel.typeMeal
-        
-      }
+      
+      realm.beginWrite()
+      
+      meal.name = viewModel.name
+      meal.typeMeal = viewModel.typeMeal
+      
+      try realm.commitWrite()
+      
       callBackError(true)
       
     } catch let error {
@@ -131,13 +152,12 @@ extension MealRealmManager {
   }
   
   // Add New Meal
-  func addNewMeal(viewModel: MealViewModel,callBackError: @escaping (Bool) -> Void) {
+  func addNewMeal(mealRealm: MealRealm,callBackError: @escaping (Bool) -> Void) {
     
     // Здесь нужна проверка по имени обеда!
-    if isCheckMealByName(name: viewModel.name) {
-      // Нет такого имени
-      let newMeal = MealRealm(name: viewModel.name, typeMeal: viewModel.typeMeal,isExpandMeal: viewModel.isExpanded)
-      addMeal(meal: newMeal)
+    if isCheckMealByName(name: mealRealm.name) {
+      
+      addMeal(meal: mealRealm)
       callBackError(true)
       
     } else {
@@ -151,9 +171,19 @@ extension MealRealmManager {
     
     let realm = RealmProvider.meals.realm
     
-    try! realm.write {
+    do {
+      
+      realm.beginWrite()
+      
       realm.add(meal)
+      
+      try realm.commitWrite()
+      
+      
+    } catch {
+      print(error.localizedDescription)
     }
+    
   }
   
   // Check By Name
@@ -196,43 +226,88 @@ extension MealRealmManager {
 
 extension MealRealmManager {
   
-  // MARK: Add Delete Update ProductList in MEal
+  
+  // MARK: Delete Product From Meal
   
   func deleteProductFromMeal(productName: String, mealId: String) {
+    
     let realm = RealmProvider.meals.realm
     guard let  meal = getMealById(mealId: mealId) else {return}
     
     guard let index = meal.listProduct.index(matching: "name == %@",productName) else {return}
-    try! realm.write {
+    
+    do {
+      
+      realm.beginWrite()
+      
       meal.listProduct.remove(at: index)
+      
+      try realm.commitWrite()
+      
+      
+    } catch {
+      print(error.localizedDescription)
     }
+    
+    
     
   }
   
-  func updateProductPortionFromMeal(row: Int, mealId: String, portion:Int) {
+
+  func getproductIdByNameFromMeal(mealId: String,productName: String) -> String? {
+    
+    guard let  meal = getMealById(mealId: mealId) else {return nil}
+    
+    guard let product = meal.listProduct.filter("name == %@",productName).first else {return nil}
+    
+    print("Update or delete product ID",product.id)
+    return product.id
+  }
+  
+  // MARK: Update Product In Meal
+  
+  func updateProductPortionFromMeal(productName: String, mealId: String, portion:Int) {
     
     let realm = RealmProvider.meals.realm
     guard let  meal = getMealById(mealId: mealId) else {return}
     
-    // проверка на то что мы получили новые данные тогда перезаписываем!
-    guard meal.listProduct[row].portion != portion else {return}
     
-    try! realm.write {
+    // проверка на то что мы получили новые данные тогда перезаписываем!
+    //    guard meal.listProduct[row].portion != portion else {return}
+    
+    print("Change Portion Product Name",productName)
+    do {
       
-      meal.listProduct[row].portion = portion
+      realm.beginWrite()
       
+      meal.listProduct.forEach { (product) in
+        if product.name == productName {
+          product.portion = portion
+          
+        }
+      }
+      
+      try realm.commitWrite()
+      
+      
+    } catch {
+      print(error.localizedDescription)
     }
+    
   }
   
-  func addproductInMeal(mealId: String, product: ProductRealm) {
+  
+  // MARK: Add Product To Meal
+  
+  func addproductInMeal(mealId: String, product: ProductRealm) -> ProductRealm? {
     
     let realmMeal = RealmProvider.meals.realm
     
-    guard let  meal = getMealById(mealId: mealId) else {return}
+    guard let  meal = getMealById(mealId: mealId) else {return nil}
     //    guard let product = foodRealmManager.getProductById(id: productId) else {return}
     
     // Создаем только кошда нет такого имени в обеде!
-    if isProductInMeal(meal: meal, productName: product.name) {
+    guard isProductInMeal(meal: meal, productName: product.name) else {return nil}
       
       
       let newProduct = ProductRealm(
@@ -242,12 +317,23 @@ extension MealRealmManager {
         isFavorits            : product.isFavorits,
         portion               : product.portion)
       
-      try! realmMeal.write {
-        //        meal.listProduct.append(newProduct)
+      print("Add New product with ID", newProduct.id)
+        
+      do {
+        
+        realmMeal.beginWrite()
+        
         meal.listProduct.insert(newProduct, at: 0)
+        
+        try realmMeal.commitWrite()
+        
+        
+      } catch {
+        print(error.localizedDescription)
       }
       
-    }
+      return newProduct
+    
     
     
   }

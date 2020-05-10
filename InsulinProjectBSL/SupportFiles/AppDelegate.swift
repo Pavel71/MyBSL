@@ -160,6 +160,7 @@ extension AppDelegate {
     locator.addService(service: CompObjRealmManager())
     locator.addService(service: SugarRealmManager())
     locator.addService(service: FoodRealmManager())
+    locator.addService(service: MealRealmManager())
     locator.addService(service: NewDayRealmManager())
     locator.addService(service: InsulinSupplyWorker())
     locator.addService(service: DataEnrichmentWorker())
@@ -185,7 +186,7 @@ extension AppDelegate {
       guard realm.isEmpty else { return }
 
       try! realm.write {
-  //      realm.deleteAll()
+//        realm.deleteAll()
         items.forEach({ (product) in
           realm.add(product)
         })

@@ -38,7 +38,7 @@ class ProductListInMealViewController: BaseProductList {
   
   // Clousers
   
-  var didChangePortionTextFieldClouser: ((Int,Int,String) -> Void)?
+  var didChangePortionTextFieldClouser: ((Int,String,String) -> Void)?
   var didSelectTextFieldCellClouser: ((UITextField) -> Void)?
   var didDeleteProductFromMealClouser: ((String,String) -> Void)?
   var didAddProductInMealClouser: ((String) -> Void)?
@@ -186,11 +186,15 @@ extension ProductListInMealViewController: UITextFieldDelegate {
 
     } else {
        guard let indexPath = PointSearcher.getIndexPathTableViewByViewInCell(tableView: tableView, view: textField) else {return }
-      let row = indexPath.row
+      
+      let productName = tableViewData[indexPath.row].name
+      
       let portionInt = Int(text)!
       
+      
+//      tableViewData[0].
       // Отправляем результат на MealController и в Реалм
-      didChangePortionTextFieldClouser!(portionInt,row,mealId)
+      didChangePortionTextFieldClouser!(portionInt,productName,mealId)
     }
     
   }

@@ -40,11 +40,11 @@ struct MenuModel {
   
   struct MenuMealViewModel: MenuMealListCellViewModelable
   {
+    var isExpanded: Bool
+    
     var isChoosen: Bool
     
     var mealId: String?
-    
-    var isExpanded: Bool
     
     var name: String
     

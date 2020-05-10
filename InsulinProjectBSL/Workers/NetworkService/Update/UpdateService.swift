@@ -23,7 +23,38 @@ final class UpdateService {
   
 }
 
-// MARK: Update Realm
+
+
+// MARK: Update Meals
+
+extension UpdateService {
+  
+  func updateProductInMealInFireStore(productId: String,mealId: String,portion:Int) {
+    DispatchQueue.global(qos: .default).async {
+      
+        guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+      
+      let data = [ProductNetworkModel.CodingKeys.portion.rawValue : portion]
+      
+         
+      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Products.collectionName).document(productId).updateData(data)
+       }
+  }
+  
+  func updateMealInFireStore(mealId: String,data:[String: Any]) {
+    
+    DispatchQueue.global(qos: .default).async {
+      guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+      
+
+      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).updateData(data)
+    }
+    
+  }
+  
+}
+
+// MARK: Update Products
 
 extension UpdateService {
   

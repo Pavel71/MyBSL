@@ -15,6 +15,8 @@ protocol MealDisplayLogic: class {
 }
 
 class MealViewController: UIViewController, MealDisplayLogic,MainControllerInContainerProtocol {
+
+  
   
 
   
@@ -148,6 +150,7 @@ class MealViewController: UIViewController, MealDisplayLogic,MainControllerInCon
       
     case .setViewModel(let viewModel):
       
+      print("Сохранил новй обед")
       let updateBySectionsViewModel = headerInSectionWorker.updateViewModelByExpandSection(newViewModel: viewModel, with: .meals) as! [SectionMealViewModel]
       
       self.sectionViewModelList = updateBySectionsViewModel
@@ -195,7 +198,7 @@ class MealViewController: UIViewController, MealDisplayLogic,MainControllerInCon
     
     if success {
       cancelNewMealView()
-      showSuccesMessage(text: "Обед обновленн!")
+//      showSuccesMessage(text: "Обед обновленн!")
       
 //      ProgressHUD.showSuccess("Обед обновленн!")
     } else {
@@ -209,7 +212,7 @@ class MealViewController: UIViewController, MealDisplayLogic,MainControllerInCon
     
     if success {
       cancelNewMealView()
-      showSuccesMessage(text: "Новый обед созданн!")
+//      showSuccesMessage(text: "Новый обед созданн!")
     
 //      ProgressHUD.showSuccess("Новый обед созданн!")
     } else {
@@ -324,7 +327,7 @@ extension MealViewController {
   
   // Tap On Blur
   private func didTapOnBlur() {
-    cancelNewMealView()
+    self.view.endEditing(true)
   }
   
   // NewMealView
@@ -337,14 +340,29 @@ extension MealViewController {
   private func cancelNewMealView() {
     
     isShowingNewMealViewNow = false
-    AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newMealView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: isShowingNewMealViewNow)
     
-    newMealView.clearAllFieldsInView()
-    if !pickerView.isHidden {
-      pickerView.isHidden = true
+    DispatchQueue.main.async {
+
+      AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: self.newMealView, blurView: self.blurView, customNavBar: self.customNavBar, tabbarController: self.tabBarController!, isShow: self.isShowingNewMealViewNow) { _ in
+
+          // Внеси эти изменения после анимации
+          self.newMealView.clearAllFieldsInView()
+          self.pickerView.isHidden = true
+
+          self.view.endEditing(true)
+      }
+
+
     }
-    view.endEditing(true)
+    
+
+      
+    
+    
+
   }
+  
+  // MARK: Save New Meal
   
   @objc private func didTapSaveNewMealButton() {
     
@@ -470,9 +488,9 @@ extension MealViewController {
 
 extension MealViewController {
   
-  private func didChangePortionSizeProductListCell(portion: Int,row: Int,mealId: String) {
+  private func didChangePortionSizeProductListCell(portion: Int,productName: String,mealId: String) {
     
-    interactor?.makeRequest(request: .updateProductPortionFromMeal(mealId: mealId, rowProduct: row, portion: portion))
+    interactor?.makeRequest(request: .updateProductPortionFromMeal(mealId: mealId, productname: productName, portion: portion))
     
   }
   
@@ -504,7 +522,7 @@ extension MealViewController {
   
 }
 
-// MARK: Catch Product From Menu FoodList
+// MARK: Delete And Add Product From Menu!
 
 extension MealViewController {
   
@@ -513,11 +531,12 @@ extension MealViewController {
     guard let product = products.first else {return}
     interactor?.makeRequest(request: .addProductInMeal(mealId: mealId, product: product))
   }
-  
+
   func deleteProducts(products: [ProductRealm]) {
     print("Delete products In Meal")
     guard let mealId = mealIdByAddPorduct else {return}
     guard let product = products.first else {return}
+
     interactor?.makeRequest(request: .deleteProductFromMeal(mealId: mealId, productName: product.name))
   }
   
@@ -657,10 +676,15 @@ extension MealViewController: UITableViewDelegate, UITableViewDataSource {
     
     cell.productListViewController.didSelectTextFieldCellClouser = { [weak self] textField in self?.setTextFiedlPoint(textField: textField) }
     
-    cell.productListViewController.didChangePortionTextFieldClouser = {[weak self] portion,row,mealId in
-      self?.didChangePortionSizeProductListCell(portion: portion, row: row, mealId: mealId) }
+    cell.productListViewController.didChangePortionTextFieldClouser = {[weak self] portion,productName,mealId in
+      
+      self?.didChangePortionSizeProductListCell(portion: portion, productName: productName, mealId: mealId) }
   
-    cell.productListViewController.didDeleteProductFromMealClouser = {[weak self] productName, mealId in self?.deleteProductFromMeal(productName: productName, mealId: mealId) }
+    cell.productListViewController.didDeleteProductFromMealClouser = {[weak self] productName, mealId in
+      
+      self?.deleteProductFromMeal(productName: productName, mealId: mealId)
+      
+    }
     
     cell.didAddNewProductInmeal = {[weak self] mealId,button in self?.addNewproductInMeal(mealId: mealId,button:button) }
     
@@ -686,6 +710,8 @@ extension MealViewController: UITableViewDelegate, UITableViewDataSource {
     // Как юы здесь получить размер label в ячейки!
     
     let isExpanded = sectionViewModelList[indexPath.section].meals[indexPath.row].isExpanded
+    
+    
     let countProductInMeal = sectionViewModelList[indexPath.section].meals[indexPath.row].products.count
     let mealName = sectionViewModelList[indexPath.section].meals[indexPath.row].name
     
