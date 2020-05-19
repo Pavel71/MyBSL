@@ -67,26 +67,16 @@ extension  UpdateService {
 // MARK: Update Meals
 
 extension UpdateService {
+
   
-  func updateProductInMealInFireStore(productId: String,mealId: String,portion:Int) {
-    DispatchQueue.global(qos: .default).async {
-      
-        guard let currentUserID = Auth.auth().currentUser?.uid else {return}
-      
-      let data = [ProductNetworkModel.CodingKeys.portion.rawValue : portion]
-      
-         
-      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Meals.ProductsInMeal.collectionName).document(productId).updateData(data)
-       }
-  }
-  
-  func updateMealInFireStore(mealId: String,data:[String: Any]) {
+  func updateMealInFireStore(mealNetworkModel: MealNetworkModel) {
     
     DispatchQueue.global(qos: .default).async {
       guard let currentUserID = Auth.auth().currentUser?.uid else {return}
       
+      let data = mealNetworkModel.dictionary
 
-      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).updateData(data)
+      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealNetworkModel.id).updateData(data)
     }
     
   }

@@ -74,21 +74,7 @@ extension AddService {
 
 extension AddService {
   
-  func addProductInMeal(mealId: String, product:ProductNetworkModel) {
-    
-    DispatchQueue.global(qos: .userInteractive).async {
-      
-        guard let currentUserID = Auth.auth().currentUser?.uid else {return}
-        
 
-      let data = product.dictionary
-
-      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Meals.ProductsInMeal.collectionName).document(product.id).setData(data)
-      
-      
-     
-      }
-    }
   
   func addMealToFireStore(meal: MealNetworkModel) {
     

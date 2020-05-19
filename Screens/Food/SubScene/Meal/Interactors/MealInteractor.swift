@@ -81,34 +81,30 @@ class MealInteractor: MealBusinessLogic {
     
   }
   
+  // MARK: Work With Products Requests
+  
   private func workWithProductListFromMealRequests(request:Meal.Model.Request.RequestType) {
     
     switch  request {
       // Product List Delete Update Add
       case .deleteProductFromMeal(let mealId, let productName):
         
-        print("Delete Product From Realm and Firebase",productName)
         
-        guard let productIdRemove = realmManager.getproductIdByNameFromMeal(mealId: mealId, productName: productName) else {return}
-        
-        realmManager.deleteProductFromMeal(productName: productName, mealId: mealId) // realmDBDidChange
-        
-        
-        deleteProductFromMealFireStore(productId: productIdRemove, mealId: mealId)
+        guard let meal = realmManager.deleteProductFromMeal(productName: productName, mealId: mealId) else {return}
+      
+        updateMealInFireStore(mealRealm: meal)
       
       case .updateProductPortionFromMeal(let mealId, let productName, let portion):
         
-        realmManager.updateProductPortionFromMeal(productName: productName, mealId: mealId, portion: portion) // realmDBDidChange
+        guard let meal = realmManager.updateProductPortionFromMeal(productName: productName, mealId: mealId, portion: portion) else {return}
        
-        guard let productId = realmManager.getproductIdByNameFromMeal(mealId: mealId, productName: productName) else {return}
+        updateMealInFireStore(mealRealm: meal)
         
-        updateProductsPortionInMealsFireStore(productId: productId, portion: portion, mealId: mealId)
-      
       case .addProductInMeal(let mealId, let product):
         
-        guard let newProduct = realmManager.addproductInMeal(mealId: mealId, product: product) else {return} // realmDBDidChange
-        addProductsInMealsFireStore(product: newProduct, mealId: mealId)
+        guard let updateMeal = realmManager.addproductInMeal(mealId: mealId, product: product) else {return} // realmDBDidChange
         
+        addMealToFireStore(mealRealm: updateMeal)
       
     default:break
     }
@@ -141,11 +137,14 @@ class MealInteractor: MealBusinessLogic {
         
         if viewModel.mealId != nil {
           
+          // pдесь нам нужно получать обноленный mealRealm и записывать его
+          guard let meal = realmManager.updateAllMealFields(viewModel: viewModel)  else {return}
           
-          realmManager.updateAllMealFields(viewModel: viewModel) { [weak self] (success) in
-            self?.presenter?.presentData(response: .passSuccessAddOrUpdateMeal(isSuccessAdd:success, isUpdateMeal: true)) // realmDBDidChange
-          }
-          updateMealInFireStore(viewModel: viewModel)
+           updateMealInFireStore(mealRealm: meal)
+          
+          self.presenter?.presentData(response: .passSuccessAddOrUpdateMeal(isSuccessAdd:true, isUpdateMeal: true))
+          
+         
           
           
         } else {
@@ -154,11 +153,13 @@ class MealInteractor: MealBusinessLogic {
           
           realmManager.addNewMeal(mealRealm: mealRealm) { [weak self] (success) in
             
+            if success {
+              self?.addMealToFireStore(mealRealm: mealRealm)
+            }
+            
             self?.presenter?.presentData(response: .passSuccessAddOrUpdateMeal(isSuccessAdd:success, isUpdateMeal: false)) // realmDBDidChange
           }
-          
-          addMealToFireStore(mealRealm: mealRealm)
-          
+
         }
       
     default:break
@@ -179,98 +180,53 @@ class MealInteractor: MealBusinessLogic {
 // MARK: Work with FireStore
 
 extension MealInteractor {
-  
-  // MARK: Products from Meals
-  
-  // Delete Product
-  
-  private func deleteProductFromMealFireStore(productId: String, mealId: String) {
-    
-    deleteService.deleteProductFromMealFireStore(mealId: mealId, productId: productId)
-  }
-  
-  // Add Product
-  private func addProductsInMealsFireStore(product:ProductRealm,mealId: String) {
-    
-    let productFireStore = createNewFireBaseProduct(productRealm: product)
-    
-    addService.addProductInMeal(mealId: mealId, product: productFireStore)
-    
-  }
-  // Update Product
-  private func updateProductsPortionInMealsFireStore(
-    productId : String,
-    portion   : Int,
-    mealId    : String) {
-    
-    
-    
-    updateService.updateProductInMealInFireStore(productId: productId, mealId: mealId, portion: portion)
-  }
-  
-  
-  
+
   // MARK: Meals
+  
+  // Delete
   private func deleteMealFromFireStore(mealId: String) {
     deleteService.deleteMealFromFireStore(mealId: mealId)
   }
   
-  
-  // UPDATE Meal
-  private func updateMealInFireStore(viewModel: MealViewModel) {
-    
-    let data = createMealData(viewModel: viewModel)
-    
-    updateService.updateMealInFireStore(
-      mealId: viewModel.mealId!,
-      data: data)
+  // Update
+  private func updateMealInFireStore(mealRealm: MealRealm) {
+    let mealNetworkModel = convertMealRealmToMealNetworkModel(mealRealm: mealRealm)
+    updateService.updateMealInFireStore(mealNetworkModel: mealNetworkModel)
   }
-  
-  private func createMealData(viewModel: MealViewModel) -> [String: Any] {
-    
-    [
-      MealNetworkModel.CodingKeys.name.rawValue         : viewModel.name,
-      MealNetworkModel.CodingKeys.isExpandMeal.rawValue : viewModel.isExpanded,
-      MealNetworkModel.CodingKeys.typeMeal.rawValue     : viewModel.typeMeal,
-      MealNetworkModel.CodingKeys.listProduct.rawValue  : viewModel.products
-    ]
-    
-  }
-  
-   private func createNewFireBaseProduct(productRealm: ProductRealm) -> ProductNetworkModel {
-    
-    print(productRealm,"Product Realm")
 
-     return ProductNetworkModel(
-       id                     : productRealm.id,
-       name                   : productRealm.name,
-       category               : productRealm.category,
-       carboIn100grm          : productRealm.carboIn100grm,
-       portion                : productRealm.portion,
-       percantageCarboInMeal  : productRealm.percantageCarboInMeal,
-       userSetInsulinOnCarbo  : productRealm.userSetInsulinOnCarbo,
-       insulinOnCarboToML     : productRealm.insulinOnCarboToML,
-       isFavorits             : productRealm.isFavorits)
-   }
-  
-  
   
   // ADD Meal
   private func addMealToFireStore(mealRealm:MealRealm) {
     
-    let mealNetworkModel = createMealNetworkModel(mealRealm: mealRealm)
+    let mealNetworkModel = convertMealRealmToMealNetworkModel(mealRealm: mealRealm)
     
     addService.addMealToFireStore(meal: mealNetworkModel)
   }
   
-  private func createMealNetworkModel(mealRealm: MealRealm) -> MealNetworkModel {
+  private func convertMealRealmToMealNetworkModel(mealRealm: MealRealm) -> MealNetworkModel {
     
-    MealNetworkModel(
+    let listProduct:[ProductNetworkModel] = mealRealm.listProduct.map(convertProductRealmToProductNetworkModel)
+    
+    return MealNetworkModel(
       id           : mealRealm.id,
       isExpandMeal : mealRealm.isExpandMeal,
       name         : mealRealm.name,
       typeMeal     : mealRealm.typeMeal,
-      listProduct  : [])
+      listProduct  : listProduct)
+  }
+  
+  private func convertProductRealmToProductNetworkModel(productRealm: ProductRealm) -> ProductNetworkModel {
+
+    return ProductNetworkModel(
+      id                     : productRealm.id,
+      name                   : productRealm.name,
+      category               : productRealm.category,
+      carboIn100grm          : productRealm.carboIn100grm,
+      portion                : productRealm.portion,
+      percantageCarboInMeal  : productRealm.percantageCarboInMeal,
+      userSetInsulinOnCarbo  : productRealm.userSetInsulinOnCarbo,
+      insulinOnCarboToML     : productRealm.insulinOnCarboToML,
+      isFavorits             : productRealm.isFavorits)
   }
   
 }
