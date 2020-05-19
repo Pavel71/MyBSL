@@ -21,6 +21,28 @@ final class AddService {
     
 }
 
+// MARK: Add Sugar Realm To FireStore
+
+extension AddService {
+  
+  func addSugarNetworkModelinFireStore(sugarNetworkModel: SugarNetworkModel) {
+    
+    DispatchQueue.global(qos: .userInteractive).async {
+     
+      guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+       
+
+     let data = sugarNetworkModel.dictionary
+
+      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Sugars.collectionName).document(sugarNetworkModel.id).setData(data)
+     
+     
+     }
+    
+  }
+  
+}
+
 // MARK: Add Meal To FireStore
 
 extension AddService {
@@ -31,39 +53,8 @@ extension AddService {
       
         guard let currentUserID = Auth.auth().currentUser?.uid else {return}
         
-      // Я выяснил из за чего у меня дропается добавление в массив- но как мне кажется через коллекцию даже проще!
-      
-      print("Set Product to MEal",product)
-      
-      // Вообщем надо добавлять коллекцию
-      
-//      let data = [MealNetworkModel.CodingKeys.listProduct.rawValue : FieldValue.arrayUnion([product.dictionary])]
-        
-//      let data = [
-//        MealNetworkModel.CodingKeys.listProduct.rawValue : [
-//          product.id: FieldValue.arrayUnion([product.dictionary])]
-//      ]
-      
-//      let data = [
-//        "ID" : product.id
-//      ]
-//
+
       let data = product.dictionary
-      
-      
-      
-      
-//      {favorites: {size: "large"}},
-//      {merge: true}
-      
-      
-//      washingtonRef.updateData([
-//          "regions": FieldValue.arrayUnion(["greater_virginia"])
-//      ])
-      
-//      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).updateData(data)
-      
-      // Надо подумать как объеденить 2 запроса в 1 чтобы не перепушивать сервер!
 
       Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Products.collectionName).document(product.id).setData(data)
       

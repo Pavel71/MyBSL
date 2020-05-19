@@ -25,6 +25,25 @@ final class UpdateService {
 
 
 
+// MARK: Update Sugars
+
+extension  UpdateService {
+  
+  
+  func updateSugars(sugarNetworkModel : SugarNetworkModel) {
+    
+    DispatchQueue.global(qos: .default).async {
+    
+    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+    
+      let data = sugarNetworkModel.dictionary
+    
+    Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Sugars.collectionName).document(sugarNetworkModel.id).updateData(data)
+     }
+  }
+  
+}
+
 // MARK: Update Meals
 
 extension UpdateService {

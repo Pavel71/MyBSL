@@ -85,8 +85,8 @@ extension SugarRealmManager {
 extension SugarRealmManager {
   
   
-  func deleteSugarByCompObjId(sugarCompObjId: String) {
-    guard let sugarRealm = fetchSugarByCompansationId(sugarCompObjId: sugarCompObjId) else {return}
+  func deleteSugarId(sugarId: String) {
+    guard let sugarRealm = fetchSugarByPrimeryKey(sugarPrimaryKey: sugarId) else {return}
     
     deleteSugarRealm(sugarRealm: sugarRealm)
   }
@@ -112,16 +112,19 @@ extension SugarRealmManager {
 // MARK: Update Sugar From Realm
 extension SugarRealmManager {
   
-  func updateSugarRealmByCompObj(compObj: CompansationObjectRelam) {
+  func updateSugarRealm(
+    sugarRealm    : SugarRealm,
+    chartDataCase : ChartDataCase,
+    sugar         : Double,
+    time          : Date) {
     
-    guard let sugarRealm = fetchSugarByCompansationId(sugarCompObjId: compObj.id) else {return}
+//    guard let sugarRealm = fetchSugarByCompansationId(sugarCompObjId: sugarCompId) else {return}
     do {
       self.realm.beginWrite()
       
-      sugarRealm.sugar = compObj.sugarBefore
-      
-      sugarRealm.chartDataCase  = getChartDataCase(compObj: compObj)
-      
+      sugarRealm.sugar = sugar
+      sugarRealm.time  = time
+      sugarRealm.chartDataCase  = chartDataCase
       
       try self.realm.commitWrite()
       
@@ -132,21 +135,5 @@ extension SugarRealmManager {
     
   }
   
-  private func getChartDataCase(compObj: CompansationObjectRelam) -> ChartDataCase {
-    
-    // Будет возвращать что у нас обед всегда когда есть обед
-    guard compObj.listProduct.isEmpty else {return .mealData}
-    
-    switch compObj.correctSugarPosition {
-      
-    case .correctDown:
-      return .correctInsulinData
-    case .correctUp:
-      return .correctCarboData
-      
-    default:
-      return .sugarData
-    }
 
-  }
 }

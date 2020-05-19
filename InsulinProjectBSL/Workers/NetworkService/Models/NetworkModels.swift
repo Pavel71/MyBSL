@@ -31,6 +31,30 @@ public struct City: Codable {
 }
 
 
+// MARK: Sugar Netwoek Model
+
+struct SugarNetworkModel : Codable {
+  
+  
+  var id                   : String
+  var sugar                : Double
+  var time                 : Date
+  var dataCase             : Int
+  var compansationObjectId : String
+  
+  enum CodingKeys: String, CodingKey {
+    
+      case id
+      case sugar
+      case time
+      case dataCase
+      case compansationObjectId
+
+  }
+  
+}
+
+
 // MARK: Product Netwoek Model
 
 

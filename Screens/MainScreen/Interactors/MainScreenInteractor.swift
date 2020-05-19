@@ -16,16 +16,22 @@ class MainScreenInteractor: MainScreenBusinessLogic {
 
   var presenter: MainScreenPresentationLogic?
 
-
+  
+  // Realm and UserDefaults
+  
   let newDayRealmManager  : NewDayRealmManager!
   let insulinSupplyWorker : InsulinSupplyWorker!
   let compObjRealmManager : CompObjRealmManager!
   let sugarRealmManger    : SugarRealmManager!
-  let updateService       : UpdateService!
+  
   let userDefaultsWorker  : UserDefaultsWorker!
-    
   
+  // FireStore
+  let updateService       : UpdateService!
+  let addService          : AddService!
+  let deleteService       : DeleteService!
   
+
   init() {
     
     let locator = ServiceLocator.shared
@@ -35,8 +41,12 @@ class MainScreenInteractor: MainScreenBusinessLogic {
     insulinSupplyWorker = locator.getService()
     compObjRealmManager = locator.getService()
     sugarRealmManger    = locator.getService()
-    updateService       = locator.getService()
     userDefaultsWorker  = locator.getService()
+    
+    updateService       = locator.getService()
+    addService          = locator.getService()
+    deleteService       = locator.getService()
+    
   }
   
   func makeRequest(request: MainScreen.Model.Request.RequestType) {
@@ -70,6 +80,8 @@ extension MainScreenInteractor {
       
       newDayRealmManager.addNewSugarId(sugarId: sugarRealm.id)
       sugarRealmManger.addOrUpdateNewSugarRealm(sugarRealm: sugarRealm)
+      
+      saveSugarToFireStore(sugarRealm: sugarRealm)
 
       passDayRealmToConvertInVMInPresenter()
       // Просто передаю модель
@@ -86,15 +98,23 @@ extension MainScreenInteractor {
       
     case .deleteCompansationObj(let compObjId):
       
-      guard let compObj = compObjRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: compObjId) else {return}
+      guard
+        let compObj = compObjRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: compObjId),
+        let deleteSugarId = newDayRealmManager.fetchSugarIdByCompObjId(compObjId: compObjId)
+      else {return}
       let totalInsulin = compObj.totalInsulin
       
       newDayRealmManager.deleteCompObjById(compObjId: compObjId)
-      newDayRealmManager.deleteSugarByCompObjId(sugarCompObjId: compObjId)
+      
+      
+      newDayRealmManager.deleteSugarByCompObjId(sugarId: deleteSugarId)
+      
+      
+      deleteSugarFromFireStore(sugarId: deleteSugarId)
+      
       
       updateInsulinSupplyValue(totalInsulin: totalInsulin.toFloat(), updatedType: .delete)
       
-    
 
       passDayRealmToConvertInVMInPresenter()
       
@@ -139,6 +159,39 @@ extension MainScreenInteractor {
   }
   
  
+}
+
+
+// MARK: Delete Sugar To FireStore
+
+extension MainScreenInteractor {
+  
+  func deleteSugarFromFireStore(sugarId: String) {
+
+    deleteService.deleteSugarFromFireStore(sugarId: sugarId)
+  }
+}
+
+// MARK: Save Sugar To FireStore
+
+extension MainScreenInteractor {
+  
+  private func saveSugarToFireStore(sugarRealm: SugarRealm) {
+   
+    let sugarNetworkModel = convertToSugarNetworkModel(sugarRealm: sugarRealm)
+    addService.addSugarNetworkModelinFireStore(sugarNetworkModel: sugarNetworkModel)
+  }
+  
+  private func convertToSugarNetworkModel(sugarRealm: SugarRealm) -> SugarNetworkModel {
+     
+     return SugarNetworkModel(
+       id                   : sugarRealm.id,
+       sugar                : sugarRealm.sugar,
+       time                 : sugarRealm.time,
+       dataCase             : sugarRealm.dataCase,
+       compansationObjectId : sugarRealm.compansationObjectId ?? "")
+   }
+  
 }
 
 

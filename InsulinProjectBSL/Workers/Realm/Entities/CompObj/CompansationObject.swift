@@ -41,9 +41,6 @@ import RealmSwift
     sugarCorrectorWorker.getWayCorrectPosition(sugar: Float(sugarBefore))
   }
   
-  
-  
-  
   dynamic var sugarAfter       : Double = 0 // Этот параметр буду сетить как только вводится новая дозировка инсулина! Тогда мы будем брать текущий сахар
   dynamic var timeCreate       : Date = Date()
   // На какой стадии находится объект

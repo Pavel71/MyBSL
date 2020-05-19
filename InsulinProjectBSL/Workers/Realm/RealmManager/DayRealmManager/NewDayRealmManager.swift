@@ -68,6 +68,14 @@ extension NewDayRealmManager {
      return fetchAllDays().suffix(7).map{$0.date}
      
    }
+  
+  func fetchSugarIdByCompObjId(compObjId: String) -> String? {
+    
+    print("Sugar Realm",sugarRealmManager.fetchSugarByCompansationId(sugarCompObjId: compObjId))
+    
+    print("All Sugar Realm",sugarRealmManager.fetchAllSugar())
+    return sugarRealmManager.fetchSugarByCompansationId(sugarCompObjId: compObjId)?.id
+  }
 
   
 }
@@ -205,16 +213,10 @@ extension NewDayRealmManager {
   
   //Delete
   
-  func deleteSugarByCompObjId(sugarCompObjId: String) {
+  func deleteSugarByCompObjId(sugarId: String) {
     
-    guard
-      let sugarRealm = sugarRealmManager.fetchSugarByCompansationId(sugarCompObjId: sugarCompObjId)
-      else {return}
-    
-//    sugarRealmManager.fetchSugarByCompansationId(sugarCompObjId: sugarCompObjId) else {return}
-    
-    
-    guard let deleteIndex = currentDay.listSugarID.index(of:sugarRealm.id) else {return}
+
+    guard let deleteIndex = currentDay.listSugarID.index(of:sugarId) else {return}
     
     do {
       self.realm.beginWrite()
@@ -227,7 +229,7 @@ extension NewDayRealmManager {
       print(error.localizedDescription)
     }
     
-    sugarRealmManager.deleteSugarByCompObjId(sugarCompObjId: sugarCompObjId)
+    sugarRealmManager.deleteSugarId(sugarId: sugarId)
   }
   
  

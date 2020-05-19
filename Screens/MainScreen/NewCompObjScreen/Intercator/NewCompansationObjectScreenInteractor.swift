@@ -16,15 +16,21 @@ class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusiness
   
   var presenter: NewCompansationObjectScreenPresentationLogic?
   // если приходит Объект для обновления
-  var updateCompObj: CompansationObjectRelam!
+  var updateCompObj    : CompansationObjectRelam!
+  var updateSugarRealm : SugarRealm!
   
   
   // For Work with Realm
   
   var compRealmManager    : CompObjRealmManager!
   var sugarRealmManager   : SugarRealmManager!
-//  var userDefaultsWorker  : UserDefaultsWorker!
   var insulinSupplyWorker : InsulinSupplyWorker!
+  
+  // For Work wit FireStore
+  
+  var addService    : AddService!
+  var updateService : UpdateService!
+  var deleteService : DeleteService!
   
   
   init() {
@@ -32,8 +38,11 @@ class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusiness
     
     compRealmManager    = locator.getService()
     sugarRealmManager   = locator.getService()
-//    userDefaultsWorker  = locator.getService()
     insulinSupplyWorker = locator.getService()
+    
+    addService    = locator.getService()
+    updateService = locator.getService()
+    deleteService = locator.getService()
 
   }
 
@@ -61,7 +70,10 @@ extension NewCompansationObjectScreenInteractor {
       
       // вот здесь мы обновляем его и тут можем сохранить в оперативочку
       
-      updateCompObj = compObjRealm
+      updateCompObj    = compObjRealm
+      updateSugarRealm = sugarRealmManager.fetchSugarByCompansationId(sugarCompObjId: compObjRealm.id)
+      
+      // можно как вариант заказать здесь sugarRealmкоторый мы будим обновлять! и не композить себе мозг!
       
       presenter?.presentData(response: .convertCompObjRealmToVM(compObjRealm: compObjRealm))
       
@@ -78,17 +90,8 @@ extension NewCompansationObjectScreenInteractor {
       presenter?.presentData(response: .updatePlaceInjection(place: place))
       
     case .saveCompansationObjectInRealm(let viewModel):
-      
-      
-      // Пришла модель с обнволенными данными!
-      // Мы должны проверить что у нас туту Новый объект или Update?
-      
-      // прежде чем записать все изменения я должен внести корректировку в 1 элемент это компенсация Разницы в сахаре между Идеальным и текущим
-      
-      
-      
 
-      if updateCompObj != nil {
+      if updateCompObj != nil && updateSugarRealm != nil {
         
         let totalInsulinBefore = updateCompObj.totalInsulin.toFloat()
         let totalInsulinAfter  = viewModel.resultFooterVM.totalInsulin
@@ -96,9 +99,13 @@ extension NewCompansationObjectScreenInteractor {
         insulinSupplyWorker.updateInsulinSupplyValue(totalInsulin: totalInsulinBefore - totalInsulinAfter, updatedType: .update)
         
         updatingCompObj(viewModel: viewModel)
-        updatingSugarRealm(compObj: updateCompObj)
+        updatingSugarRealm()
+        
+        // сюда нужен id sugara который редактируем
+        updateSugarInFireStore()
 
-        self.updateCompObj = nil
+        self.updateCompObj    = nil
+        self.updateSugarRealm = nil
         
         presenter?.presentData(response: .updateSugarRealmAndCompObjSucsess)
         
@@ -107,9 +114,11 @@ extension NewCompansationObjectScreenInteractor {
       } else {
         // Создаем новые объекте
         let compObj    = convertViewModelToCompObjRealm(viewModel: viewModel)
-        let sugarRealm = convertModelToSugarRealm(compObj: compObj)
-        saveCompObjToRealm(compObj  : compObj)
-        saveSugarToRealm(sugarRealm : sugarRealm)
+        let sugarRealm = convertCompObjRealmToSugarRealm(compObj: compObj)
+        
+        saveCompObjToRealm(compObj      : compObj)
+        saveSugarToRealm(sugarRealm     : sugarRealm)
+        saveSugarToFireStore(sugarRealm : sugarRealm)
         
         insulinSupplyWorker.updateInsulinSupplyValue(
           totalInsulin: viewModel.resultFooterVM.totalInsulin,
@@ -181,6 +190,49 @@ extension NewCompansationObjectScreenInteractor {
   
 }
 
+// MARK: Update Data in FireStore
+
+extension NewCompansationObjectScreenInteractor {
+  
+  func updateSugarInFireStore() {
+    
+    
+    let sugarNetworkModel = SugarNetworkModel(
+      id                   : updateSugarRealm.id,
+      sugar                : updateCompObj.sugarBefore,
+      time                 : updateCompObj.timeCreate,
+      dataCase             : getChartDataCase(compObj: updateCompObj).rawValue,
+      compansationObjectId : updateCompObj.id)
+    
+    updateService.updateSugars(sugarNetworkModel: sugarNetworkModel)
+  }
+  
+}
+
+ // MARK: Save Data to FireStore
+extension NewCompansationObjectScreenInteractor {
+ 
+  
+  private func saveSugarToFireStore(sugarRealm: SugarRealm) {
+    
+    let sugarNetworkModel = convertToSugarNetworkModel(sugarRealm: sugarRealm)
+    
+    addService.addSugarNetworkModelinFireStore(sugarNetworkModel: sugarNetworkModel)
+    
+  }
+  
+  private func convertToSugarNetworkModel(sugarRealm: SugarRealm) -> SugarNetworkModel {
+    
+    return SugarNetworkModel(
+      id                   : sugarRealm.id,
+      sugar                : sugarRealm.sugar,
+      time                 : sugarRealm.time,
+      dataCase             : sugarRealm.dataCase,
+      compansationObjectId : sugarRealm.compansationObjectId ?? "")
+  }
+  
+}
+
 // MARK: Update Insulin Supply Value
 extension NewCompansationObjectScreenInteractor {
   
@@ -228,9 +280,13 @@ extension NewCompansationObjectScreenInteractor {
     return transportTuple
   }
   
-  private func updatingSugarRealm(compObj: CompansationObjectRelam) {
+  private func updatingSugarRealm() {
     
-    sugarRealmManager.updateSugarRealmByCompObj(compObj: compObj)
+    sugarRealmManager.updateSugarRealm(
+      sugarRealm    : updateSugarRealm,
+      chartDataCase : getChartDataCase(compObj: updateCompObj),
+      sugar         : updateCompObj.sugarBefore,
+      time          : updateCompObj.timeCreate)
 
   }
   
@@ -243,6 +299,7 @@ extension NewCompansationObjectScreenInteractor {
       transportTuple : transportTuple,
       compObjId      : updateCompObj.id)
     
+    // MARK: TO DO CHECK NEED IT OR NOT
     // После обновления и записи в реамл я получу обновленный объект
     updateCompObj = compRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: updateCompObj.id)
   }
@@ -303,14 +360,14 @@ extension NewCompansationObjectScreenInteractor {
 
 extension NewCompansationObjectScreenInteractor {
   
-  func convertModelToSugarRealm(compObj: CompansationObjectRelam) -> SugarRealm {
+  func convertCompObjRealmToSugarRealm(compObj: CompansationObjectRelam) -> SugarRealm {
     
     let sugar = compObj.sugarBefore
     
     let dataCase = getChartDataCase(compObj: compObj)
     
     return SugarRealm(
-      time                 : Date(),
+      time                 : compObj.timeCreate,
       sugar                : sugar.roundToDecimal(2),
       dataCase             : dataCase ,
       compansationObjectId : compObj.id)
