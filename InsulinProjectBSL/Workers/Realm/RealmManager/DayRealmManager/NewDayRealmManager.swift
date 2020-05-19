@@ -60,7 +60,7 @@ extension NewDayRealmManager {
   
   func fetchDayByDate(dayDate: Date) -> DayRealm? {
     let allDays = fetchAllDays()
-    return allDays.first(where: {$0.date.compareDate(with: dayDate)})
+    return allDays.first(where: {$0.date.compareDateByDay(with: dayDate)})
   }
   
   func fetchLastSevenDaysDate() -> [Date] {
@@ -70,10 +70,7 @@ extension NewDayRealmManager {
    }
   
   func fetchSugarIdByCompObjId(compObjId: String) -> String? {
-    
-    print("Sugar Realm",sugarRealmManager.fetchSugarByCompansationId(sugarCompObjId: compObjId))
-    
-    print("All Sugar Realm",sugarRealmManager.fetchAllSugar())
+
     return sugarRealmManager.fetchSugarByCompansationId(sugarCompObjId: compObjId)?.id
   }
 
@@ -103,7 +100,7 @@ extension NewDayRealmManager {
       let days = fetchAllDays()
       guard let lastDay = days.last else {return false}
       let dateNow = Date()
-      return lastDay.date.compareDate(with: dateNow)
+      return lastDay.date.compareDateByDay(with: dateNow)
 //      return lastDay.date.onlyDate()! == dateNow.onlyDate()!
   
     }

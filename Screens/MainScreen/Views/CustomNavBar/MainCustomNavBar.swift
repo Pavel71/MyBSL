@@ -77,7 +77,7 @@ class MainCustomNavBar: UIView {
     var indexG: Int = 0
 
     for (index,date) in viewModel.lastSevenDays.enumerated() {
-      if date.compareDate(with: viewModel.titleDate) {
+      if date.compareDateByDay(with: viewModel.titleDate) {
         indexG = index
       }
     }
@@ -210,12 +210,12 @@ extension MainCustomNavBar {
       guard let firstElement = viewModel.lastSevenDays.first else {return}
       
       previosDayButton.alpha =
-        viewModel.titleDate.compareDate(with: firstElement) ? 0 : 1
+        viewModel.titleDate.compareDateByDay(with: firstElement) ? 0 : 1
       nextDayButton.alpha    =
-        viewModel.titleDate.compareDate(with: lastElement) ? 0 : 1
+        viewModel.titleDate.compareDateByDay(with: lastElement) ? 0 : 1
       
       
-      addNewDinnerButton.isEnabled = viewModel.titleDate.compareDate(with:lastElement)
+      addNewDinnerButton.isEnabled = viewModel.titleDate.compareDateByDay(with:lastElement)
     } else {
       previosDayButton.alpha = 0
       nextDayButton.alpha    = 0

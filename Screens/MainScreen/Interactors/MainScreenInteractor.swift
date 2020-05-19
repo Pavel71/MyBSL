@@ -95,13 +95,15 @@ extension MainScreenInteractor {
       
       passDayRealmToConvertInVMInPresenter()
       
-      
+      // MARK: Delete COmpObj
     case .deleteCompansationObj(let compObjId):
       
       guard
         let compObj = compObjRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: compObjId),
         let deleteSugarId = newDayRealmManager.fetchSugarIdByCompObjId(compObjId: compObjId)
+        
       else {return}
+      
       let totalInsulin = compObj.totalInsulin
       
       newDayRealmManager.deleteCompObjById(compObjId: compObjId)
@@ -111,6 +113,7 @@ extension MainScreenInteractor {
       
       
       deleteSugarFromFireStore(sugarId: deleteSugarId)
+      deleteCompObjFromFireStore(compObjId: compObjId)
       
       
       updateInsulinSupplyValue(totalInsulin: totalInsulin.toFloat(), updatedType: .delete)
@@ -162,9 +165,13 @@ extension MainScreenInteractor {
 }
 
 
-// MARK: Delete Sugar To FireStore
+// MARK: Delete From FireStore
 
 extension MainScreenInteractor {
+  
+  func deleteCompObjFromFireStore(compObjId: String) {
+    deleteService.deleteCompObjFromFireStore(compObjId: compObjId)
+  }
   
   func deleteSugarFromFireStore(sugarId: String) {
 

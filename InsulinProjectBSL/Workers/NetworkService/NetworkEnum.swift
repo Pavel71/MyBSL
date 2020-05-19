@@ -55,10 +55,22 @@ enum FirebaseKeyPath {
       
       struct Meals {
         static let collectionName = "Meals"
+        
+        struct ProductsInMeal {
+          static let collectionName = "ProductsInMeal"
+        }
       }
       
       struct Sugars {
         static let collectionName = "Sugars"
+      }
+      
+      struct CompObjs {
+        static let collectionName = "CompObjs"
+        
+        struct ProductsInCompObj {
+          static let collectionName = "ProductsInCompObj"
+        }
       }
     
       

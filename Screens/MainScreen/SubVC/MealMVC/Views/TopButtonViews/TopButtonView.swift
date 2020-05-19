@@ -102,13 +102,6 @@ class TopButtonView: UIView {
     
     self.layer.cornerRadius = 10
     self.clipsToBounds      = true
-
-//    deleteButton.imageView?.tintColor          = .white
-//    updateButton.imageView?.tintColor          = .white
-//    injectionResultButton.imageView?.tintColor = .black
-//    carboMealResultButton.imageView?.tintColor = .black
-//    sugarAfterButton.imageView?.tintColor      = .black
-//    sugarBeforeButton.imageView?.tintColor     = .black
   }
   
   // MARK: Handle Button Action
@@ -197,12 +190,15 @@ extension TopButtonView {
   private func setStateRedactingCompansationObject(canRedacting: CanRedactingCompObj) {
     
     switch canRedacting {
+      
     case .can:
       deleteButton.isHidden = false
       updateButton.isHidden = false
       
       sugarAfterStackView.isHidden = true
+      
     case .not:
+      
       deleteButton.isHidden = true
       updateButton.isHidden = true
       

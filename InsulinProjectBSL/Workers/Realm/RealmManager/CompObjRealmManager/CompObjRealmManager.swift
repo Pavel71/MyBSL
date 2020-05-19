@@ -141,6 +141,7 @@ extension CompObjRealmManager {
     deleteCompObj(compObj: compObj)
     
     // После удаления измени состояние предыдущего обеда
+    // Тут нужно внести поправку! Что мы не разрешаем править условие редактирование для предыдущего обеда если прошел день!
     updatingPrevCompObjWhenDeleting()
     
     
@@ -240,9 +241,15 @@ extension CompObjRealmManager {
   private func updatingPrevCompObjWhenDeleting() {
     
     guard let lastCompobj = fetchLastCompObj() else {return}
+    
+    // Если день у последнего не равен текущему то редактировать такой объект нельзя
+    let compPosition:CompansationPosition = lastCompobj.timeCreate.compareDateByDay(with: Date()) ? .progress : .dontCalculated
+    
+    
+    
     updatingPrevCompObjIfNeeded(
       sugarAfter   : 0,
-      compPosition : .progress,
+      compPosition : compPosition,
       prevCompObj  : lastCompobj)
     
   }

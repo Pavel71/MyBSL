@@ -21,6 +21,33 @@ final class AddService {
     
 }
 
+
+// MARK: Add CompObj To FireStore
+
+extension AddService {
+  
+  func addCompObjToFireStore(compoObj: CompObjNetworkModel) {
+    
+    DispatchQueue.global(qos: .userInteractive).async {
+       
+        guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+         
+      
+      // C другой стороны это всеткаи усложняет запросы на редактирование и удаление каких то элементов!
+      
+       let data = compoObj.dictionary
+
+      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.CompObjs.collectionName).document(compoObj.id).setData(data)
+       
+       
+       }
+    
+    
+    
+  }
+  
+}
+
 // MARK: Add Sugar Realm To FireStore
 
 extension AddService {
@@ -56,7 +83,7 @@ extension AddService {
 
       let data = product.dictionary
 
-      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Products.collectionName).document(product.id).setData(data)
+      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Meals.ProductsInMeal.collectionName).document(product.id).setData(data)
       
       
      

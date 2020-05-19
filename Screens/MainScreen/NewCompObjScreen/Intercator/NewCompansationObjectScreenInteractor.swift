@@ -98,11 +98,12 @@ extension NewCompansationObjectScreenInteractor {
         
         insulinSupplyWorker.updateInsulinSupplyValue(totalInsulin: totalInsulinBefore - totalInsulinAfter, updatedType: .update)
         
-        updatingCompObj(viewModel: viewModel)
-        updatingSugarRealm()
+        updatingCompObjInRealm(viewModel: viewModel)
+        updatingSugarInRealm()
         
         // сюда нужен id sugara который редактируем
         updateSugarInFireStore()
+        updateCompObjInFireStore()
 
         self.updateCompObj    = nil
         self.updateSugarRealm = nil
@@ -117,6 +118,8 @@ extension NewCompansationObjectScreenInteractor {
         let sugarRealm = convertCompObjRealmToSugarRealm(compObj: compObj)
         
         saveCompObjToRealm(compObj      : compObj)
+        saveCompRealmToFireStore(compObj  : compObj)
+        
         saveSugarToRealm(sugarRealm     : sugarRealm)
         saveSugarToFireStore(sugarRealm : sugarRealm)
         
@@ -194,6 +197,13 @@ extension NewCompansationObjectScreenInteractor {
 
 extension NewCompansationObjectScreenInteractor {
   
+  func updateCompObjInFireStore() {
+    
+    let compObjNetWorkModel = convertCompObjRealmToCompObjNetworkModel(compObj: updateCompObj)
+    
+    updateService.updateCompObjInFireStore(compObjNetModel: compObjNetWorkModel)
+  }
+  
   func updateSugarInFireStore() {
     
     
@@ -211,7 +221,54 @@ extension NewCompansationObjectScreenInteractor {
 
  // MARK: Save Data to FireStore
 extension NewCompansationObjectScreenInteractor {
+  
+  
+  // MARK: Comp Obj
+  
+  private func saveCompRealmToFireStore(compObj:CompansationObjectRelam) {
+    
+    let compObjNetModel = convertCompObjRealmToCompObjNetworkModel(compObj:compObj)
+    
+    addService.addCompObjToFireStore(compoObj: compObjNetModel)
+    
+  }
+  
+  private func convertCompObjRealmToCompObjNetworkModel(compObj: CompansationObjectRelam) -> CompObjNetworkModel {
+    
+    let listProd : [ProductNetworkModel] = compObj.listProduct.map(convertProductsRealmToProductNetworkModel)
+    
+    return CompObjNetworkModel(
+      id                           : compObj.id,
+      typeObject                   : compObj.typeObject,
+      sugarBefore                  : compObj.sugarBefore,
+      sugarAfter                   : compObj.sugarAfter,
+      userSetInsulinToCorrectSugar : compObj.userSetInsulinToCorrectSugar,
+      sugarDiffToOptimaForMl       : compObj.sugarDiffToOptimaForMl,
+      insulinToCorrectSugarML      : compObj.insulinToCorrectSugarML,
+      timeCreate                   : compObj.timeCreate,
+      compansationFase             : compObj.compansationFase,
+      insulinOnTotalCarbo          : compObj.insulinOnTotalCarbo,
+      totalCarbo                   : compObj.totalCarbo,
+      placeInjections              : compObj.placeInjections,
+      listProduct                  : listProd)
+    
+    
+  }
+  
+  private func convertProductsRealmToProductNetworkModel(product: ProductRealm) -> ProductNetworkModel {
+    return ProductNetworkModel(
+      id                    : product.id,
+      name                  : product.name,
+      category              : product.category,
+      carboIn100grm         : product.carboIn100grm,
+      portion               : product.portion,
+      percantageCarboInMeal : product.percantageCarboInMeal,
+      userSetInsulinOnCarbo : product.userSetInsulinOnCarbo,
+      insulinOnCarboToML    : product.insulinOnCarboToML,
+      isFavorits            : product.isFavorits)
+  }
  
+  // MARK: Sugar
   
   private func saveSugarToFireStore(sugarRealm: SugarRealm) {
     
@@ -280,7 +337,7 @@ extension NewCompansationObjectScreenInteractor {
     return transportTuple
   }
   
-  private func updatingSugarRealm() {
+  private func updatingSugarInRealm() {
     
     sugarRealmManager.updateSugarRealm(
       sugarRealm    : updateSugarRealm,
@@ -290,7 +347,7 @@ extension NewCompansationObjectScreenInteractor {
 
   }
   
-  private func updatingCompObj(viewModel: NewCompObjViewModel) {
+  private func updatingCompObjInRealm(viewModel: NewCompObjViewModel) {
 
     let transportTuple = getTransportTuple(viewModel: viewModel)
     

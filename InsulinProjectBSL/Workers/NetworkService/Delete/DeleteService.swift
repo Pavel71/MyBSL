@@ -18,6 +18,21 @@ final class DeleteService {
 }
 
 
+// MARK: Delete CompObj
+
+extension DeleteService {
+  
+  func deleteCompObjFromFireStore(compObjId: String) {
+    DispatchQueue.global(qos: .default).async {
+    
+    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+
+      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.CompObjs.collectionName).document(compObjId).delete()
+     }
+  }
+}
+
+
 // MARK: Delete Sugars
 
 extension DeleteService {
@@ -39,15 +54,16 @@ extension DeleteService {
     DispatchQueue.global(qos: .default).async {
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
       
-      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Products.collectionName).document(productId).delete()
+      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Meals.ProductsInMeal.collectionName).document(productId).delete()
     }
   }
   
   func deleteMealFromFireStore(mealId: String) {
+    
     DispatchQueue.global(qos: .default).async {
+      
       guard let currentUserID = Auth.auth().currentUser?.uid else {return}
       
-
       Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).delete()
       
       

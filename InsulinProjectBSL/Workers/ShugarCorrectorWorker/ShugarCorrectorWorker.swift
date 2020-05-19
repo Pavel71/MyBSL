@@ -65,9 +65,6 @@ final class ShugarCorrectorWorker {
   
   func getWayCorrectPosition(sugar: Float) -> CorrectInsulinPosition {
     
-    print("Bottom Sugsar LEvel",bottomShugarLevel)
-    print("Higher Sugar LEvel",higherShuagrLevel)
-    
     if sugar < bottomShugarLevel && sugar > 0 {
       return .correctUp
       

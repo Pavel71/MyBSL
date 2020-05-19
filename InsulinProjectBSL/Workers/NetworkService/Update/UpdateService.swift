@@ -24,6 +24,26 @@ final class UpdateService {
 }
 
 
+// MARK: Update COmpObj
+
+
+extension UpdateService {
+  
+  func updateCompObjInFireStore(compObjNetModel: CompObjNetworkModel) {
+    DispatchQueue.global(qos: .default).async {
+    
+    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+    
+    let data = compObjNetModel.dictionary
+    
+    Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.CompObjs.collectionName).document(compObjNetModel.id).updateData(data)
+     }
+    
+    
+  }
+}
+
+
 
 // MARK: Update Sugars
 
@@ -56,7 +76,7 @@ extension UpdateService {
       let data = [ProductNetworkModel.CodingKeys.portion.rawValue : portion]
       
          
-      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Products.collectionName).document(productId).updateData(data)
+      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Meals.ProductsInMeal.collectionName).document(productId).updateData(data)
        }
   }
   

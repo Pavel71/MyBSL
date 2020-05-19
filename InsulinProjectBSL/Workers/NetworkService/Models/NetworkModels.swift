@@ -31,6 +31,50 @@ public struct City: Codable {
 }
 
 
+// MARK: CompObj Network Model
+
+struct CompObjNetworkModel : Codable {
+  
+  
+  let id                           : String
+  let typeObject                   : Int
+  let sugarBefore                  : Double
+  let sugarAfter                   : Double
+  let userSetInsulinToCorrectSugar : Double
+  let sugarDiffToOptimaForMl       : Float
+  let insulinToCorrectSugarML      : Float
+  let timeCreate                   : Date
+  let compansationFase             : Int
+  let insulinOnTotalCarbo          : Double
+  let totalCarbo                   : Double
+  let placeInjections              : String
+  
+  let listProduct  : [ProductNetworkModel]
+  
+  
+  
+  enum CodingKeys: String, CodingKey {
+    
+      case id
+      case typeObject
+      case sugarBefore
+      case sugarAfter
+      case userSetInsulinToCorrectSugar
+      case sugarDiffToOptimaForMl
+      case insulinToCorrectSugarML
+      case timeCreate
+      case compansationFase
+      case insulinOnTotalCarbo
+      case totalCarbo
+      case placeInjections
+      case listProduct
+      
+
+  }
+  
+}
+
+
 // MARK: Sugar Netwoek Model
 
 struct SugarNetworkModel : Codable {

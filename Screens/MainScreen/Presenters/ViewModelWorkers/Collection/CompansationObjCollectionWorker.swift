@@ -20,6 +20,7 @@ class CompansationObjCollectionWorker {
     
     
     switch TypeCompansationObject(rawValue:compObject.typeObject)  {
+      
     case .mealObject:
       return getMealCell(compObject:compObject)
     case .correctSugarByCarbo:

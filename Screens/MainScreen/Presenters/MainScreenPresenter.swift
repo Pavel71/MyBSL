@@ -14,14 +14,15 @@ protocol MainScreenPresentationLogic {
 
 class MainScreenPresenter: MainScreenPresentationLogic {
   
-  weak var viewController: MainScreenDisplayLogic?
+  weak var viewController : MainScreenDisplayLogic?
   
   
-  let sugarRealmManager : SugarRealmManager!
-  let compObjRealmManger: CompObjRealmManager!
-  
-  let newDayRealmManger : NewDayRealmManager!
-  let userDefaults = UserDefaults.standard
+  let sugarRealmManager   : SugarRealmManager!
+  let compObjRealmManger  : CompObjRealmManager!
+    
+  let newDayRealmManger   : NewDayRealmManager!
+  let userDefaultsWorker  : UserDefaultsWorker!
+//  let userDefaults = UserDefaults.standard
   
   
   init() {
@@ -29,6 +30,7 @@ class MainScreenPresenter: MainScreenPresentationLogic {
     sugarRealmManager  = locator.getService()
     compObjRealmManger = locator.getService()
     newDayRealmManger  = locator.getService()
+    userDefaultsWorker = locator.getService()
   }
   
   func presentData(response: MainScreen.Model.Response.ResponseType) {
@@ -98,9 +100,7 @@ extension MainScreenPresenter {
     let collectionVCVM = CollectionVCVM(
       cells: listCopmObj.map(CompansationObjCollectionWorker.getCellViewModel))
     // InsulinSupply
-    
-    // По идеи я буду это брать юзер дефолтсе так как в реалме сохранять это бессмысленно!
-    // Здесь мне нужно делать перерасчет каждый раз убавлять сумму инсулина из компенсатион обжетк
+
     
     let dayVM = DayVM(
       curentDate: realmData.date,
@@ -145,7 +145,9 @@ extension MainScreenPresenter {
   // MARK: Insulin SUpply VM
   private func getInsulinSupplyVM() -> InsulinSupplyViewModel {
     
-    let insulinSupplyValue = userDefaults.integer(forKey: UserDefaultsKey.insulinSupplyValue.rawValue)
+    
+    
+    let insulinSupplyValue = userDefaultsWorker.getInsulinSupply()
     
     return InsulinSupplyViewModel(insulinSupply: Float(insulinSupplyValue))
   }

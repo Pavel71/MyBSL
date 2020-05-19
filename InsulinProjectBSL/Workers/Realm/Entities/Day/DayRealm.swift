@@ -41,7 +41,7 @@ import RealmSwift
   
   var dayType: DayType {
     
-    return date.onlyDate()!.compareDate(with: Date()) ? .newDay : .pastDay
+    return date.onlyDate()!.compareDateByDay(with: Date()) ? .newDay : .pastDay
   }
   
   convenience  init(

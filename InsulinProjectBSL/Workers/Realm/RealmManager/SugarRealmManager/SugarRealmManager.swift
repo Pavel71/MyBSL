@@ -84,11 +84,34 @@ extension SugarRealmManager {
 // MARK: Delete Sugar From Realm
 extension SugarRealmManager {
   
+  // сейчас это удаление происходит когда мы удалеям объект!
+  // Нужно пробежатся по всем ближайшим объектам до сахара с обедом и затереть их тоже!
   
   func deleteSugarId(sugarId: String) {
+    
     guard let sugarRealm = fetchSugarByPrimeryKey(sugarPrimaryKey: sugarId) else {return}
     
-    deleteSugarRealm(sugarRealm: sugarRealm)
+    var arrayDelete:[SugarRealm] = findNearestSugarObjectWithOutCompObjId(sugarDeleteId: sugarRealm.id)
+    arrayDelete.append(sugarRealm)
+    
+    arrayDelete.forEach{deleteSugarRealm(sugarRealm: $0)}
+    
+    
+  }
+  
+  private func findNearestSugarObjectWithOutCompObjId(sugarDeleteId: String) -> [SugarRealm] {
+    
+    // Этот сахар по умоляанию последний!
+    
+    let allSugarsWithoutLast = fetchAllSugar().dropLast().reversed()
+    
+    
+    let removeSugars:[SugarRealm] = allSugarsWithoutLast.prefix { (sugar) -> Bool in
+      sugar.compansationObjectId == nil
+    }
+
+    return removeSugars
+    
   }
   
   private func deleteSugarRealm(sugarRealm: SugarRealm) {
