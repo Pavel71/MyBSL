@@ -17,12 +17,6 @@ class DataEnrichmentWorker {
 
   // Создам Pipline по подготовке и обучению данных!
 
-  // 1 Теперь мне нужно убедится что я вношу изменения в Стату Компенсации на modife
-
-
-  
-    
-//    static let shared: DataEnrichmentWorker = {DataEnrichmentWorker()}()
   
   let locator = ServiceLocator.shared
   
@@ -73,7 +67,6 @@ extension  DataEnrichmentWorker {
     
     private  func workWithCorrectSugarByInsulinTypeObj(compObj: CompansationObjectRelam) {
 
-      
       switch compObj.compansationFaseEnum {
         
         case .bad:

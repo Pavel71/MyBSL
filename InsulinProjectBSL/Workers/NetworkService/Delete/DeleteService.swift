@@ -23,12 +23,12 @@ final class DeleteService {
 extension DeleteService {
   
   func deleteCompObjFromFireStore(compObjId: String) {
-    DispatchQueue.global(qos: .default).async {
+    
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
 
       Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.CompObjs.collectionName).document(compObjId).delete()
-     }
+     
   }
 }
 
@@ -38,11 +38,11 @@ extension DeleteService {
 extension DeleteService {
   
   func deleteSugarFromFireStore(sugarId: String) {
-    DispatchQueue.global(qos: .default).async {
+    
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
       
       Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Sugars.collectionName).document(sugarId).delete()
-    }
+    
   }
   
 }

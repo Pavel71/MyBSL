@@ -16,7 +16,7 @@ final class FetchService {
   
   
   
-  func fetchAllDataFromFireBase(complation: @escaping (Result<[String: Any],NetworkFirebaseError>) -> Void) {
+  func fetchUserDefaultsDataFromFireStore(complation: @escaping (Result<[String: Any],NetworkFirebaseError>) -> Void) {
     
     print("Пошла загрузка данных")
     

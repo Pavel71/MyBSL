@@ -115,7 +115,7 @@ extension CompObjRealmManager {
     // пежде чем добавить новый сcompObj - внеси изменения в последний
     
     // если будет предыдущий объект то обнови его данными из нового
-    updatePrevCompObjWhenAddNew(timeCreateNew: compObj.timeCreate, sugarNew: compObj.sugarBefore)
+//    updatePrevCompObjWhenAddNew(timeCreateNew: compObj.timeCreate, sugarNew: compObj.sugarBefore)
     
     do {
       self.realm.beginWrite()

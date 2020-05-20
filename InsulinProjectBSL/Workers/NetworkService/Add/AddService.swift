@@ -22,6 +22,27 @@ final class AddService {
 }
 
 
+// MARK:
+extension AddService {
+  
+  func addDayToFireStore(dayNetworkModel: DayNetworkModel) {
+    
+          
+    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+    
+    
+    // C другой стороны это всеткаи усложняет запросы на редактирование и удаление каких то элементов!
+    
+    let data = dayNetworkModel.dictionary
+    
+    Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(dayNetworkModel.id).setData(data)
+          
+          
+          
+  }
+  
+}
+
 // MARK: Add CompObj To FireStore
 
 extension AddService {

@@ -113,11 +113,11 @@ extension NewDayRealmManager {
 
 extension NewDayRealmManager {
   
-  func addBlankDay() {
+  func addBlankDay() -> DayRealm {
     
     self.currentDay = DayRealm(date: Date())
     addOrUpdateNewDay(dayRealm: currentDay)
-    
+    return currentDay
   }
   
   func addOrUpdateNewDay(dayRealm: DayRealm) {

@@ -31,7 +31,9 @@ class MainScreenInteractor: MainScreenBusinessLogic {
   let addService          : AddService!
   let deleteService       : DeleteService!
   
-
+ 
+  // MARK: Init
+  
   init() {
     
     let locator = ServiceLocator.shared
@@ -89,10 +91,17 @@ extension MainScreenInteractor {
       
     case .addCompIdAndSugarIdinDay(let compObjId,let sugarId):
       
+      // Вот здесь нужно обновить день и добавить им id
+      
       newDayRealmManager.addNewCompObjId(compObjId: compObjId)
-
       newDayRealmManager.addNewSugarId(sugarId: sugarId)
       
+      
+      DispatchQueue.global(qos: .userInteractive).async {
+        let currentDay = self.newDayRealmManager.getCurrentDay()
+        self.updateDayInFireStore(dayRealm: currentDay)
+      }
+
       passDayRealmToConvertInVMInPresenter()
       
       // MARK: Delete COmpObj
@@ -107,13 +116,17 @@ extension MainScreenInteractor {
       let totalInsulin = compObj.totalInsulin
       
       newDayRealmManager.deleteCompObjById(compObjId: compObjId)
-      
-      
       newDayRealmManager.deleteSugarByCompObjId(sugarId: deleteSugarId)
       
-      
-      deleteSugarFromFireStore(sugarId: deleteSugarId)
-      deleteCompObjFromFireStore(compObjId: compObjId)
+      DispatchQueue.global(qos: .userInteractive).async {
+        
+        self.deleteSugarFromFireStore(sugarId: deleteSugarId)
+        self.deleteCompObjFromFireStore(compObjId: compObjId)
+
+        let currentDay = self.newDayRealmManager.getCurrentDay()
+        self.updateDayInFireStore(dayRealm: currentDay)
+        
+      }
       
       
       updateInsulinSupplyValue(totalInsulin: totalInsulin.toFloat(), updatedType: .delete)
@@ -133,7 +146,12 @@ extension MainScreenInteractor {
       
       if newDayRealmManager.isNowLastDayInDB() == false {
         print("Сегодняшнего дня нет в базе поэтому добавляю новый день")
-        newDayRealmManager.addBlankDay()
+        let newDay = newDayRealmManager.addBlankDay()
+        
+        DispatchQueue.global(qos: .userInteractive).async {
+          self.saveDayInFireStore(dayRealm: newDay)
+        }
+        
       } else {
         print("Сегодня есть в базе, просто сетим его")
         // Есть сегодняшний день то сетим его в current
@@ -164,6 +182,29 @@ extension MainScreenInteractor {
  
 }
 
+// MARK: Add and Update Day to Realm
+extension MainScreenInteractor {
+  
+  func updateDayInFireStore(dayRealm: DayRealm) {
+    let dayNetworkModel = convertDayRealmToDayNetworkLayer(dayRealm: dayRealm)
+    updateService.updateDayToFireStore(dayNetworkModel: dayNetworkModel)
+  }
+  
+  func saveDayInFireStore(dayRealm: DayRealm) {
+    let dayNetworkModel = convertDayRealmToDayNetworkLayer(dayRealm: dayRealm)
+    addService.addDayToFireStore(dayNetworkModel: dayNetworkModel)
+  }
+  
+  func convertDayRealmToDayNetworkLayer(dayRealm: DayRealm) -> DayNetworkModel {
+    
+    return DayNetworkModel(
+      id            : dayRealm.id,
+      date          : dayRealm.date,
+      listSugarID   : Array(dayRealm.listSugarID),
+      listCompObjID : Array(dayRealm.listCompObjID))
+  }
+  
+}
 
 // MARK: Delete From FireStore
 

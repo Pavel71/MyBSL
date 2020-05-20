@@ -101,10 +101,9 @@ extension SugarRealmManager {
   
   private func findNearestSugarObjectWithOutCompObjId(sugarDeleteId: String) -> [SugarRealm] {
     
-    // Этот сахар по умоляанию последний!
     
     let allSugarsWithoutLast = fetchAllSugar().dropLast().reversed()
-    
+
     
     let removeSugars:[SugarRealm] = allSugarsWithoutLast.prefix { (sugar) -> Bool in
       sugar.compansationObjectId == nil

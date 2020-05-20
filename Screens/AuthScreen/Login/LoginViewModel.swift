@@ -42,7 +42,7 @@ class LoginModelView {
   
   func fetchDataFromFirebase(complation: @escaping ((Result<Bool,NetworkFirebaseError>) -> Void)) {
     
-    fetchService.fetchAllDataFromFireBase { (result) in
+    fetchService.fetchUserDefaultsDataFromFireStore { (result) in
       switch result {
         
       case .success(let userDefData):

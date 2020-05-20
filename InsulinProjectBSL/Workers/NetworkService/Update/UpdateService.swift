@@ -24,6 +24,24 @@ final class UpdateService {
 }
 
 
+// MARK: Update Day
+
+extension UpdateService {
+  
+  func updateDayToFireStore(dayNetworkModel: DayNetworkModel) {
+    
+    
+    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+    
+    let data = dayNetworkModel.dictionary
+    
+    Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(dayNetworkModel.id).updateData(data)
+     
+  }
+  
+}
+
+
 // MARK: Update COmpObj
 
 

@@ -30,6 +30,26 @@ public struct City: Codable {
 
 }
 
+// MARK: Days Network Model
+
+struct DayNetworkModel : Codable {
+  
+  let id            : String
+  let date          : Date
+  let listSugarID   : [String]
+  let listCompObjID : [String]
+  
+  enum CodingKeys: String, CodingKey {
+     
+       case id
+       case date
+       case listSugarID
+       case listCompObjID
+
+   }
+  
+}
+
 
 // MARK: CompObj Network Model
 
@@ -135,9 +155,6 @@ struct ProductNetworkModel : Codable {
 }
 
 // MARK: Meal
-
-
-// Самое интересное как
 
 struct MealNetworkModel: Codable {
   

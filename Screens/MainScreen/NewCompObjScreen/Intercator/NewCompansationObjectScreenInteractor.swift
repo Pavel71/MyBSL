@@ -103,7 +103,7 @@ extension NewCompansationObjectScreenInteractor {
         
         // сюда нужен id sugara который редактируем
         updateSugarInFireStore()
-        updateCompObjInFireStore()
+        updateCompObjInFireStore(compObj: updateCompObj)
 
         self.updateCompObj    = nil
         self.updateSugarRealm = nil
@@ -116,6 +116,9 @@ extension NewCompansationObjectScreenInteractor {
         // Создаем новые объекте
         let compObj    = convertViewModelToCompObjRealm(viewModel: viewModel)
         let sugarRealm = convertCompObjRealmToSugarRealm(compObj: compObj)
+        
+        
+        updatePrevCompObjFromDataInNewCompObj(timeCreate: compObj.timeCreate, sugarAfter: compObj.sugarBefore)
         
         saveCompObjToRealm(compObj      : compObj)
         saveCompRealmToFireStore(compObj  : compObj)
@@ -134,15 +137,15 @@ extension NewCompansationObjectScreenInteractor {
           
           self.presenter?.presentData(response: .learnMlForNewData)
           
+          guard let secondLastCompobjAfterDateEnrichmentFromMlWorking = self.compRealmManager.fetchSecondOnTheEndCompObj() else {return}
+          
+          self.updateCompObjInFireStore(compObj: secondLastCompobjAfterDateEnrichmentFromMlWorking)
+          
         }
-        
-        
-        
+
         presenter?.presentData(response: .passCompObjIdAndSugarRealmIdToVC(compObjId: compObj.id, sugarRealmId: sugarRealm.id))
         
       }
-      
-
       
     default:break
     }
@@ -157,6 +160,10 @@ extension NewCompansationObjectScreenInteractor {
   private func saveCompObjToRealm(compObj: CompansationObjectRelam) {
 
     compRealmManager.addOrUpdateNewCompObj(compObj: compObj)
+  }
+  
+  private func updatePrevCompObjFromDataInNewCompObj(timeCreate: Date,sugarAfter: Double) {
+    compRealmManager.updatePrevCompObjWhenAddNew(timeCreateNew: timeCreate, sugarNew: sugarAfter)
   }
   
   private func saveSugarToRealm(sugarRealm: SugarRealm) {
@@ -197,9 +204,9 @@ extension NewCompansationObjectScreenInteractor {
 
 extension NewCompansationObjectScreenInteractor {
   
-  func updateCompObjInFireStore() {
+  func updateCompObjInFireStore(compObj: CompansationObjectRelam) {
     
-    let compObjNetWorkModel = convertCompObjRealmToCompObjNetworkModel(compObj: updateCompObj)
+    let compObjNetWorkModel = convertCompObjRealmToCompObjNetworkModel(compObj: compObj)
     
     updateService.updateCompObjInFireStore(compObjNetModel: compObjNetWorkModel)
   }
