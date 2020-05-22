@@ -18,10 +18,12 @@ class LoginModelView {
   var isLogIn = Bindable<Bool>()
   
   var fetchService: FetchService!
+  var userDefaults: UserDefaultsWorker!
   
   init() {
     let locator = ServiceLocator.shared
     fetchService = locator.getService()
+    userDefaults = locator.getService()
   }
   
   func checkForm() {
@@ -42,23 +44,42 @@ class LoginModelView {
   
   func fetchDataFromFirebase(complation: @escaping ((Result<Bool,NetworkFirebaseError>) -> Void)) {
     
-    fetchService.fetchUserDefaultsDataFromFireStore { (result) in
+    
+    fetchService.getRealmDataFromFireStore { (result) in
       switch result {
+      case .success(let models):
+        print("Catch Models",models)
         
-      case .success(let userDefData):
+        // 1. Сохранить UserDefaults
+        self.userDefaults.setDataToUserDefaults(userDefaultsNetwrokModel: models.userDefaults[0])
+        // 2. запустить процесс сохранения в реалме!
         
-        // Получили данные теперь сохраним
-        let locator = ServiceLocator.shared
-        let userDefaults: UserDefaultsWorker! = locator.getService()
+        // Даже не знаю если четсно как это бомбить!
         
-        userDefaults.setDataToUserDefaults(data: userDefData)
         complation(.success(true))
         
       case .failure(let error):
         complation(.failure(error))
-        
       }
     }
+    
+//    fetchService.fetchUserDefaultsDataFromFireStore { (result) in
+//      switch result {
+//
+//      case .success(let userDefData):
+//
+//        // Получили данные теперь сохраним
+//        let locator = ServiceLocator.shared
+//        let userDefaults: UserDefaultsWorker! = locator.getService()
+//
+//        userDefaults.setDataToUserDefaults(data: userDefData)
+//        complation(.success(true))
+//
+//      case .failure(let error):
+//        complation(.failure(error))
+//
+//      }
+//    }
     
   }
 

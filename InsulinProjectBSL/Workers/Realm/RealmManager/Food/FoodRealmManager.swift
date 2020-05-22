@@ -143,7 +143,7 @@ extension FoodRealmManager {
       do {
         
         realm.beginWrite()
-        realm.add(product)
+        realm.add(product, update: .modified)
         
         try realm.commitWrite()
         

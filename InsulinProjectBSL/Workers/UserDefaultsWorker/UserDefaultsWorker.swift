@@ -24,13 +24,25 @@ final class UserDefaultsWorker {
 // MARK: SET DATA
 extension UserDefaultsWorker {
   
-  func setDataToUserDefaults(data: [String: Any]) {
+  func setDataToUserDefaults(userDefaultsNetwrokModel: UserDefaultsNetworkModel) {
     
-    UserDefaultsKey.allCases.forEach { (key) in
+    // Проверить это говно!
     
-      userDefaults.set(data[key.rawValue], forKey: key.rawValue)
-      
-    }
+    setInsulinSupplyValue(insulinSupply: userDefaultsNetwrokModel.insulinSupplyValue)
+    
+    setWeights(weights: userDefaultsNetwrokModel.correctCarboByInsulinWeights, key: .correctCarboByInsulinWeights)
+    setWeights(weights: userDefaultsNetwrokModel.correctSugarByInsulinWeights, key: .correctSugarByInsulinWeights)
+    
+    setArrayFloat(arr: userDefaultsNetwrokModel.carboCorrectTargetBaseData, key: .carboCorrectTargetBaseData)
+    setArrayFloat(arr: userDefaultsNetwrokModel.carboCorrectTrainBaseData, key: .carboCorrectTrainBaseData)
+    
+    setArrayFloat(arr: userDefaultsNetwrokModel.sugarCorrectTrainBaseData, key: .sugarCorrectTrainBaseData)
+    setArrayFloat(arr: userDefaultsNetwrokModel.sugarCorrectTargetBaseData, key: .sugarCorrectTargetBaseData)
+    
+    setSugarLevel(sugarLevel: userDefaultsNetwrokModel.lowSugarLevel, key: .lowSugarLevel)
+    setSugarLevel(sugarLevel: userDefaultsNetwrokModel.higherSugarLevel, key: .higherSugarLevel)
+    
+
     
   }
   
@@ -41,6 +53,15 @@ extension UserDefaultsWorker {
 
   func setWeights(weights:[Float],key: UserDefaultsKey) {
     userDefaults.set(weights, forKey: key.rawValue)
+  }
+  
+  func setArrayFloat(arr:[Float],key: UserDefaultsKey) {
+    userDefaults.set(arr, forKey: key.rawValue)
+  }
+  
+  func setSugarLevel(sugarLevel: Float,key: UserDefaultsKey) {
+    userDefaults.set(sugarLevel, forKey: key.rawValue)
+
   }
   
 }
@@ -110,7 +131,7 @@ extension UserDefaultsWorker {
         
       case .insulinSupplyValue:
         
-        let insulinSupplyValue = userDefaults.float(forKey: key.rawValue)
+        let insulinSupplyValue = userDefaults.integer(forKey: key.rawValue)
         dataDict[key.rawValue] = insulinSupplyValue
         
       

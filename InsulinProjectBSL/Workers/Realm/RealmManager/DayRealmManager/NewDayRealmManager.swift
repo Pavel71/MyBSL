@@ -115,9 +115,10 @@ extension NewDayRealmManager {
   
   func addBlankDay() -> DayRealm {
     
-    self.currentDay = DayRealm(date: Date())
-    addOrUpdateNewDay(dayRealm: currentDay)
-    return currentDay
+    let newDay = DayRealm(date: Date())
+    self.currentDay = newDay
+    addOrUpdateNewDay(dayRealm: newDay)
+    return newDay
   }
   
   func addOrUpdateNewDay(dayRealm: DayRealm) {
@@ -125,7 +126,7 @@ extension NewDayRealmManager {
     do {
       
       self.realm.beginWrite()
-      self.realm.add(dayRealm, update: .all)
+      self.realm.add(dayRealm, update: .modified)
       
       try self.realm.commitWrite()
       print(self.realm.configuration.fileURL?.absoluteURL as Any,"Day in DB")

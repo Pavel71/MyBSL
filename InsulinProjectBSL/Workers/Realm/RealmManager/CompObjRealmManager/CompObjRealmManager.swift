@@ -119,7 +119,7 @@ extension CompObjRealmManager {
     
     do {
       self.realm.beginWrite()
-      self.realm.add(compObj, update: .all)
+      self.realm.add(compObj, update: .modified)
       
       try self.realm.commitWrite()
       print(self.realm.configuration.fileURL?.absoluteURL as Any,"CompObj in DB")

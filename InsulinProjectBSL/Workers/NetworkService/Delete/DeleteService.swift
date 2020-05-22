@@ -50,13 +50,13 @@ extension DeleteService {
 //MARK: Delete Meals
 extension DeleteService {
   
-  func deleteProductFromMealFireStore(mealId: String,productId: String) {
-    DispatchQueue.global(qos: .default).async {
-    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
-      
-      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Meals.ProductsInMeal.collectionName).document(productId).delete()
-    }
-  }
+//  func deleteProductFromMealFireStore(mealId: String,productId: String) {
+//    DispatchQueue.global(qos: .default).async {
+//    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+//      
+//      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Meals.collectionName).document(mealId).collection(FirebaseKeyPath.Users.RealmData.Meals.ProductsInMeal.collectionName).document(productId).delete()
+//    }
+//  }
   
   func deleteMealFromFireStore(mealId: String) {
     

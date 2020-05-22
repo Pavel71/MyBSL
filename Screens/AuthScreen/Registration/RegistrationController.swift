@@ -148,6 +148,7 @@ class RegistrationController: UIViewController {
       switch result {
       case .failure(let error):
         self.showHUDWithError(error)
+        
       case .success(_):
         self.registerHUD.dismiss()
         
@@ -172,7 +173,7 @@ class RegistrationController: UIViewController {
 
     let hud = JGProgressHUD(style: .dark)
     hud.textLabel.text = "Ошибка Регистрации"
-    hud.detailTextLabel.text = "Такой емаил уже есть в базе"
+    hud.detailTextLabel.text = error.localizedDescription
     hud.show(in: self.view)
     hud.dismiss(afterDelay: 4)
   }

@@ -83,7 +83,12 @@ extension MainScreenInteractor {
       newDayRealmManager.addNewSugarId(sugarId: sugarRealm.id)
       sugarRealmManger.addOrUpdateNewSugarRealm(sugarRealm: sugarRealm)
       
-      saveSugarToFireStore(sugarRealm: sugarRealm)
+      let currentDay = self.newDayRealmManager.getCurrentDay()
+      DispatchQueue.main.async {
+        self.saveSugarToFireStore(sugarRealm: sugarRealm)
+        self.updateDayInFireStore(dayRealm: currentDay)
+      }
+
 
       passDayRealmToConvertInVMInPresenter()
       // Просто передаю модель
@@ -96,9 +101,9 @@ extension MainScreenInteractor {
       newDayRealmManager.addNewCompObjId(compObjId: compObjId)
       newDayRealmManager.addNewSugarId(sugarId: sugarId)
       
-      
-      DispatchQueue.global(qos: .userInteractive).async {
-        let currentDay = self.newDayRealmManager.getCurrentDay()
+      let currentDay = self.newDayRealmManager.getCurrentDay()
+      DispatchQueue.main.async {
+        
         self.updateDayInFireStore(dayRealm: currentDay)
       }
 
@@ -118,17 +123,15 @@ extension MainScreenInteractor {
       newDayRealmManager.deleteCompObjById(compObjId: compObjId)
       newDayRealmManager.deleteSugarByCompObjId(sugarId: deleteSugarId)
       
-      DispatchQueue.global(qos: .userInteractive).async {
-        
-        self.deleteSugarFromFireStore(sugarId: deleteSugarId)
-        self.deleteCompObjFromFireStore(compObjId: compObjId)
 
-        let currentDay = self.newDayRealmManager.getCurrentDay()
+      self.deleteSugarFromFireStore(sugarId: deleteSugarId)
+      self.deleteCompObjFromFireStore(compObjId: compObjId)
+      let currentDay = self.newDayRealmManager.getCurrentDay()
+      
+      DispatchQueue.main.async {
         self.updateDayInFireStore(dayRealm: currentDay)
-        
       }
-      
-      
+
       updateInsulinSupplyValue(totalInsulin: totalInsulin.toFloat(), updatedType: .delete)
       
 
@@ -147,8 +150,9 @@ extension MainScreenInteractor {
       if newDayRealmManager.isNowLastDayInDB() == false {
         print("Сегодняшнего дня нет в базе поэтому добавляю новый день")
         let newDay = newDayRealmManager.addBlankDay()
+
         
-        DispatchQueue.global(qos: .userInteractive).async {
+        DispatchQueue.main.async {
           self.saveDayInFireStore(dayRealm: newDay)
         }
         

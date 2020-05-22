@@ -13,12 +13,13 @@ import Firebase
 
 class RegisterService {
   
-  static func createUser(email: String, password: String, complation: @escaping ((Result<AuthDataResult, NetworkFirebaseError>) -> Void)) {
+  static func createUser(email: String, password: String, complation: @escaping ((Result<AuthDataResult, Error>) -> Void)) {
     
     Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
       
-      if err != nil {
-        complation(.failure(.createUserError))
+      if let err = err {
+ 
+        complation(.failure(err))
       }
       if let res = result {
         complation(.success(res))

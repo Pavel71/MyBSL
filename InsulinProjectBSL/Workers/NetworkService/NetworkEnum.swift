@@ -9,6 +9,21 @@
 import Foundation
 
 
+
+enum CastFireStoreDataToNetwrokModelError: Error {
+  
+  
+  case castNetworkModelError
+  
+  case castCompobjModelError
+  case castDayModelError
+  case castSugarModelError
+  case castProductModelError
+  case castMealModelError
+}
+
+// MARK: Network Errors
+
 enum NetworkFirebaseError: Error {
   
   
@@ -29,10 +44,18 @@ enum NetworkFirebaseError: Error {
   
   // Fetch
   
-  case fetchAllDataFromFireStoreError
+  
+  case fetchUserDefaultDataFromFireStoreError
+  
+  case fetchRealmDataFromFireStoreErorr
+  
+  // Casting
+  case castNetworkModelError
 
   
 }
+
+// MARK: FireBase keys
 
 enum FirebaseKeyPath {
   
@@ -60,10 +83,7 @@ enum FirebaseKeyPath {
       
       struct Meals {
         static let collectionName = "Meals"
-        
-        struct ProductsInMeal {
-          static let collectionName = "ProductsInMeal"
-        }
+
       }
       
       struct Sugars {
@@ -72,10 +92,7 @@ enum FirebaseKeyPath {
       
       struct CompObjs {
         static let collectionName = "CompObjs"
-        
-        struct ProductsInCompObj {
-          static let collectionName = "ProductsInCompObj"
-        }
+
       }
     
       
@@ -83,27 +100,3 @@ enum FirebaseKeyPath {
   }
 }
 
-//enum FirebaseKeyPath {
-//  
-//
-//  enum Users  {
-//    
-//    var collectionName: String {"Users"}
-//    
-//    enum UserDefaults: String {
-//      
-//      var collectionName: String {"UserDefaults"}
-//      case userDefaultsData
-//    }
-//
-//    enum RealmData: String {
-//      
-//      var collectionName :String {"RealmData"}
-//      
-//      case products
-//    }
-//    
-//  }
-//  
-//  
-//}

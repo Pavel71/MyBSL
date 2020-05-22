@@ -102,7 +102,7 @@ extension MealRealmManager {
 
   }
   
-  // Change Expanded Fields
+  // MARK: Change Expanded Fields
   func changeMealExpande(mealId: String) {
     let realm = RealmProvider.meals.realm
     
@@ -128,7 +128,7 @@ extension MealRealmManager {
   
   // UPdate Meal
   
-  // Update allFields
+  // MARK: Update allFields
   func updateAllMealFields(viewModel: MealViewModel) -> MealRealm? {
     
     let realm = RealmProvider.meals.realm
@@ -150,7 +150,7 @@ extension MealRealmManager {
     return meal
   }
   
-  // Add New Meal
+  // MARK: Add New Meal
   func addNewMeal(mealRealm: MealRealm,callBackError: @escaping (Bool) -> Void) {
     
     // Здесь нужна проверка по имени обеда!
@@ -174,7 +174,7 @@ extension MealRealmManager {
       
       realm.beginWrite()
       
-      realm.add(meal)
+      realm.add(meal, update: .modified)
       
       try realm.commitWrite()
       

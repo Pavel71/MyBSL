@@ -146,6 +146,7 @@ extension LoginController {
            switch result {
             
              case .failure(let error):
+               self.fetchDataHud.dismiss()
                self.showErrorMessage(text: error.localizedDescription)
                
              case .success(_):

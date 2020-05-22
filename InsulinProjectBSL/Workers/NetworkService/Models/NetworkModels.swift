@@ -30,9 +30,63 @@ public struct City: Codable {
 
 }
 
+protocol NetworkModelable: Codable {}
+
+// MARK: DB Netwrok Model
+// Идея в том чтобы сразу получить иерархию моделей в 1ой модели
+struct FireStoreNetwrokModels : NetworkModelable {
+  
+  let days         : [DayNetworkModel]
+  let compObjs     : [CompObjNetworkModel]
+  let sugars       : [SugarNetworkModel]
+  let products     : [ProductNetworkModel]
+  let meals        : [MealNetworkModel]
+  let userDefaults : [UserDefaultsNetworkModel]
+  
+  enum CodingKeys: String, CodingKey {
+        case days         = "Days"
+        case compObjs     = "CompObjs"
+        case sugars       = "Sugars"
+        case products     = "Products"
+        case meals        = "Meals"
+        case userDefaults = "UserDefaults"
+    }
+}
+
+
+// MARK: UserDefaults Model
+
+struct UserDefaultsNetworkModel:NetworkModelable {
+  
+  let carboCorrectTargetBaseData   : [Float]
+  let carboCorrectTrainBaseData    : [Float]
+  let correctCarboByInsulinWeights : [Float]
+  let correctSugarByInsulinWeights : [Float]
+  
+  let lowSugarLevel              : Float
+  let higherSugarLevel           : Float
+  let insulinSupplyValue         : Int
+  let sugarCorrectTargetBaseData : [Float]
+  let sugarCorrectTrainBaseData  : [Float]
+  
+  
+  enum CodingKeys: String, CodingKey {
+    
+         case carboCorrectTargetBaseData
+         case carboCorrectTrainBaseData
+         case correctCarboByInsulinWeights
+         case correctSugarByInsulinWeights
+         case lowSugarLevel
+         case higherSugarLevel
+         case insulinSupplyValue
+         case sugarCorrectTargetBaseData
+         case sugarCorrectTrainBaseData
+     }
+}
+
 // MARK: Days Network Model
 
-struct DayNetworkModel : Codable {
+struct DayNetworkModel : NetworkModelable {
   
   let id            : String
   let date          : Date
@@ -53,7 +107,7 @@ struct DayNetworkModel : Codable {
 
 // MARK: CompObj Network Model
 
-struct CompObjNetworkModel : Codable {
+struct CompObjNetworkModel : NetworkModelable {
   
   
   let id                           : String
@@ -97,7 +151,7 @@ struct CompObjNetworkModel : Codable {
 
 // MARK: Sugar Netwoek Model
 
-struct SugarNetworkModel : Codable {
+struct SugarNetworkModel : NetworkModelable {
   
   
   var id                   : String
@@ -123,7 +177,7 @@ struct SugarNetworkModel : Codable {
 
 
 
-struct ProductNetworkModel : Codable {
+struct ProductNetworkModel : NetworkModelable {
   
   
    var id                    : String
@@ -156,7 +210,7 @@ struct ProductNetworkModel : Codable {
 
 // MARK: Meal
 
-struct MealNetworkModel: Codable {
+struct MealNetworkModel: NetworkModelable {
   
   var id           : String
   var isExpandMeal : Bool

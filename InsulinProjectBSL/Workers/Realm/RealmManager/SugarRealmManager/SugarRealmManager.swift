@@ -68,7 +68,7 @@ extension SugarRealmManager {
     
     do {
       self.realm.beginWrite()
-      self.realm.add(sugarRealm, update: .all)
+      self.realm.add(sugarRealm, update: .modified)
       
       try self.realm.commitWrite()
       print(self.realm.configuration.fileURL?.absoluteURL as Any,"Sugar in DB")

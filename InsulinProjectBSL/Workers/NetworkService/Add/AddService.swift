@@ -74,19 +74,14 @@ extension AddService {
 extension AddService {
   
   func addSugarNetworkModelinFireStore(sugarNetworkModel: SugarNetworkModel) {
-    
-    DispatchQueue.global(qos: .userInteractive).async {
-     
+
       guard let currentUserID = Auth.auth().currentUser?.uid else {return}
        
 
      let data = sugarNetworkModel.dictionary
 
       Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Sugars.collectionName).document(sugarNetworkModel.id).setData(data)
-     
-     
-     }
-    
+
   }
   
 }
