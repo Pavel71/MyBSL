@@ -184,6 +184,20 @@ extension MealRealmManager {
     }
     
   }
+  // MARK: Set Meals From FireStore
+  
+  func setMealsFromFireStore(meals: [MealRealm]) {
+    let realm = RealmProvider.meals.realm
+    do {
+         realm.beginWrite()
+         realm.add(meals, update: .all)
+         try realm.commitWrite()
+         print(realm.configuration.fileURL?.absoluteURL as Any,"Meals in DB")
+         
+       } catch {
+         print(error.localizedDescription)
+       }
+  }
   
   // Check By Name
   private func isCheckMealByName(name: String) -> Bool  {

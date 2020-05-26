@@ -64,6 +64,18 @@ extension SugarRealmManager {
 
 extension SugarRealmManager {
   
+  func setSugarFromFireStore(sugars: [SugarRealm]) {
+    do {
+         self.realm.beginWrite()
+         self.realm.add(sugars, update: .all)
+         try self.realm.commitWrite()
+         print(self.realm.configuration.fileURL?.absoluteURL as Any,"Sugar in DB")
+         
+       } catch {
+         print(error.localizedDescription)
+       }
+  }
+  
   func addOrUpdateNewSugarRealm(sugarRealm: SugarRealm) {
     
     do {

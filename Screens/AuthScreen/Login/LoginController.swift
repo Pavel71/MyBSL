@@ -157,6 +157,8 @@ extension LoginController {
                
                let appState = AppState.shared
                appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
+            
+               // Нужно заказать обновление данных в Устройстве
 
              }
         }

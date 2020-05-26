@@ -28,7 +28,7 @@ import RealmSwift
     case newDay,pastDay
   }
   
-  dynamic var id: String = UUID().uuidString
+  dynamic var id: String = ""
   dynamic var date: Date = Date() // Дата будет создаватся при создание объекта
   
   dynamic var listSugarID   = List<String>()
@@ -45,10 +45,11 @@ import RealmSwift
   }
   
   convenience  init(
+    id  : String = UUID().uuidString,
     date: Date
     ) {
       self.init()
-    
+    self.id   = id
     self.date = date
    
     }

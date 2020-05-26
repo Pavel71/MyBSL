@@ -17,7 +17,7 @@ import RealmSwift
   
   dynamic var isExpandMeal = false
   
-  dynamic var id           : String = UUID().uuidString
+  dynamic var id           : String = ""
   dynamic var name         : String = ""
   
   dynamic var typeMeal     : String = ""
@@ -26,8 +26,12 @@ import RealmSwift
   let listProduct          =  List<ProductRealm>()
 
   
-  convenience init(name: String,typeMeal: String,isExpandMeal: Bool) {
+  convenience init(id: String = UUID().uuidString ,
+                   name: String,
+                   typeMeal: String,
+                   isExpandMeal: Bool) {
     self.init()
+    self.id           = id
     self.name         = name
     self.typeMeal     = typeMeal
     self.isExpandMeal = isExpandMeal

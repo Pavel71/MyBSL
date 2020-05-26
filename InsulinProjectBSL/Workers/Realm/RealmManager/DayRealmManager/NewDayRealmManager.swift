@@ -137,6 +137,18 @@ extension NewDayRealmManager {
     
   }
   
+  func setDaysFromFireStore(days: [DayRealm]) {
+    do {
+         self.realm.beginWrite()
+         self.realm.add(days, update: .all)
+         try self.realm.commitWrite()
+         print(self.realm.configuration.fileURL?.absoluteURL as Any,"Days in DB")
+         
+       } catch {
+         print(error.localizedDescription)
+       }
+  }
+  
 }
 
 // MARK: Work With CompObjId

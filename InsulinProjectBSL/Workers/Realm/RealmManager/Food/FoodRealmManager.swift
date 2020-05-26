@@ -85,14 +85,16 @@ extension FoodRealmManager {
   func fetchProductByName(name: String) -> Results<ProductRealm> {
     
     let realm = productProvider.realm
+    
     return realm.objects(ProductRealm.self).filter("name CONTAINS[cd] %@", name)
     
   }
   
   // Fetch By Favorits
   func fetchFavorits() -> Results<ProductRealm> {
-    
+    print("Fetch Favorits Products")
     let items = allProducts().filter("isFavorits == %@", true).sorted(byKeyPath: ProductRealm.Property.name.rawValue)
+    print(items,"Favorit")
     return items
   }
   
@@ -123,7 +125,7 @@ extension FoodRealmManager {
   }
 }
 
-// MARK: Cnhage Data in DB
+// MARK: Add Data in DB
 
 extension FoodRealmManager {
   
@@ -131,6 +133,20 @@ extension FoodRealmManager {
   
     addProduct(product: product)
 
+  }
+  
+  func setProductsFromFireStore(products: [ProductRealm]) {
+    let realm = productProvider.realm
+    do {
+         realm.beginWrite()
+         realm.add(products, update: .all)
+         try realm.commitWrite()
+         print(realm.configuration.fileURL?.absoluteURL as Any,"Products in DB")
+         
+       } catch {
+         print(error.localizedDescription)
+       }
+    setItems()
   }
   
 
@@ -184,7 +200,7 @@ extension FoodRealmManager {
     }
   }
   
-  // Update allFields
+  //MARK: Update allFields
   func updateAllFields(dataDict: [String: Any],productId: String) {
     
     let realm = productProvider.realm

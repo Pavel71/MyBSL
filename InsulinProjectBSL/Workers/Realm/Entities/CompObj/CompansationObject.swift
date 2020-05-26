@@ -14,7 +14,7 @@ import RealmSwift
   
   enum Property                : String { case id }
         
-  dynamic var id               : String = UUID().uuidString
+  dynamic var id               : String = ""
   
         
   // тип объекта
@@ -69,6 +69,8 @@ import RealmSwift
    var listProduct              = List<ProductRealm>()
   
   convenience init(
+    id                       : String = UUID().uuidString,
+    timeCreate               : Date   = Date(),
     typeObject               : TypeCompansationObject,
     sugarBefore              : Double,
     insulinOnTotalCarbo      : Double,
@@ -78,6 +80,8 @@ import RealmSwift
     
     ) {
       self.init()
+    self.id                           = id
+    self.timeCreate                   = timeCreate
     self.typeObject                   = typeObject.rawValue
     self.sugarBefore                  = sugarBefore
     self.compansationFase             = CompansationPosition.progress.rawValue

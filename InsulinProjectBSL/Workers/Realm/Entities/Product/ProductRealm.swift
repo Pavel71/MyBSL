@@ -15,7 +15,7 @@ import RealmSwift
     case id, name
   }
   
-  dynamic var id                    : String = UUID().uuidString
+  dynamic var id                    : String = ""
   dynamic var name                  : String = ""
   dynamic var category              : String = ""
   dynamic var carboIn100grm         : Int    = 0
@@ -39,6 +39,7 @@ import RealmSwift
   dynamic var isFavorits: Bool = false
   
   convenience init(
+      id : String = UUID().uuidString,
       name                  : String,
       category              : String,
       carboIn100Grm         : Int,
@@ -48,6 +49,7 @@ import RealmSwift
   ) {
     self.init()
     
+    self.id                    = id
     self.name                  = name
     self.category              = category
     self.carboIn100grm         = carboIn100Grm

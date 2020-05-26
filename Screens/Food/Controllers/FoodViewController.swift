@@ -440,12 +440,16 @@ extension FoodViewController {
       
       headerInSectionWorker.fillSectionExpandedArrayBySegment(viewModels: foodViewModel, segment: currentSegment)
       
+      reloadTableView()
+      
     case .favorits:
       
       currentSegment = .favorits
       interactor?.makeRequest(request: .fetchProductByFavorits)
       
       headerInSectionWorker.fillSectionExpandedArrayBySegment(viewModels: foodViewModel, segment: currentSegment)
+      
+      reloadTableView()
       
     case .meals:
       router?.pushMealController(headerInSectionWorker: headerInSectionWorker)

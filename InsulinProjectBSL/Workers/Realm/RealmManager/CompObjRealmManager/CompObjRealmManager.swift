@@ -110,6 +110,22 @@ extension CompObjRealmManager {
 
 extension CompObjRealmManager {
   
+  // Loaded data From FireStore And Save
+  
+  func setCompObjsFromFireStore(compObjs: [CompansationObjectRelam]) {
+    do {
+         self.realm.beginWrite()
+         self.realm.add(compObjs, update: .all)
+         try self.realm.commitWrite()
+         print(self.realm.configuration.fileURL?.absoluteURL as Any,"CompObj in DB")
+         
+       } catch {
+         print(error.localizedDescription)
+       }
+  }
+  
+  // Work with USer
+  
   func addOrUpdateNewCompObj(compObj: CompansationObjectRelam) {
     
     // пежде чем добавить новый сcompObj - внеси изменения в последний
@@ -120,6 +136,8 @@ extension CompObjRealmManager {
     do {
       self.realm.beginWrite()
       self.realm.add(compObj, update: .modified)
+      
+      
       
       try self.realm.commitWrite()
       print(self.realm.configuration.fileURL?.absoluteURL as Any,"CompObj in DB")

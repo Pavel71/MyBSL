@@ -17,7 +17,7 @@ import Realm
   enum Property                    : String {case id}
              
              
-  dynamic var id                   : String = UUID().uuidString
+  dynamic var id                   : String = ""
              
              
   // Propertyies
@@ -35,6 +35,7 @@ import Realm
 
   
   convenience init(
+    id                   : String = UUID().uuidString,
     time                 : Date,
     sugar                : Double,
     dataCase             : ChartDataCase,
@@ -42,6 +43,7 @@ import Realm
     
     ) {
       self.init()
+    self.id                   = id
     self.sugar                = sugar
     self.time                 = time
     self.dataCase             = dataCase.rawValue

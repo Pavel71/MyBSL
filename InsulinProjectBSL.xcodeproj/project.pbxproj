@@ -11,6 +11,7 @@
 		0509FD04233FB11A00B04B30 /* ProductListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0509FD03233FB11A00B04B30 /* ProductListModel.swift */; };
 		0509FD06233FCA9700B04B30 /* DinnerRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0509FD05233FCA9700B04B30 /* DinnerRealm.swift */; };
 		0516E03B242B72BB00F26FAD /* Date + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0516E03A242B72BB00F26FAD /* Date + Extension.swift */; };
+		0518C40E247D58590076F196 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0518C40D247D58590076F196 /* RealmManager.swift */; };
 		052B4E8D2355D09E00464A6C /* MenuMealListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B4E8C2355D09E00464A6C /* MenuMealListCell.swift */; };
 		052BD9B624485F7E00F3AD6D /* MLTasks.txt in Resources */ = {isa = PBXBuildFile; fileRef = 052BD9B524485F7E00F3AD6D /* MLTasks.txt */; };
 		052C33E3237A8D1200B4B29A /* AlertWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052C33E2237A8D1200B4B29A /* AlertWorker.swift */; };
@@ -297,6 +298,7 @@
 		0509FD03233FB11A00B04B30 /* ProductListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListModel.swift; sourceTree = "<group>"; };
 		0509FD05233FCA9700B04B30 /* DinnerRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerRealm.swift; sourceTree = "<group>"; };
 		0516E03A242B72BB00F26FAD /* Date + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extension.swift"; sourceTree = "<group>"; };
+		0518C40D247D58590076F196 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		052B4E8C2355D09E00464A6C /* MenuMealListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuMealListCell.swift; sourceTree = "<group>"; };
 		052BD9B524485F7E00F3AD6D /* MLTasks.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = MLTasks.txt; sourceTree = "<group>"; };
 		052C33E2237A8D1200B4B29A /* AlertWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertWorker.swift; sourceTree = "<group>"; };
@@ -616,6 +618,14 @@
 				05C0C62F238D5331001B2664 /* DayRealmManager.swift */,
 			);
 			path = Depricated;
+			sourceTree = "<group>";
+		};
+		0518C40C247D583F0076F196 /* RealmManager */ = {
+			isa = PBXGroup;
+			children = (
+				0518C40D247D58590076F196 /* RealmManager.swift */,
+			);
+			path = RealmManager;
 			sourceTree = "<group>";
 		};
 		052B4E8B2355A9F500464A6C /* Container */ = {
@@ -3102,6 +3112,7 @@
 		F1E78CEF230D349C00592AB8 /* RealmManager */ = {
 			isa = PBXGroup;
 			children = (
+				0518C40C247D583F0076F196 /* RealmManager */,
 				05DE9BFE24372E9000280D4F /* SugarRealmManager */,
 				05DE9BFD24372E8400280D4F /* CompObjRealmManager */,
 				05C0C63B238FE33E001B2664 /* DayRealmManager */,
@@ -3626,6 +3637,7 @@
 				F1103B59232A34EF009A338A /* ProductsTableViewInMealCellFooterView.swift in Sources */,
 				054471BF2395213B0020C0DC /* InsulinSupplyView.swift in Sources */,
 				05A4F1C0233A371500DFE4D7 /* DinnerCollectionViewCell.swift in Sources */,
+				0518C40E247D58590076F196 /* RealmManager.swift in Sources */,
 				0553F13123FEAB4F0069BD81 /* ResultFooterView.swift in Sources */,
 				059766992455CB5B00ED7AF6 /* RegistrationView.swift in Sources */,
 				0552E63B237EC0C400499168 /* CompansationByMealCell.swift in Sources */,
