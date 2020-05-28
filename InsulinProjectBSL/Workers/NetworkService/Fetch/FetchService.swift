@@ -54,7 +54,8 @@ extension FetchService {
           
         case .success(let documents):
           
-          dictRealmData[query] = documents.compactMap{$0.data()}
+          let documents = documents.compactMap{$0.data()}
+          dictRealmData[query] = documents
           
           group.leave()
           
@@ -84,7 +85,19 @@ extension FetchService {
     group.notify(queue: DispatchQueue.main) {
 
       print("Начинаю конвертировать данные в Network Models")
-
+      
+      // Тут нам нужно пройтись по всем полям со временем и конвертировать их в Date
+//      var days = dictRealmData[self.usersQuery.Days.collectionName]!
+//
+//
+//      days = days.map{
+//        var dict = $0
+//        let date = dict["date"] as! Timestamp
+//        dict["date"] = date.dateValue()
+//        return dict
+//      }
+//
+//      dictRealmData[self.usersQuery.Days.collectionName] = days
       self.convertAllModels(data: dictRealmData) { result in
         
         switch result {
@@ -101,6 +114,8 @@ extension FetchService {
 
 
   }
+  
+  
 
   
   
@@ -166,10 +181,17 @@ extension FetchService {
   private func convertAllModels(
     data:[ String:[[String: Any]] ],
     complation: @escaping (Result<FireStoreNetwrokModels,NetworkFirebaseError>) -> Void) {
+    
+    print(data,"Data Comming")
+    
     do {
       let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
       // Нужно декодировать!
-      let model = try JSONDecoder().decode(FireStoreNetwrokModels.self, from: jsonData)
+      let decoder = JSONDecoder()
+      decoder.dateDecodingStrategy = .secondsSince1970
+      
+      
+      let model = try decoder.decode(FireStoreNetwrokModels.self, from: jsonData)
       
       complation(.success(model))
     } catch (_) {

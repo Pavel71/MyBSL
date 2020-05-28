@@ -142,7 +142,8 @@ extension MainScreenInteractor {
       guard let compObj = compObjRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: compObjId) else {return}
       
       presenter?.presentData(response: .passCompansationObj(compObj: compObj))
-
+      
+      // MARK: CheckLastDayInDB
     case .checkLastDayInDB:
       // Если true то мы ничего не трогаем и возвращаем нашу модель как есть
       
@@ -174,8 +175,11 @@ extension MainScreenInteractor {
       
       passDayRealmToConvertInVMInPresenter()
       
-    
-      
+    case .setFirstDayToFireStore:
+      let day = newDayRealmManager.getCurrentDay()
+      let dayNetwork = convertDayRealmToDayNetworkLayer(dayRealm: day)
+      addService.addDayToFireStore(dayNetworkModel: dayNetwork)
+
     default:break
     }
     
@@ -203,7 +207,7 @@ extension MainScreenInteractor {
     
     return DayNetworkModel(
       id            : dayRealm.id,
-      date          : dayRealm.date,
+      date          : dayRealm.date.timeIntervalSince1970,
       listSugarID   : Array(dayRealm.listSugarID),
       listCompObjID : Array(dayRealm.listCompObjID))
   }
@@ -239,7 +243,7 @@ extension MainScreenInteractor {
      return SugarNetworkModel(
        id                   : sugarRealm.id,
        sugar                : sugarRealm.sugar,
-       time                 : sugarRealm.time,
+       time                 : sugarRealm.time.timeIntervalSince1970,
        dataCase             : sugarRealm.dataCase,
        compansationObjectId : sugarRealm.compansationObjectId ?? "")
    }

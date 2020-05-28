@@ -89,7 +89,7 @@ struct UserDefaultsNetworkModel:NetworkModelable {
 struct DayNetworkModel : NetworkModelable {
   
   let id            : String
-  let date          : Date
+  let date          : TimeInterval
   let listSugarID   : [String]
   let listCompObjID : [String]
   
@@ -117,7 +117,7 @@ struct CompObjNetworkModel : NetworkModelable {
   let userSetInsulinToCorrectSugar : Double
   let sugarDiffToOptimaForMl       : Float
   let insulinToCorrectSugarML      : Float
-  let timeCreate                   : Date
+  let timeCreate                   : TimeInterval
   let compansationFase             : Int
   let insulinOnTotalCarbo          : Double
   let totalCarbo                   : Double
@@ -156,7 +156,7 @@ struct SugarNetworkModel : NetworkModelable {
   
   var id                   : String
   var sugar                : Double
-  var time                 : Date
+  var time                 : TimeInterval
   var dataCase             : Int
   var compansationObjectId : String
   

@@ -16,24 +16,49 @@ class OnBoardVM {
   
   var learnByCorrectionVM : LearnByCorrectionVM
   var learnByFoodVM       : LearnByFoodVM
-  let userDefaults       = UserDefaults.standard
+  let userDefaults        : UserDefaultsWorker!
+  let addService          : AddService!
   
   
   init() {
     
     learnByCorrectionVM = LearnByCorrectionVM()
     learnByFoodVM       = LearnByFoodVM()
-    
+    addService          = ServiceLocator.shared.getService()
+    userDefaults        = ServiceLocator.shared.getService()
   }
-  
-  
-  // Метод запускает сбор данных с дочерних VM и передает их в ML Worker
-  
-  
-  
 
+}
 
+// MARK:
+
+extension OnBoardVM {
   
+  func setDataToFireStore(complation:@escaping ((Result<Bool,NetworkFirebaseError>)) -> Void) {
+    
+    print("Сохраняю данные в FireStore")
+
+    let userDefDataDict = userDefaults.getAllDataFromUserDefaults()
+    
+    // здесь мы должны сохранить userDefaults and наш новый день в базу данных!
+    
+    addService.addUserDefaultsDataToFirebase(userDefaltsData: userDefDataDict) { (result) in
+      
+      switch result {
+      case .failure(let error):
+        
+        complation(.failure(error))
+        
+        
+      case .success(_):
+
+        complation(.success(true))
+        
+      }
+      
+      
+    }
+  }
   
 }
 
@@ -42,11 +67,12 @@ class OnBoardVM {
 
 extension OnBoardVM {
   
-  func learnML() {
+  func setDataTouserDefaultsAndlearnML() {
     
     
     // Save Sugar LEvel In User Defaults
     saveSugarLevelInUserDefaults()
+    saveInsulinSupplyValue()
     
     let correctionData    = fetchInsulinValueByCorrectionSugar()
     let insulinByFoodData = fetchInsulinValueByFoodData()
@@ -63,30 +89,29 @@ extension OnBoardVM {
     
   }
   
+  private func saveInsulinSupplyValue() {
+    userDefaults.setInsulinSupplyValue(insulinSupply: 300)
+    
+  }
+  
   private func saveSugarLevelInUserDefaults() {
     
+    userDefaults.setSugarLevel(sugarLevel: learnByCorrectionVM.sugarLevelVM.sugarLowerLevel, key: .lowSugarLevel)
     
-    userDefaults.set(learnByCorrectionVM.sugarLevelVM.sugarLowerLevel, forKey: UserDefaultsKey.lowSugarLevel.rawValue)
-    userDefaults.set(learnByCorrectionVM.sugarLevelVM.sugarHigherLevel, forKey: UserDefaultsKey.higherSugarLevel.rawValue)
+    userDefaults.setSugarLevel(sugarLevel: learnByCorrectionVM.sugarLevelVM.sugarHigherLevel, key: .higherSugarLevel)
+    
   }
   
   private func saveBaseTrainAndTargetDataInUserDefaultsCorrectSugar(train:[Float],target: [Float]) {
-
-    userDefaults.set(train, forKey: UserDefaultsKey.sugarCorrectTrainBaseData.rawValue)
-    userDefaults.set(target, forKey: UserDefaultsKey.sugarCorrectTargetBaseData.rawValue)
+    
+    userDefaults.setArrayFloat(arr: train, key: .sugarCorrectTrainBaseData)
+    userDefaults.setArrayFloat(arr: target, key: .sugarCorrectTargetBaseData)
   }
   
   private func saveBaseTrainAndTargetDataInUserDefaultsCorrectCarbo(train:[Float],target: [Float]) {
-
-    userDefaults.set(train, forKey: UserDefaultsKey.carboCorrectTrainBaseData.rawValue)
-    userDefaults.set(target, forKey: UserDefaultsKey.carboCorrectTargetBaseData.rawValue)
+    userDefaults.setArrayFloat(arr: train, key: .carboCorrectTrainBaseData)
+    userDefaults.setArrayFloat(arr: target, key: .carboCorrectTargetBaseData)
   }
-  
-//  private func saveWeightsinUserDefaults(weights:(Float,Float), key:String) {
-//    let userDefault = UserDefaults.standard
-//    
-//    userDefault.set([weights.0,weights.1], forKey: key)
-//  }
   
   // Обучим модель! Когда обучим модель мы автоматом сохраним данные в UserDefaults
   

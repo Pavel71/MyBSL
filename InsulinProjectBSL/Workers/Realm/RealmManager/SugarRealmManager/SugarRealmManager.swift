@@ -58,16 +58,31 @@ extension SugarRealmManager {
   
 }
 
-
+// MARK: Delete All Sugars
+extension SugarRealmManager {
+  
+  func deleteAllSugars() {
+    do {
+      self.realm.beginWrite()
+      self.realm.deleteAll()
+      try self.realm.commitWrite()
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+}
 
 // MARK: Add or Update New SugarRealm
 
 extension SugarRealmManager {
   
   func setSugarFromFireStore(sugars: [SugarRealm]) {
+    
+    let sortedSugars = sugars.sorted(by: {$0.time < $1.time})
+
     do {
          self.realm.beginWrite()
-         self.realm.add(sugars, update: .all)
+         self.realm.add(sortedSugars, update: .all)
          try self.realm.commitWrite()
          print(self.realm.configuration.fileURL?.absoluteURL as Any,"Sugar in DB")
          

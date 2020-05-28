@@ -22,38 +22,7 @@ class FoodRealmManager {
     setItems()
   }
   
-  // Короче сюда нужно передать какой сегмент у нас потомучто обсервер достает значение которое почему то не изменяется
-  
-  // Set Observer Token
-  var didChangeRealmDB: (() -> Void)?
-  //  var didChangeSegmentItems: ((Results<ProductRealm>) -> Void)?
-  
-  // Че то это все очень медленно работает! Надо переписать руками обновление!
-  
-//  func setObserverToken() -> NotificationToken {
-//
-//    // Просто этот клоузер почему то завхватывает значения на момент инициализации
-//    // Поэтому здеь работать с itesm не лучший вариант
-//    let realmObserverToken = items.observe({  (change) in
-//
-//      switch change {
-//      case .error(let error):
-//        print(error)
-//      case .initial(_):
-//
-//        self.didChangeRealmDB!()
-//      case .update(_, deletions: let deletions, insertions: let insertions, modifications: let updates):
-//        print("change Food Db")
-//
-//        //        tableView.applyChanges(deletions: deletions, insertions: insertions, updates: updates) // Это почему то не работает
-//
-//        self.didChangeRealmDB!()
-//      }
-//      self.productProvider.realm.refresh() // Обновляю реалм схему
-//    })
-//
-//    return realmObserverToken
-//  }
+
   
   func setItems() {
     items = allProducts()
@@ -64,6 +33,22 @@ class FoodRealmManager {
   }
   
   
+}
+
+// MARK: Delete All Foods
+extension FoodRealmManager {
+  func deleteAllProducts() {
+    
+    let realm = self.productProvider.realm
+    do {
+      realm.beginWrite()
+      realm.deleteAll()
+      try realm.commitWrite()
+    } catch {
+      print(error.localizedDescription)
+    }
+    
+  }
 }
 
 // MARK: Fetch Data From DB
@@ -92,9 +77,9 @@ extension FoodRealmManager {
   
   // Fetch By Favorits
   func fetchFavorits() -> Results<ProductRealm> {
-    print("Fetch Favorits Products")
+    
     let items = allProducts().filter("isFavorits == %@", true).sorted(byKeyPath: ProductRealm.Property.name.rawValue)
-    print(items,"Favorit")
+    
     return items
   }
   

@@ -35,6 +35,9 @@ enum MainScreen {
         
         case setInsulinSupplyValue(insulinSupplyValue: Int)
         
+        // Set Data To FireStore
+        case setFirstDayToFireStore
+        
       }
     }
     

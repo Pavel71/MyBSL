@@ -122,44 +122,28 @@ class OnBoardViewController: UIPageViewController {
   @objc private func nextScreen() {
     
     buttonsTappedCount += 1
-    
-    
-    
+
     if numberPage == pages.count - 1 {
       
-      
-      // Теперь нам нужно пробежатся по всем моделькам и собрать с них данные ! Дальше нужно будет дисмиснуть экран и появится основной экарн!
-      onBoardVM.learnML()
-      
-      // Здесь нужно запустить процесс сохранения данных юзера в FireBase
-      
-      
+      onBoardVM.setDataTouserDefaultsAndlearnML()
+
       savingHUD.show(in: pages.last!.view)
       
-      let locator = ServiceLocator.shared
+      let appStateService: AppState   = AppState.shared
+      appStateService.setFirstDayToFireStore()
       
-      let addService:AddService! = locator.getService()
-      let userDefaultsWorker: UserDefaultsWorker! = locator.getService()
-      
-      let userDefDataDict = userDefaultsWorker.getAllDataFromUserDefaults()
-      
-      addService.addUserDefaultsDataToFirebase(
-      userDefaltsData: userDefDataDict) { (result) in
-        
+      onBoardVM.setDataToFireStore { (result) in
         switch result {
-        case .failure(let error):
-          
-          self.showErrorMessage(text: error.localizedDescription)
-          
         case .success(_):
+
           self.savingHUD.dismiss()
-          // СОхранение данных прошло успешно
-          
-          let appStateService: AppState = AppState.shared
+
           appStateService.toogleMinorWindow(minorWindow: appStateService.onBoardingWindow)
+          
+        case .failure(let error):
+          self.savingHUD.dismiss()
+          self.showErrorMessage(text: error.localizedDescription)
         }
-        
-        
       }
       
       

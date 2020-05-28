@@ -36,8 +36,8 @@ import Firebase
     activateFirebase()
     iniitServiceLocator()
     
-    
-    initializeRealm()
+//    clearAllData()
+//    addBaseProducts()
 //    initMeals()
     
 //    initDinners()
@@ -56,7 +56,6 @@ import Firebase
   // MARK: ACTIVATE FIREBASE
   private func activateFirebase() {
     FirebaseApp.configure()
-    
   }
   
   
@@ -71,6 +70,11 @@ import Firebase
       
       appStateService.mainWindow?.makeKeyAndVisible()
     }
+  }
+  
+  private func clearAllData() {
+    clearUserDefaultsFields()
+    RealmManager().deleteAllDataFromRealm()
   }
   
   // MARK: CLEAR USERDEFAULTS Fields
@@ -88,12 +92,8 @@ import Firebase
     // Здесь мне нужно сделать проверку на дату! и передать информацию в ViewController - сделать какойнить класс с оперативкой
     let appStateService: AppState = AppState.shared
     
-    let tabBarController = appStateService.mainWindow?.rootViewController as! BaseTabBarController
-    
-    let mainScreenController: MainScreenViewController = tabBarController.viewControllers?.filter{$0.children[0] is MainScreenViewController}[0].children[0] as! MainScreenViewController
-    
-    mainScreenController.activateApplication()
-    
+    appStateService.pushUpdateMainScreenViewControllerMethod()
+        
   }
   
   
@@ -161,6 +161,7 @@ extension AppDelegate {
     locator.addService(service: FoodRealmManager())
     locator.addService(service: MealRealmManager())
     locator.addService(service: NewDayRealmManager())
+    locator.addService(service: RealmManager())
     locator.addService(service: InsulinSupplyWorker())
     locator.addService(service: DataEnrichmentWorker())
     
@@ -179,7 +180,7 @@ extension AppDelegate {
     
   }
     
-    private func initializeRealm() {
+    private func addBaseProducts() {
       // Здесь указываем с какой схемой Realm работаем!
       let realm = RealmProvider.products.realm
       guard realm.isEmpty else { return }

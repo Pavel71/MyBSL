@@ -60,6 +60,33 @@ final class AppState {
   
 }
 
+// MARK: Push Main Screen Methods
+
+extension AppState {
+  
+  func pushUpdateMainScreenViewControllerMethod() {
+    
+    let mainScreenController = getMainScreenController()
+    mainScreenController.activateApplication()
+  }
+  
+  func setFirstDayToFireStore() {
+    let mainScreen = getMainScreenController()
+    mainScreen.setFirstDayToFireStore()
+  }
+  
+  
+  
+  private func getMainScreenController() -> MainScreenViewController {
+    
+    let tabBarController = self.mainWindow?.rootViewController as! BaseTabBarController
+    
+    let mainScreenController: MainScreenViewController = tabBarController.viewControllers?.filter{$0.children[0] is MainScreenViewController}[0].children[0] as! MainScreenViewController
+    
+    return mainScreenController
+  }
+}
+
 
 
 

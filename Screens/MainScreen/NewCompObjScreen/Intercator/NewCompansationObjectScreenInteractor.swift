@@ -213,11 +213,12 @@ extension NewCompansationObjectScreenInteractor {
   
   func updateSugarInFireStore() {
     
+
     
     let sugarNetworkModel = SugarNetworkModel(
       id                   : updateSugarRealm.id,
       sugar                : updateCompObj.sugarBefore,
-      time                 : updateCompObj.timeCreate,
+      time                 : updateCompObj.timeCreate.timeIntervalSince1970,
       dataCase             : getChartDataCase(compObj: updateCompObj).rawValue,
       compansationObjectId : updateCompObj.id)
     
@@ -252,7 +253,7 @@ extension NewCompansationObjectScreenInteractor {
       userSetInsulinToCorrectSugar : compObj.userSetInsulinToCorrectSugar,
       sugarDiffToOptimaForMl       : compObj.sugarDiffToOptimaForMl,
       insulinToCorrectSugarML      : compObj.insulinToCorrectSugarML,
-      timeCreate                   : compObj.timeCreate,
+      timeCreate                   : compObj.timeCreate.timeIntervalSince1970,
       compansationFase             : compObj.compansationFase,
       insulinOnTotalCarbo          : compObj.insulinOnTotalCarbo,
       totalCarbo                   : compObj.totalCarbo,
@@ -290,7 +291,7 @@ extension NewCompansationObjectScreenInteractor {
     return SugarNetworkModel(
       id                   : sugarRealm.id,
       sugar                : sugarRealm.sugar,
-      time                 : sugarRealm.time,
+      time                 : sugarRealm.time.timeIntervalSince1970,
       dataCase             : sugarRealm.dataCase,
       compansationObjectId : sugarRealm.compansationObjectId ?? "")
   }

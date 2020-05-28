@@ -98,6 +98,7 @@ extension NewDayRealmManager {
   func isNowLastDayInDB() -> Bool {
     
       let days = fetchAllDays()
+      
       guard let lastDay = days.last else {return false}
       let dateNow = Date()
       return lastDay.date.compareDateByDay(with: dateNow)
@@ -107,6 +108,20 @@ extension NewDayRealmManager {
   
 }
 
+// MARK: Delete Clear Days
+extension NewDayRealmManager {
+  
+  func deleteDaysRealm() {
+    
+    do {
+      self.realm.beginWrite()
+      self.realm.deleteAll()
+      try self.realm.commitWrite()
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+}
 
 
 // MARK: Add or Update Day
@@ -138,9 +153,11 @@ extension NewDayRealmManager {
   }
   
   func setDaysFromFireStore(days: [DayRealm]) {
+    
+    let sortedDays = days.sorted(by: {$0.date < $1.date})
     do {
          self.realm.beginWrite()
-         self.realm.add(days, update: .all)
+         self.realm.add(sortedDays, update: .all)
          try self.realm.commitWrite()
          print(self.realm.configuration.fileURL?.absoluteURL as Any,"Days in DB")
          

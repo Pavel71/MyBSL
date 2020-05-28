@@ -58,6 +58,22 @@ class MealRealmManager {
   
 }
 
+// MARK: Delete All Meals
+
+extension MealRealmManager {
+  func deleteAllMeals() {
+    let realm = self.provider.realm
+    do {
+      realm.beginWrite()
+      realm.deleteAll()
+      try realm.commitWrite()
+    } catch {
+      print(error.localizedDescription)
+    }
+    
+  }
+}
+
 // MARK: Work with Meal
 
 extension MealRealmManager {
@@ -188,6 +204,9 @@ extension MealRealmManager {
   
   func setMealsFromFireStore(meals: [MealRealm]) {
     let realm = RealmProvider.meals.realm
+    
+
+    
     do {
          realm.beginWrite()
          realm.add(meals, update: .all)

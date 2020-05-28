@@ -156,6 +156,9 @@ extension LoginController {
                self.view.endEditing(true)
                
                let appState = AppState.shared
+               
+               appState.pushUpdateMainScreenViewControllerMethod()
+               
                appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
             
                // Нужно заказать обновление данных в Устройстве

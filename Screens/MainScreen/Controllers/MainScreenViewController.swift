@@ -88,18 +88,20 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     super.viewDidLoad()
     
     setViews()
-    print("View DId Load")
+    print("View DId Load Main Screen")
     interactor?.makeRequest(request: .checkLastDayInDB)
     
     
   }
   
-
+  func setFirstDayToFireStore() {
+    interactor?.makeRequest(request: .setFirstDayToFireStore)
+  }
   
   // MARK: Activate Application
   func activateApplication() {
     
-    print("Activate application")
+    print("Activate application Main Screen")
     
     // На старте мы просто перезапишим балнк модель и все! в остальное время будет все норм!
     interactor?.makeRequest(request: .checkLastDayInDB)

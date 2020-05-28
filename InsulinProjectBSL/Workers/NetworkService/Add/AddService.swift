@@ -18,23 +18,22 @@ final class AddService {
     let encod = JSONEncoder()
     return encod
   }
+  
+
     
 }
 
-
-// MARK:
+ 
+// MARK: Add Day to FireStore
 extension AddService {
   
   func addDayToFireStore(dayNetworkModel: DayNetworkModel) {
-    
+
           
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
-    
-    
-    // C другой стороны это всеткаи усложняет запросы на редактирование и удаление каких то элементов!
-    
+
     let data = dayNetworkModel.dictionary
-    
+
     Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(dayNetworkModel.id).setData(data)
           
           
@@ -142,6 +141,8 @@ extension AddService {
     
 
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+    
+    
     
     Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.UserDefaults.collectionName).document(currentUserID).setData(userDefaltsData) { (error) in
       

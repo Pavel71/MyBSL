@@ -17,6 +17,14 @@ class SettingsInteractor: SettingsBusinessLogic {
 
   var presenter: SettingsPresentationLogic?
   
+  var userDefaultsWorker: UserDefaultsWorker!
+  var realmManager      : RealmManager!
+  
+  init() {
+    userDefaultsWorker = ServiceLocator.shared.getService()
+    realmManager       = ServiceLocator.shared.getService()
+  }
+  
   
   func makeRequest(request: Settings.Model.Request.RequestType) {
     
@@ -26,22 +34,37 @@ class SettingsInteractor: SettingsBusinessLogic {
 
   }
   
+
+  
   private func fireBaseRequsest(request: Settings.Model.Request.RequestType) {
     switch request {
       
-    case .logOut:
-      
-      do {
+    case .logOut: logOut()
+
+    default:break
+    }
+  }
+  
+}
+  // MARK: Log Out
+extension SettingsInteractor {
+  
+  private func logOut() {
+    do {
         try Auth.auth().signOut()
         presenter?.presentData(response: .logOut(result: .success(true)))
       } catch(let error) {
         presenter?.presentData(response: .logOut(result: .failure(.signOutError)))
         print(error)
       }
-      
-      
-    default:break
-    }
+    
+    clearAllData()
   }
   
+  private func clearAllData() {
+    
+    userDefaultsWorker.clearAllData()
+    realmManager.deleteAllDataFromRealm()
+    
+  }
 }

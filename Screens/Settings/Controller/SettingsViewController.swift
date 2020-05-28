@@ -125,10 +125,10 @@ extension SettingsViewController {
   }
 }
 
-// MARK: Catch View CLousers
+
 extension SettingsViewController {
   
-  // Nav Bar Clouser
+  // MARK: Log Out
   
   private func handlelogOutButton() {
     

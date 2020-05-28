@@ -159,6 +159,7 @@ class RegistrationController: UIViewController {
         appState.toogleMinorWindow(minorWindow: appState.onBoardingWindow)
         
         print("Registration Sucsess!")
+        
 
 //        self.present(MainController(), animated: true, completion: nil)
       }

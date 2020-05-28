@@ -17,7 +17,7 @@ final class CompObjRealmManager {
   
   let provider: RealmProvider
   
-//  static var shared:CompObjRealmManager = {CompObjRealmManager()}()
+  //  static var shared:CompObjRealmManager = {CompObjRealmManager()}()
   
   var realm : Realm {provider.realm}
   
@@ -34,17 +34,20 @@ final class CompObjRealmManager {
   
 }
 
-// MARK: IS Methods
+// MARK: Delete All CompObjs
 
 extension CompObjRealmManager {
   
-  func isDBHaveEnothObjectToLearn() -> Bool {
+  func deleteAllCompObjs() {
     
-    // вообще это достаточно коряво! все таки!
+    do {
+      self.realm.beginWrite()
+      self.realm.deleteAll()
+      try self.realm.commitWrite()
+    } catch {
+      print(error.localizedDescription)
+    }
     
-    let typeObject = TypeCompansationObject.mealObject.rawValue
-    let comCarboObjs = fetchAllCompObj().filter("(typeObject == %@)",typeObject)
-    return comCarboObjs.count > 4
   }
 }
 
@@ -84,7 +87,7 @@ extension CompObjRealmManager {
     var compObj : CompansationObjectRelam?
     
     if count > 1 {
-       compObj = allCompObj[count - 2]
+      compObj = allCompObj[count - 2]
     }
     return  compObj
   }
@@ -113,15 +116,17 @@ extension CompObjRealmManager {
   // Loaded data From FireStore And Save
   
   func setCompObjsFromFireStore(compObjs: [CompansationObjectRelam]) {
+    
+    let sortedcompObjs = compObjs.sorted(by: {$0.timeCreate < $1.timeCreate})
     do {
-         self.realm.beginWrite()
-         self.realm.add(compObjs, update: .all)
-         try self.realm.commitWrite()
-         print(self.realm.configuration.fileURL?.absoluteURL as Any,"CompObj in DB")
-         
-       } catch {
-         print(error.localizedDescription)
-       }
+      self.realm.beginWrite()
+      self.realm.add(sortedcompObjs, update: .all)
+      try self.realm.commitWrite()
+      print(self.realm.configuration.fileURL?.absoluteURL as Any,"CompObj in DB")
+      
+    } catch {
+      print(error.localizedDescription)
+    }
   }
   
   // Work with USer
@@ -131,7 +136,7 @@ extension CompObjRealmManager {
     // пежде чем добавить новый сcompObj - внеси изменения в последний
     
     // если будет предыдущий объект то обнови его данными из нового
-//    updatePrevCompObjWhenAddNew(timeCreateNew: compObj.timeCreate, sugarNew: compObj.sugarBefore)
+    //    updatePrevCompObjWhenAddNew(timeCreateNew: compObj.timeCreate, sugarNew: compObj.sugarBefore)
     
     do {
       self.realm.beginWrite()
@@ -187,7 +192,7 @@ extension CompObjRealmManager {
 
 extension CompObjRealmManager {
   
-   typealias TransportTuple = (sugarBefore: Double, typeObjectEnum: TypeCompansationObject, insulinCarbo: Double, insulinCorrect: Double, totalCarbo: Double, placeInjections: String, productsRealm: [ProductRealm])
+  typealias TransportTuple = (sugarBefore: Double, typeObjectEnum: TypeCompansationObject, insulinCarbo: Double, insulinCorrect: Double, totalCarbo: Double, placeInjections: String, productsRealm: [ProductRealm])
   
   
   
@@ -216,7 +221,7 @@ extension CompObjRealmManager {
       print(error.localizedDescription)
     }
   }
-
+  
   
 }
 
@@ -224,10 +229,10 @@ extension CompObjRealmManager {
 // MARK: UpdatingPrevCompObj
 
 extension CompObjRealmManager {
-
+  
   // Updating When Adding new Comp Obj
   func updatePrevCompObjWhenAddNew(timeCreateNew: Date, sugarNew:Double) {
-
+    
     guard let lastCompObj = fetchLastCompObj() else {return}
     
     if isTimeBeetwinCompObjActual(timeLastCompObj: lastCompObj.timeCreate, timeNewCompObj: timeCreateNew) {
@@ -281,8 +286,8 @@ extension CompObjRealmManager {
     
     updatingPrevCompObjIfNeeded(
       sugarAfter : sugarAfter,
-    compPosition : compPosition,
-    prevCompObj  : prevCompobj)
+      compPosition : compPosition,
+      prevCompObj  : prevCompobj)
   }
   
   
@@ -299,47 +304,47 @@ extension CompObjRealmManager {
   
   
   private func updatingPrevCompObjIfNeeded(
-     sugarAfter   : Double,
-     compPosition : CompansationPosition,
-     prevCompObj  : CompansationObjectRelam) {
-     
-     do {
-       
-       self.realm.beginWrite()
-       
-       prevCompObj.sugarAfter           = sugarAfter
-       prevCompObj.compansationFaseEnum = compPosition
-       
-       try self.realm.commitWrite()
-       
-     } catch {
-       print(error.localizedDescription)
-     }
-     
-   }
+    sugarAfter   : Double,
+    compPosition : CompansationPosition,
+    prevCompObj  : CompansationObjectRelam) {
+    
+    do {
+      
+      self.realm.beginWrite()
+      
+      prevCompObj.sugarAfter           = sugarAfter
+      prevCompObj.compansationFaseEnum = compPosition
+      
+      try self.realm.commitWrite()
+      
+    } catch {
+      print(error.localizedDescription)
+    }
+    
+  }
   
   
   private func getCompObjStateBySugarAfter(sugarAfter: Double) -> CompansationPosition {
-     
-     let sugarCompansation = sugarCorrectorWorker.getWayCorrectPosition(sugar: Float(sugarAfter))
-     
-     var compPosition: CompansationPosition
-     
-     switch sugarCompansation {
-     case .correctDown:
-       compPosition = .bad
-     case .correctUp:
-       compPosition = .bad
-     case .dontCorrect:
-       compPosition = .good
-     case .progress:
-       compPosition = .progress
-     case .needCorrect:
-       compPosition = .progress
-     }
-     
-     return compPosition
-   }
+    
+    let sugarCompansation = sugarCorrectorWorker.getWayCorrectPosition(sugar: Float(sugarAfter))
+    
+    var compPosition: CompansationPosition
+    
+    switch sugarCompansation {
+    case .correctDown:
+      compPosition = .bad
+    case .correctUp:
+      compPosition = .bad
+    case .dontCorrect:
+      compPosition = .good
+    case .progress:
+      compPosition = .progress
+    case .needCorrect:
+      compPosition = .progress
+    }
+    
+    return compPosition
+  }
   
 }
 
@@ -352,21 +357,21 @@ extension CompObjRealmManager {
   
   func compensationSuccessWriteMlData(compObj: CompansationObjectRelam) {
     
-       do {
-         
-         self.realm.beginWrite()
-         
-         setInsulinOnCorrectSugarML(compobj: compObj)
-         compObj.listProduct.forEach(setInsulinOnCarboML)
-        
-         try self.realm.commitWrite()
-         
-       } catch {
-         print(error.localizedDescription)
-       }
+    do {
+      
+      self.realm.beginWrite()
+      
+      setInsulinOnCorrectSugarML(compobj: compObj)
+      compObj.listProduct.forEach(setInsulinOnCarboML)
+      
+      try self.realm.commitWrite()
+      
+    } catch {
+      print(error.localizedDescription)
+    }
   }
   
- 
+  
   
   
   // MARKK: Modifided Correct Sugar
@@ -381,7 +386,7 @@ extension CompObjRealmManager {
       self.realm.beginWrite()
       compObj.compansationFaseEnum    = changeTypeCompPosition
       compObj.insulinToCorrectSugarML = Float(correctSugarMl)
-     
+      
       try self.realm.commitWrite()
       
     } catch {
@@ -400,7 +405,7 @@ extension CompObjRealmManager {
       self.realm.beginWrite()
       
       // нужно проследить чтобы происходили изменения в CompPosition но и Fetch шел не только хорошие объекты но и модифицированные! 
-//      compObj.compansationFaseEnum = .modifidedForMl
+      //      compObj.compansationFaseEnum = .modifidedForMl
       
       if isPlus {
         
@@ -416,7 +421,7 @@ extension CompObjRealmManager {
       compObj.compansationFaseEnum = .modifidedForMl
       
       
-     
+      
       try self.realm.commitWrite()
       
     } catch {
@@ -427,14 +432,14 @@ extension CompObjRealmManager {
   }
   
   private func setInsulinOnCarboML(productRealm: ProductRealm) {
-       
-       productRealm.insulinOnCarboToML = productRealm.userSetInsulinOnCarbo
-     }
-     
-   private func setInsulinOnCorrectSugarML(compobj:CompansationObjectRelam) {
-       compobj.insulinToCorrectSugarML = Float(compobj.userSetInsulinToCorrectSugar)
-     }
-
+    
+    productRealm.insulinOnCarboToML = productRealm.userSetInsulinOnCarbo
+  }
+  
+  private func setInsulinOnCorrectSugarML(compobj:CompansationObjectRelam) {
+    compobj.insulinToCorrectSugarML = Float(compobj.userSetInsulinToCorrectSugar)
+  }
+  
   
 }
 
@@ -473,7 +478,7 @@ extension CompObjRealmManager {
     let filteredData : [CompansationObjectRelam] = fetchAllCompObj().dropLast().filter { (compObjRealm) -> Bool in
       compObjRealm.compansationFaseEnum != .dontCalculated
     }
-   
+    
     return filteredData
   }
   

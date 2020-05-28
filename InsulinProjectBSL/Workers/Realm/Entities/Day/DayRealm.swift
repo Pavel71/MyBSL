@@ -50,7 +50,7 @@ import RealmSwift
     ) {
       self.init()
     self.id   = id
-    self.date = date
+    self.date = date.onlyDate()!
    
     }
   

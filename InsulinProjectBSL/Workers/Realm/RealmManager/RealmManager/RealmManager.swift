@@ -31,6 +31,25 @@ class RealmManager {
   
 }
 
+// MARK: Realm Manager Clear Old Data
+
+extension RealmManager {
+  
+  func deleteAllDataFromRealm() {
+    
+     print("Очищаем старую базу данных")
+      
+      dayRealmManager.deleteDaysRealm()
+      mealRealmManager.deleteAllMeals()
+      productRealmManager.deleteAllProducts()
+      sugarRealmManager.deleteAllSugars()
+      compObjRealmManager.deleteAllCompObjs()
+      
+    
+    
+  }
+  
+}
 
 
 // MARK: Set Netwrok Data To Realm
@@ -85,7 +104,7 @@ extension RealmManager {
   
   private func convertDayNetworkModelsToRealm(dayNetworkModel: DayNetworkModel) -> DayRealm {
     
-    let day = DayRealm(id : dayNetworkModel.id, date: dayNetworkModel.date)
+    let day = DayRealm(id : dayNetworkModel.id, date: Date(timeIntervalSince1970: dayNetworkModel.date))
     
     day.listSugarID.append(objectsIn: dayNetworkModel.listSugarID)
     day.listCompObjID.append(objectsIn: dayNetworkModel.listCompObjID)
@@ -99,7 +118,7 @@ extension RealmManager {
     
     let compObj = CompansationObjectRelam(
       id                       : compObjModel.id,
-      timeCreate               : compObjModel.timeCreate,
+      timeCreate               : Date(timeIntervalSince1970:compObjModel.timeCreate),
       typeObject               : TypeCompansationObject(rawValue: compObjModel.typeObject)!,
       sugarBefore              : compObjModel.sugarBefore,
       insulinOnTotalCarbo      : compObjModel.insulinOnTotalCarbo,
@@ -124,7 +143,7 @@ extension RealmManager {
     
     let sugar = SugarRealm(
       id                   : sugarNetworkModel.id,
-      time                 : sugarNetworkModel.time,
+      time                 : Date(timeIntervalSince1970: sugarNetworkModel.time),
       sugar                : sugarNetworkModel.sugar,
       dataCase             : ChartDataCase(rawValue: sugarNetworkModel.dataCase)!,
       compansationObjectId : sugarNetworkModel.compansationObjectId)

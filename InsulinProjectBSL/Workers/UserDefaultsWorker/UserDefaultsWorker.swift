@@ -143,5 +143,11 @@ extension UserDefaultsWorker {
 
   }
   
+  // MARK: Ckear ALl Data
+  
+  func clearAllData() {
+    UserDefaultsKey.allCases.forEach{userDefaults.removeObject(forKey: $0.rawValue)}
+  }
+  
   
 }

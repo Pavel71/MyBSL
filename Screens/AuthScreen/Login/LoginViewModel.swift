@@ -52,10 +52,13 @@ class LoginModelView {
         
         // 1. Сохранить UserDefaults
         self.userDefaults.setDataToUserDefaults(userDefaultsNetwrokModel: models.userDefaults[0])
-        // 2. запустить процесс сохранения в реалме!
+        
+        let realmMagaer:RealmManager! = ServiceLocator.shared.getService()
+
+        // 3. запустить процесс сохранения в реалме!
         
         print("Сохраняю данные в Реалм")
-        let realmMagaer = RealmManager()
+        
         realmMagaer.setNetwrokdDataToRealm(fireStoreModel: models)
         // Даже не знаю если четсно как это бомбить!
         
