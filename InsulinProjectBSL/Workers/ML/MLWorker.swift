@@ -21,7 +21,6 @@ import CoreML
 class MLWorker {
   
   var userDefaultsWorker            : UserDefaultsWorker!
-  var updateService                 : UpdateService!
   private let simpleRegressionModel : SimpleRegresiionModel
   
   var typeWeights                   : UserDefaultsKey
@@ -31,7 +30,6 @@ class MLWorker {
     
     let locator                = ServiceLocator.shared
     userDefaultsWorker         = locator.getService()
-    updateService              = locator.getService()
     self.typeWeights           = typeWeights
     self.simpleRegressionModel = SimpleRegresiionModel()
   }
@@ -56,14 +54,11 @@ class MLWorker {
     let arrWeaights = [weights.0,weights.1]
     
     userDefaultsWorker.setWeights(weights: arrWeaights, key: typeWeights)
-    updateService.updateMLWeights(weights: arrWeaights, key: typeWeights)
+
     
   }
   
-//  func getRegressionWeights() -> (Float,Float) {
-//    return simpleRegressionModel.getWeights()
-//  }
-//
+
   
 
 

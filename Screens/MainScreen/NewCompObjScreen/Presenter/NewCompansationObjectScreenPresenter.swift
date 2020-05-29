@@ -110,14 +110,10 @@ extension NewCompansationObjectScreenPresenter {
         updatePlaceInjectionInVM(place: place)
         throwViewModelToVC()
         
-    case .passCompObjIdAndSugarRealmIdToVC(let compObjId,let sugarId):
+    case .passSignalToReloadMainScreen:
       
-        viewController?.displayData(viewModel: .passCompanObjIdAndSugarRealmIdToMainVC(
-          compObjRealmId: compObjId,
-          sugarRealmId: sugarId))
+        viewController?.displayData(viewModel: .passSignalToReloadMainScreen)
       
-    case .updateSugarRealmAndCompObjSucsess:
-      viewController?.displayData(viewModel: .updateCompObjAndSugarRealmSucsess)
       
     default:break
     }

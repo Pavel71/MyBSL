@@ -460,15 +460,10 @@ extension MainScreenViewController {
 
 extension MainScreenViewController {
   
-  func passCompObjIdAndSugarIdToSaveInDay(compObjId: String,sugarId: String) {
-    
-    interactor?.makeRequest(request: .addCompIdAndSugarIdinDay(compObjId: compObjId,sugarId:sugarId))
-    
-  }
-  
-  func passSignalSuccsessUpdateCompObjAndRealm() {
+  func reloadMainScreen() {
     interactor?.makeRequest(request: .reloadDay)
   }
+  
 }
 
 // MARK: Keyboard Notififcation

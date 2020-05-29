@@ -52,8 +52,7 @@ enum NewCompansationObjectScreen {
         
         case updatePlaceInjection(place: String)
         
-        case updateSugarRealmAndCompObjSucsess
-        case passCompObjIdAndSugarRealmIdToVC(compObjId: String,sugarRealmId: String)
+        case passSignalToReloadMainScreen
         
         
         case learnMlForNewData
@@ -62,8 +61,8 @@ enum NewCompansationObjectScreen {
     struct ViewModel {
       enum ViewModelData {
         case setViewModel(viewModel: NewCompObjViewModel)
-        case passCompanObjIdAndSugarRealmIdToMainVC(compObjRealmId: String,sugarRealmId: String)
-        case updateCompObjAndSugarRealmSucsess
+        case passSignalToReloadMainScreen
+        
       }
     }
   }

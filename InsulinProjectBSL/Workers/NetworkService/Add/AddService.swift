@@ -23,6 +23,13 @@ final class AddService {
     
 }
 
+
+// MARK: Bit TransAction Add SugarRealm + Add CompObj + Update Day + update PrevCompObj
+extension AddService {
+  
+ 
+  
+}
  
 // MARK: Add Day to FireStore
 extension AddService {
@@ -46,25 +53,25 @@ extension AddService {
 
 extension AddService {
   
-  func addCompObjToFireStore(compoObj: CompObjNetworkModel) {
-    
-    DispatchQueue.global(qos: .userInteractive).async {
-       
-        guard let currentUserID = Auth.auth().currentUser?.uid else {return}
-         
-      
-      // C другой стороны это всеткаи усложняет запросы на редактирование и удаление каких то элементов!
-      
-       let data = compoObj.dictionary
-
-      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.CompObjs.collectionName).document(compoObj.id).setData(data)
-       
-       
-       }
-    
-    
-    
-  }
+//  func addCompObjToFireStore(compoObj: CompObjNetworkModel) {
+//    
+//    DispatchQueue.global(qos: .userInteractive).async {
+//       
+//        guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+//         
+//      
+//      // C другой стороны это всеткаи усложняет запросы на редактирование и удаление каких то элементов!
+//      
+//       let data = compoObj.dictionary
+//
+//      Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.CompObjs.collectionName).document(compoObj.id).setData(data)
+//       
+//       
+//       }
+//    
+//    
+//    
+//  }
   
 }
 

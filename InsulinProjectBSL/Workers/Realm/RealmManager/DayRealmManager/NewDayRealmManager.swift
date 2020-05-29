@@ -205,7 +205,6 @@ extension NewDayRealmManager {
       self.realm.beginWrite()
       
       currentDay.listCompObjID.remove(at: deleteIndex)
-      self.realm.add(currentDay, update: .all)
       try self.realm.commitWrite()
       
     } catch {
@@ -240,21 +239,30 @@ extension NewDayRealmManager {
   
   //Delete
   
-  func deleteSugarByCompObjId(sugarId: String) {
+  func deleteSugarByCompObjId(sugarId: String){
     
-
+    let removeSugars = sugarRealmManager.getNearestSugarToDelete(sugarId: sugarId)
+    
+    removeSugars.forEach{deletSugarFromList(sugarId:$0)}
+    
+    
+  }
+  
+  
+  private func deletSugarFromList(sugarId:String) {
+    
     guard let deleteIndex = currentDay.listSugarID.index(of:sugarId) else {return}
-    
-    do {
-      self.realm.beginWrite()
-      
-      currentDay.listSugarID.remove(at: deleteIndex)
-      self.realm.add(currentDay, update: .all)
-      try self.realm.commitWrite()
-      
-    } catch {
-      print(error.localizedDescription)
-    }
+       
+       do {
+         self.realm.beginWrite()
+         
+         currentDay.listSugarID.remove(at: deleteIndex)
+         
+         try self.realm.commitWrite()
+         
+       } catch {
+         print(error.localizedDescription)
+       }
     
     sugarRealmManager.deleteSugarId(sugarId: sugarId)
   }

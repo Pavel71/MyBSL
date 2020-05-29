@@ -165,6 +165,7 @@
 		05B1DEC3237ECDED0015E4E6 /* MainScreenConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEC2237ECDED0015E4E6 /* MainScreenConstants.swift */; };
 		05B5C2CB245C7C9E001249F8 /* FoodScreenTask in Resources */ = {isa = PBXBuildFile; fileRef = 05B5C2CA245C7C9E001249F8 /* FoodScreenTask */; };
 		05B6E80B242B72120009F7EA /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B6E80A242B72120009F7EA /* CalendarView.swift */; };
+		05BA55DA24811B4600DE6F94 /* ButchWritingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BA55D924811B4600DE6F94 /* ButchWritingService.swift */; };
 		05BDB5852463FB3F00D60C57 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BDB5842463FB3F00D60C57 /* SettingsView.swift */; };
 		05BDB5882463FBC700D60C57 /* SettingCustomNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BDB5872463FBC700D60C57 /* SettingCustomNavBar.swift */; };
 		05BDB58A2464138700D60C57 /* UpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BDB5892464138700D60C57 /* UpdateService.swift */; };
@@ -452,6 +453,7 @@
 		05B1DEC2237ECDED0015E4E6 /* MainScreenConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenConstants.swift; sourceTree = "<group>"; };
 		05B5C2CA245C7C9E001249F8 /* FoodScreenTask */ = {isa = PBXFileReference; lastKnownFileType = text; path = FoodScreenTask; sourceTree = "<group>"; };
 		05B6E80A242B72120009F7EA /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		05BA55D924811B4600DE6F94 /* ButchWritingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButchWritingService.swift; sourceTree = "<group>"; };
 		05BDB5842463FB3F00D60C57 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		05BDB5872463FBC700D60C57 /* SettingCustomNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCustomNavBar.swift; sourceTree = "<group>"; };
 		05BDB5892464138700D60C57 /* UpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateService.swift; sourceTree = "<group>"; };
@@ -1248,6 +1250,7 @@
 		0561F37E245C206900A236E6 /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
+				05BA55D824811B2800DE6F94 /* ButchWritingService */,
 				0561F381245C20E900A236E6 /* NetworkEnum.swift */,
 				05908DA224615F94002DDAFC /* NetworkTasks */,
 				057CC7AC24644FFF0049DFD3 /* Delete */,
@@ -2115,6 +2118,14 @@
 				05B6E80A242B72120009F7EA /* CalendarView.swift */,
 			);
 			path = CalendarView;
+			sourceTree = "<group>";
+		};
+		05BA55D824811B2800DE6F94 /* ButchWritingService */ = {
+			isa = PBXGroup;
+			children = (
+				05BA55D924811B4600DE6F94 /* ButchWritingService.swift */,
+			);
+			path = ButchWritingService;
 			sourceTree = "<group>";
 		};
 		05BDB5862463FBAF00D60C57 /* SettingsCustomNavBar */ = {
@@ -3575,6 +3586,7 @@
 				F1E78D06230D54C900592AB8 /* CustomTextField.swift in Sources */,
 				052C33E3237A8D1200B4B29A /* AlertWorker.swift in Sources */,
 				F1E78CEA230D33AE00592AB8 /* StatsInteractor.swift in Sources */,
+				05BA55DA24811B4600DE6F94 /* ButchWritingService.swift in Sources */,
 				F1495358232918790027E655 /* ContainerViewController.swift in Sources */,
 				05C0C63A238FC1F0001B2664 /* MealProductViewModel.swift in Sources */,
 				05E1C3342372B7FF00007463 /* RidgeRegressionModel.swift in Sources */,

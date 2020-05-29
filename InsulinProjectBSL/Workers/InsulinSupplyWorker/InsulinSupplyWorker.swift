@@ -12,16 +12,12 @@ import Foundation
 // Класс отвечает за работу с InsulinSupplyView
 
 final class InsulinSupplyWorker {
+
+  var userDefaultsWorker: UserDefaultsWorker!
   
-  let userDefaultsWorker : UserDefaultsWorker!
-  let updateService      : UpdateService!
-  
-  init() {
-    let locator = ServiceLocator.shared
-    userDefaultsWorker = locator.getService()
-    updateService      = locator.getService()
+  init () {
+    userDefaultsWorker = ServiceLocator.shared.getService()
   }
-  
 }
 
 
@@ -35,7 +31,7 @@ extension InsulinSupplyWorker {
   
   // в идеале здесь записать в реалм изменение Supply! Все будет в 1ом месте!
   
-  func updateInsulinSupplyValue(
+  func setNewInsulinSupplyToUserDefaults(
     totalInsulin: Float,
     updatedType: InsulinSupplyCalculatedType) {
     
@@ -61,8 +57,6 @@ extension InsulinSupplyWorker {
     }
     
     userDefaultsWorker.setInsulinSupplyValue(insulinSupply: resultValue)
-    
-    updateService.updateInsulinSupplyDataInFireBase(supplyInsulin: resultValue)
   }
   
   

@@ -52,8 +52,9 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
   var compansationObjectRealm: CompansationObjectRelam?
   
   //Clousers
-  var didPassCompObjIdToSaveInDayRealm: ((String,String) -> Void)?
-  var didUpdateCompObjAndSugarRealm: EmptyClouser?
+  
+  
+  var didPassSignalToReloadMainScreen     : EmptyClouser?
   // MARK: Object lifecycle
   
   
@@ -128,12 +129,10 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
     case .setViewModel(let viewModel):
       
       setViewModel(viewModel: viewModel)
-    case .passCompanObjIdAndSugarRealmIdToMainVC(let compObjRealmId,let sugarRealmId):
-      didPassCompObjIdToSaveInDayRealm!(compObjRealmId,sugarRealmId)
       
-    case .updateCompObjAndSugarRealmSucsess:
-      didUpdateCompObjAndSugarRealm!()
-      
+    case .passSignalToReloadMainScreen:
+      didPassSignalToReloadMainScreen!()
+
     
     }
   }

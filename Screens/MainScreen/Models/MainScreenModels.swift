@@ -22,10 +22,7 @@ enum MainScreen {
         
         // Set Data to Realm
         case setSugarVM(sugarViewModel: SugarViewModel)
-        
-        case addCompIdAndSugarIdinDay(compObjId: String,sugarId: String)
-        
-        
+
         case deleteCompansationObj(compObjId: String)
         case getCompansationObj(compObjId: String)
         

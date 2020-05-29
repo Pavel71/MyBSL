@@ -24,13 +24,17 @@ class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusiness
   
   var compRealmManager    : CompObjRealmManager!
   var sugarRealmManager   : SugarRealmManager!
+  var newDayRealmManager  : NewDayRealmManager!
+  
   var insulinSupplyWorker : InsulinSupplyWorker!
+  var userDefaultsWorker  : UserDefaultsWorker!
   
   // For Work wit FireStore
   
-  var addService    : AddService!
-  var updateService : UpdateService!
-  var deleteService : DeleteService!
+  var addService          : AddService!
+  var updateService       : UpdateService!
+  var deleteService       : DeleteService!
+  var butchWritingService : ButchWritingService!
   
   
   init() {
@@ -38,11 +42,15 @@ class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusiness
     
     compRealmManager    = locator.getService()
     sugarRealmManager   = locator.getService()
-    insulinSupplyWorker = locator.getService()
+    newDayRealmManager  = locator.getService()
     
-    addService    = locator.getService()
-    updateService = locator.getService()
-    deleteService = locator.getService()
+    insulinSupplyWorker = locator.getService()
+    userDefaultsWorker  = locator.getService()
+    
+    addService          = locator.getService()
+    updateService       = locator.getService()
+    deleteService       = locator.getService()
+    butchWritingService = locator.getService()
 
   }
 
@@ -96,19 +104,21 @@ extension NewCompansationObjectScreenInteractor {
         let totalInsulinBefore = updateCompObj.totalInsulin.toFloat()
         let totalInsulinAfter  = viewModel.resultFooterVM.totalInsulin
         
-        insulinSupplyWorker.updateInsulinSupplyValue(totalInsulin: totalInsulinBefore - totalInsulinAfter, updatedType: .update)
+        insulinSupplyWorker.setNewInsulinSupplyToUserDefaults(totalInsulin: totalInsulinBefore - totalInsulinAfter, updatedType: .update)
         
         updatingCompObjInRealm(viewModel: viewModel)
-        updatingSugarInRealm()
+        updatingSugarInRealm(updateSugarRealm: updateSugarRealm, updateCompobj: updateCompObj)
         
-        // сюда нужен id sugara который редактируем
-        updateSugarInFireStore()
-        updateCompObjInFireStore(compObj: updateCompObj)
+
+        
+         butchWritingAllDataToFireStoreAfterUpdateCompObj(
+          updateCompObjRealm: updateCompObj,
+          updateSugarRealm: updateSugarRealm)
 
         self.updateCompObj    = nil
         self.updateSugarRealm = nil
-        
-        presenter?.presentData(response: .updateSugarRealmAndCompObjSucsess)
+
+        presenter?.presentData(response: .passSignalToReloadMainScreen)
         
         // Проще отсюда послать сигнал что все обновленно!
 
@@ -118,17 +128,21 @@ extension NewCompansationObjectScreenInteractor {
         let sugarRealm = convertCompObjRealmToSugarRealm(compObj: compObj)
         
         
+        // Update All Data In Local DB
+        
         updatePrevCompObjFromDataInNewCompObj(timeCreate: compObj.timeCreate, sugarAfter: compObj.sugarBefore)
         
         saveCompObjToRealm(compObj      : compObj)
-        saveCompRealmToFireStore(compObj  : compObj)
-        
+       
         saveSugarToRealm(sugarRealm     : sugarRealm)
-        saveSugarToFireStore(sugarRealm : sugarRealm)
         
-        insulinSupplyWorker.updateInsulinSupplyValue(
+        newDayRealmManager.addNewCompObjId(compObjId: compObj.id)
+        newDayRealmManager.addNewSugarId(sugarId: sugarRealm.id)
+        
+        insulinSupplyWorker.setNewInsulinSupplyToUserDefaults(
           totalInsulin: viewModel.resultFooterVM.totalInsulin,
           updatedType: .add)
+        
         
         // MARK: Start Ml Learning
         // Пусть эта работа идет в Асинхронном потоке! Так как мы взаимодействуем с Реалмом то можем взять только main.async
@@ -137,13 +151,22 @@ extension NewCompansationObjectScreenInteractor {
           
           self.presenter?.presentData(response: .learnMlForNewData)
           
-          guard let secondLastCompobjAfterDateEnrichmentFromMlWorking = self.compRealmManager.fetchSecondOnTheEndCompObj() else {return}
+          // Также нужно обновить день Добавить 2 id
           
-          self.updateCompObjInFireStore(compObj: secondLastCompobjAfterDateEnrichmentFromMlWorking)
+          guard let prevCompobjToUpdate = self.compRealmManager.fetchSecondOnTheEndCompObj() else {return}
+          // мне нужно получить день и взять его id
+          
+          let dayId = self.newDayRealmManager.getCurrentDay().id
+          
+          self.butchWrittingAllDataToFireStoreAfterAddNewCompobj(
+            sugarRealm   : sugarRealm,
+            compObjRealm : compObj,
+            prevCompObj  : prevCompobjToUpdate,
+            updateDayID  : dayId)
           
         }
 
-        presenter?.presentData(response: .passCompObjIdAndSugarRealmIdToVC(compObjId: compObj.id, sugarRealmId: sugarRealm.id))
+        presenter?.presentData(response: .passSignalToReloadMainScreen)
         
       }
       
@@ -152,24 +175,7 @@ extension NewCompansationObjectScreenInteractor {
     
   }
   
-  
-  
-  
-  
-  // MARK: Save Data to Realm
-  private func saveCompObjToRealm(compObj: CompansationObjectRelam) {
 
-    compRealmManager.addOrUpdateNewCompObj(compObj: compObj)
-  }
-  
-  private func updatePrevCompObjFromDataInNewCompObj(timeCreate: Date,sugarAfter: Double) {
-    compRealmManager.updatePrevCompObjWhenAddNew(timeCreateNew: timeCreate, sugarNew: sugarAfter)
-  }
-  
-  private func saveSugarToRealm(sugarRealm: SugarRealm) {
-    sugarRealmManager.addOrUpdateNewSugarRealm(sugarRealm: sugarRealm)
-  }
-  
   
   // MARK: Work With Product List
   
@@ -200,46 +206,119 @@ extension NewCompansationObjectScreenInteractor {
   
 }
 
+  // MARK: Save Data to Realm
+extension NewCompansationObjectScreenInteractor {
+
+  private func saveCompObjToRealm(compObj: CompansationObjectRelam) {
+
+    compRealmManager.addOrUpdateNewCompObj(compObj: compObj)
+  }
+  
+  private func updatePrevCompObjFromDataInNewCompObj(timeCreate: Date,sugarAfter: Double) {
+    compRealmManager.updatePrevCompObjWhenAddNew(timeCreateNew: timeCreate, sugarNew: sugarAfter)
+  }
+  
+  private func saveSugarToRealm(sugarRealm: SugarRealm) {
+    sugarRealmManager.addOrUpdateNewSugarRealm(sugarRealm: sugarRealm)
+  }
+}
+
 // MARK: Update Data in FireStore
 
 extension NewCompansationObjectScreenInteractor {
   
-  func updateCompObjInFireStore(compObj: CompansationObjectRelam) {
-    
-    let compObjNetWorkModel = convertCompObjRealmToCompObjNetworkModel(compObj: compObj)
-    
-    updateService.updateCompObjInFireStore(compObjNetModel: compObjNetWorkModel)
-  }
-  
-  func updateSugarInFireStore() {
-    
-
-    
-    let sugarNetworkModel = SugarNetworkModel(
-      id                   : updateSugarRealm.id,
-      sugar                : updateCompObj.sugarBefore,
-      time                 : updateCompObj.timeCreate.timeIntervalSince1970,
-      dataCase             : getChartDataCase(compObj: updateCompObj).rawValue,
-      compansationObjectId : updateCompObj.id)
-    
-    updateService.updateSugars(sugarNetworkModel: sugarNetworkModel)
-  }
+//  func updateCompObjInFireStore(compObj: CompansationObjectRelam) {
+//
+//    let compObjNetWorkModel = convertCompObjRealmToCompObjNetworkModel(compObj: compObj)
+//
+//    updateService.updateCompObjInFireStore(compObjNetModel: compObjNetWorkModel)
+//  }
+//
+//  func updateSugarInFireStore() {
+//
+//    let sugarNetworkModel = SugarNetworkModel(
+//      id                   : updateSugarRealm.id,
+//      sugar                : updateCompObj.sugarBefore,
+//      time                 : updateCompObj.timeCreate.timeIntervalSince1970,
+//      dataCase             : getChartDataCase(compObj: updateCompObj).rawValue,
+//      compansationObjectId : updateCompObj.id)
+//
+//    updateService.updateSugars(sugarNetworkModel: sugarNetworkModel)
+//  }
   
 }
 
- // MARK: Save Data to FireStore
+ // MARK: Butch Writting to FireStore
 extension NewCompansationObjectScreenInteractor {
+  
+  // MARK: Butch Writting After Update
+  
+  private func butchWritingAllDataToFireStoreAfterUpdateCompObj(
+    updateCompObjRealm : CompansationObjectRelam,
+    updateSugarRealm   : SugarRealm) {
+    
+    let compObjNetModel   = convertCompObjRealmToCompObjNetworkModel(compObj:updateCompObjRealm)
+    let sugarNetworkModel      = convertToSugarNetworkModel(sugarRealm: updateSugarRealm)
+    
+    let insulonSupply = userDefaultsWorker.getInsulinSupply()
+    let insulinSupplyData = [UserDefaultsKey.insulinSupplyValue.rawValue : insulonSupply]
+    
+    butchWritingService.writtingDataAfterUpdatindCompObj(
+      sugarNetwrokModel   : sugarNetworkModel,
+      compObjNetwrokModel : compObjNetModel,
+      userDefaultsData    : insulinSupplyData)
+    
+  }
+  
+  
+  // MARK: Butch Writting After Add
+  
+  private func butchWrittingAllDataToFireStoreAfterAddNewCompobj(
+    sugarRealm         : SugarRealm,
+    compObjRealm       : CompansationObjectRelam,
+    prevCompObj        : CompansationObjectRelam,
+    updateDayID        : String) {
+    
+    let compObjNetModel   = convertCompObjRealmToCompObjNetworkModel(compObj:compObjRealm)
+    let sugarNetworkModel      = convertToSugarNetworkModel(sugarRealm: sugarRealm)
+    let prevComPobNetworkModel = convertCompObjRealmToCompObjNetworkModel(compObj: prevCompObj)
+    
+    let insulinSupplyValue = userDefaultsWorker.getInsulinSupply()
+    let sugarsWeights      = userDefaultsWorker.getArrayData(typeDataKey: .correctSugarByInsulinWeights)
+    let carboWeights       = userDefaultsWorker.getArrayData(typeDataKey: .correctSugarByInsulinWeights)
+    
+    let userDefaultsData:[String: Any] = [
+      UserDefaultsKey.correctCarboByInsulinWeights.rawValue : carboWeights,
+      UserDefaultsKey.correctSugarByInsulinWeights.rawValue : sugarsWeights,
+      UserDefaultsKey.insulinSupplyValue.rawValue           : insulinSupplyValue
+    ]
+    
+    // Тут нужно извлечь веса для коррекции сахар + веса для коррекции инсулина + инсулин supply
+    
+    butchWritingService.writtingDataAfterAddNewCompObj(
+      sugarNetwrokModel       : sugarNetworkModel,
+      compObjNetwrokModel     : compObjNetModel,
+      prevCompObjNetwrokModel : prevComPobNetworkModel,
+      userDefaultsData        : userDefaultsData,
+      updateDayID             : updateDayID)
+    
+//    saveCompRealmToFireStore(compObj  : compObjRealm)
+//    saveSugarToFireStore(sugarRealm : sugarRealm)
+    
+  }
   
   
   // MARK: Comp Obj
   
-  private func saveCompRealmToFireStore(compObj:CompansationObjectRelam) {
-    
-    let compObjNetModel = convertCompObjRealmToCompObjNetworkModel(compObj:compObj)
-    
-    addService.addCompObjToFireStore(compoObj: compObjNetModel)
-    
-  }
+//  private func saveCompRealmToFireStore(compObj:CompansationObjectRelam) {
+//
+//    let compObjNetModel = convertCompObjRealmToCompObjNetworkModel(compObj:compObj)
+//
+//    addService.addCompObjToFireStore(compoObj: compObjNetModel)
+//
+//  }
+  
+  // MARK: Convert To Network Models
   
   private func convertCompObjRealmToCompObjNetworkModel(compObj: CompansationObjectRelam) -> CompObjNetworkModel {
     
@@ -278,13 +357,13 @@ extension NewCompansationObjectScreenInteractor {
  
   // MARK: Sugar
   
-  private func saveSugarToFireStore(sugarRealm: SugarRealm) {
-    
-    let sugarNetworkModel = convertToSugarNetworkModel(sugarRealm: sugarRealm)
-    
-    addService.addSugarNetworkModelinFireStore(sugarNetworkModel: sugarNetworkModel)
-    
-  }
+//  private func saveSugarToFireStore(sugarRealm: SugarRealm) {
+//
+//    let sugarNetworkModel = convertToSugarNetworkModel(sugarRealm: sugarRealm)
+//
+//    addService.addSugarNetworkModelinFireStore(sugarNetworkModel: sugarNetworkModel)
+//
+//  }
   
   private func convertToSugarNetworkModel(sugarRealm: SugarRealm) -> SugarNetworkModel {
     
@@ -297,12 +376,6 @@ extension NewCompansationObjectScreenInteractor {
   }
   
 }
-
-// MARK: Update Insulin Supply Value
-extension NewCompansationObjectScreenInteractor {
-  
-}
-
 
 
 
@@ -345,13 +418,18 @@ extension NewCompansationObjectScreenInteractor {
     return transportTuple
   }
   
-  private func updatingSugarInRealm() {
+  private func updatingSugarInRealm(
+    updateSugarRealm: SugarRealm,
+    updateCompobj: CompansationObjectRelam) {
     
     sugarRealmManager.updateSugarRealm(
       sugarRealm    : updateSugarRealm,
-      chartDataCase : getChartDataCase(compObj: updateCompObj),
-      sugar         : updateCompObj.sugarBefore,
-      time          : updateCompObj.timeCreate)
+      chartDataCase : getChartDataCase(compObj: updateCompobj),
+      sugar         : updateCompobj.sugarBefore,
+      time          : updateCompobj.timeCreate)
+    
+    
+    self.updateSugarRealm = sugarRealmManager.fetchSugarByPrimeryKey(sugarPrimaryKey: updateSugarRealm.id)
 
   }
   
@@ -399,13 +477,8 @@ extension NewCompansationObjectScreenInteractor {
     
     return compansationObjectRealm
     
-    
   }
-  
-  
-  
-  
-  
+
   private func converToProductRealm(viewModel: ProductListViewModel) -> ProductRealm {
     
     
