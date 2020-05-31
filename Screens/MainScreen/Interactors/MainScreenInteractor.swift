@@ -25,6 +25,7 @@ class MainScreenInteractor: MainScreenBusinessLogic {
   let sugarRealmManger    : SugarRealmManager!
   
   let userDefaultsWorker  : UserDefaultsWorker!
+  let convertWorker       : ConvertorWorker!
   
   // FireStore
   let updateService        : UpdateService!
@@ -45,6 +46,7 @@ class MainScreenInteractor: MainScreenBusinessLogic {
     sugarRealmManger     = locator.getService()
      
     userDefaultsWorker   = locator.getService()
+    convertWorker        = locator.getService()
      
     updateService        = locator.getService()
     addService           = locator.getService()
@@ -105,7 +107,7 @@ extension MainScreenInteractor {
       
     case .setSugarVM(let sugarViewModel):
 
-      let sugarRealm = convertToSugarRealm(sugarVM: sugarViewModel)
+      let sugarRealm = convertWorker.convertToSugarRealm(sugarVM: sugarViewModel)
       // Сохранил сахара в базе данных
       
       newDayRealmManager.addNewSugarId(sugarId: sugarRealm.id)
@@ -184,7 +186,7 @@ extension MainScreenInteractor {
       
     case .setFirstDayToFireStore:
       let day = newDayRealmManager.getCurrentDay()
-      let dayNetwork = convertDayRealmToDayNetworkLayer(dayRealm: day)
+      let dayNetwork = convertWorker.convertDayRealmToDayNetworkLayer(dayRealm: day)
       addService.addDayToFireStore(dayNetworkModel: dayNetwork)
 
     default:break
@@ -222,7 +224,7 @@ extension MainScreenInteractor {
     let insulinSupply = userDefaultsWorker.getInsulinSupply()
     let userDefData   = [UserDefaultsKey.insulinSupplyValue.rawValue : insulinSupply]
     
-    let dayNetwrok    = convertDayRealmToDayNetworkLayer(dayRealm: dayRealm)
+    let dayNetwrok    = convertWorker.convertDayRealmToDayNetworkLayer(dayRealm: dayRealm)
     
     if let prevComp = prevCompObj {
       let prevNetwrok = convertCompObjRealmToCompObjNetworkModel(compObj: prevComp)
@@ -248,7 +250,7 @@ extension MainScreenInteractor {
     
     // 1. Удалить Sugar
         // 2. Уадлить CompObj
-        // 3. Обновить PrevCompObj
+        // 3. Обновить PrevCompObj Если он есть
         // 3. Удалить ID из Day
         // 4. расчитать  Insulin Supply
     
@@ -261,18 +263,11 @@ extension MainScreenInteractor {
 //  }
   
   func saveDayInFireStore(dayRealm: DayRealm) {
-    let dayNetworkModel = convertDayRealmToDayNetworkLayer(dayRealm: dayRealm)
+    let dayNetworkModel = convertWorker.convertDayRealmToDayNetworkLayer(dayRealm: dayRealm)
     addService.addDayToFireStore(dayNetworkModel: dayNetworkModel)
   }
   
-  func convertDayRealmToDayNetworkLayer(dayRealm: DayRealm) -> DayNetworkModel {
-    
-    return DayNetworkModel(
-      id            : dayRealm.id,
-      date          : dayRealm.date.timeIntervalSince1970,
-      listSugarID   : Array(dayRealm.listSugarID),
-      listCompObjID : Array(dayRealm.listCompObjID))
-  }
+ 
   
   func deleteCompObjFromFireStore(compObjId: String) {
     deleteService.deleteCompObjFromFireStore(compObjId: compObjId)
@@ -285,7 +280,7 @@ extension MainScreenInteractor {
   
   private func addNewSugarToFireStore(sugarRealm: SugarRealm,dayId: String) {
     
-     let sugarNetworkModel = convertToSugarNetworkModel(sugarRealm: sugarRealm)
+    let sugarNetworkModel = convertWorker.convertToSugarNetworkModel(sugarRealm: sugarRealm)
      
      // Здесь нам нужен батч по добавлению сахара в коллекцию + обновление Дня
     
@@ -295,54 +290,9 @@ extension MainScreenInteractor {
      
    }
    
-   private func convertToSugarNetworkModel(sugarRealm: SugarRealm) -> SugarNetworkModel {
-      
-      return SugarNetworkModel(
-        id                   : sugarRealm.id,
-        sugar                : sugarRealm.sugar,
-        time                 : sugarRealm.time.timeIntervalSince1970,
-        dataCase             : sugarRealm.dataCase,
-        compansationObjectId : sugarRealm.compansationObjectId ?? "")
-    }
   
 }
 
-
-
-// MARK: Update Insulin Supply Value
-
-extension MainScreenInteractor {
-  
-
-  
-//  private func updateInsulinSupplyValue(
-//    totalInsulin: Float,
-//    updatedType: InsulinSupplyWorker.InsulinSupplyCalculatedType) {
-//
-//    insulinSupplyWorker.updateInsulinSupplyValue(
-//      totalInsulin         : totalInsulin,
-//      updatedType          : updatedType)
-//
-//
-//  }
-}
-
-// MARK: Convert ViewModels to RealmObjects
-extension MainScreenInteractor {
-  
-  
-  // Это если мы просто добавляем Передать Сахар
-  private func convertToSugarRealm(sugarVM: SugarViewModel) -> SugarRealm {
-    
-    
-    return SugarRealm(
-      time: sugarVM.time,
-      sugar: sugarVM.sugar,
-      dataCase: sugarVM.dataCase,
-      compansationObjectId: sugarVM.compansationObjectId)
-  }
-
-}
 
 // MARK: Convert CompObjRealm To NetwrokModel
 extension MainScreenInteractor {

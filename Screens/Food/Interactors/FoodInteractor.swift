@@ -26,9 +26,13 @@ class FoodInteractor: FoodBusinessLogic {
   
   
   var realmManager  : FoodRealmManager!
+  
+  
   var addService    : AddService!
   var deleteService : DeleteService!
   var updateService : UpdateService!
+  
+  var convertWorker : ConvertorWorker!
   
   // Realm Objects
 
@@ -49,6 +53,8 @@ class FoodInteractor: FoodBusinessLogic {
     addService    = locator.getService()
     deleteService = locator.getService()
     updateService = locator.getService()
+    
+    convertWorker = locator.getService()
   }
   
   
@@ -105,7 +111,7 @@ class FoodInteractor: FoodBusinessLogic {
       
     case .addNewProductInRealm(let viewModel):
         
-        let realmProduct = createNewRealmProduct(viewModel: viewModel)
+      let realmProduct = convertWorker.convertFoodCellVMtoProductRealm(viewModel: viewModel)
         realmManager.addNewProduct(product: realmProduct)
         
         addProductToFireBase(productRealm: realmProduct)
@@ -202,45 +208,6 @@ class FoodInteractor: FoodBusinessLogic {
 }
 
 
-// MARK: Prepare Data To Add
-
-
-extension FoodInteractor {
-  
-  private func createNewRealmProduct(viewModel: FoodCellViewModel) -> ProductRealm {
-     
-     let name       = viewModel.name
-     let category   = viewModel.category
-     let carbo      = Int(viewModel.carbo)!
-     let isFavorits = viewModel.isFavorit
-     let massa      = Int(viewModel.portion)!
-     
-     return ProductRealm.init(
-       name            : name,
-       category        : category,
-       carboIn100Grm   : carbo,
-       isFavorits      : isFavorits,
-       portion         : massa
-     )
-   }
-  
-  private func createNewFireBaseProduct(productRealm: ProductRealm) -> ProductNetworkModel {
-    
-    
-    
-    return ProductNetworkModel(
-      id                     : productRealm.id,
-      name                   : productRealm.name,
-      category               : productRealm.category,
-      carboIn100grm          : productRealm.carboIn100grm,
-      portion                : productRealm.portion,
-      percantageCarboInMeal  : productRealm.percantageCarboInMeal,
-      userSetInsulinOnCarbo  : productRealm.userSetInsulinOnCarbo,
-      insulinOnCarboToML     : productRealm.insulinOnCarboToML,
-      isFavorits             : productRealm.isFavorits)
-  }
-  
-}
 
 
 // MARK: Work With FireBase
@@ -249,7 +216,8 @@ extension FoodInteractor {
   
  private func addProductToFireBase(productRealm:ProductRealm) {
     
-    let productToFireBase = createNewFireBaseProduct(productRealm: productRealm)
+  let productToFireBase = convertWorker.convertProductsRealmToProductNetworkModel(product: productRealm)
+  
     addService.addProductToFireBase(product: productToFireBase)
   }
   

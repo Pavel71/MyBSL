@@ -115,7 +115,7 @@ extension CompObjRealmManager {
   
   // Loaded data From FireStore And Save
   
-  func setCompObjsFromFireStore(compObjs: [CompansationObjectRelam]) {
+  func setCompObjsToRealm(compObjs: [CompansationObjectRelam]) {
     
     let sortedcompObjs = compObjs.sorted(by: {$0.timeCreate < $1.timeCreate})
     do {
@@ -133,17 +133,10 @@ extension CompObjRealmManager {
   
   func addOrUpdateNewCompObj(compObj: CompansationObjectRelam) {
     
-    // пежде чем добавить новый сcompObj - внеси изменения в последний
-    
-    // если будет предыдущий объект то обнови его данными из нового
-    //    updatePrevCompObjWhenAddNew(timeCreateNew: compObj.timeCreate, sugarNew: compObj.sugarBefore)
     
     do {
       self.realm.beginWrite()
       self.realm.add(compObj, update: .modified)
-      
-      
-      
       try self.realm.commitWrite()
       print(self.realm.configuration.fileURL?.absoluteURL as Any,"CompObj in DB")
       

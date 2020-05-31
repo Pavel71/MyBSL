@@ -18,6 +18,7 @@ class RealmManager {
   private var productRealmManager : FoodRealmManager!
   private var sugarRealmManager   : SugarRealmManager!
   private var compObjRealmManager : CompObjRealmManager!
+  private var convertWorker       : ConvertorWorker!
   
   init() {
     let locator = ServiceLocator.shared
@@ -27,6 +28,7 @@ class RealmManager {
     productRealmManager = locator.getService()
     sugarRealmManager   = locator.getService()
     compObjRealmManager = locator.getService()
+    convertWorker       = locator.getService()
   }
   
 }
@@ -67,124 +69,31 @@ extension RealmManager {
     setProducts(productNetworkModels : fireStoreModel.products)
   }
   
-  
   private func setDays(dayNetworkModels: [DayNetworkModel]) {
-    let days = dayNetworkModels.map(convertDayNetworkModelsToRealm)
-    dayRealmManager.setDaysFromFireStore(days: days)
+    let days = dayNetworkModels.map(convertWorker.convertDayNetworkModelsToRealm)
+    dayRealmManager.setDaysToRealm(days: days)
   }
   
   private func setSugars(sugarNetworkModels:[SugarNetworkModel]) {
     
-    let sugars = sugarNetworkModels.map(convertSugarsNetwrokModelToRealm)
-    sugarRealmManager.setSugarFromFireStore(sugars: sugars)
+    let sugars = sugarNetworkModels.map(convertWorker.convertSugarsNetwrokModelToRealm)
+    sugarRealmManager.setSugarToRealm(sugars: sugars)
   }
   
   private func setCompObjs(compObjNetwrokModels:[CompObjNetworkModel]) {
-    let compObjs = compObjNetwrokModels.map(convertCompObjsNetworkModelToRealm)
+    let compObjs = compObjNetwrokModels.map(convertWorker.convertCompObjsNetworkModelToRealm)
     
-    compObjRealmManager.setCompObjsFromFireStore(compObjs: compObjs)
+    compObjRealmManager.setCompObjsToRealm(compObjs: compObjs)
   }
   private func setMeals(mealNetworkModels: [MealNetworkModel]) {
-    let meals = mealNetworkModels.map(convertMealNetwrokToMealRealm)
-    mealRealmManager.setMealsFromFireStore(meals: meals)
+    let meals = mealNetworkModels.map(convertWorker.convertMealNetwrokToMealRealm)
+    mealRealmManager.setMealsToRealm(meals: meals)
   }
   
   private func setProducts(productNetworkModels:[ProductNetworkModel]) {
-    let products = productNetworkModels.map(convertProductNEtwrokModelToProductRealm)
-    productRealmManager.setProductsFromFireStore(products: products)
+    let products = productNetworkModels.map(convertWorker.convertProductNEtwrokModelToProductRealm)
+    productRealmManager.setProductsToRealm(products: products)
   }
   
 }
 
-// MARK: Convert NetwrokModel to Realm Data
-extension RealmManager {
-  
-  
-  // MARK: Convert Days
-  
-  private func convertDayNetworkModelsToRealm(dayNetworkModel: DayNetworkModel) -> DayRealm {
-    
-    let day = DayRealm(id : dayNetworkModel.id, date: Date(timeIntervalSince1970: dayNetworkModel.date))
-    
-    day.listSugarID.append(objectsIn: dayNetworkModel.listSugarID)
-    day.listCompObjID.append(objectsIn: dayNetworkModel.listCompObjID)
-    return day
-  }
-  
-  
-  // MARK: Convert CompObjs
-  
-  private func convertCompObjsNetworkModelToRealm(compObjModel: CompObjNetworkModel) -> CompansationObjectRelam {
-    
-    let compObj = CompansationObjectRelam(
-      id                       : compObjModel.id,
-      timeCreate               : Date(timeIntervalSince1970:compObjModel.timeCreate),
-      typeObject               : TypeCompansationObject(rawValue: compObjModel.typeObject)!,
-      sugarBefore              : compObjModel.sugarBefore,
-      insulinOnTotalCarbo      : compObjModel.insulinOnTotalCarbo,
-      insulinInCorrectionSugar : compObjModel.userSetInsulinToCorrectSugar,
-      totalCarbo               : compObjModel.totalCarbo,
-      placeInjections          : compObjModel.placeInjections)
-    
-    
-    compObj.insulinToCorrectSugarML      = compObjModel.insulinToCorrectSugarML
-    compObj.sugarAfter                   = compObjModel.sugarAfter
-    compObj.compansationFase             = compObjModel.compansationFase
-    
-    let productList = compObjModel.listProduct.map(convertProductNEtwrokModelToProductRealm)
-    compObj.listProduct.append(objectsIn: productList)
-    
-    return compObj
-  }
-  
-  // MARK: Convert Sugars
-  
-  private func convertSugarsNetwrokModelToRealm(sugarNetworkModel: SugarNetworkModel) -> SugarRealm {
-    
-    let sugar = SugarRealm(
-      id                   : sugarNetworkModel.id,
-      time                 : Date(timeIntervalSince1970: sugarNetworkModel.time),
-      sugar                : sugarNetworkModel.sugar,
-      dataCase             : ChartDataCase(rawValue: sugarNetworkModel.dataCase)!,
-      compansationObjectId : sugarNetworkModel.compansationObjectId)
-    
-    return sugar
-    
-  }
-  
-  
-  // MARK: Convert Meals
-  
-  private func convertMealNetwrokToMealRealm(mealNetworkModel: MealNetworkModel) -> MealRealm {
-    let meal = MealRealm(
-      id           : mealNetworkModel.id,
-      name         : mealNetworkModel.name,
-      typeMeal     : mealNetworkModel.typeMeal,
-      isExpandMeal : mealNetworkModel.isExpandMeal)
-    
-    let listProduct = mealNetworkModel.listProduct.map(convertProductNEtwrokModelToProductRealm)
-    
-    meal.listProduct.append(objectsIn: listProduct)
-    return meal
-  }
-  
-  // MARK: Convert Product
-  
-  private func convertProductNEtwrokModelToProductRealm(productNetworkModel: ProductNetworkModel) -> ProductRealm {
-    
-    let product = ProductRealm(
-      id            : productNetworkModel.id,
-      name          : productNetworkModel.name,
-      category      : productNetworkModel.category,
-      carboIn100Grm : productNetworkModel.carboIn100grm,
-      isFavorits    : productNetworkModel.isFavorits,
-      portion       : productNetworkModel.portion,
-      actualInsulin : productNetworkModel.userSetInsulinOnCarbo)
-    
-    product.percantageCarboInMeal = productNetworkModel.percantageCarboInMeal
-    product.insulinOnCarboToML    = productNetworkModel.insulinOnCarboToML
-    
-    return product
-  }
-  
-}

@@ -97,6 +97,7 @@
 		057CC7A924643F7F0049DFD3 /* NetworkModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057CC7A824643F7F0049DFD3 /* NetworkModels.swift */; };
 		057CC7AB24644AF60049DFD3 /* EncodeDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057CC7AA24644AF60049DFD3 /* EncodeDecode.swift */; };
 		057CC7AE246450110049DFD3 /* DeleteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057CC7AD246450110049DFD3 /* DeleteService.swift */; };
+		057CC86E2483E213000CE7F0 /* ConvertorWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057CC86D2483E213000CE7F0 /* ConvertorWorker.swift */; };
 		057E261E24372F7B0081CE56 /* CompObjRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E261D24372F7B0081CE56 /* CompObjRealmManager.swift */; };
 		057E262024372FA40081CE56 /* SugarRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E261F24372FA40081CE56 /* SugarRealmManager.swift */; };
 		057E26222437341D0081CE56 /* NewDayRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E26212437341D0081CE56 /* NewDayRealmManager.swift */; };
@@ -385,6 +386,7 @@
 		057CC7A824643F7F0049DFD3 /* NetworkModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkModels.swift; sourceTree = "<group>"; };
 		057CC7AA24644AF60049DFD3 /* EncodeDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodeDecode.swift; sourceTree = "<group>"; };
 		057CC7AD246450110049DFD3 /* DeleteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteService.swift; sourceTree = "<group>"; };
+		057CC86D2483E213000CE7F0 /* ConvertorWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertorWorker.swift; sourceTree = "<group>"; };
 		057E261D24372F7B0081CE56 /* CompObjRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompObjRealmManager.swift; sourceTree = "<group>"; };
 		057E261F24372FA40081CE56 /* SugarRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarRealmManager.swift; sourceTree = "<group>"; };
 		057E26212437341D0081CE56 /* NewDayRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDayRealmManager.swift; sourceTree = "<group>"; };
@@ -1402,6 +1404,14 @@
 				057CC7AD246450110049DFD3 /* DeleteService.swift */,
 			);
 			path = Delete;
+			sourceTree = "<group>";
+		};
+		057CC86C2483E1F4000CE7F0 /* ConvertorWorker */ = {
+			isa = PBXGroup;
+			children = (
+				057CC86D2483E213000CE7F0 /* ConvertorWorker.swift */,
+			);
+			path = ConvertorWorker;
 			sourceTree = "<group>";
 		};
 		058F5F4823A2490700717042 /* Cells */ = {
@@ -3200,6 +3210,7 @@
 		F1E78D00230D546500592AB8 /* Workers */ = {
 			isa = PBXGroup;
 			children = (
+				057CC86C2483E1F4000CE7F0 /* ConvertorWorker */,
 				05D177D02464319E00F6B846 /* InsulinSupplyWorker */,
 				05D177CB246418E200F6B846 /* UserDefaultsWorker */,
 				0561F37E245C206900A236E6 /* NetworkService */,
@@ -3611,6 +3622,7 @@
 				F150DBF82317DE5100380AE0 /* MealView.swift in Sources */,
 				056647FE24431FE70085F542 /* RangeSlider.swift in Sources */,
 				F1CC2D6B232FB41F00EF7D18 /* ProductListInMealViewController.swift in Sources */,
+				057CC86E2483E213000CE7F0 /* ConvertorWorker.swift in Sources */,
 				F11132B4232BABF2000E6994 /* ProductListHeaderInSection.swift in Sources */,
 				F1E78CE8230D33AE00592AB8 /* StatsModels.swift in Sources */,
 				05D806142348C9CF00C19764 /* MainMenuViewController.swift in Sources */,

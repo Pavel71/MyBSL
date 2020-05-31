@@ -202,7 +202,7 @@ extension MealRealmManager {
   }
   // MARK: Set Meals From FireStore
   
-  func setMealsFromFireStore(meals: [MealRealm]) {
+  func setMealsToRealm(meals: [MealRealm]) {
     let realm = RealmProvider.meals.realm
     
 

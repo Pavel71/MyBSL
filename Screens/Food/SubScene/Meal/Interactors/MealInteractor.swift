@@ -16,7 +16,11 @@ protocol MealBusinessLogic {
 class MealInteractor: MealBusinessLogic {
   
   var presenter     : MealPresentationLogic?
+  
   var realmManager  : MealRealmManager!
+  
+  var convertWorker : ConvertorWorker!
+  
   var addService    : AddService!
   var updateService : UpdateService!
   var deleteService : DeleteService!
@@ -25,6 +29,8 @@ class MealInteractor: MealBusinessLogic {
   
   var isDefaultList = true
   
+  // MARK: Init
+  
   init() {
     let locator = ServiceLocator.shared
     
@@ -32,6 +38,7 @@ class MealInteractor: MealBusinessLogic {
     addService    = locator.getService()
     updateService = locator.getService()
     deleteService = locator.getService()
+    convertWorker = locator.getService()
   }
   
   func makeRequest(request: Meal.Model.Request.RequestType) {
@@ -144,12 +151,9 @@ class MealInteractor: MealBusinessLogic {
           
           self.presenter?.presentData(response: .passSuccessAddOrUpdateMeal(isSuccessAdd:true, isUpdateMeal: true))
           
-         
-          
-          
         } else {
           
-          let mealRealm = createMealRealm(viewModel: viewModel)
+          let mealRealm = convertWorker.createMealRealm(viewModel: viewModel)
           
           realmManager.addNewMeal(mealRealm: mealRealm) { [weak self] (success) in
             
@@ -190,7 +194,7 @@ extension MealInteractor {
   
   // Update
   private func updateMealInFireStore(mealRealm: MealRealm) {
-    let mealNetworkModel = convertMealRealmToMealNetworkModel(mealRealm: mealRealm)
+    let mealNetworkModel = convertWorker.convertMealRealmToMealNetworkModel(mealRealm: mealRealm)
     updateService.updateMealInFireStore(mealNetworkModel: mealNetworkModel)
   }
 
@@ -198,36 +202,11 @@ extension MealInteractor {
   // ADD Meal
   private func addMealToFireStore(mealRealm:MealRealm) {
     
-    let mealNetworkModel = convertMealRealmToMealNetworkModel(mealRealm: mealRealm)
+    let mealNetworkModel = convertWorker.convertMealRealmToMealNetworkModel(mealRealm: mealRealm)
     
     addService.addMealToFireStore(meal: mealNetworkModel)
   }
-  
-  private func convertMealRealmToMealNetworkModel(mealRealm: MealRealm) -> MealNetworkModel {
-    
-    let listProduct:[ProductNetworkModel] = mealRealm.listProduct.map(convertProductRealmToProductNetworkModel)
-    
-    return MealNetworkModel(
-      id           : mealRealm.id,
-      isExpandMeal : mealRealm.isExpandMeal,
-      name         : mealRealm.name,
-      typeMeal     : mealRealm.typeMeal,
-      listProduct  : listProduct)
-  }
-  
-  private func convertProductRealmToProductNetworkModel(productRealm: ProductRealm) -> ProductNetworkModel {
-
-    return ProductNetworkModel(
-      id                     : productRealm.id,
-      name                   : productRealm.name,
-      category               : productRealm.category,
-      carboIn100grm          : productRealm.carboIn100grm,
-      portion                : productRealm.portion,
-      percantageCarboInMeal  : productRealm.percantageCarboInMeal,
-      userSetInsulinOnCarbo  : productRealm.userSetInsulinOnCarbo,
-      insulinOnCarboToML     : productRealm.insulinOnCarboToML,
-      isFavorits             : productRealm.isFavorits)
-  }
+ 
   
 }
 
@@ -236,14 +215,7 @@ extension MealInteractor {
 extension MealInteractor {
   
   
-  private func createMealRealm(viewModel: MealViewModel) -> MealRealm {
-    let newMeal = MealRealm(
-    
-    name         : viewModel.name,
-    typeMeal     : viewModel.typeMeal,
-    isExpandMeal : viewModel.isExpanded)
-    return newMeal
-  }
+  
   
   // MARK: Get Update Meal
    

@@ -152,7 +152,7 @@ extension NewDayRealmManager {
     
   }
   
-  func setDaysFromFireStore(days: [DayRealm]) {
+  func setDaysToRealm(days: [DayRealm]) {
     
     let sortedDays = days.sorted(by: {$0.date < $1.date})
     do {

@@ -35,7 +35,7 @@ final class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPre
   private var compObjRealmManager   : CompObjRealmManager!
   private var dateEnriachmentWorker : DataEnrichmentWorker!
   private var userDefaultsWorker    : UserDefaultsWorker!
-//  let userDefaults = UserDefaults.standard
+  private var convertWorker         : ConvertorWorker!
   
   init() {
     let locator = ServiceLocator.shared
@@ -43,6 +43,7 @@ final class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPre
     compObjRealmManager   = locator.getService()
     dateEnriachmentWorker = locator.getService()
     userDefaultsWorker    = locator.getService()
+    convertWorker         = locator.getService()
     
   }
   
@@ -87,7 +88,7 @@ extension NewCompansationObjectScreenPresenter {
       
       case .convertCompObjRealmToVM(let compObjRealm):
         
-        viewModel = convertCompObjRealmToVM(compObjRealm:compObjRealm)
+        viewModel = convertWorker.convertCompObjRealmToVM(compObjRealm: compObjRealm)
         throwViewModelToVC()
       
       case .updateCurrentSugarInVM(let sugar):
@@ -163,21 +164,8 @@ extension NewCompansationObjectScreenPresenter {
 }
 
 
-// MARK: Convert CompObjRealmToVM
 
-extension NewCompansationObjectScreenPresenter {
-  
-  private func convertCompObjRealmToVM(compObjRealm:CompansationObjectRelam) -> NewCompObjViewModel {
-    
-    
-    let viewModel = ConvertCompObjRealmToVMWorker.convertCompObjRealmToVM(compObjRealm: compObjRealm)
 
-    
-    return viewModel
-    
-  }
-  
-}
 
 
 // MARK: Woek With Sugar VM
@@ -284,6 +272,7 @@ extension NewCompansationObjectScreenPresenter {
     setInjectionCellState()
   }
   
+  // MARK: TO DO Repair
   private func convertProductRealmToProductListVMData(product:ProductRealm) -> ProductListViewModel {
     
     

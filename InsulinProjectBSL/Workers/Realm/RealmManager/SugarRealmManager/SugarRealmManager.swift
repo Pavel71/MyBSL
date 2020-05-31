@@ -76,7 +76,7 @@ extension SugarRealmManager {
 
 extension SugarRealmManager {
   
-  func setSugarFromFireStore(sugars: [SugarRealm]) {
+  func setSugarToRealm(sugars: [SugarRealm]) {
     
     let sortedSugars = sugars.sorted(by: {$0.time < $1.time})
 

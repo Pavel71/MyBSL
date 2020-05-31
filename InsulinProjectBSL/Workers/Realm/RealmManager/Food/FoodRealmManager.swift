@@ -120,7 +120,7 @@ extension FoodRealmManager {
 
   }
   
-  func setProductsFromFireStore(products: [ProductRealm]) {
+  func setProductsToRealm(products: [ProductRealm]) {
     let realm = productProvider.realm
     do {
          realm.beginWrite()

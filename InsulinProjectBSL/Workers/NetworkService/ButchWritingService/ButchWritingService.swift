@@ -60,7 +60,7 @@ extension ButchWritingService {
   func writtingDataAfterAddNewCompObj(
     sugarNetwrokModel       : SugarNetworkModel,
     compObjNetwrokModel     : CompObjNetworkModel,
-    prevCompObjNetwrokModel : CompObjNetworkModel,
+    prevCompObjNetwrokModel : CompObjNetworkModel? = nil,
     userDefaultsData        : [String:Any],
     updateDayID             : String) {
     
@@ -94,27 +94,18 @@ extension ButchWritingService {
     
     batch.updateData(dayUpdate, forDocument: dayRef)
     
-    // UpdateprevCompobj
-    let updatePrevCompObjRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.CompObjs.collectionName).document(prevCompObjNetwrokModel.id)
-    
-    batch.updateData(prevCompObjNetwrokModel.dictionary, forDocument: updatePrevCompObjRef)
-    
     // UpdateUSerdefaults Data
     let userDefaultsRef =  db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.UserDefaults.collectionName).document(currentUserID)
     
     
     batch.updateData(userDefaultsData, forDocument: userDefaultsRef)
+    // UpdateprevCompobj
+    if let prevCompObj = prevCompObjNetwrokModel {
+      let updatePrevCompObjRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.CompObjs.collectionName).document(prevCompObj.id)
+      
+      batch.updateData(prevCompObj.dictionary, forDocument: updatePrevCompObjRef)
+    }
     
-    
-    
-    
-    //    // Update the population of 'SF'
-    //    let sfRef = db.collection("cities").document("SF")
-    //    batch.updateData(["population": 1000000 ], forDocument: sfRef)
-    //
-    //    // Delete the city 'LA'
-    //    let laRef = db.collection("cities").document("LA")
-    //    batch.deleteDocument(laRef)
     
     // Commit the batch
     batch.commit() { err in
@@ -135,7 +126,8 @@ extension ButchWritingService {
   func writtingDataAfterUpdatindCompObj(
     sugarNetwrokModel   : SugarNetworkModel,
     compObjNetwrokModel : CompObjNetworkModel,
-    userDefaultsData    : [String:Any]) {
+    userDefaultsData    : [String:Any],
+    prevCompObj         : CompObjNetworkModel? = nil) {
     
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
@@ -143,22 +135,30 @@ extension ButchWritingService {
     let batch = db.batch()
     
     
-    // Set CompObj
+    // Update CompObj
     let compObjRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.CompObjs.collectionName).document(compObjNetwrokModel.id)
     
     batch.updateData(compObjNetwrokModel.dictionary, forDocument: compObjRef)
     
     
-    
-    // Set Sugsar Realm
+    // Update Sugsar Realm
     let sugarRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Sugars.collectionName).document(sugarNetwrokModel.id)
     
     batch.updateData(sugarNetwrokModel.dictionary, forDocument: sugarRef)
     
+    // Update USerDefaults
     let userDefaultsRef =  db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.UserDefaults.collectionName).document(currentUserID)
      
      
-     batch.updateData(userDefaultsData, forDocument: userDefaultsRef)
+    batch.updateData(userDefaultsData, forDocument: userDefaultsRef)
+    
+    // Update Prev
+    
+    if let prevObj = prevCompObj {
+      let updatePrevCompObjRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.CompObjs.collectionName).document(prevObj.id)
+       
+       batch.updateData(prevObj.dictionary, forDocument: updatePrevCompObjRef)
+    }
     
     batch.commit() { err in
       if let err = err {
@@ -217,6 +217,7 @@ extension ButchWritingService {
     
      // Update Prev CompObj
     if let prevCompobjNetwork = prevCompObjUpdate {
+      
       batch.updateData(prevCompobjNetwork.dictionary, forDocument: compObjRefColl.document(prevCompobjNetwork.id))
     }
     

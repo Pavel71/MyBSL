@@ -164,6 +164,7 @@ extension AppDelegate {
     locator.addService(service: RealmManager())
     locator.addService(service: InsulinSupplyWorker())
     locator.addService(service: DataEnrichmentWorker())
+    locator.addService(service: ConvertorWorker())
     
           
     }
