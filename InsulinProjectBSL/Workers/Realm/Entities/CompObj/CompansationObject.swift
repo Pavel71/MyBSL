@@ -27,21 +27,14 @@ import RealmSwift
 
   
   dynamic var sugarBefore                  : Double = 0
-  
   dynamic var userSetInsulinToCorrectSugar : Double = 0 
   
   // Для машинного обучения по компенсации сахара
   dynamic var sugarDiffToOptimaForMl       : Float = 0
   dynamic var insulinToCorrectSugarML      : Float = 0 // Для Машинного обучения
+
   
-  
-  var sugarCorrectorWorker : ShugarCorrectorWorker!
-  
-  var correctSugarPosition : CorrectInsulinPosition {
-    sugarCorrectorWorker.getWayCorrectPosition(sugar: Float(sugarBefore))
-  }
-  
-  dynamic var sugarAfter       : Double = 0 // Этот параметр буду сетить как только вводится новая дозировка инсулина! Тогда мы будем брать текущий сахар
+  dynamic var sugarAfter       : Double = 0
   dynamic var timeCreate       : Date = Date()
   // На какой стадии находится объект
   
@@ -89,20 +82,31 @@ import RealmSwift
     self.insulinOnTotalCarbo          = insulinOnTotalCarbo
     self.userSetInsulinToCorrectSugar = insulinInCorrectionSugar
     self.placeInjections              = placeInjections
-    
+
+    setSugarDiff()
+
+    }
+  
+  // MARK: Func Set Sugar Diff
+  func setSugarDiff() {
     
     let locator = ServiceLocator.shared
-    self.sugarCorrectorWorker = locator.getService()
+    let sugarCorrectorWorker: ShugarCorrectorWorker! = locator.getService()
     
+    if sugarCorrectorWorker.optimalSugarLevel.isLess(than: self.sugarBefore) {
+         sugarDiffToOptimaForMl = Float(sugarBefore - sugarCorrectorWorker.optimalSugarLevel).roundToDecimal(2)
+       } else {
+         sugarDiffToOptimaForMl = Float(sugarCorrectorWorker.optimalSugarLevel - sugarBefore).roundToDecimal(2)
+       }
+  }
+  // MARK: Get Correct Position
+  
+  func correctSugarPosition() -> CorrectInsulinPosition {
+    let locator = ServiceLocator.shared
+    let sugarCorrectorWorker: ShugarCorrectorWorker! = locator.getService()
     
-    if sugarCorrectorWorker.optimalSugarLevel.isLess(than: sugarBefore) {
-      sugarDiffToOptimaForMl = Float(sugarBefore - sugarCorrectorWorker.optimalSugarLevel)
-    } else {
-      sugarDiffToOptimaForMl = Float(sugarCorrectorWorker.optimalSugarLevel - sugarBefore)
-    }
-
-    
-    }
+    return sugarCorrectorWorker.getWayCorrectPosition(sugar: Float(sugarBefore))
+  }
   
   override static func primaryKey() -> String? {
     return CompansationObjectRelam.Property.id.rawValue

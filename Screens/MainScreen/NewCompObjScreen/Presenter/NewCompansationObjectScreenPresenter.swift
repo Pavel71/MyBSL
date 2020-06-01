@@ -88,7 +88,7 @@ extension NewCompansationObjectScreenPresenter {
       
       case .convertCompObjRealmToVM(let compObjRealm):
         
-        viewModel = convertWorker.convertCompObjRealmToVM(compObjRealm: compObjRealm)
+        viewModel = ConvertCompObjRealmToVMWorker.convertCompObjRealmToVM(compObjRealm: compObjRealm)
         throwViewModelToVC()
       
       case .updateCurrentSugarInVM(let sugar):
@@ -275,8 +275,9 @@ extension NewCompansationObjectScreenPresenter {
   // MARK: TO DO Repair
   private func convertProductRealmToProductListVMData(product:ProductRealm) -> ProductListViewModel {
     
+    let predictInsulin = getPredictInsulinByCarbo(carbo: product.carboInPortion)
     
-    let insulinValue = isAutoCalculateInsulin ? mlWorkerByFood.getPredict(testData: [product.carboInPortion]).first! : nil
+    let insulinValue = isAutoCalculateInsulin ? predictInsulin : nil
     
     // ПО сути здесь уже мы можем сделать первый расчет! Но это пока не особо важно!
       
@@ -330,26 +331,33 @@ extension NewCompansationObjectScreenPresenter {
     viewModel.addMealCellVM.dinnerProductListVM.productsData[index].portion = portion
     
     if isAutoCalculateInsulin {
-      getPredictUnsulinByProduct(index: index)
+      getPredictUnsulinByIndex(index: index)
     }
     
     calculateResultViewModelInProductList()
   }
   
-  private func getPredictUnsulinByProduct(index: Int) {
+  private func getPredictInsulinByCarbo(carbo:Float) -> Float {
+    
+    var predictInsulin:Float
+       
+       print("CARBO DATA",carbo)
+       if  carbo != 0 {
+         let predictInsulinArray = mlWorkerByFood.getPredict(testData: [carbo])
+         predictInsulin = predictInsulinArray.first ?? 0
+       } else {
+         predictInsulin = 0
+       }
+    return predictInsulin
+  }
+  
+  private func getPredictUnsulinByIndex(index: Int) {
     
      let carboData = viewModel.addMealCellVM.dinnerProductListVM.productsData[index].carboInPortion
      
     // Если углеводов нет то сетим руками 0
     
-    var predictInsulin:Float?
-    
-    if  carboData != 0 {
-      let predictInsulinArray = mlWorkerByFood.getPredict(testData: [Float(carboData)])
-      predictInsulin = predictInsulinArray.first
-    } else {
-      predictInsulin = 0
-    }
+    let predictInsulin = getPredictInsulinByCarbo(carbo: carboData.toFloat())
      
      viewModel.addMealCellVM.dinnerProductListVM.productsData[index].insulinValue = predictInsulin
      

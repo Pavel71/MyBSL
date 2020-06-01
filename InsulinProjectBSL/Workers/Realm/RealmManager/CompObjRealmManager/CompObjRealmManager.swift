@@ -168,6 +168,8 @@ extension CompObjRealmManager {
     
     do {
       self.realm.beginWrite()
+      
+      self.realm.delete(compObj.listProduct)
       self.realm.delete(compObj)
       
       try self.realm.commitWrite()
@@ -205,8 +207,12 @@ extension CompObjRealmManager {
       updateCompObj.userSetInsulinToCorrectSugar = transportTuple.insulinCorrect
       updateCompObj.totalCarbo                   = transportTuple.totalCarbo
       updateCompObj.placeInjections              = transportTuple.placeInjections
-      updateCompObj.listProduct.removeAll()
+      
+      self.realm.delete(updateCompObj.listProduct)
+
       updateCompObj.listProduct.append(objectsIn:transportTuple.productsRealm)
+      
+      updateCompObj.setSugarDiff()
       
       try self.realm.commitWrite()
       
@@ -278,7 +284,7 @@ extension CompObjRealmManager {
     let compPosition = getCompObjStateBySugarAfter(sugarAfter: sugarAfter)
     
     updatingPrevCompObjIfNeeded(
-      sugarAfter : sugarAfter,
+      sugarAfter   : sugarAfter,
       compPosition : compPosition,
       prevCompObj  : prevCompobj)
   }

@@ -29,7 +29,12 @@ import RealmSwift
   }
   
   var setPercentageCarboInMeal: Double {
-    set{percantageCarboInMeal = carboInPortion / newValue.toFloat()}
+    set{
+      let percenatge =  carboInPortion / newValue.toFloat()
+      
+      percantageCarboInMeal = percenatge.isNaN ? 0 : percenatge
+      
+    }
     get{return Double(self.percantageCarboInMeal)}
   }
   

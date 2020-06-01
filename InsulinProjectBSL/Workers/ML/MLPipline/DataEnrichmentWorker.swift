@@ -95,7 +95,7 @@ extension  DataEnrichmentWorker {
 
       let sugarAfter = compObj.sugarAfter
       
-      switch compObj.correctSugarPosition {
+      switch compObj.correctSugarPosition() {
 
       case .correctDown:
         // Сахар Высокий нужно было сделать Больше инсулина

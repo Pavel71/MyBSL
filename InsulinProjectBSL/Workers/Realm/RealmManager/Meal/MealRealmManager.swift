@@ -269,10 +269,12 @@ extension MealRealmManager {
     
     guard let index = meal.listProduct.index(matching: "name == %@",productName) else {return nil}
     
+    let product = meal.listProduct[index]
     do {
       
       realm.beginWrite()
       
+      realm.delete(product)
       meal.listProduct.remove(at: index)
       
       try realm.commitWrite()

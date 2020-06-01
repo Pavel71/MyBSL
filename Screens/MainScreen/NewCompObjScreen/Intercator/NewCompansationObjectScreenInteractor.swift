@@ -264,6 +264,7 @@ extension NewCompansationObjectScreenInteractor {
     
     // После обновления и записи в реамл я получу обновленный объект
     updateCompObj = compRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: updateCompObj.id)
+    
   }
 
   private func saveCompObjToRealm(compObj: CompansationObjectRelam) {
