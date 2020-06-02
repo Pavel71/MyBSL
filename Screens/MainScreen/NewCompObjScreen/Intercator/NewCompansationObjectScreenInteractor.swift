@@ -124,7 +124,8 @@ extension NewCompansationObjectScreenInteractor {
         
         // Проще отсюда послать сигнал что все обновленно!
 
-      } else {
+      } else { // ADD new
+        
         // Создаем новые объекте
         let compObj    = convertWorker.convertViewModelToCompObjRealm(viewModel: viewModel)
         let sugarRealm = convertWorker.convertCompObjRealmToSugarRealm(compObj: compObj)
@@ -141,17 +142,14 @@ extension NewCompansationObjectScreenInteractor {
           
           self.presenter?.presentData(response: .learnMlForNewData)
           
-                  // 1. Добавляем CompObj
+                // 1. Добавляем CompObj
                  // 2. Добавляем  Sugar
                  // 3. Обновляем Insulin Value
                  // 4. Обновляем предыдущий compObj
                  // 5. Добавляем id в Day
+                 // 6. После расчета Машшиного обуяения сохраняем еще и веса!
           
           self.writeDataToFireStoreThenAddCompObj(sugarRealm: sugarRealm, compObj: compObj)
-          // Здесь ошибка! Так нельзя делать! У нас есть кейс когда предыдущего дня нет!
-          // Без нормальных тестов мне пипец!
-          
-       
           
         }
 
@@ -206,16 +204,16 @@ extension NewCompansationObjectScreenInteractor {
     compObj: CompansationObjectRelam,sugarRealm : SugarRealm,totalInsulin: Float) {
     
     // Update All Data In Local DB
-      
+      // Update Prev Compobj After Add
       updatePrevCompObjFromDataInNewCompObj(timeCreate: compObj.timeCreate, sugarAfter: compObj.sugarBefore)
-      
+      // Set COmpOBj
       saveCompObjToRealm(compObj      : compObj)
-     
+     // Set Sugar
       saveSugarToRealm(sugarRealm     : sugarRealm)
-      
+      // Add Id to Day
       newDayRealmManager.addNewCompObjId(compObjId: compObj.id)
       newDayRealmManager.addNewSugarId(sugarId: sugarRealm.id)
-      
+      // Calculate New Insulin Supply
       insulinSupplyWorker.setNewInsulinSupplyToUserDefaults(
         totalInsulin: totalInsulin,
         updatedType: .add)

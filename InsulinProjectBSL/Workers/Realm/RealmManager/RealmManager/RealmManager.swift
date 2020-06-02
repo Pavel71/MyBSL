@@ -51,6 +51,10 @@ extension RealmManager {
     
   }
   
+  func deleteEmptyDayFromRealm() {
+    dayRealmManager.deleteCurrentDay()
+  }
+  
 }
 
 

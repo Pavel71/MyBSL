@@ -121,6 +121,16 @@ extension NewDayRealmManager {
       print(error.localizedDescription)
     }
   }
+  
+  func deleteCurrentDay() {
+    do {
+      self.realm.beginWrite()
+      self.realm.delete(currentDay)
+      try self.realm.commitWrite()
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
 }
 
 

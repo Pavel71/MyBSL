@@ -51,6 +51,9 @@ enum NetworkFirebaseError: Error {
   
   // Casting
   case castNetworkModelError
+  
+  // Checks
+  case checkDayByDateInFireStoreError
 
   
 }

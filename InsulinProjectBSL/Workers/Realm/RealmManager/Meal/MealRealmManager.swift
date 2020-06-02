@@ -98,7 +98,7 @@ extension MealRealmManager {
     return items.filter("name CONTAINS[cd] %@",character)
   }
   
-  // Delete Meal
+  //MARK: Delete Meal
   func deleteMeal(mealId: String) {
     let realm = RealmProvider.meals.realm
     
@@ -106,8 +106,9 @@ extension MealRealmManager {
     
     do {
          realm.beginWrite()
-         
-          realm.delete(mealById)
+      
+         realm.delete(mealById.listProduct)
+         realm.delete(mealById)
          
          try realm.commitWrite()
 

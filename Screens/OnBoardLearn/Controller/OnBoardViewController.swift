@@ -130,6 +130,7 @@ class OnBoardViewController: UIPageViewController {
       savingHUD.show(in: pages.last!.view)
       
       let appStateService: AppState   = AppState.shared
+      // Save day to FireStore
       appStateService.setFirstDayToFireStore()
       
       onBoardVM.setDataToFireStore { (result) in

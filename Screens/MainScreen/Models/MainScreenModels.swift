@@ -17,7 +17,7 @@ enum MainScreen {
     struct Request {
       enum RequestType {
         
-        case getBlankViewModel
+        
         case checkLastDayInDB
         
         // Set Data to Realm

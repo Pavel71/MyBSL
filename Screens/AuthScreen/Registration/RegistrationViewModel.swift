@@ -56,37 +56,7 @@ class RegistrationViewModel {
     }
     
   }
-  
-//  private func loadDataInStorage(complation: @escaping ((Result<Bool,Error>) -> Void)) {
-//
-//    guard let image = bindableImage.value else {return}
-    
-//    SaveService.saveImageInStorage(image: image) { (result) in
-//      switch result {
-//      case .failure(let error):
-//        complation(.failure(error))
-//      case .success(let url):
-//
-//        let urlString = url.absoluteString
-//        self.saveDataInFireStore(imageUrlString: urlString, complation: complation)
-//      }
-//    }
-//  }
-  
-  private func saveDataInFireStore(imageUrlString: String, complation: @escaping ((Result<Bool,Error>) -> Void)) {
-    
-    guard let fullName = fullName else {return}
-    
-//    SaveService.saveRegisterDataInFireStore(imageUrlString: imageUrlString, fullName: fullName) { (result) in
-//
-//      switch result {
-//      case .failure(let error):
-//        complation(.failure(error))
-//      case .success(let succses):
-//        complation(.success(succses))
-//      }
-//    }
-  }
+
   
   
   

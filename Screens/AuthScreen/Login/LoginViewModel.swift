@@ -42,6 +42,7 @@ class LoginModelView {
     LoginService.sigIn(email: email, password: password, complation: complation)
   }
   
+  // MARK: Fetch Data From FireStore
   func fetchDataFromFirebase(complation: @escaping ((Result<Bool,NetworkFirebaseError>) -> Void)) {
     
     
@@ -54,10 +55,15 @@ class LoginModelView {
         self.userDefaults.setDataToUserDefaults(userDefaultsNetwrokModel: models.userDefaults[0])
         
         let realmMagaer:RealmManager! = ServiceLocator.shared.getService()
+        
+        // 2. Удалим пустой день который создался при запуске приложения
+        realmMagaer.deleteEmptyDayFromRealm()
 
         // 3. запустить процесс сохранения в реалме!
         
-        print("Сохраняю данные в Реалм")
+        print("Сохраняю данные в Реалм из FireStore")
+        // К этому моменту у меня будет 1 день с сегодняшней датой в базе данных!
+        // Нужно сегодняшний день взять из FireStore - а из реалма удалить его нахер!
         
         realmMagaer.setNetwrokdDataToRealm(fireStoreModel: models)
         // Даже не знаю если четсно как это бомбить!
@@ -69,23 +75,6 @@ class LoginModelView {
       }
     }
     
-//    fetchService.fetchUserDefaultsDataFromFireStore { (result) in
-//      switch result {
-//
-//      case .success(let userDefData):
-//
-//        // Получили данные теперь сохраним
-//        let locator = ServiceLocator.shared
-//        let userDefaults: UserDefaultsWorker! = locator.getService()
-//
-//        userDefaults.setDataToUserDefaults(data: userDefData)
-//        complation(.success(true))
-//
-//      case .failure(let error):
-//        complation(.failure(error))
-//
-//      }
-//    }
     
   }
 

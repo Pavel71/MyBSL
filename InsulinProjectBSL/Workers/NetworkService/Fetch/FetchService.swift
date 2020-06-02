@@ -30,6 +30,42 @@ final class FetchService {
 }
 
 
+// MARK: Check Day in DB
+extension FetchService {
+  
+  func checkDayByDateInFireStore (complation: @escaping (Result<DayNetworkModel?,NetworkFirebaseError>) -> Void) {
+    
+    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+    guard let date = Date().onlyDate()?.timeIntervalSince1970 else {return}
+    
+    let query = Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).whereField("date", isEqualTo: date)
+    
+    query.getDocuments { (querySnapshot, err) in
+      if let error = err {
+        print("error")
+        complation(.failure(.checkDayByDateInFireStoreError))
+      }
+      
+      if querySnapshot?.documents.isEmpty == false {
+        // день есть в базе данных нужно вернуть этот день
+        guard let dayQuery = querySnapshot?.documents.first else {return}
+        
+        let dayNetwrokModel = self.convertFireStoreToNetwrokModel(data: dayQuery.data(), type: DayNetworkModel.self) as? DayNetworkModel
+        
+        complation(.success(dayNetwrokModel))
+      } else { // Дня нет в базе данных возвращаем просто false
+        complation(.success(nil))
+      }
+      
+      
+    }
+    
+    
+  }
+  
+}
+
+
 
 // MARK: Fetch All Data From FireStore
 
@@ -98,7 +134,7 @@ extension FetchService {
 //      }
 //
 //      dictRealmData[self.usersQuery.Days.collectionName] = days
-      self.convertAllModels(data: dictRealmData) { result in
+      self.convertFireStoreModel(data: dictRealmData) { result in
         
         switch result {
           
@@ -178,12 +214,10 @@ extension FetchService {
 extension FetchService {
   
   
-  private func convertAllModels(
+  private func convertFireStoreModel(
     data:[ String:[[String: Any]] ],
     complation: @escaping (Result<FireStoreNetwrokModels,NetworkFirebaseError>) -> Void) {
-    
-    print(data,"Data Comming")
-    
+        
     do {
       let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
       // Нужно декодировать!
@@ -198,81 +232,26 @@ extension FetchService {
       complation(.failure(.castNetworkModelError))
     }
   }
+  
+  private func convertFireStoreToNetwrokModel <T: NetworkModelable>(
+    data:[String: Any],
+    type: T.Type
+    ) -> NetworkModelable? {
+    do {
+        let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
+        // Нужно декодировать!
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .secondsSince1970
+        
+        
+        let model = try decoder.decode(type.self, from: jsonData)
+        
+        return model
+      } catch (_) {
+        return nil
+      }
+  }
  
-//    private func convertFireStoreDataToNetworkModels<T: NetworkModelable>(
-//      data      : [String: Any],
-//      typeModel : T.Type,
-//      complation: @escaping (Result<NetworkModelable,CastFireStoreDataToNetwrokModelError>) -> Void) {
-//
-//  //    let some = typesCastingDict[]
-//
-//      do {
-//        let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
-//        // Нужно декодировать!
-//        let model = try JSONDecoder().decode(typeModel.self, from: jsonData)
-//
-//        complation(.success(model))
-//      } catch (_) {
-//        complation(.failure(.castNetworkModelError))
-//      }
-//
-//    }
-  
-  // MARK: Cast FireStoreData to CompObjNetwork Model
-  
-//  private func convertCompObj(
-//    documents:[QueryDocumentSnapshot],
-//    complation: @escaping (Result<[CompObjNetworkModel],CastFireStoreDataToNetwrokModelError>) -> Void) {
-//
-//    var arr: [CompObjNetworkModel] = []
-//
-//    documents.forEach { (document) in
-//
-//      self.convertFireStoreDataToNetworkModels(
-//        data: document.data(),
-//        typeModel: CompObjNetworkModel.self) { (result) in
-//
-//          switch result {
-//          case .success(let model):
-//               arr.append(model as! CompObjNetworkModel)
-//          case .failure(_):
-//            complation(.failure(.castCompobjModelError))
-//          }
-//      }
-//
-//    }
-//
-//    complation(.success(arr))
-//
-//  }
-  
-  // MARK: Convert FireStore Days to Day Network Model
-  
-//  private func convertDay(
-//    documents:[QueryDocumentSnapshot],
-//    complation: @escaping (Result<[DayNetworkModel],CastFireStoreDataToNetwrokModelError>) -> Void) {
-//
-//    var arr: [DayNetworkModel] = []
-//
-//    documents.forEach { (document) in
-//
-//      self.convertFireStoreDataToNetworkModels(
-//        data: document.data(),
-//        typeModel: DayNetworkModel.self) { (result) in
-//
-//          switch result {
-//          case .success(let model):
-//               arr.append(model as! DayNetworkModel)
-//          case .failure(_):
-//            complation(.failure(.castDayModelError))
-//          }
-//      }
-//
-//    }
-//
-//    complation(.success(arr))
-//
-//  }
-  
+
   
 }
