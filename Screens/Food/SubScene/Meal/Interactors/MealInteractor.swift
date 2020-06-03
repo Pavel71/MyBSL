@@ -13,17 +13,18 @@ protocol MealBusinessLogic {
   func makeRequest(request: Meal.Model.Request.RequestType)
 }
 
-class MealInteractor: MealBusinessLogic {
-  
-  var presenter     : MealPresentationLogic?
-  
-  var realmManager  : MealRealmManager!
-  
-  var convertWorker : ConvertorWorker!
-  
-  var addService    : AddService!
-  var updateService : UpdateService!
-  var deleteService : DeleteService!
+class MealInteractor : MealBusinessLogic {
+   
+  var presenter      : MealPresentationLogic?
+   
+  var realmManager   : MealRealmManager!
+   
+  var convertWorker  : ConvertorWorker!
+   
+  var addService     : AddService!
+  var updateService  : UpdateService!
+  var deleteService  : DeleteService!
+  var listnerService : ListnerService!
   
 //  var items: Results<MealRealm>!
   
@@ -34,11 +35,13 @@ class MealInteractor: MealBusinessLogic {
   init() {
     let locator = ServiceLocator.shared
     
-    realmManager  = locator.getService()
-    addService    = locator.getService()
-    updateService = locator.getService()
-    deleteService = locator.getService()
-    convertWorker = locator.getService()
+    realmManager   = locator.getService()
+    addService     = locator.getService()
+    updateService  = locator.getService()
+    deleteService  = locator.getService()
+    listnerService = locator.getService()
+    convertWorker  = locator.getService()
+    
   }
   
   func makeRequest(request: Meal.Model.Request.RequestType) {
@@ -46,7 +49,7 @@ class MealInteractor: MealBusinessLogic {
     
     workWithMealRequest(request: request)
     workWithProductListFromMealRequests(request: request)
-    
+    workWithFireStore(request: request)
     switch request {
       
     // Show Sections By Type OF meal
@@ -88,6 +91,37 @@ class MealInteractor: MealBusinessLogic {
     
   }
   
+  // MARK: Set FireStore Meal Observer
+  
+  private func workWithFireStore(request:Meal.Model.Request.RequestType) {
+    switch request {
+    case .setFireStoreMealObserver:
+      print("Set Meal Observer")
+      listnerService.setMealListner { (result) in
+        
+        switch result {
+        case .failure(let error):
+          print("Error",error)
+        case .success((let mealModel,let type)):
+          
+          let mealRealm = self.convertWorker.convertMealNetwrokToMealRealm(mealNetworkModel: mealModel)
+          
+          switch type {
+          case .added,.modifided:
+            
+            self.realmManager.addMeal(meal: mealRealm)
+          case .removed:
+            
+            self.realmManager.deleteMealAfterFirestoreListnerSignal(mealRealm: mealRealm)
+          
+          }
+        }
+      }
+      
+    default:break
+    }
+  }
+  
   // MARK: Work With Products Requests
   
   private func workWithProductListFromMealRequests(request:Meal.Model.Request.RequestType) {
@@ -95,7 +129,6 @@ class MealInteractor: MealBusinessLogic {
     switch  request {
       // Product List Delete Update Add
       case .deleteProductFromMeal(let mealId, let productName):
-        
         
         guard let meal = realmManager.deleteProductFromMeal(productName: productName, mealId: mealId) else {return}
       

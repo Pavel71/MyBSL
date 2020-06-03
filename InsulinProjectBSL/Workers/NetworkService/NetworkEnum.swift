@@ -54,6 +54,10 @@ enum NetworkFirebaseError: Error {
   
   // Checks
   case checkDayByDateInFireStoreError
+  
+  // Observing
+  case productListnerGetDataError
+  case mealListnerGetDataError
 
   
 }

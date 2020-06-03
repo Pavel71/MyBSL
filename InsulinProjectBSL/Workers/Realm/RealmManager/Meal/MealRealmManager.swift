@@ -119,6 +119,13 @@ extension MealRealmManager {
 
   }
   
+  func deleteMealAfterFirestoreListnerSignal(mealRealm: MealRealm) {
+    let realm = RealmProvider.meals.realm
+    
+    guard let meal = realm.object(ofType: MealRealm.self, forPrimaryKey: mealRealm.id) else {return}
+    deleteMeal(mealId: meal.id)
+  }
+  
   // MARK: Change Expanded Fields
   func changeMealExpande(mealId: String) {
     let realm = RealmProvider.meals.realm
@@ -183,7 +190,7 @@ extension MealRealmManager {
     
   }
   
-  private func addMeal(meal: MealRealm) {
+  func addMeal(meal: MealRealm) {
     
     let realm = RealmProvider.meals.realm
     
@@ -269,15 +276,12 @@ extension MealRealmManager {
     guard let  meal = getMealById(mealId: mealId) else {return nil}
     
     guard let index = meal.listProduct.index(matching: "name == %@",productName) else {return nil}
-    
     let product = meal.listProduct[index]
+    
     do {
       
       realm.beginWrite()
-      
       realm.delete(product)
-      meal.listProduct.remove(at: index)
-      
       try realm.commitWrite()
       
       

@@ -42,6 +42,25 @@ class NewDayRealmManager {
   
 }
 
+// MARK: Replace Day
+extension NewDayRealmManager {
+  
+  func replaceCurrentDay(replaceDay: DayRealm) {
+    do {
+         
+         self.realm.beginWrite()
+         self.realm.delete(currentDay)
+         self.realm.add(replaceDay)
+         
+         try self.realm.commitWrite()
+         print(self.realm.configuration.fileURL?.absoluteURL as Any,"Day in DB")
+         
+       } catch {
+         print(error.localizedDescription)
+       }
+    self.currentDay = replaceDay
+  }
+}
 
 // MARK: Fetch
 extension NewDayRealmManager {

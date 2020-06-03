@@ -10,6 +10,7 @@
 		0509FD00233F9DBC00B04B30 /* ProductListResultWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0509FCFF233F9DBC00B04B30 /* ProductListResultWorker.swift */; };
 		0509FD04233FB11A00B04B30 /* ProductListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0509FD03233FB11A00B04B30 /* ProductListModel.swift */; };
 		0509FD06233FCA9700B04B30 /* DinnerRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0509FD05233FCA9700B04B30 /* DinnerRealm.swift */; };
+		050C97AD2487AB2F00A9B085 /* ListnerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 050C97AC2487AB2F00A9B085 /* ListnerService.swift */; };
 		0516E03B242B72BB00F26FAD /* Date + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0516E03A242B72BB00F26FAD /* Date + Extension.swift */; };
 		0518C40E247D58590076F196 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0518C40D247D58590076F196 /* RealmManager.swift */; };
 		052B4E8D2355D09E00464A6C /* MenuMealListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B4E8C2355D09E00464A6C /* MenuMealListCell.swift */; };
@@ -299,6 +300,7 @@
 		0509FCFF233F9DBC00B04B30 /* ProductListResultWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListResultWorker.swift; sourceTree = "<group>"; };
 		0509FD03233FB11A00B04B30 /* ProductListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListModel.swift; sourceTree = "<group>"; };
 		0509FD05233FCA9700B04B30 /* DinnerRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerRealm.swift; sourceTree = "<group>"; };
+		050C97AC2487AB2F00A9B085 /* ListnerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListnerService.swift; sourceTree = "<group>"; };
 		0516E03A242B72BB00F26FAD /* Date + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extension.swift"; sourceTree = "<group>"; };
 		0518C40D247D58590076F196 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		052B4E8C2355D09E00464A6C /* MenuMealListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuMealListCell.swift; sourceTree = "<group>"; };
@@ -614,6 +616,14 @@
 				05952A4E233BB0FD00EE996E /* BaseProductList.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		050C97AB2487AB1200A9B085 /* ListnerService */ = {
+			isa = PBXGroup;
+			children = (
+				050C97AC2487AB2F00A9B085 /* ListnerService.swift */,
+			);
+			path = ListnerService;
 			sourceTree = "<group>";
 		};
 		050D32CA2449EE0C00FAC3A0 /* Depricated */ = {
@@ -1252,6 +1262,7 @@
 		0561F37E245C206900A236E6 /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
+				050C97AB2487AB1200A9B085 /* ListnerService */,
 				05BA55D824811B2800DE6F94 /* ButchWritingService */,
 				0561F381245C20E900A236E6 /* NetworkEnum.swift */,
 				05908DA224615F94002DDAFC /* NetworkTasks */,
@@ -3693,6 +3704,7 @@
 				05733CE123FA8512004197B2 /* Array+ Extensions.swift in Sources */,
 				05510CC4234DEC760076FB92 /* MenuRealmWorker.swift in Sources */,
 				F1EC85A8233251AD00E14D33 /* UiImageView + Extension.swift in Sources */,
+				050C97AD2487AB2F00A9B085 /* ListnerService.swift in Sources */,
 				F1E78CCA230D336B00592AB8 /* MainModels.swift in Sources */,
 				F1116329231D555F000C79FA /* ProductListCell.swift in Sources */,
 				05CBEBA723A21FD9001D9EEA /* NewCompansationObjectScreenViewController.swift in Sources */,

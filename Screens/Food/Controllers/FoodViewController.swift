@@ -105,6 +105,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     setUpView()
     //    fetchProductBySegment(segment: currentSegment)
     interactor?.makeRequest(request: .fetchAllProducts)
+    interactor?.makeRequest(request: .setProductsFireStoreLisner)
     
   }
   
@@ -129,6 +130,7 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     
     //    realmObserverTokken.invalidate()
     NotificationCenter.default.removeObserver(self)
+//    interactor?.makeRequest(request: .dissmisProductsFireStoreListner)
   }
   
   
@@ -158,7 +160,12 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
       
       AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: true)
       
+    case .reloadTableView:
+      reloadTableView()
+      
     }
+    
+    
     
     // Задача здесь простая если какие то секции открыты то после перезагрузки отсавить их!
     

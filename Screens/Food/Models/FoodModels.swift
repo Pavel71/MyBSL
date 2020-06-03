@@ -37,6 +37,13 @@ enum Food {
         case updateCurrentProductInRealm(viewModel: FoodCellViewModel)
         case addNewProductInRealm(viewModel: FoodCellViewModel)
         
+        // FireStore
+        
+        case setProductsFireStoreLisner
+        case dissmisProductsFireStoreListner
+        
+        
+        
         
 
       }
@@ -49,6 +56,8 @@ enum Food {
         case prepareDataToFillNewProductViewModel(categorylist: [String], updateProduct: ProductRealm?)
         
         case succesAddNewProduct(succes: Bool)
+        
+        case reloadTableView
 
     
       }
@@ -60,6 +69,9 @@ enum Food {
         case setViewModel(viewModel: [FoodViewModel])
         
         case setDataToNewProductView(viewModel: NewProductViewModel)
+        
+        // Reload Tableviw
+        case reloadTableView
         
 //        case displayAlertSaveNewProduct(succes: Bool)
         

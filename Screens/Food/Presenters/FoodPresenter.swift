@@ -54,6 +54,8 @@ class FoodPresenter: FoodPresentationLogic {
         
         viewController?.displayData(viewModel: .setViewModel(viewModel: foodViewModel))
       
+    case .reloadTableView:
+      viewController?.displayData(viewModel: .reloadTableView)
       
     default: break
     }

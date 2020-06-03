@@ -124,6 +124,7 @@ class MealViewController: UIViewController, MealDisplayLogic,MainControllerInCon
 
     setUpView()
     interactor?.makeRequest(request: .showListMealsBySection(isDefaultList: headerInSectionWorker.isDefaultListMeal))
+    interactor?.makeRequest(request: .setFireStoreMealObserver)
 
   }
   // Set Observer Tokken
@@ -369,7 +370,7 @@ extension MealViewController {
     let newMealViewModel = newMealView.getViewModel()
     interactor?.makeRequest(request: .addOrUpdateNewMeal(viewModel: newMealViewModel))
   }
-  
+  // MARK: Signals
   @objc private func didTapShowTypeOfMealsButton() {
     
     hiddenPickerView()
@@ -448,7 +449,7 @@ extension MealViewController {
   
   
   
-  // HHeader in Section Button
+  //MARK: HHeader in Section Button
   
   func didTapHeaderSectionButton(button: UIButton, currentExpand: Expand) {
     

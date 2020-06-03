@@ -28,9 +28,10 @@ class FoodInteractor: FoodBusinessLogic {
   var realmManager  : FoodRealmManager!
   
   
-  var addService    : AddService!
-  var deleteService : DeleteService!
-  var updateService : UpdateService!
+  var addService     : AddService!
+  var deleteService  : DeleteService!
+  var updateService  : UpdateService!
+  var listnerService : ListnerService!
   
   var convertWorker : ConvertorWorker!
   
@@ -46,15 +47,17 @@ class FoodInteractor: FoodBusinessLogic {
   
   var items: Results<ProductRealm>!
   
+  // MARK: Init
   
   init() {
     let locator = ServiceLocator.shared
-    realmManager  = locator.getService()
-    addService    = locator.getService()
-    deleteService = locator.getService()
-    updateService = locator.getService()
+    realmManager   = locator.getService()
+    addService     = locator.getService()
+    deleteService  = locator.getService()
+    updateService  = locator.getService()
+    listnerService = locator.getService()
     
-    convertWorker = locator.getService()
+    convertWorker  = locator.getService()
   }
   
   
@@ -62,7 +65,7 @@ class FoodInteractor: FoodBusinessLogic {
     
     workWithTableViewViewModel(request: request)
     workWithNewFoodViewViewModel(request: request)
-
+    addAndDismissProductFSListner(request:request)
     
   }
   
@@ -70,6 +73,7 @@ class FoodInteractor: FoodBusinessLogic {
 
     fetchDataFromDB(request: request)
     changeDB(request: request)
+    
     
     switch request {
 
@@ -85,6 +89,46 @@ class FoodInteractor: FoodBusinessLogic {
     }
     
   }
+  
+  // MARK: FireStore Lisner
+  
+  private func addAndDismissProductFSListner(request:Food.Model.Request.RequestType) {
+    
+    switch request {
+    case .setProductsFireStoreLisner:
+      print("Start Set Product FireStore Lisner")
+      listnerService.setProductLisner { result in
+        
+        switch result {
+        case .success((let model,let type)):
+          let productRealm = self.convertWorker.convertProductNEtwrokModelToProductRealm(productNetworkModel: model)
+          switch type {
+          case .added,.modifided:
+            print("Добавить в реалм или Обновим старые",model)
+            self.realmManager.addNewProduct(product: productRealm)
+          case .removed:
+            print("Удалить в реалме")
+            self.realmManager.deleteWhenProductListnerGetData(product: productRealm)
+          }
+          self.didChangeProductDB()
+          self.presenter?.presentData(response: .reloadTableView)
+          
+        case .failure(let error):
+          print("error",error)
+        }
+        
+      }
+      
+      
+      
+    case .dissmisProductsFireStoreListner:
+      print("Dissmis Product FireStore Lisner")
+      listnerService.dismissProductListner()
+      
+    default:break
+    }
+  }
+  
   // MARK: Realm Change DB
   private func changeDB(request:Food.Model.Request.RequestType) {
     
@@ -125,8 +169,8 @@ class FoodInteractor: FoodBusinessLogic {
       guard let dataDict:[String: Any] = getDataDict(viewModel: viewModel) else {return}
       
       realmManager.updateAllFields(dataDict: dataDict, productId: id)
-      
       updateProductInFireBase(productId: id, updateData: dataDict)
+      
       didChangeProductDB()
 
       
@@ -200,9 +244,6 @@ class FoodInteractor: FoodBusinessLogic {
     self.presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
 
   }
-  
-
-  
 
   
 }

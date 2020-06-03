@@ -211,9 +211,19 @@ extension FoodRealmManager {
     
   }
   
+
   
+}
+  //MARK: DELETE
+extension FoodRealmManager {
   
-  //DELETE
+  func deleteWhenProductListnerGetData(product: ProductRealm) {
+    let realm = productProvider.realm
+    
+    guard let realmProduct = realm.object(ofType: ProductRealm.self, forPrimaryKey: product.id) else {return}
+    deleteProduct(product: realmProduct)
+  }
+
   func deleteProduct(product: ProductRealm) {
     
     let realm = productProvider.realm

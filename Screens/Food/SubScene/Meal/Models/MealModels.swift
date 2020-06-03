@@ -42,6 +42,9 @@ enum Meal {
         case updateProductPortionFromMeal(mealId: String,productname: String,portion:Int)
         case addProductInMeal(mealId: String,product: ProductRealm)
         
+        // Set Meal Observer
+        case setFireStoreMealObserver
+        
         
       }
     }

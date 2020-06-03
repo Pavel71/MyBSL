@@ -13,9 +13,9 @@ protocol MainScreenBusinessLogic {
 }
 
 class MainScreenInteractor: MainScreenBusinessLogic {
-
+  
   var presenter: MainScreenPresentationLogic?
-
+  
   
   // Realm and UserDefaults
   
@@ -33,7 +33,7 @@ class MainScreenInteractor: MainScreenBusinessLogic {
   let deleteService        : DeleteService!
   let butchWrittingService : ButchWritingService!
   let fetchService         : FetchService!
- 
+  
   // MARK: Init
   
   init() {
@@ -41,14 +41,14 @@ class MainScreenInteractor: MainScreenBusinessLogic {
     let locator = ServiceLocator.shared
     
     newDayRealmManager   = locator.getService()
-     
+    
     insulinSupplyWorker  = locator.getService()
     compObjRealmManager  = locator.getService()
     sugarRealmManger     = locator.getService()
-     
+    
     userDefaultsWorker   = locator.getService()
     convertWorker        = locator.getService()
-     
+    
     updateService        = locator.getService()
     addService           = locator.getService()
     deleteService        = locator.getService()
@@ -57,7 +57,7 @@ class MainScreenInteractor: MainScreenBusinessLogic {
   }
   
   func makeRequest(request: MainScreen.Model.Request.RequestType) {
-
+    
     catchRealmRequests(request: request)
     catchViewModelRequests(request: request)
     
@@ -66,9 +66,9 @@ class MainScreenInteractor: MainScreenBusinessLogic {
   private func passDayRealmToConvertInVMInPresenter() {
     
     
-     let day = newDayRealmManager.getCurrentDay()
-     presenter?.presentData(response: .prepareViewModel(realmData: day))
-   }
+    let day = newDayRealmManager.getCurrentDay()
+    presenter?.presentData(response: .prepareViewModel(realmData: day))
+  }
   
 }
 
@@ -79,10 +79,10 @@ extension MainScreenInteractor {
   private func catchViewModelRequests(request: MainScreen.Model.Request.RequestType) {
     
     switch request {
-
+      
       
     case .setInsulinSupplyValue(let insulinSupplyValue):
-
+      
       userDefaultsWorker.setInsulinSupplyValue(insulinSupply: insulinSupplyValue)
       
       self.updateService.updateInsulinSupplyDataInFireBase(supplyInsulin: insulinSupplyValue)
@@ -102,7 +102,7 @@ extension MainScreenInteractor {
     switch request {
       
     case .setSugarVM(let sugarViewModel):
-
+      
       let sugarRealm = convertWorker.convertToSugarRealm(sugarVM: sugarViewModel)
       // Сохранил сахара в базе данных
       
@@ -111,20 +111,20 @@ extension MainScreenInteractor {
       
       
       self.addNewSugarToFireStore(sugarRealm: sugarRealm, dayId: newDayRealmManager.getCurrentDay().id)
-
+      
       passDayRealmToConvertInVMInPresenter()
       // Просто передаю модель
       
       
       
-      // MARK: Delete COmpObj
+    // MARK: Delete COmpObj
     case .deleteCompansationObj(let compObjId):
       
       guard
         let compObj = compObjRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: compObjId),
         let deleteSugarId = newDayRealmManager.fetchSugarIdByCompObjId(compObjId: compObjId)
         
-      else {return}
+        else {return}
       
       // 1. Удалить Sugar
       // 2. Уадлить CompObj
@@ -133,12 +133,12 @@ extension MainScreenInteractor {
       // 4. расчитать  Insulin Supply
       
       deleteDataAfterDeletiedCompObj(compObj: compObj, sugarId: deleteSugarId)
-
+      
       
       
       // здесь нам нужно все таки получить обновленную модель дня и впиздюшить ее
       writtingDataToFireStoreAfterDeleteCompobj(compObjId: compObjId, sugarId: deleteSugarId)
-
+      
       passDayRealmToConvertInVMInPresenter()
       
     case .getCompansationObj(let compObjId):
@@ -147,10 +147,10 @@ extension MainScreenInteractor {
       
       presenter?.presentData(response: .passCompansationObj(compObj: compObj))
       
-      // MARK: CheckLastDayInDB
+    // MARK: CheckLastDayInDB
     case .checkLastDayInDB:
       
-     checkDayInRealm()
+      checkDayInRealm()
       
     case .selectDayByCalendar(let date):
       // нам приходит запрос выбрать предыдущий день
@@ -165,7 +165,7 @@ extension MainScreenInteractor {
       let day = newDayRealmManager.getCurrentDay()
       let dayNetwork = convertWorker.convertDayRealmToDayNetworkLayer(dayRealm: day)
       addService.addDayToFireStore(dayNetworkModel: dayNetwork)
-
+      
     default:break
     }
     
@@ -173,7 +173,7 @@ extension MainScreenInteractor {
     
   }
   
- 
+  
 }
 
 // MARK: Work With Realm
@@ -185,7 +185,7 @@ extension MainScreenInteractor {
     sugarId : String) {
     
     let totalInsulin = compObj.totalInsulin.toFloat()
-
+    
     deleteCompobjAndSugarFromRealm(compObjId: compObj.id, sugarId: sugarId)
     
     insulinSupplyWorker.setNewInsulinSupplyToUserDefaults(totalInsulin: totalInsulin, updatedType: .delete)
@@ -205,9 +205,9 @@ extension MainScreenInteractor {
       let newDay = self.newDayRealmManager.addBlankDay()
       
       DispatchQueue.main.async {
-        self.saveDayInFireStore(dayRealm: newDay)
+        
+        self.checkDayInFireStoreAndSaveOrReplace(dayRealm: newDay)
       }
-      
       
     } else { // В Реалме есть день!
       print("Сегодня есть в базе, просто сетим его")
@@ -223,29 +223,7 @@ extension MainScreenInteractor {
 
 // MARK: Work with FireStore
 extension MainScreenInteractor {
-
-//  private func checkDayInFireStore()  {
-//    print("Сегодняшнего дня нет в базе поэтому добавляю новый день")
-//
-//     fetchService.checkDayByDateInFireStore { (result) in
-//       switch result {
-//       case .failure(let error):
-//         print(error)
-//       case .success(let dayNetworkModel):
-//
-//         if let dayNetwrokM =  dayNetworkModel { // Есть в FireStore
-//           print("Сегодня есть в FireStore",dayNetwrokM)
-//           // Нужно загрузить его отсюда! и передать в Реалм
-//
-//         } else { // Нет в FireStore
-//
-//          self.checkDayInRealm() // проверить реалм
-//         }
-//
-//       }
-//
-//     }
-//  }
+  
   
   
   private func writtingDataToFireStoreAfterDeleteCompobj(
@@ -253,9 +231,9 @@ extension MainScreenInteractor {
     sugarId:String) {
     
     let dayRealm = newDayRealmManager.getCurrentDay()
-      
+    
     let prevCompObj  = compObjRealmManager.fetchLastCompObj()
-         
+    
     butchWrittingDeleteCompObj(compObjId: compObjId, sugarId: sugarId, dayRealm: dayRealm, prevCompObj: prevCompObj)
   }
   
@@ -271,7 +249,7 @@ extension MainScreenInteractor {
     let dayNetwrok    = convertWorker.convertDayRealmToDayNetworkLayer(dayRealm: dayRealm)
     
     if let prevComp = prevCompObj {
-      let prevNetwrok = convertCompObjRealmToCompObjNetworkModel(compObj: prevComp)
+      let prevNetwrok = convertWorker.convertCompObjRealmToCompObjNetworkModel(compObj: prevComp)
       
       butchWrittingService.writtingDataAfterDeletingCompObj(
         compObjId         : compObjId,
@@ -279,90 +257,79 @@ extension MainScreenInteractor {
         dayNetwrokModel   : dayNetwrok,
         userDefaltsData   : userDefData,
         prevCompObjUpdate : prevNetwrok)
-
+      
       
     } else {
       butchWrittingService.writtingDataAfterDeletingCompObj(
-      compObjId         : compObjId,
-      sugarId           : sugarId,
-      dayNetwrokModel   : dayNetwrok,
-      userDefaltsData   : userDefData)
+        compObjId         : compObjId,
+        sugarId           : sugarId,
+        dayNetwrokModel   : dayNetwrok,
+        userDefaltsData   : userDefData)
     }
-
-  }
-
-  func saveDayInFireStore(dayRealm: DayRealm) {
-    let dayNetworkModel = convertWorker.convertDayRealmToDayNetworkLayer(dayRealm: dayRealm)
-    addService.addDayToFireStore(dayNetworkModel: dayNetworkModel)
+    
   }
   
- 
+  // CheckDay in FireStore
+  
+  private func checkDayInFireStoreAndSaveOrReplace(dayRealm: DayRealm) {
+    
+    let newDayNetworkModel = convertWorker.convertDayRealmToDayNetworkLayer(dayRealm: dayRealm)
+    
+    fetchService.checkDayByDateInFireStore { (result) in
+      switch result {
+      case .failure(let error):
+        print(error)
+      case .success(let dayNetworkModel):
+        
+        if let dayNetwrokM =  dayNetworkModel { // Есть в FireStore
+          print("Сегодня есть в FireStore нужно сохранить",dayNetwrokM)
+          let realmDay = self.convertWorker.convertDayNetworkModelsToRealm(dayNetworkModel: dayNetwrokM)
+          self.newDayRealmManager.replaceCurrentDay(replaceDay: realmDay)
+          self.passDayRealmToConvertInVMInPresenter()
+          
+        } else { // Нет в FireStore
+          // Добавим
+          print("Сохранем день в FireStore")
+          self.addService.addDayToFireStore(dayNetworkModel: newDayNetworkModel)
+          
+        }
+        
+      }
+      
+    }
+    
+    
+    
+  }
+  
+  
   
   func deleteCompObjFromFireStore(compObjId: String) {
     deleteService.deleteCompObjFromFireStore(compObjId: compObjId)
   }
   
   func deleteSugarFromFireStore(sugarId: String) {
-
+    
     deleteService.deleteSugarFromFireStore(sugarId: sugarId)
   }
   
   private func addNewSugarToFireStore(sugarRealm: SugarRealm,dayId: String) {
     
     let sugarNetworkModel = convertWorker.convertToSugarNetworkModel(sugarRealm: sugarRealm)
-     
-     // Здесь нам нужен батч по добавлению сахара в коллекцию + обновление Дня
+    
+    // Здесь нам нужен батч по добавлению сахара в коллекцию + обновление Дня
     
     butchWrittingService.writtingSugarToFIreStoreAndSugarIdToDay(
       sugarNetwrokModel: sugarNetworkModel, updateDayID: dayId)
-     
-     
-   }
-   
-  
-}
-
-
-// MARK: Convert CompObjRealm To NetwrokModel
-extension MainScreenInteractor {
-  
-
-  private func convertCompObjRealmToCompObjNetworkModel(compObj: CompansationObjectRelam) -> CompObjNetworkModel {
-    
-    let listProd : [ProductNetworkModel] = compObj.listProduct.map(convertProductsRealmToProductNetworkModel)
-    
-    return CompObjNetworkModel(
-      id                           : compObj.id,
-      typeObject                   : compObj.typeObject,
-      sugarBefore                  : compObj.sugarBefore,
-      sugarAfter                   : compObj.sugarAfter,
-      userSetInsulinToCorrectSugar : compObj.userSetInsulinToCorrectSugar,
-      sugarDiffToOptimaForMl       : compObj.sugarDiffToOptimaForMl,
-      insulinToCorrectSugarML      : compObj.insulinToCorrectSugarML,
-      timeCreate                   : compObj.timeCreate.timeIntervalSince1970,
-      compansationFase             : compObj.compansationFase,
-      insulinOnTotalCarbo          : compObj.insulinOnTotalCarbo,
-      totalCarbo                   : compObj.totalCarbo,
-      placeInjections              : compObj.placeInjections,
-      listProduct                  : listProd)
     
     
   }
   
-  private func convertProductsRealmToProductNetworkModel(product: ProductRealm) -> ProductNetworkModel {
-    return ProductNetworkModel(
-      id                    : product.id,
-      name                  : product.name,
-      category              : product.category,
-      carboIn100grm         : product.carboIn100grm,
-      portion               : product.portion,
-      percantageCarboInMeal : product.percantageCarboInMeal,
-      userSetInsulinOnCarbo : product.userSetInsulinOnCarbo,
-      insulinOnCarboToML    : product.insulinOnCarboToML,
-      isFavorits            : product.isFavorits)
-  }
   
 }
+
+
+
 
 
 

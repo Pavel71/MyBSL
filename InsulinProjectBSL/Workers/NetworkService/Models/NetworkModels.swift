@@ -12,23 +12,6 @@ import Foundation
 
 // Этот класс будет содержать все бе моедльки которые будут транспортироватся из реалма и добавлятся в FIREBASE
 
-public struct City: Codable {
-
-    let name: String
-    let state: String?
-    let country: String?
-    let isCapital: Bool?
-    let population: Int64?
-
-    enum CodingKeys: String, CodingKey {
-        case name
-        case state
-        case country
-        case isCapital = "capital"
-        case population
-    }
-
-}
 
 protocol NetworkModelable: Codable {}
 

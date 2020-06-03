@@ -122,16 +122,12 @@ extension AddService {
   
   func addProductToFireBase(product: ProductNetworkModel) {
     
-    DispatchQueue.global(qos: .default).async {
       guard let currentUserID = Auth.auth().currentUser?.uid else {return}
       
       let data = product.dictionary
 
       Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Products.collectionName).document(product.id).setData(data)
-    }
-    
-    
-    
+
   }
   
 }
