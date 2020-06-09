@@ -70,10 +70,10 @@ extension AppState {
     mainScreenController.activateApplication()
   }
   
-  func setFirstDayToFireStore() {
-    let mainScreen = getMainScreenController()
-    mainScreen.setFirstDayToFireStore()
-  }
+//  func setFirstDayToFireStore() {
+//    let mainScreen = getMainScreenController()
+//    mainScreen.setFirstDayToFireStore()
+//  }
   
   
   

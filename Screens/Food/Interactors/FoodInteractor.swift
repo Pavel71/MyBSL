@@ -97,7 +97,20 @@ class FoodInteractor: FoodBusinessLogic {
     switch request {
     case .setProductsFireStoreLisner:
       print("Start Set Product FireStore Lisner")
-      listnerService.setProductLisner { result in
+
+      setProductFireStoreListner()
+      
+      
+    case .dissmisProductsFireStoreListner:
+      print("Dissmis Product FireStore Lisner")
+      listnerService.dismissProductListner()
+      
+    default:break
+    }
+  }
+  
+  private func setProductFireStoreListner() {
+    listnerService.setProductLisner { result in
         
         switch result {
         case .success((let model,let type)):
@@ -118,15 +131,6 @@ class FoodInteractor: FoodBusinessLogic {
         }
         
       }
-      
-      
-      
-    case .dissmisProductsFireStoreListner:
-      print("Dissmis Product FireStore Lisner")
-      listnerService.dismissProductListner()
-      
-    default:break
-    }
   }
   
   // MARK: Realm Change DB
@@ -260,6 +264,12 @@ extension FoodInteractor {
   let productToFireBase = convertWorker.convertProductsRealmToProductNetworkModel(product: productRealm)
   
     addService.addProductToFireBase(product: productToFireBase)
+  
+    if listnerService.productListner == nil {
+      setProductFireStoreListner()
+    }
+  
+  // Вот здесь нужно убедится что листнер сейчас есть! если нет то добавить его
   }
   
   private func deleteProductFromFireBase(productId: String) {

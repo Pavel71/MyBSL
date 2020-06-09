@@ -100,6 +100,8 @@ extension NewCompansationObjectScreenInteractor {
     case .updatePlaceInjection(let place):
       presenter?.presentData(response: .updatePlaceInjection(place: place))
       
+      
+      // MARK: Save Comp Obj
     case .saveCompansationObjectInRealm(let viewModel):
       
       let totalInsulinNow = viewModel.resultFooterVM.totalInsulin
@@ -114,6 +116,7 @@ extension NewCompansationObjectScreenInteractor {
         
         writeDataToRealmThenUpdateCompObj(viewModel: viewModel, totalInsulinNow: totalInsulinNow)
         
+        // Здесь нам нужно просто сказать чтобы мы обновил наш день!
         writeDataToFireStoreThenUpdateCompObj()
          
 
@@ -144,12 +147,15 @@ extension NewCompansationObjectScreenInteractor {
           
                 // 1. Добавляем CompObj
                  // 2. Добавляем  Sugar
-                 // 3. Обновляем Insulin Value
                  // 4. Обновляем предыдущий compObj
                  // 5. Добавляем id в Day
+          
+                 // 3. Обновляем Insulin Value
                  // 6. После расчета Машшиного обуяения сохраняем еще и веса!
           
-          self.writeDataToFireStoreThenAddCompObj(sugarRealm: sugarRealm, compObj: compObj)
+          // Здесь нам нужно обнвоить день и несколько параметров из UserDefaults
+          
+          self.writeDataToFireStoreThenAddCompObj()
           
         }
 
@@ -289,113 +295,136 @@ extension NewCompansationObjectScreenInteractor {
     let insulonSupply     = userDefaultsWorker.getInsulinSupply()
     let insulinSupplyData = [UserDefaultsKey.insulinSupplyValue.rawValue : insulonSupply]
     
-    let prevCompObj  = compRealmManager.fetchSecondOnTheEndCompObj()
+    // Нужно достать день и просто обновить его батчем с userDefaults Data
+    
+    let day = newDayRealmManager.getCurrentDay()
+    
+    let dayNetwork = getDayDataToSetFireStore(dayRealm: day)
+    
+    butchWrittingDataAfterUpdateCompobj(dayNetwrok: dayNetwork, userDefaultsdata: insulinSupplyData)
 
-    butchWritingAllDataToFireStoreAfterUpdateCompObj(
-      updateCompObjRealm  : updateCompObj,
-      updateSugarRealm    : updateSugarRealm,
-      userDefaultsData    : insulinSupplyData,
-      prevCompObjToUpdate : prevCompObj)
+  }
+  
+  private func butchWrittingDataAfterUpdateCompobj(
+    dayNetwrok       : DayNetworkModel,
+    userDefaultsdata : [String: Any]) {
+    
+    butchWritingService.writingDataAfterUpdateCompobj(dayNetwrokModel: dayNetwrok, userDefaultsData: userDefaultsdata)
+    
   }
   
   
   
   // MARK: Update CompObj
   
-  private func butchWritingAllDataToFireStoreAfterUpdateCompObj(
-    updateCompObjRealm  : CompansationObjectRelam,
-    updateSugarRealm    : SugarRealm,
-    userDefaultsData    : [String: Any],
-    prevCompObjToUpdate : CompansationObjectRelam?) {
-    
-    let compObjNetModel   = convertWorker.convertCompObjRealmToCompObjNetworkModel(compObj: updateCompObjRealm)
-    let sugarNetworkModel      = convertWorker.convertToSugarNetworkModel(sugarRealm: updateSugarRealm)
-    
-    
-    
-    if let prevComp = prevCompObjToUpdate {
-      let prevNetwrok = convertWorker.convertCompObjRealmToCompObjNetworkModel(compObj: prevComp)
-      
-      butchWritingService.writtingDataAfterUpdatindCompObj(
-      sugarNetwrokModel   : sugarNetworkModel,
-      compObjNetwrokModel : compObjNetModel,
-      userDefaultsData    : userDefaultsData,
-      prevCompObj         : prevNetwrok)
-      
-    } else {
-      
-      butchWritingService.writtingDataAfterUpdatindCompObj(
-      sugarNetwrokModel   : sugarNetworkModel,
-      compObjNetwrokModel : compObjNetModel,
-      userDefaultsData    : userDefaultsData)
-      
-    }
-    
-    
+//  private func butchWritingAllDataToFireStoreAfterUpdateCompObj(
+//    updateCompObjRealm  : CompansationObjectRelam,
+//    updateSugarRealm    : SugarRealm,
+//    userDefaultsData    : [String: Any],
+//    prevCompObjToUpdate : CompansationObjectRelam?) {
+//
+//    let compObjNetModel   = convertWorker.convertCompObjRealmToCompObjNetworkModel(compObj: updateCompObjRealm)
+//    let sugarNetworkModel      = convertWorker.convertToSugarNetworkModel(sugarRealm: updateSugarRealm)
+//
+//
+//
+//    if let prevComp = prevCompObjToUpdate {
+//      let prevNetwrok = convertWorker.convertCompObjRealmToCompObjNetworkModel(compObj: prevComp)
+//
+//      butchWritingService.writtingDataAfterUpdatindCompObj(
+//      sugarNetwrokModel   : sugarNetworkModel,
+//      compObjNetwrokModel : compObjNetModel,
+//      userDefaultsData    : userDefaultsData,
+//      prevCompObj         : prevNetwrok)
+//
+//    } else {
+//
+//      butchWritingService.writtingDataAfterUpdatindCompObj(
+//      sugarNetwrokModel   : sugarNetworkModel,
+//      compObjNetwrokModel : compObjNetModel,
+//      userDefaultsData    : userDefaultsData)
+//
+//    }
     
     
-  }
+    
+    
+//  }
   
   
   // MARK: Add New COmpObj
   
   
-  private func writeDataToFireStoreThenAddCompObj(
-    sugarRealm: SugarRealm,compObj:CompansationObjectRelam) {
+  private func writeDataToFireStoreThenAddCompObj() {
+
     
-    let prevCompobjToUpdate = self.compRealmManager.fetchSecondOnTheEndCompObj()
-    // мне нужно получить день и взять его id
-    
-    let dayId = self.newDayRealmManager.getCurrentDay().id
-    
+    let day  = self.newDayRealmManager.getCurrentDay()
     let userDefaultsData = self.getUserDefaultsDataToWriteFrieStoreThenAddCompObj()
     
-    self.butchWrittingAllDataToFireStoreAfterAddNewCompobj(
-      sugarRealm       : sugarRealm,
-      compObjRealm     : compObj,
-      prevCompObj      : prevCompobjToUpdate,
-      updateDayID      : dayId,
-      userDefaultsData : userDefaultsData)
+    self.butchWrittingDayAndUserDefaultsAfterAddNewCompObj(day: day, userDefaultsData: userDefaultsData)
   }
   
-  private func butchWrittingAllDataToFireStoreAfterAddNewCompobj(
-    sugarRealm         : SugarRealm,
-    compObjRealm       : CompansationObjectRelam,
-    prevCompObj        : CompansationObjectRelam?,
-    updateDayID        : String,
-    userDefaultsData   : [String: Any]) {
+  private func butchWrittingDayAndUserDefaultsAfterAddNewCompObj(
+    day              : DayRealm,
+    userDefaultsData : [String: Any]) {
     
-    let compObjNetModel   = convertWorker.convertCompObjRealmToCompObjNetworkModel(compObj:compObjRealm)
-    let sugarNetworkModel = convertWorker.convertToSugarNetworkModel(sugarRealm: sugarRealm)
-
+    let dayNetwork =  getDayDataToSetFireStore(dayRealm: day)
     
-    
-    
-    if let prevComp = prevCompObj {
-      let prevNetwrok = convertWorker.convertCompObjRealmToCompObjNetworkModel(compObj: prevComp)
-      
-      butchWritingService.writtingDataAfterAddNewCompObj(
-        sugarNetwrokModel       : sugarNetworkModel,
-        compObjNetwrokModel     : compObjNetModel,
-        prevCompObjNetwrokModel : prevNetwrok,
-        userDefaultsData        : userDefaultsData,
-        updateDayID             : updateDayID)
-
-      
-    } else {
-      
-      butchWritingService.writtingDataAfterAddNewCompObj(
-        sugarNetwrokModel       : sugarNetworkModel,
-        compObjNetwrokModel     : compObjNetModel,
-        userDefaultsData        : userDefaultsData,
-        updateDayID             : updateDayID)
-    }
-    
-    
-    // Тут нужно извлечь веса для коррекции сахар + веса для коррекции инсулина + инсулин supply
-
+    butchWritingService.writtingDataAfterAddNewCompObj(dayNetwrok: dayNetwork, userDefaultsData: userDefaultsData)
     
   }
+  
+  // MARK: Convert Day Data
+  private func getDayDataToSetFireStore(dayRealm: DayRealm) -> DayNetworkModel {
+    let compObjs = Array(dayRealm.listCompObjID.compactMap( compRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: )))
+         
+         let sugarObjs = Array(dayRealm.listSugarID.compactMap( sugarRealmManager.fetchSugarByPrimeryKey(sugarPrimaryKey:)))
+         let dayNetwork = convertWorker.convertDayRealmToDayNetworkLayer(
+           dayRealm         : dayRealm,
+           listSugarRealm   : sugarObjs,
+           listCompObjRealm : compObjs)
+    return dayNetwork
+    
+  }
+  
+//  private func butchWrittingAllDataToFireStoreAfterAddNewCompobj(
+//    sugarRealm         : SugarRealm,
+//    compObjRealm       : CompansationObjectRelam,
+//    prevCompObj        : CompansationObjectRelam?,
+//    updateDayID        : String,
+//    userDefaultsData   : [String: Any]) {
+//
+//    let compObjNetModel   = convertWorker.convertCompObjRealmToCompObjNetworkModel(compObj:compObjRealm)
+//    let sugarNetworkModel = convertWorker.convertToSugarNetworkModel(sugarRealm: sugarRealm)
+//
+//
+//
+//
+//    if let prevComp = prevCompObj {
+//      let prevNetwrok = convertWorker.convertCompObjRealmToCompObjNetworkModel(compObj: prevComp)
+//
+//      butchWritingService.writtingDataAfterAddNewCompObj(
+//        sugarNetwrokModel       : sugarNetworkModel,
+//        compObjNetwrokModel     : compObjNetModel,
+//        prevCompObjNetwrokModel : prevNetwrok,
+//        userDefaultsData        : userDefaultsData,
+//        updateDayID             : updateDayID)
+//
+//
+//    } else {
+//
+//      butchWritingService.writtingDataAfterAddNewCompObj(
+//        sugarNetwrokModel       : sugarNetworkModel,
+//        compObjNetwrokModel     : compObjNetModel,
+//        userDefaultsData        : userDefaultsData,
+//        updateDayID             : updateDayID)
+//    }
+//
+//
+//    // Тут нужно извлечь веса для коррекции сахар + веса для коррекции инсулина + инсулин supply
+//
+//
+//  }
   
   private func getUserDefaultsDataToWriteFrieStoreThenAddCompObj() -> [String: Any]{
     

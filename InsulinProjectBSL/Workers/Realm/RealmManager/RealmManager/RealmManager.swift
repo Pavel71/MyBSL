@@ -66,29 +66,37 @@ extension RealmManager {
   
   func setNetwrokdDataToRealm(fireStoreModel: FireStoreNetwrokModels) {
     
-    setCompObjs(compObjNetwrokModels : fireStoreModel.compObjs)
-    setSugars(sugarNetworkModels     : fireStoreModel.sugars)
+//    setCompObjs(compObjNetwrokModels : fireStoreModel.compObjs)
+//    setSugars(sugarNetworkModels     : fireStoreModel.sugars)
     setDays(dayNetworkModels         : fireStoreModel.days)
     setMeals(mealNetworkModels       : fireStoreModel.meals)
     setProducts(productNetworkModels : fireStoreModel.products)
   }
   
   private func setDays(dayNetworkModels: [DayNetworkModel]) {
-    let days = dayNetworkModels.map(convertWorker.convertDayNetworkModelsToRealm)
-    dayRealmManager.setDaysToRealm(days: days)
+//    var (days,compObjs,sugarObjs) = dayNetworkModels.map(convertWorker.convertDayNetworkModelsToRealm)
+    
+    dayNetworkModels.forEach { (dayNetwork) in
+      let (day,compObj,sugarObj) = convertWorker.convertDayNetworkModelsToRealm(dayNetworkModel: dayNetwork)
+      dayRealmManager.setDaysToRealm(days: [day])
+      sugarObj.forEach(sugarRealmManager.addOrUpdateNewSugarRealm(sugarRealm: ))
+      compObj.forEach(compObjRealmManager.addOrUpdateNewCompObj(compObj:))
+    }
+    
+//    dayRealmManager.setDaysToRealm(days: days)
   }
   
-  private func setSugars(sugarNetworkModels:[SugarNetworkModel]) {
-    
-    let sugars = sugarNetworkModels.map(convertWorker.convertSugarsNetwrokModelToRealm)
-    sugarRealmManager.setSugarToRealm(sugars: sugars)
-  }
-  
-  private func setCompObjs(compObjNetwrokModels:[CompObjNetworkModel]) {
-    let compObjs = compObjNetwrokModels.map(convertWorker.convertCompObjsNetworkModelToRealm)
-    
-    compObjRealmManager.setCompObjsToRealm(compObjs: compObjs)
-  }
+//  private func setSugars(sugarNetworkModels:[SugarNetworkModel]) {
+//
+//    let sugars = sugarNetworkModels.map(convertWorker.convertSugarsNetwrokModelToRealm)
+//    sugarRealmManager.setSugarToRealm(sugars: sugars)
+//  }
+//
+//  private func setCompObjs(compObjNetwrokModels:[CompObjNetworkModel]) {
+//    let compObjs = compObjNetwrokModels.map(convertWorker.convertCompObjsNetworkModelToRealm)
+//
+//    compObjRealmManager.setCompObjsToRealm(compObjs: compObjs)
+//  }
   private func setMeals(mealNetworkModels: [MealNetworkModel]) {
     let meals = mealNetworkModels.map(convertWorker.convertMealNetwrokToMealRealm)
     mealRealmManager.setMealsToRealm(meals: meals)

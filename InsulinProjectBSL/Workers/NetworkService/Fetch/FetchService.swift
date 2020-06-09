@@ -107,8 +107,9 @@ extension FetchService {
 
     fetchUserDefaultsDataFromFireStore { (result) in
       switch result {
-      case .success(let userdDefaultDict):
-        dictRealmData["UserDefaults"] = [userdDefaultDict]
+      case .success(let userDefaultsModel):
+        let data = userDefaultsModel.dictionary
+//        dictRealmData["UserDefaults"] = data
         group.leave()
       case .failure(let error):
         complation(.failure(error))
@@ -185,7 +186,7 @@ extension FetchService {
 extension FetchService {
   
   
-  func fetchUserDefaultsDataFromFireStore(complation: @escaping (Result<[String: Any],NetworkFirebaseError>) -> Void) {
+  func fetchUserDefaultsDataFromFireStore(complation: @escaping (Result<UserDefaultsNetworkModel,NetworkFirebaseError>) -> Void) {
     
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
@@ -198,7 +199,11 @@ extension FetchService {
       
       snpashot?.documents.forEach({ (doc) in
         let userData = doc.data()
-        complation(.success(userData))
+       guard
+        let userDefaultsModel = self.convertFireStoreToNetwrokModel(data: userData, type: UserDefaultsNetworkModel.self)
+        else {return complation(.failure(.castNetworkModelError)) }
+        
+        complation(.success(userDefaultsModel))
       
       })
       

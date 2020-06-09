@@ -52,13 +52,14 @@ extension SettingsInteractor {
   private func logOut() {
     do {
         try Auth.auth().signOut()
+        clearAllData()
         presenter?.presentData(response: .logOut(result: .success(true)))
       } catch(let error) {
         presenter?.presentData(response: .logOut(result: .failure(.signOutError)))
         print(error)
       }
     
-    clearAllData()
+    
   }
   
   private func clearAllData() {

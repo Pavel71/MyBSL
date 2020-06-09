@@ -138,33 +138,38 @@ extension LoginController {
         print("Login Success")
         self.loginModelView.isLogIn.value = false
         
+        let appState = AppState.shared
         
-        self.fetchDataHud.show(in: self.loginView, animated: true)
+//        appState.pushUpdateMainScreenViewControllerMethod()
+        
+        appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
+        
+//        self.fetchDataHud.show(in: self.loginView, animated: true)
 
-        self.loginModelView.fetchDataFromFirebase { (result) in
-          
-           switch result {
-            
-             case .failure(let error):
-               self.fetchDataHud.dismiss()
-               self.showErrorMessage(text: error.localizedDescription)
-               
-             case .success(_):
-               
-               self.fetchDataHud.dismiss()
- 
-               self.view.endEditing(true)
-               
-               let appState = AppState.shared
-               
-               appState.pushUpdateMainScreenViewControllerMethod()
-               
-               appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
-            
-               // Нужно заказать обновление данных в Устройстве
-
-             }
-        }
+//        self.loginModelView.fetchDataFromFirebase { (result) in
+//
+//           switch result {
+//
+//             case .failure(let error):
+//               self.fetchDataHud.dismiss()
+//               self.showErrorMessage(text: error.localizedDescription)
+//
+//             case .success(_):
+//
+//               self.fetchDataHud.dismiss()
+//
+//               self.view.endEditing(true)
+//
+//               let appState = AppState.shared
+//
+//               appState.pushUpdateMainScreenViewControllerMethod()
+//
+//               appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
+//
+//               // Нужно заказать обновление данных в Устройстве
+//
+//             }
+//        }
         
    
         

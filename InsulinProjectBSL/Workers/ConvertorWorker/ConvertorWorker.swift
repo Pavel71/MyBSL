@@ -64,13 +64,22 @@ extension ConvertorWorker {
   
   // MARK: Day
   
-  func convertDayRealmToDayNetworkLayer(dayRealm: DayRealm) -> DayNetworkModel {
+  func convertDayRealmToDayNetworkLayer(
+    dayRealm         : DayRealm,
+    listSugarRealm   : [SugarRealm],
+    listCompObjRealm : [CompansationObjectRelam]) -> DayNetworkModel {
+    
+    let sugarsNetwork  = listSugarRealm.map(convertToSugarNetworkModel(sugarRealm:))
+    let compObjNetwork = listCompObjRealm.map(convertCompObjRealmToCompObjNetworkModel(compObj:))
     
     return DayNetworkModel(
-      id            : dayRealm.id,
-      date          : dayRealm.date.timeIntervalSince1970,
-      listSugarID   : Array(dayRealm.listSugarID),
-      listCompObjID : Array(dayRealm.listCompObjID))
+      id              : dayRealm.id,
+      date            : dayRealm.date.timeIntervalSince1970,
+      listSugarID     : Array(dayRealm.listSugarID),
+      listCompObjID   : Array(dayRealm.listCompObjID),
+      listSugarObj    : sugarsNetwork,
+      listCompObj     : compObjNetwork)
+
   }
   
   
@@ -145,13 +154,17 @@ extension ConvertorWorker {
   
   // MARK:  Days
   
-  func convertDayNetworkModelsToRealm(dayNetworkModel: DayNetworkModel) -> DayRealm {
+  func convertDayNetworkModelsToRealm(dayNetworkModel: DayNetworkModel) -> (DayRealm,[CompansationObjectRelam],[SugarRealm]) {
     
     let day = DayRealm(id : dayNetworkModel.id, date: Date(timeIntervalSince1970: dayNetworkModel.date))
     
     day.listSugarID.append(objectsIn: dayNetworkModel.listSugarID)
     day.listCompObjID.append(objectsIn: dayNetworkModel.listCompObjID)
-    return day
+    
+    let compobjRealm = dayNetworkModel.listCompObj.map(convertCompObjsNetworkModelToRealm(compObjModel:))
+    let sugarRealm = dayNetworkModel.listSugarObj.map(convertSugarsNetwrokModelToRealm(sugarNetworkModel:))
+    
+    return (day,compobjRealm,sugarRealm)
   }
   
   

@@ -58,6 +58,7 @@ enum NetworkFirebaseError: Error {
   // Observing
   case productListnerGetDataError
   case mealListnerGetDataError
+  case dayListnerGetDataError
 
   
 }

@@ -34,6 +34,8 @@ enum MainScreen {
         
         // Set Data To FireStore
         case setFirstDayToFireStore
+        // Set Listner
+        case setFireStoreDayListner
         
       }
     }
@@ -43,6 +45,8 @@ enum MainScreen {
         case prepareViewModel(realmData:DayRealm)
         case passCompansationObj(compObj: CompansationObjectRelam)
         
+        case showLoadingMessage(message: String)
+        case showOffLoadingMessage
         
       }
     }
@@ -50,6 +54,8 @@ enum MainScreen {
       enum ViewModelData {
         case setViewModel(viewModel: MainScreenViewModel)
         case throwCompansationObjectToUpdate(compObj: CompansationObjectRelam)
+        case showLoadingMessage(message: String)
+        case showOffLoadingMessage
       }
     }
   }

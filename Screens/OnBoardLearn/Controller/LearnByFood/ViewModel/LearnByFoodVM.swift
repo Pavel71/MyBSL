@@ -39,6 +39,10 @@ class LearnByFoodVM {
     
   }
   
+  func clearAllData() {
+    tableData = LearnByFoodVM.getData()
+  }
+  
   
   // Нужно вернуть данные
   static func getData() -> [LearnByFoodModel] {

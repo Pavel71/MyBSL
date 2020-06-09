@@ -126,18 +126,21 @@ class OnBoardViewController: UIPageViewController {
     if numberPage == pages.count - 1 {
       
       onBoardVM.setDataTouserDefaultsAndlearnML()
-
+      print("User Defaults Data were Setted")
       savingHUD.show(in: pages.last!.view)
       
       let appStateService: AppState   = AppState.shared
       // Save day to FireStore
-      appStateService.setFirstDayToFireStore()
+//      appStateService.setFirstDayToFireStore()
       
       onBoardVM.setDataToFireStore { (result) in
         switch result {
         case .success(_):
 
           self.savingHUD.dismiss()
+          
+          // тут нужно очистить все поля onboardViewModel и вернуть индекс
+          self.setonBoardToDefaultState()
 
           appStateService.toogleMinorWindow(minorWindow: appStateService.onBoardingWindow)
           
@@ -159,6 +162,12 @@ class OnBoardViewController: UIPageViewController {
     }
     
     
+  }
+  
+  private func setonBoardToDefaultState() {
+    numberPage = 0
+    buttonsTappedCount = 0
+    onBoardVM.clearAllFields()
   }
   
   

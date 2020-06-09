@@ -51,6 +51,11 @@ extension MainScreenPresenter {
     switch response {
     case .passCompansationObj(let compObj):
       viewController?.displayData(viewModel: .throwCompansationObjectToUpdate(compObj: compObj))
+      
+    case .showLoadingMessage(let message):
+      viewController?.displayData(viewModel: .showLoadingMessage(message: message))
+    case.showOffLoadingMessage:
+      viewController?.displayData(viewModel: .showOffLoadingMessage)
     default:break
     }
   }

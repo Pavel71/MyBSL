@@ -79,7 +79,7 @@ extension UserDefaultsWorker {
   }
   
   func getArrayData(typeDataKey: UserDefaultsKey) -> [Float] {
-    userDefaults.array(forKey: typeDataKey.rawValue) as! [Float]
+    userDefaults.array(forKey: typeDataKey.rawValue) as? [Float] ?? []
   }
   
   
@@ -93,30 +93,30 @@ extension UserDefaultsWorker {
       switch key {
         
       case .carboCorrectTargetBaseData:
-        let carboTarget = userDefaults.array(forKey: key.rawValue) as! [Float]
+        let carboTarget = userDefaults.array(forKey: key.rawValue) as? [Float] ?? []
         dataDict[key.rawValue] = carboTarget
         
       case .carboCorrectTrainBaseData:
-        let carboTrain = userDefaults.array(forKey: key.rawValue) as! [Float]
+        let carboTrain = userDefaults.array(forKey: key.rawValue) as? [Float] ?? []
         dataDict[key.rawValue] = carboTrain
         
       case .sugarCorrectTargetBaseData:
-        let sugarTarget = userDefaults.array(forKey: key.rawValue) as! [Float]
+        let sugarTarget = userDefaults.array(forKey: key.rawValue) as? [Float] ?? []
         dataDict[key.rawValue] = sugarTarget
         
       case .sugarCorrectTrainBaseData:
-        let sugarTrain = userDefaults.array(forKey: key.rawValue) as! [Float]
+        let sugarTrain = userDefaults.array(forKey: key.rawValue) as? [Float] ?? []
         dataDict[key.rawValue] = sugarTrain
         
         
       case .correctCarboByInsulinWeights:
         
-        let carboWeights = userDefaults.array(forKey: key.rawValue) as! [Float]
+        let carboWeights = userDefaults.array(forKey: key.rawValue) as? [Float] ?? []
         dataDict[key.rawValue] = carboWeights
         
       case .correctSugarByInsulinWeights:
         
-        let sugarWeights = userDefaults.array(forKey: key.rawValue) as! [Float]
+        let sugarWeights = userDefaults.array(forKey: key.rawValue) as? [Float] ?? []
         dataDict[key.rawValue] = sugarWeights
         
       case .higherSugarLevel:

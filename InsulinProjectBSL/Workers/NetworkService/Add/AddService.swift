@@ -43,8 +43,6 @@ extension AddService {
 
     Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(dayNetworkModel.id).setData(data)
           
-          
-          
   }
   
 }

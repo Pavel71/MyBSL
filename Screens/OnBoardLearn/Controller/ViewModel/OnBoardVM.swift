@@ -27,6 +27,11 @@ class OnBoardVM {
     addService          = ServiceLocator.shared.getService()
     userDefaults        = ServiceLocator.shared.getService()
   }
+  
+  func clearAllFields() {
+    learnByCorrectionVM.clearAllData()
+    learnByFoodVM.clearAllData()
+  }
 
 }
 

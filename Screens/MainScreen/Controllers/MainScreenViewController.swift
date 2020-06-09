@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import JGProgressHUD
 
 enum TableViewLayer: Int {
   
@@ -26,7 +26,11 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   var interactor: MainScreenBusinessLogic?
   var router: (NSObjectProtocol & MainScreenRoutingLogic)?
   
-  
+  var loadDataHUD: JGProgressHUD = {
+    let hud = JGProgressHUD(style: .dark)
+    hud.textLabel.text = "Loading data..."
+    return hud
+  }()
   
   // Properties
   
@@ -90,13 +94,11 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     setViews()
     print("View DId Load Main Screen")
     interactor?.makeRequest(request: .checkLastDayInDB)
-    
-    
   }
   
-  func setFirstDayToFireStore() {
-    interactor?.makeRequest(request: .setFirstDayToFireStore)
-  }
+//  func setFirstDayToFireStore() {
+//    interactor?.makeRequest(request: .setFirstDayToFireStore)
+//  }
   
   // MARK: Activate Application
   func activateApplication() {
@@ -105,6 +107,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     
     // На старте мы просто перезапишим балнк модель и все! в остальное время будет все норм!
     interactor?.makeRequest(request: .checkLastDayInDB)
+    interactor?.makeRequest(request: .setFireStoreDayListner)
 
   }
   
@@ -114,7 +117,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     print("Main Screen View Will Appear")
     
     interactor?.makeRequest(request: .checkLastDayInDB)
-
+    interactor?.makeRequest(request: .setFireStoreDayListner)
     navigationController?.navigationBar.isHidden = true
     setKeyboardNotification()
     // Сделаем запрос в реалм чтобы получить новые данные по ViewModel
@@ -140,6 +143,15 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     case .throwCompansationObjectToUpdate(let compObj):
       
       self.router!.goToNewCompansationObjectScreen(compansationObjectRealm: compObj)
+      
+      
+    case .showLoadingMessage(let message):
+      
+      loadDataHUD.textLabel.text = message
+      loadDataHUD.show(in: self.view)
+    case .showOffLoadingMessage:
+      loadDataHUD.dismiss()
+      
       
     }
 

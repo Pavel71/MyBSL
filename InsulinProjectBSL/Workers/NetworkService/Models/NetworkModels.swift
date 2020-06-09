@@ -27,13 +27,13 @@ struct FireStoreNetwrokModels : NetworkModelable {
   let userDefaults : [UserDefaultsNetworkModel]
   
   enum CodingKeys: String, CodingKey {
-        case days         = "Days"
-        case compObjs     = "CompObjs"
-        case sugars       = "Sugars"
-        case products     = "Products"
-        case meals        = "Meals"
-        case userDefaults = "UserDefaults"
-    }
+    case days         = "Days"
+    case compObjs     = "CompObjs"
+    case sugars       = "Sugars"
+    case products     = "Products"
+    case meals        = "Meals"
+    case userDefaults = "UserDefaults"
+  }
 }
 
 
@@ -55,16 +55,16 @@ struct UserDefaultsNetworkModel:NetworkModelable {
   
   enum CodingKeys: String, CodingKey {
     
-         case carboCorrectTargetBaseData
-         case carboCorrectTrainBaseData
-         case correctCarboByInsulinWeights
-         case correctSugarByInsulinWeights
-         case lowSugarLevel
-         case higherSugarLevel
-         case insulinSupplyValue
-         case sugarCorrectTargetBaseData
-         case sugarCorrectTrainBaseData
-     }
+    case carboCorrectTargetBaseData
+    case carboCorrectTrainBaseData
+    case correctCarboByInsulinWeights
+    case correctSugarByInsulinWeights
+    case lowSugarLevel
+    case higherSugarLevel
+    case insulinSupplyValue
+    case sugarCorrectTargetBaseData
+    case sugarCorrectTrainBaseData
+  }
 }
 
 // MARK: Days Network Model
@@ -76,14 +76,20 @@ struct DayNetworkModel : NetworkModelable {
   let listSugarID   : [String]
   let listCompObjID : [String]
   
+  let listSugarObj  : [SugarNetworkModel]
+  let listCompObj   : [CompObjNetworkModel]
+  
   enum CodingKeys: String, CodingKey {
-     
-       case id
-       case date
-       case listSugarID
-       case listCompObjID
-
-   }
+    
+    case id
+    case date
+    case listSugarID
+    case listCompObjID
+    
+    case listSugarObj
+    case listCompObj
+    
+  }
   
 }
 
@@ -112,21 +118,21 @@ struct CompObjNetworkModel : NetworkModelable {
   
   enum CodingKeys: String, CodingKey {
     
-      case id
-      case typeObject
-      case sugarBefore
-      case sugarAfter
-      case userSetInsulinToCorrectSugar
-      case sugarDiffToOptimaForMl
-      case insulinToCorrectSugarML
-      case timeCreate
-      case compansationFase
-      case insulinOnTotalCarbo
-      case totalCarbo
-      case placeInjections
-      case listProduct
-      
-
+    case id
+    case typeObject
+    case sugarBefore
+    case sugarAfter
+    case userSetInsulinToCorrectSugar
+    case sugarDiffToOptimaForMl
+    case insulinToCorrectSugarML
+    case timeCreate
+    case compansationFase
+    case insulinOnTotalCarbo
+    case totalCarbo
+    case placeInjections
+    case listProduct
+    
+    
   }
   
 }
@@ -145,12 +151,12 @@ struct SugarNetworkModel : NetworkModelable {
   
   enum CodingKeys: String, CodingKey {
     
-      case id
-      case sugar
-      case time
-      case dataCase
-      case compansationObjectId
-
+    case id
+    case sugar
+    case time
+    case dataCase
+    case compansationObjectId
+    
   }
   
 }
@@ -163,30 +169,30 @@ struct SugarNetworkModel : NetworkModelable {
 struct ProductNetworkModel : NetworkModelable {
   
   
-   var id                    : String
-   var name                  : String
-   var category              : String
-   var carboIn100grm         : Int
-   var portion               : Int
+  var id                    : String
+  var name                  : String
+  var category              : String
+  var carboIn100grm         : Int
+  var portion               : Int
   
-   var percantageCarboInMeal : Float
-
-   var userSetInsulinOnCarbo : Float
-   var insulinOnCarboToML    : Float
+  var percantageCarboInMeal : Float
   
-   var isFavorits            : Bool
+  var userSetInsulinOnCarbo : Float
+  var insulinOnCarboToML    : Float
+  
+  var isFavorits            : Bool
   
   enum CodingKeys: String, CodingKey {
     
-      case id
-      case name
-      case category
-      case carboIn100grm
-      case portion
-      case percantageCarboInMeal
-      case userSetInsulinOnCarbo
-      case insulinOnCarboToML
-      case isFavorits
+    case id
+    case name
+    case category
+    case carboIn100grm
+    case portion
+    case percantageCarboInMeal
+    case userSetInsulinOnCarbo
+    case insulinOnCarboToML
+    case isFavorits
   }
   
 }
@@ -199,19 +205,19 @@ struct MealNetworkModel: NetworkModelable {
   var isExpandMeal : Bool
   var name         : String
   var typeMeal     : String
-
+  
   
   let listProduct  : [ProductNetworkModel]
   
   enum CodingKeys: String, CodingKey {
     
-      case id
-      case isExpandMeal
-      case name
-      case typeMeal
-      
-      case listProduct
-
+    case id
+    case isExpandMeal
+    case name
+    case typeMeal
+    
+    case listProduct
+    
   }
   
 }
