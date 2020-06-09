@@ -50,7 +50,7 @@ extension FetchService {
         // день есть в базе данных нужно вернуть этот день
         guard let dayQuery = querySnapshot?.documents.first else {return}
         
-        let dayNetwrokModel = self.convertFireStoreToNetwrokModel(data: dayQuery.data(), type: DayNetworkModel.self) as? DayNetworkModel
+        let dayNetwrokModel = self.convertFireStoreToNetwrokModel(data: dayQuery.data(), type: DayNetworkModel.self) 
         
         complation(.success(dayNetwrokModel))
       } else { // Дня нет в базе данных возвращаем просто false
@@ -238,7 +238,7 @@ extension FetchService {
   private func convertFireStoreToNetwrokModel <T: NetworkModelable>(
     data:[String: Any],
     type: T.Type
-    ) -> NetworkModelable? {
+    ) -> T? {
     do {
         let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
         // Нужно декодировать!

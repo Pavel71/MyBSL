@@ -55,14 +55,18 @@ extension ListnerService {
          // задача простая внести изменения в реалм и обновить Экран!
          snapshot.documentChanges.forEach { diff in
            
-           guard
-             let mealModel = self.convertFireStoreToNetwrokModel(
-             data: diff.document.data(),
-             type: MealNetworkModel.self),
-             let mealNetwrokModel = mealModel as? MealNetworkModel
-           else {
-             complation(.failure(.castNetworkModelError))
-             return}
+//           guard
+//             let mealModel = self.convertFireStoreToNetwrokModel(
+//             data: diff.document.data(),
+//             type: MealNetworkModel.self),
+//
+//           else {
+//             complation(.failure(.castNetworkModelError))
+//             return}
+          
+          let mealModel = self.convertFireStoreToNetwrokModel(
+          data: diff.document.data(),
+          type: MealNetworkModel.self)
            
            var type : ServerChangeType
            
@@ -73,7 +77,7 @@ extension ListnerService {
              
            }
            
-           complation(.success((mealNetwrokModel,type)))
+           complation(.success((mealModel,type)))
 
          }
        }
@@ -113,14 +117,17 @@ extension ListnerService {
         // задача простая внести изменения в реалм и обновить Экран!
         snapshot.documentChanges.forEach { diff in
           
-          guard
-            let productModel = self.convertFireStoreToNetwrokModel(
-            data: diff.document.data(),
-            type: ProductNetworkModel.self),
-            let productNetwrokModel = productModel as? ProductNetworkModel
-          else {
-            complation(.failure(.castNetworkModelError))
-            return}
+//          guard
+//            let productModel = self.convertFireStoreToNetwrokModel(
+//            data: diff.document.data(),
+//            type: ProductNetworkModel.self)
+//          else {
+//            complation(.failure(.castNetworkModelError))
+//            return}
+          
+          let productModel = self.convertFireStoreToNetwrokModel(
+          data: diff.document.data(),
+          type: ProductNetworkModel.self)
           
           var type : ServerChangeType
           
@@ -131,7 +138,7 @@ extension ListnerService {
             
           }
           
-          complation(.success((productNetwrokModel,type)))
+          complation(.success((productModel,type)))
 
         }
       }
@@ -145,7 +152,7 @@ extension ListnerService {
   func convertFireStoreToNetwrokModel <T: NetworkModelable>(
     data:[String: Any],
     type: T.Type
-    ) -> NetworkModelable? {
+    ) -> T {
     do {
         let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
         // Нужно декодировать!
@@ -157,7 +164,7 @@ extension ListnerService {
         
         return model
       } catch (_) {
-        return nil
+        fatalError("Cast Convert Type Error")
       }
   }
   
