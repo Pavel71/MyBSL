@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 
 protocol SettingsDisplayLogic: class {
@@ -62,11 +63,18 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
     
     
     setUpViews()
+    
+     guard let userEamil = Auth.auth().currentUser?.email else {return}
+     settingView.customNavBar.configureNavBar(useEmail: userEamil)
 
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    
+    // Нужно установить логин аккаунта
+    
+   
     
     navigationController?.navigationBar.isHidden = true
   }
@@ -132,8 +140,17 @@ extension SettingsViewController {
   
   private func handlelogOutButton() {
     
+    removeAllFireStoreListners()
     interactor?.makeRequest(request: .logOut)
+    // Также нужно снять все листнеры
     
+   
+    
+  }
+  
+  private func removeAllFireStoreListners() {
+    let listner: ListnerService! = ServiceLocator.shared.getService()
+    listner.removeAllListners()
   }
   
   private func getAnswerLogOut(result: Result<Bool,NetworkFirebaseError>) {

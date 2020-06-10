@@ -97,6 +97,11 @@ class MealInteractor : MealBusinessLogic {
     switch request {
     case .setFireStoreMealObserver:
       print("Set Meal Observer")
+      
+      guard listnerService.mealListner == nil else {return}
+      
+      presenter?.presentData(response: .showLoadingMessage(message: "Идет загрузка данных..."))
+      
       listnerService.setMealListner { (result) in
         
         switch result {
@@ -111,11 +116,12 @@ class MealInteractor : MealBusinessLogic {
             
             self.realmManager.addMeal(meal: mealRealm)
           case .removed:
-            
             self.realmManager.deleteMealAfterFirestoreListnerSignal(mealRealm: mealRealm)
           
           }
         }
+        
+        self.presenter?.presentData(response: .showOffLoadingMessage)
       }
       
     default:break

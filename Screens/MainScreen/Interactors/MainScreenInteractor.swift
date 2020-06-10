@@ -81,16 +81,16 @@ class MainScreenInteractor: MainScreenBusinessLogic {
 extension MainScreenInteractor {
   
   private func catchFireStoreListnerRequests(request: MainScreen.Model.Request.RequestType) {
-
+    
     switch request {
-
+      
     case .setFireStoreDayListner:
-     
+      
       setDayListner()
-
+      
     default:break
     }
-
+    
   }
   
   private func setDayListner() {
@@ -98,27 +98,18 @@ extension MainScreenInteractor {
     print("Check Lisner Day")
     
     guard  listnerService.dayListner == nil else {return}
-     print("Установим листнер")
+    print("Установим листнер")
     listnerService.setDayListner { (result) in
       switch result {
       case .failure(let error):
         print("Day Listner Error",error.localizedDescription)
         
-      case .success((let model,let type)):
+      case .success(let models):
         
         // Запустить сообщение что мы подгружаем данные
         self.presenter?.presentData(response: .showLoadingMessage(message: "Идет обновление данных"))
         
-        // и потом мне нужно получить данные из UserDefaults при такой работе!
-        switch type {
-        case .added,.modifided:
-          print("Пришли данные с сервера Day Listner")
-          self.addDataToRealm(model: model)
-          // Удаление у меня не предусмотренно
-        case .removed:
-          print("Удалили данные")
-          
-        }
+        self.addDataToRealm(models: models)
         print("Загрузить данные по UserDefaults")
         
         self.fetchService.fetchUserDefaultsDataFromFireStore { (result) in
@@ -134,16 +125,31 @@ extension MainScreenInteractor {
           }
         }
         
-//        self.passDayRealmToConvertInVMInPresenter()
+        //        self.passDayRealmToConvertInVMInPresenter()
       }
     }
   }
   
-  private func addDataToRealm(model: DayNetworkModel) {
-    let (day,compObj,sugarObj) = self.convertWorker.convertDayNetworkModelsToRealm(dayNetworkModel: model)
-    self.newDayRealmManager.setDaysToRealm(days: [day])
-    sugarObj.forEach(self.sugarRealmManger.addOrUpdateNewSugarRealm(sugarRealm: ))
-    compObj.forEach(self.compObjRealmManager.addOrUpdateNewCompObj(compObj:))
+  private func addDataToRealm(models: [DayNetworkModel]) {
+    
+    
+    var daysRealm    = [DayRealm]()
+    var compobjRealm = [CompansationObjectRelam]()
+    var sugarRealm   = [SugarRealm]()
+    
+    models.forEach { (model) in
+      let (day,compObj,sugarObj) = self.convertWorker.convertDayNetworkModelsToRealm(dayNetworkModel: model)
+      daysRealm.append(day)
+      compobjRealm.append(contentsOf: compObj)
+      sugarRealm.append(contentsOf: sugarObj)
+      
+    }
+    // теперь нужно отсортировать данные или просто их разобрать и добавить сразу отсортерованными
+    newDayRealmManager.setDaysToRealm(days: daysRealm)
+    compObjRealmManager.setCompObjsToRealm(compObjs: compobjRealm)
+    sugarRealmManger.setSugarToRealm(sugars: sugarRealm)
+    
+    
   }
 }
 
@@ -209,7 +215,7 @@ extension MainScreenInteractor {
       // 4. расчитать  Insulin Supply
       
       deleteDataAfterDeletiedCompObj(compObj: compObj, sugarId: deleteSugarId)
-
+      
       writtingDataToFireStoreAfterDeleteCompobj()
       
       passDayRealmToConvertInVMInPresenter()
@@ -234,16 +240,16 @@ extension MainScreenInteractor {
       
       passDayRealmToConvertInVMInPresenter()
       
-    case .setFirstDayToFireStore:
+      //    case .setFirstDayToFireStore:
+      //
+      //      let day = newDayRealmManager.getCurrentDay()
+      //
+      //      let dayNetwork = getDayDataToSetFireStore(dayRealm: day)
+      //
+      //      //      let dayNetwork = convertWorker.convertDayRealmToDayNetworkLayer(dayRealm: day)
+      //
+      //      addDayToFireStore(dayNetwork:dayNetwork)
       
-      let day = newDayRealmManager.getCurrentDay()
-      
-      let dayNetwork = getDayDataToSetFireStore(dayRealm: day)
-      
-      //      let dayNetwork = convertWorker.convertDayRealmToDayNetworkLayer(dayRealm: day)
-      
-      addDayToFireStore(dayNetwork:dayNetwork)
-     
       
     default:break
     }
@@ -294,22 +300,19 @@ extension MainScreenInteractor {
   
   private func checkDayInRealm() {
     
+    // Зачем нам проверять есть ли день в базе данных? Шо за бред! При создание дня мне нужно чекнуть есть ли он в FireStore с такой датой! Если есть забрать его и записать! Если нет то просто создать свой и сохранить в базу данных!
+    
     if newDayRealmManager.isNowLastDayInDB() == false { // в Реалме нет дня
-      
-      let newDay = self.newDayRealmManager.addBlankDay()
-      
-      DispatchQueue.main.async {
-        
-        self.checkDayInFireStoreAndSaveOrReplace(dayRealm: newDay)
-      }
+      print("Дня нет в Реалме")
+      self.checkDayInFireStoreAndSaveOrReplace()
       
     } else { // В Реалме есть день!
       print("Сегодня есть в базе, просто сетим его")
       // Есть сегодняшний день то сетим его в current
       newDayRealmManager.setDayByDate(date: Date())
-      
+      passDayRealmToConvertInVMInPresenter()
     }
-    passDayRealmToConvertInVMInPresenter()
+    
     
   }
   
@@ -322,8 +325,6 @@ extension MainScreenInteractor {
   private func addDayToFireStore(dayNetwork: DayNetworkModel) {
     addService.addDayToFireStore(dayNetworkModel: dayNetwork)
     
-    
-//    setDayListner()
     
   }
   
@@ -339,14 +340,42 @@ extension MainScreenInteractor {
     let insulinSupply = userDefaultsWorker.getInsulinSupply()
     let userDefData   = [UserDefaultsKey.insulinSupplyValue.rawValue : insulinSupply]
     
+    let prevDayRealm  = getPreviosDayToUpdateInFireStore(currentDay: dayRealm)
     
-    butchWrittingThenDeleteCompObj(dayNetwork: dayNetwrok, userDefaultsData: userDefData)
+    
+    butchWrittingThenDeleteCompObj(
+      dayNetwork       : dayNetwrok,
+      userDefaultsData : userDefData,
+      prevDayRealm     : prevDayRealm)
   }
   
   private func butchWrittingThenDeleteCompObj(
-    dayNetwork: DayNetworkModel,userDefaultsData:[String:Any]) {
+    dayNetwork       : DayNetworkModel,
+    userDefaultsData :[String:Any],
+    prevDayRealm     : DayRealm?) {
     
-    butchWrittingService.writingDataAfterUpdateCompobj(dayNetwrokModel: dayNetwork, userDefaultsData: userDefaultsData)
+    if let prevDayReal = prevDayRealm {
+      let prevDayNetworkModel = getDayDataToSetFireStore(dayRealm: prevDayReal)
+      
+      butchWrittingService.writingDataAfterUpdateCompobj(
+        dayNetwrokModel     : dayNetwork,
+        userDefaultsData    : userDefaultsData,
+        prevDayNetwrokModel : prevDayNetworkModel)
+    } else {
+      butchWrittingService.writingDataAfterUpdateCompobj(
+        dayNetwrokModel     : dayNetwork,
+        userDefaultsData    : userDefaultsData,
+        prevDayNetwrokModel : nil)
+    }
+    
+  }
+  
+  private func getPreviosDayToUpdateInFireStore(currentDay: DayRealm) -> DayRealm? {
+    var prevDay: DayRealm?
+    if currentDay.listCompObjID.count == 1 {
+      prevDay = newDayRealmManager.fetchAllDays().dropLast().last
+    }
+    return prevDay
   }
   //  private func butchWrittingDeleteCompObj(
   //    compObjId       : String,
@@ -382,35 +411,39 @@ extension MainScreenInteractor {
   
   //MARK: CheckDay in FireStore
   
-  private func checkDayInFireStoreAndSaveOrReplace(dayRealm: DayRealm) {
+  private func checkDayInFireStoreAndSaveOrReplace() {
     
-    let newDayNetworkModel = getDayDataToSetFireStore(dayRealm: dayRealm)
+    // Смысл в том что таким образом бомбить день Довольно опасно так как у нас подгружает листнер дни мы пытаемся их запилить
     
     fetchService.checkDayByDateInFireStore { (result) in
+      print("Проверили Базу данных на наличие дней!")
       switch result {
+        
       case .failure(let error):
+        
         print(error)
+        
       case .success(let dayNetworkModel):
         
         if let dayNetwrokM =  dayNetworkModel { // Есть в FireStore
           print("Текущий день находится в FireStore")
-
+          
           let (realmDay,compObjs,sugarObjs) = self.convertWorker.convertDayNetworkModelsToRealm(dayNetworkModel: dayNetwrokM)
           
           self.newDayRealmManager.replaceCurrentDay(replaceDay: realmDay)
-          compObjs.forEach(self.compObjRealmManager.addOrUpdateNewCompObj(compObj: ))
-          sugarObjs.forEach(self.sugarRealmManger.addOrUpdateNewSugarRealm(sugarRealm:))
-          
-          self.passDayRealmToConvertInVMInPresenter()
+          self.compObjRealmManager.setCompObjsToRealm(compObjs: compObjs)
+          self.sugarRealmManger.setSugarToRealm(sugars: sugarObjs)
           
         } else { // Нет в FireStore
-          // Добавим
-          print("Сохранем день в FireStore")
+          
+          print("Создаем новый день в FireStore и Realm")
+          let newDay = self.newDayRealmManager.addBlankDay()
+          let newDayNetworkModel = self.getDayDataToSetFireStore(dayRealm: newDay)
           
           self.addDayToFireStore(dayNetwork: newDayNetworkModel)
-
           
         }
+        self.passDayRealmToConvertInVMInPresenter()
         
       }
       
@@ -422,14 +455,14 @@ extension MainScreenInteractor {
   
   
   
-//  func deleteCompObjFromFireStore(compObjId: String) {
-//    deleteService.deleteCompObjFromFireStore(compObjId: compObjId)
-//  }
-//
-//  func deleteSugarFromFireStore(sugarId: String) {
-//
-//    deleteService.deleteSugarFromFireStore(sugarId: sugarId)
-//  }
+  //  func deleteCompObjFromFireStore(compObjId: String) {
+  //    deleteService.deleteCompObjFromFireStore(compObjId: compObjId)
+  //  }
+  //
+  //  func deleteSugarFromFireStore(sugarId: String) {
+  //
+  //    deleteService.deleteSugarFromFireStore(sugarId: sugarId)
+  //  }
   
   private func addNewSugarToFireStore(day: DayRealm) {
     

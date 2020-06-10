@@ -23,12 +23,18 @@ final class SettingCustomNavBar: UIView {
     return b
   }()
   
-  var fetchAllFromFireStoreButton : UIButton = {
-    let b = UIButton(type: .system)
-    b.setTitle("Fetch All From FireStore", for: .normal)
-    b.addTarget(self, action: #selector(handlefetchAll), for: .touchUpInside)
-    return b
+  var userEmail : UILabel = {
+    let label = UILabel()
+    label.font = UIFont.systemFont(ofSize: 20, weight: .light)
+    return label
   }()
+  
+//  var fetchAllFromFireStoreButton : UIButton = {
+//    let b = UIButton(type: .system)
+//    b.setTitle("Fetch All From FireStore", for: .normal)
+//    b.addTarget(self, action: #selector(handlefetchAll), for: .touchUpInside)
+//    return b
+//  }()
   
   
   // MARK: Clousers
@@ -54,16 +60,16 @@ final class SettingCustomNavBar: UIView {
   @objc private func handleLogOut() {
     didTapLogOutButton!()
   }
-  
-  @objc private func handlefetchAll() {
-    print("Fetch All")
-    
-    let locator = ServiceLocator.shared
-    
-    let fetchService: FetchService! = locator.getService()
-    
-//    fetchService.getRealmDataFromFireStore()
-  }
+//
+//  @objc private func handlefetchAll() {
+//    print("Fetch All")
+//
+//    let locator = ServiceLocator.shared
+//
+//    let fetchService: FetchService! = locator.getService()
+//
+////    fetchService.getRealmDataFromFireStore()
+//  }
   
 
 
@@ -77,6 +83,15 @@ final class SettingCustomNavBar: UIView {
 
 }
 
+
+// MARK: Set View Model
+extension SettingCustomNavBar {
+  
+  func configureNavBar(useEmail: String) {
+    self.userEmail.text = useEmail
+  }
+}
+
 // MARK: Set Up Views
 
 extension SettingCustomNavBar {
@@ -86,7 +101,7 @@ extension SettingCustomNavBar {
     
     
     let stackView = UIStackView(arrangedSubviews: [
-    UIView(),fetchAllFromFireStoreButton,logOutButton
+    UIView(),userEmail,logOutButton
     ])
     stackView.distribution = .equalCentering
     

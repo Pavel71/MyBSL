@@ -301,15 +301,38 @@ extension NewCompansationObjectScreenInteractor {
     
     let dayNetwork = getDayDataToSetFireStore(dayRealm: day)
     
-    butchWrittingDataAfterUpdateCompobj(dayNetwrok: dayNetwork, userDefaultsdata: insulinSupplyData)
+    let prevDayRealm  = getPreviosDayToUpdateInFireStore(currentDay: day)
+    
+    butchWrittingDataAfterUpdateCompobj(
+      dayNetwrok       : dayNetwork,
+      userDefaultsdata : insulinSupplyData,
+      prevDayRealm     : prevDayRealm)
 
   }
   
   private func butchWrittingDataAfterUpdateCompobj(
     dayNetwrok       : DayNetworkModel,
-    userDefaultsdata : [String: Any]) {
+    userDefaultsdata : [String: Any],
+    prevDayRealm     : DayRealm?) {
     
-    butchWritingService.writingDataAfterUpdateCompobj(dayNetwrokModel: dayNetwrok, userDefaultsData: userDefaultsdata)
+    
+    
+    
+    if let prevDayReal = prevDayRealm {
+         let prevDayNetworkModel = getDayDataToSetFireStore(dayRealm: prevDayReal)
+         
+      butchWritingService.writingDataAfterUpdateCompobj(
+        dayNetwrokModel     : dayNetwrok,
+        userDefaultsData    : userDefaultsdata,
+        prevDayNetwrokModel : prevDayNetworkModel)
+       } else {
+      butchWritingService.writingDataAfterUpdateCompobj(
+      dayNetwrokModel     : dayNetwrok,
+      userDefaultsData    : userDefaultsdata,
+      prevDayNetwrokModel : nil)
+       }
+    
+   
     
   }
   
@@ -352,10 +375,11 @@ extension NewCompansationObjectScreenInteractor {
 //  }
   
   
-  // MARK: Add New COmpObj
-  
+  // MARK: Add
   
   private func writeDataToFireStoreThenAddCompObj() {
+    
+    // вот здесь мы должны сделать проверку на кол-во объектов в дне! Если оно не равно == 1 то мы должны j,yjdbnm ghtlsleobq ltym nfr;t
 
     
     let day  = self.newDayRealmManager.getCurrentDay()
@@ -370,21 +394,44 @@ extension NewCompansationObjectScreenInteractor {
     
     let dayNetwork =  getDayDataToSetFireStore(dayRealm: day)
     
-    butchWritingService.writtingDataAfterAddNewCompObj(dayNetwrok: dayNetwork, userDefaultsData: userDefaultsData)
+    let prevDayRealm  = getPreviosDayToUpdateInFireStore(currentDay: day)
     
+    if let prevDayReal = prevDayRealm {
+      let prevDayNetworkModel = getDayDataToSetFireStore(dayRealm: prevDayReal)
+      
+      butchWritingService.writtingDataAfterAddNewCompObj(
+        dayNetwrok       : dayNetwork,
+        userDefaultsData : userDefaultsData,
+        prevDayNetwrok   : prevDayNetworkModel)
+    } else {
+      butchWritingService.writtingDataAfterAddNewCompObj(
+      dayNetwrok       : dayNetwork,
+      userDefaultsData : userDefaultsData,
+      prevDayNetwrok   : nil)
+    }
+    
+    
+  }
+  
+  private func getPreviosDayToUpdateInFireStore(currentDay: DayRealm) -> DayRealm? {
+    var prevDay: DayRealm?
+    if currentDay.listCompObjID.count == 1 {
+      prevDay = newDayRealmManager.fetchAllDays().dropLast().last
+    }
+    return prevDay
   }
   
   // MARK: Convert Day Data
   private func getDayDataToSetFireStore(dayRealm: DayRealm) -> DayNetworkModel {
     let compObjs = Array(dayRealm.listCompObjID.compactMap( compRealmManager.fetchCompObjByPrimeryKey(compObjPrimaryKey: )))
-         
+
          let sugarObjs = Array(dayRealm.listSugarID.compactMap( sugarRealmManager.fetchSugarByPrimeryKey(sugarPrimaryKey:)))
          let dayNetwork = convertWorker.convertDayRealmToDayNetworkLayer(
            dayRealm         : dayRealm,
            listSugarRealm   : sugarObjs,
            listCompObjRealm : compObjs)
     return dayNetwork
-    
+
   }
   
 //  private func butchWrittingAllDataToFireStoreAfterAddNewCompobj(

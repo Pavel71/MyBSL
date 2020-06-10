@@ -110,18 +110,26 @@ class FoodInteractor: FoodBusinessLogic {
   }
   
   private func setProductFireStoreListner() {
+    
+    guard listnerService.productListner == nil else {return}
+    
+    // Нужно отправить сигнал о том что подгружаем данные
+    presenter?.presentData(response: .showLoadingMessage(message: "Идет Загрузка данных..."))
+    
     listnerService.setProductLisner { result in
         
         switch result {
-        case .success((let model,let type)):
-          let productRealm = self.convertWorker.convertProductNEtwrokModelToProductRealm(productNetworkModel: model)
+        case .success((let models,let type)):
+          
+          let productsRealm = self.convertProductsNetworkToRealm(productsNetwork: models)
+          
           switch type {
           case .added,.modifided:
-            print("Добавить в реалм или Обновим старые",model)
-            self.realmManager.addNewProduct(product: productRealm)
+            print("Добавить в реалм или Обновим старые",models)
+            self.realmManager.setProductsToRealm(products: productsRealm)
           case .removed:
             print("Удалить в реалме")
-            self.realmManager.deleteWhenProductListnerGetData(product: productRealm)
+            self.realmManager.deleteProducts(products: productsRealm)
           }
           self.didChangeProductDB()
           self.presenter?.presentData(response: .reloadTableView)
@@ -129,8 +137,19 @@ class FoodInteractor: FoodBusinessLogic {
         case .failure(let error):
           print("error",error)
         }
+      self.didChangeProductDB()
+      self.presenter?.presentData(response: .showOffLoadingMessage)
+      
         
       }
+  }
+  
+  private func convertProductsNetworkToRealm(productsNetwork: [ProductNetworkModel]) -> [ProductRealm] {
+    
+    var productsRealm = productsNetwork.map(self.convertWorker.convertProductNEtwrokModelToProductRealm(productNetworkModel:))
+    
+    
+    return productsRealm
   }
   
   // MARK: Realm Change DB
@@ -206,8 +225,10 @@ class FoodInteractor: FoodBusinessLogic {
         // Search Bar
       case .filterProductByName(let name):
         let items = realmManager.fetchProductByName(name: name)
+        
         // Здесь нужен items  который последний это могут быть как фавориты так и все продукты
         presenter?.presentData(response: .prepareDataFromRealmToViewModel(items: items, bySections: isDefaultList))
+        presenter?.presentData(response: .reloadTableView)
       
     default:break
     }
@@ -264,10 +285,6 @@ extension FoodInteractor {
   let productToFireBase = convertWorker.convertProductsRealmToProductNetworkModel(product: productRealm)
   
     addService.addProductToFireBase(product: productToFireBase)
-  
-    if listnerService.productListner == nil {
-      setProductFireStoreListner()
-    }
   
   // Вот здесь нужно убедится что листнер сейчас есть! если нет то добавить его
   }

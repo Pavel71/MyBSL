@@ -33,12 +33,32 @@ final class ListnerService {
     convertWorker = ServiceLocator.shared.getService()
     fetchService  = ServiceLocator.shared.getService()
   }
+  
+  func removeAllListners() {
+    
+    guard productListner != nil else {return}
+    
+    if productListner != nil {
+      productListner.remove()
+    }
+    if mealListner != nil {
+         mealListner.remove()
+       }
+    if dayListner != nil {
+         dayListner.remove()
+       }
+
+    
+    productListner = nil
+    mealListner    = nil
+    dayListner     = nil
+  }
 }
 
 // MARK: Day
 extension ListnerService {
   
-  func setDayListner(complation: @escaping (Result<(DayNetworkModel,ServerChangeType),NetworkFirebaseError>) -> Void) {
+  func setDayListner(complation: @escaping (Result<([DayNetworkModel]),NetworkFirebaseError>) -> Void) {
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
     
@@ -60,26 +80,19 @@ extension ListnerService {
         
         var dayModels:[DayNetworkModel] = []
         
+        
         snapshot.documentChanges.forEach { diff in
-          
-          
+
           let dayModel = self.convertFireStoreToNetwrokModel(
             data: diff.document.data(),
             type: DayNetworkModel.self)
           
-          var type : ServerChangeType
+
           
-          switch diff.type {
-          case .added    : type = .added
-          case .modified : type = .modifided
-          case .removed  : type = .removed
-            
-          }
-          
-          complation(.success((dayModel,type)))
+          dayModels.append(dayModel)
           
         }
-                
+      complation(.success((dayModels)))
         
       }
       
@@ -153,7 +166,7 @@ extension ListnerService {
   // Я записал - мне же пришли новые данные! Когда тот кто записывает не должен полуыать новые данные
   // Удаление не показывает как Local Change -
   
-  func setProductLisner(complation: @escaping (Result<(ProductNetworkModel,ServerChangeType),NetworkFirebaseError>) -> Void) {
+  func setProductLisner(complation: @escaping (Result<([ProductNetworkModel],ServerChangeType),NetworkFirebaseError>) -> Void) {
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
     
@@ -170,24 +183,19 @@ extension ListnerService {
       print("Source Data Products",source)
       
       
+      var products:[ProductNetworkModel] = []
+      var type : ServerChangeType = .added
+      
       if source == .server { // Изменения инициировал сервер
-        print("Изменения пришил с сервера!")
+        print("Изменения пришил с сервера! products")
         // задача простая внести изменения в реалм и обновить Экран!
         snapshot.documentChanges.forEach { diff in
-          
-          //          guard
-          //            let productModel = self.convertFireStoreToNetwrokModel(
-          //            data: diff.document.data(),
-          //            type: ProductNetworkModel.self)
-          //          else {
-          //            complation(.failure(.castNetworkModelError))
-          //            return}
-          
+
           let productModel = self.convertFireStoreToNetwrokModel(
             data: diff.document.data(),
             type: ProductNetworkModel.self)
           
-          var type : ServerChangeType
+          
           
           switch diff.type {
           case .added    : type = .added
@@ -195,10 +203,11 @@ extension ListnerService {
           case .removed  : type = .removed
             
           }
+          products.append(productModel)
           
-          complation(.success((productModel,type)))
           
         }
+        complation(.success((products,type)))
       }
       
       

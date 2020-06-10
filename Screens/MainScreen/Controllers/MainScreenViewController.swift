@@ -93,12 +93,9 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     
     setViews()
     print("View DId Load Main Screen")
-    interactor?.makeRequest(request: .checkLastDayInDB)
+//    interactor?.makeRequest(request: .checkLastDayInDB)
   }
-  
-//  func setFirstDayToFireStore() {
-//    interactor?.makeRequest(request: .setFirstDayToFireStore)
-//  }
+
   
   // MARK: Activate Application
   func activateApplication() {

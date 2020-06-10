@@ -46,10 +46,13 @@ class NewDayRealmManager {
 extension NewDayRealmManager {
   
   func replaceCurrentDay(replaceDay: DayRealm) {
+    
+    guard let todayDay = fetchDayByDate(dayDate: Date()) else {return}
+    self.currentDay = replaceDay
     do {
          
          self.realm.beginWrite()
-         self.realm.delete(currentDay)
+         self.realm.delete(todayDay)
          self.realm.add(replaceDay)
          
          try self.realm.commitWrite()
@@ -58,7 +61,7 @@ extension NewDayRealmManager {
        } catch {
          print(error.localizedDescription)
        }
-    self.currentDay = replaceDay
+    
   }
 }
 
@@ -181,9 +184,23 @@ extension NewDayRealmManager {
     
   }
   
+  func setDayToRealm(day: DayRealm) {
+    do {
+      self.realm.beginWrite()
+      self.realm.add(day, update: .all)
+      try self.realm.commitWrite()
+      print(self.realm.configuration.fileURL?.absoluteURL as Any,"Days in DB")
+      
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+  
   func setDaysToRealm(days: [DayRealm]) {
     
     let sortedDays = days.sorted(by: {$0.date < $1.date})
+    
+    print(sortedDays,"Sorted Days")
     do {
          self.realm.beginWrite()
          self.realm.add(sortedDays, update: .all)
@@ -193,6 +210,8 @@ extension NewDayRealmManager {
        } catch {
          print(error.localizedDescription)
        }
+    
+    self.currentDay = sortedDays.last
   }
   
 }

@@ -44,6 +44,13 @@ class MealPresenter: MealPresentationLogic {
     
     case .passSuccessAddOrUpdateMeal(let isSuccessAdd, let isUpdateMeal):
       viewController?.displayData(viewModel: .showAlertAfterAddMeal(isSuccessAdd: isSuccessAdd, isUpdateMeal: isUpdateMeal))
+      
+      
+    case .showLoadingMessage(let message):
+      
+      viewController?.displayData(viewModel: .showLoadingMessage(message:message))
+    case .showOffLoadingMessage:
+      viewController?.displayData(viewModel: .showOffLoadingMessage)
     }
     
   }

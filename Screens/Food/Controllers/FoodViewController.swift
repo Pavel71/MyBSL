@@ -69,6 +69,12 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     }
   }
   
+  var loadDataHUD: JGProgressHUD = {
+    let hud = JGProgressHUD(style: .dark)
+    hud.textLabel.text = "Loading data..."
+    return hud
+  }()
+  
   init() {
     super.init(nibName: nil, bundle: nil)
     setup()
@@ -113,7 +119,8 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
     super.viewWillAppear(animated)
     // При возвращение на этот экран выдели последний активный сегмент!
     
-    
+    interactor?.makeRequest(request: .fetchAllProducts)
+    interactor?.makeRequest(request: .setProductsFireStoreLisner)
     navigationController?.navigationBar.isHidden = true
     setKeyboardNotification()
     
@@ -159,6 +166,13 @@ class FoodViewController: UIViewController, FoodDisplayLogic {
       
       
       AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(newElementView: newProductView, blurView: blurView, customNavBar: customNavBar, tabbarController: tabBarController!, isShow: true)
+      
+      
+    case .showLoadingMessage(let message):
+      loadDataHUD.textLabel.text = message
+      loadDataHUD.show(in: self.view)
+    case .showOffLoadingMessage:
+      loadDataHUD.dismiss(animated: true)
       
     case .reloadTableView:
       reloadTableView()

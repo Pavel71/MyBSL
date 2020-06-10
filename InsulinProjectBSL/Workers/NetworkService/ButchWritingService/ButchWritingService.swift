@@ -57,7 +57,10 @@ extension ButchWritingService {
 
 extension ButchWritingService {
   
-  func writtingDataAfterAddNewCompObj(dayNetwrok: DayNetworkModel,userDefaultsData:[String: Any]) {
+  func writtingDataAfterAddNewCompObj(
+    dayNetwrok       : DayNetworkModel,
+    userDefaultsData : [String: Any],
+    prevDayNetwrok   : DayNetworkModel?) {
     
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
@@ -75,7 +78,14 @@ extension ButchWritingService {
       let userDefaultsRef =  db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.UserDefaults.collectionName).document(currentUserID)
        
        
-       batch.updateData(userDefaultsData, forDocument: userDefaultsRef)
+    batch.updateData(userDefaultsData, forDocument: userDefaultsRef)
+    
+    
+    if let prevDayNetModels = prevDayNetwrok {
+      let prevDayRef =  db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(prevDayNetModels.id)
+         
+      batch.updateData(prevDayNetModels.dictionary, forDocument: prevDayRef)
+    }
 
        
        
@@ -157,7 +167,9 @@ extension ButchWritingService {
 extension ButchWritingService {
   
   func writingDataAfterUpdateCompobj(
-    dayNetwrokModel: DayNetworkModel,userDefaultsData: [String: Any]) {
+    dayNetwrokModel     : DayNetworkModel,
+    userDefaultsData    : [String: Any],
+    prevDayNetwrokModel : DayNetworkModel?) {
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
       let db    = Firestore.firestore()
@@ -174,6 +186,13 @@ extension ButchWritingService {
        
        
       batch.updateData(userDefaultsData, forDocument: userDefaultsRef)
+    
+    
+    if let prevDayNetModel = prevDayNetwrokModel {
+      let prevref =  db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(prevDayNetModel.id)
+         
+      batch.updateData(prevDayNetModel.dictionary, forDocument: prevref)
+    }
       
 
       

@@ -60,6 +60,9 @@ enum Meal {
         case prepareNewMealViewModel(updateMeal: MealRealm?, listOfTypeMeal:[String])
         // Add or Update Meal
         case passSuccessAddOrUpdateMeal(isSuccessAdd: Bool, isUpdateMeal: Bool)
+        
+        case showLoadingMessage(message: String)
+        case showOffLoadingMessage
       }
     }
     
@@ -75,6 +78,9 @@ enum Meal {
         
         // Show Success Alert After Add Meal
         case showAlertAfterAddMeal(isSuccessAdd: Bool, isUpdateMeal: Bool)
+        
+        case showLoadingMessage(message: String)
+        case showOffLoadingMessage
       }
     }
   }

@@ -22,7 +22,7 @@ class FoodPresenter: FoodPresentationLogic {
     
     workWithNewFoodViewModel(response: response)
     workWithTableViewViewModel(response: response)
-
+    workWithListnerRequests(response: response)
     
   }
   
@@ -59,7 +59,24 @@ class FoodPresenter: FoodPresentationLogic {
       
     
       
+      
     default: break
+    }
+    
+    
+  }
+  
+  // MARK: Work With Listner Response
+  private func workWithListnerRequests(response:Food.Model.Response.ResponseType) {
+    
+    switch response {
+    case .showLoadingMessage(let message):
+      viewController?.displayData(viewModel: .showLoadingMessage(message: message))
+      
+    case .showOffLoadingMessage:
+      viewController?.displayData(viewModel: .showOffLoadingMessage)
+      
+    default:break
     }
   }
   

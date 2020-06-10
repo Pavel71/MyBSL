@@ -58,6 +58,9 @@ enum Food {
         case succesAddNewProduct(succes: Bool)
         
         case reloadTableView
+        
+        case showLoadingMessage(message: String)
+        case showOffLoadingMessage
 
     
       }
@@ -72,6 +75,9 @@ enum Food {
         
         // Reload Tableviw
         case reloadTableView
+        
+        case showLoadingMessage(message: String)
+        case showOffLoadingMessage
         
 //        case displayAlertSaveNewProduct(succes: Bool)
         

@@ -8,7 +8,7 @@
 
 import UIKit
 import RealmSwift
-
+import JGProgressHUD
 
 protocol MealDisplayLogic: class {
   func displayData(viewModel: Meal.Model.ViewModel.ViewModelData)
@@ -85,6 +85,12 @@ class MealViewController: UIViewController, MealDisplayLogic,MainControllerInCon
   // Menu ANimated
   var didPanGestureValueChange: ((UIPanGestureRecognizer) -> Void)?
   
+  var loadDataHUD: JGProgressHUD = {
+    let hud = JGProgressHUD(style: .dark)
+    hud.textLabel.text = "Loading data..."
+    return hud
+  }()
+  
   // MARK: Object lifecycle
   
   init(headerInSectionWorker: HeaderInSectionWorker) {
@@ -149,6 +155,11 @@ class MealViewController: UIViewController, MealDisplayLogic,MainControllerInCon
     
     switch viewModel {
       
+    case .showLoadingMessage(let message):
+      loadDataHUD.textLabel.text = message
+      loadDataHUD.show(in: view)
+    case .showOffLoadingMessage :
+      loadDataHUD.dismiss(animated: true)
     case .setViewModel(let viewModel):
       
       print("Сохранил новй обед")
