@@ -48,12 +48,21 @@ extension NewDayRealmManager {
   func replaceCurrentDay(replaceDay: DayRealm) {
     
     guard let todayDay = fetchDayByDate(dayDate: Date()) else {return}
-    self.currentDay = replaceDay
+   
     do {
          
          self.realm.beginWrite()
-         self.realm.delete(todayDay)
-         self.realm.add(replaceDay)
+      
+      
+      todayDay.listSugarID.forEach(sugarRealmManager.deleteSugarId(sugarId:))
+      todayDay.listCompObjID.forEach(compObjrealm.deleteCompObgById(compObjId:))
+      
+      self.realm.delete(todayDay)
+      // помимио этого нужно удалить все объекты дня
+      
+      
+      
+      self.realm.add(replaceDay)
          
          try self.realm.commitWrite()
          print(self.realm.configuration.fileURL?.absoluteURL as Any,"Day in DB")
@@ -61,6 +70,7 @@ extension NewDayRealmManager {
        } catch {
          print(error.localizedDescription)
        }
+     self.currentDay = replaceDay
     
   }
 }
@@ -144,6 +154,17 @@ extension NewDayRealmManager {
     }
   }
   
+  func deleteToday() {
+    guard let today = fetchDayByDate(dayDate: Date()) else {return}
+    do {
+      self.realm.beginWrite()
+      self.realm.delete(today)
+      try self.realm.commitWrite()
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+  
   func deleteCurrentDay() {
     do {
       self.realm.beginWrite()
@@ -200,7 +221,7 @@ extension NewDayRealmManager {
     
     let sortedDays = days.sorted(by: {$0.date < $1.date})
     
-    print(sortedDays,"Sorted Days")
+    
     do {
          self.realm.beginWrite()
          self.realm.add(sortedDays, update: .all)

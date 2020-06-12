@@ -58,9 +58,12 @@ final class ListnerService {
 // MARK: Day
 extension ListnerService {
   
-  func setDayListner(complation: @escaping (Result<([DayNetworkModel]),NetworkFirebaseError>) -> Void) {
+  func setDayListner(complation: @escaping (Result<([DayNetworkModel],UserDefaultsNetworkModel),NetworkFirebaseError>) -> Void) {
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+    
+    let db = Firestore.firestore()
+    let userdefaultsRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.UserDefaults.collectionName)
     
     dayListner = Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).addSnapshotListener({ (querry, error) in
       
@@ -78,23 +81,50 @@ extension ListnerService {
       
       if source == .server {
         
-        var dayModels:[DayNetworkModel] = []
         
-        
-        snapshot.documentChanges.forEach { diff in
-
-          let dayModel = self.convertFireStoreToNetwrokModel(
-            data: diff.document.data(),
-            type: DayNetworkModel.self)
+        // USer Defaults
+        userdefaultsRef.getDocuments { (querry, error) in
           
-
+          if error != nil {
+            complation(.failure(.fetchUserDefaultDataFromFireStoreError))
+          }
           
-          dayModels.append(dayModel)
+          
+          var userDefaultsModel: UserDefaultsNetworkModel!
+          
+          querry?.documents.forEach({ (doc) in
+            let userData = doc.data()
+           
+            userDefaultsModel = self.convertFireStoreToNetwrokModel(data: userData, type: UserDefaultsNetworkModel.self)
+          
+          })
+          
+          // Когда этот запрос будет выполнен мы можем обработать данные пришедшие с листнера!
+          // И отправить все вместе
+          
+          // Listner
+                 
+          var dayModels:[DayNetworkModel] = []
+          
+          snapshot.documentChanges.forEach { diff in
+            
+            let dayModel = self.convertFireStoreToNetwrokModel(
+              data: diff.document.data(),
+              type: DayNetworkModel.self)
+            
+            dayModels.append(dayModel)
+            
+          }
+          
+          complation(.success((dayModels,userDefaultsModel)))
           
         }
-      complation(.success((dayModels)))
+          
+        } // USer Defaults
         
-      }
+        
+        
+       
       
       
     }) // Listner

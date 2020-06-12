@@ -532,7 +532,7 @@
 		F1CC2D63232F77F100EF7D18 /* TableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableHeaderView.swift; sourceTree = "<group>"; };
 		F1CC2D6A232FB41F00EF7D18 /* ProductListInMealViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInMealViewController.swift; sourceTree = "<group>"; };
 		F1CC2D6C232FB6D200EF7D18 /* ProductListInMealViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListInMealViewModel.swift; sourceTree = "<group>"; };
-		F1E78C98230D31E600592AB8 /* InsulinProjectBSL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InsulinProjectBSL.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1E78C98230D31E600592AB8 /* BSL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BSL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1E78C9B230D31E600592AB8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F1E78CA2230D31E900592AB8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F1E78CA5230D31E900592AB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -3023,7 +3023,7 @@
 		F1E78C99230D31E600592AB8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F1E78C98230D31E600592AB8 /* InsulinProjectBSL.app */,
+				F1E78C98230D31E600592AB8 /* BSL.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3359,7 +3359,7 @@
 			);
 			name = InsulinProjectBSL;
 			productName = InsulinProjectBSL;
-			productReference = F1E78C98230D31E600592AB8 /* InsulinProjectBSL.app */;
+			productReference = F1E78C98230D31E600592AB8 /* BSL.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -3886,7 +3886,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Pavel.M.InsulinProjectBSLMackBook;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = BSL;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3908,7 +3908,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Pavel.M.InsulinProjectBSLMackBook;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = BSL;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

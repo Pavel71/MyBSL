@@ -93,7 +93,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     
     setViews()
     print("View DId Load Main Screen")
-//    interactor?.makeRequest(request: .checkLastDayInDB)
+    interactor?.makeRequest(request: .checkLastDayInDB)
   }
 
   
@@ -104,7 +104,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     
     // На старте мы просто перезапишим балнк модель и все! в остальное время будет все норм!
     interactor?.makeRequest(request: .checkLastDayInDB)
-    interactor?.makeRequest(request: .setFireStoreDayListner)
+
 
   }
   
@@ -115,6 +115,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     
     interactor?.makeRequest(request: .checkLastDayInDB)
     interactor?.makeRequest(request: .setFireStoreDayListner)
+    
     navigationController?.navigationBar.isHidden = true
     setKeyboardNotification()
     // Сделаем запрос в реалм чтобы получить новые данные по ViewModel

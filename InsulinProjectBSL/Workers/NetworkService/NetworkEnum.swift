@@ -37,6 +37,7 @@ enum NetworkFirebaseError: Error {
   
   case saveUserDefaultsDataError
   case addProductToFireBaseError
+  case addDayTpFireStore
   
   // Update
   

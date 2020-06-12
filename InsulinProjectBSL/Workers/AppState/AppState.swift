@@ -22,7 +22,9 @@ final class AppState {
   var loginRegisterWindow : UIWindow?
   
   private init () {}
-
+  
+  // Может быть когда мы фигачим переход на MainWIndow и создавать наш TabBar Controller инчае какаято жопа получается! Сто 500 запростов происходит! Бесит!
+  
   
   
   func toogleMinorWindow(minorWindow: UIWindow?) {
