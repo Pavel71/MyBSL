@@ -154,8 +154,9 @@ extension NewDayRealmManager {
     }
   }
   
-  func deleteToday() {
-    guard let today = fetchDayByDate(dayDate: Date()) else {return}
+  func deleteToday() -> String {
+    guard let today = fetchDayByDate(dayDate: Date()) else {return ""}
+    let todayId = today.id
     do {
       self.realm.beginWrite()
       self.realm.delete(today)
@@ -163,6 +164,7 @@ extension NewDayRealmManager {
     } catch {
       print(error.localizedDescription)
     }
+    return todayId
   }
   
   func deleteCurrentDay() {

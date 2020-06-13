@@ -17,6 +17,16 @@ final class DeleteService {
  
 }
 
+// MARK: Delete Days
+extension DeleteService {
+  
+  func deleteDayFromFireStore(deleteDayId: String) {
+    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+
+    Firestore.firestore().collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(deleteDayId).delete()
+  }
+}
+
 
 // MARK: Delete CompObj
 

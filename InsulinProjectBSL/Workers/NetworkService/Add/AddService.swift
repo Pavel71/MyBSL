@@ -19,6 +19,10 @@ final class AddService {
     return encod
   }
   
+  enum RedactingDB: Int {
+    case canRedacting,notRedacting
+  }
+  
   //  var convertor: ConvertorWorker!
   //
   //  init() {
@@ -38,6 +42,66 @@ extension AddService {
 
 // MARK: Add Day to FireStore
 extension AddService {
+  
+  
+  func addDayToFireStoreTransaction(dayNetworkModel: DayNetworkModel) {
+    
+    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+       let db    = Firestore.firestore()
+       
+       let data = dayNetworkModel.dictionary
+    
+    let isRedactingRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID)
+    let dayRef =  db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(dayNetworkModel.id)
+    
+    db.runTransaction({ (transaction, error) -> Any? in
+      
+      
+      let isRedactingDocument: DocumentSnapshot
+      do {
+          try isRedactingDocument = transaction.getDocument(isRedactingRef)
+      } catch let fetchError as NSError {
+          error?.pointee = fetchError
+          return nil
+      }
+      
+      let cameData = isRedactingDocument.data()?["isRedacting"]
+      guard
+        let collectionState = RedactingDB(rawValue: cameData as! Int)
+      else {return nil}
+      print(collectionState,"Is Redacting")
+      
+      if collectionState == .canRedacting { // можем записывать день!
+        
+        transaction.updateData(["isRedacting": true], forDocument: isRedactingRef)
+//        transaction.setData(data, forDocument: dayRef)
+//        transaction.updateData(["isRedacting": false], forDocument: isRedactingRef)
+        transaction.updateData(["isRedacting": false], forDocument: isRedactingRef)
+      }
+      
+
+      
+      
+      return nil
+    }) { (obj, error) in
+      
+      if let error = error {
+             print("Transaction failed: \(error)")
+         } else {
+        
+             print("Transaction successfully committed!")
+         }
+    }
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
   // complation: @escaping (Result<Bool,NetworkFirebaseError>) -> Void
   func addDayToFireStore(
     dayNetworkModel: DayNetworkModel,
@@ -52,21 +116,22 @@ extension AddService {
     
     
     let newDayRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(dayNetworkModel.id)
+//    newDayRef.setData(data)
     
     let targetDate = Date().onlyDate()!.timeIntervalSince1970
     let dayCollectionRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).whereField("date", isEqualTo: targetDate)
     
     
     
-    // Поисчем день с текущей датой!
+//     Поисчем день с текущей датой!
     dayCollectionRef.getDocuments { (querry, error) in
       guard let querry = querry else {
         complation(.failure(.addDayTpFireStore))
         return
       }
-      
+
       var dayNetwork: DayNetworkModel?
-      
+
       if querry.documents.count == 0 { // Значит сегодняшнего дня в базе нет! Можем записывать смело
         print("FireStore Пустая записываю День")
         newDayRef.setData(data)
@@ -77,8 +142,8 @@ extension AddService {
         complation(.success(dayNetwork))
         print("День есть в FireStore значит возму его к себе")
       }
-      
-      
+
+
     }
     
  

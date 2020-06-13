@@ -58,7 +58,7 @@ final class ListnerService {
 // MARK: Day
 extension ListnerService {
   
-  func setDayListner(complation: @escaping (Result<([DayNetworkModel],UserDefaultsNetworkModel),NetworkFirebaseError>) -> Void) {
+  func setDayListner(complation: @escaping (Result<([DayNetworkModel],ServerChangeType,UserDefaultsNetworkModel),NetworkFirebaseError>) -> Void) {
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
     
@@ -104,8 +104,8 @@ extension ListnerService {
           
           // Listner
                  
-          var dayModels:[DayNetworkModel] = []
-          
+          var dayModels      :[DayNetworkModel] = []
+          var serverTypeData : ServerChangeType = .added
           snapshot.documentChanges.forEach { diff in
             
             let dayModel = self.convertFireStoreToNetwrokModel(
@@ -114,9 +114,15 @@ extension ListnerService {
             
             dayModels.append(dayModel)
             
+            switch diff.type {
+            case .added    : serverTypeData = .added
+            case .modified : serverTypeData = .modifided
+            case .removed  : serverTypeData = .removed
+            }
+            
           }
           
-          complation(.success((dayModels,userDefaultsModel)))
+          complation(.success((dayModels,serverTypeData,userDefaultsModel)))
           
         }
           
