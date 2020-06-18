@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-
+import JGProgressHUD
 
 protocol SettingsDisplayLogic: class {
   func displayData(viewModel: Settings.Model.ViewModel.ViewModelData)
@@ -19,7 +19,11 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
   var interactor: SettingsBusinessLogic?
   var router: (NSObjectProtocol & SettingsRoutingLogic)?
   
-  
+  var loadDataHUD: JGProgressHUD = {
+    let hud = JGProgressHUD(style: .dark)
+    hud.textLabel.text = "Log Out ..."
+    return hud
+  }()
   // MARK: Properties
   
   
@@ -88,6 +92,7 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
     switch viewModel {
     case .logOut(let result):
       getAnswerLogOut(result: result)
+      loadDataHUD.dismiss()
     default:break
     }
 
@@ -139,7 +144,7 @@ extension SettingsViewController {
   // MARK: Log Out
   
   private func handlelogOutButton() {
-    
+    loadDataHUD.show(in: view)
     removeAllFireStoreListners()
     interactor?.makeRequest(request: .logOut)
     // Также нужно снять все листнеры
@@ -159,7 +164,10 @@ extension SettingsViewController {
     case .success(_):
       
       let appState = AppState.shared
+      
       appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
+      appState.removeMainWindowController()
+      
       
     case .failure(let error):
       

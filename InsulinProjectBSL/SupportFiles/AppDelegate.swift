@@ -64,10 +64,11 @@ import Firebase
     if Auth.auth().currentUser == nil {
       
       // Не залогинены
+      appStateService.removeMainWindowController()
       appStateService.loginRegisterWindow?.makeKeyAndVisible()
       
     } else {
-      
+      appStateService.setMainTabBarController()
       appStateService.mainWindow?.makeKeyAndVisible()
     }
   }
@@ -88,12 +89,17 @@ import Firebase
   
   func applicationDidBecomeActive(_ application: UIApplication) {
     
-  
-    // Здесь мне нужно сделать проверку на дату! и передать информацию в ViewController - сделать какойнить класс с оперативкой
     let appStateService: AppState = AppState.shared
     
     appStateService.pushUpdateMainScreenViewControllerMethod()
         
+  }
+  
+  func applicationWillTerminate(_ application: UIApplication) {
+    print("Закрывают приложение")
+    let listner: ListnerService! = ServiceLocator.shared.getService()
+    listner.removeAllListners()
+    // Возможно здесь нужно есче почистить userDefault and Realm
   }
   
   
@@ -106,8 +112,10 @@ import Firebase
    
     
     // Set MainWindow
+    let dummyViewController = UIViewController()
+    dummyViewController.view.backgroundColor = .white
     appStateService.mainWindow = UIWindow(frame: UIScreen.main.bounds)
-    appStateService.mainWindow?.rootViewController = BaseTabBarController()
+    appStateService.mainWindow?.rootViewController =  dummyViewController
 
     
     

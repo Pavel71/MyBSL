@@ -86,6 +86,8 @@ class CustomHeaderInSectionView: UIView {
     return label
   }()
   
+  var rightStackView: UIStackView!
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
@@ -98,7 +100,7 @@ class CustomHeaderInSectionView: UIView {
     addSubview(backGroundContanerViwe)
     backGroundContanerViwe.fillSuperview(padding: .init(top: 3, left: 5, bottom: 5, right: 5))
     
-    let rightStackView = UIStackView(arrangedSubviews: [
+    rightStackView = UIStackView(arrangedSubviews: [
       UIView(),
       portionLabel,
       carboOn100Label
@@ -136,6 +138,8 @@ class CustomHeaderInSectionView: UIView {
     sectionNameLabel.text = sectionName
     
     currentExpand = isExpanded ? .expanded : .closed
+    
+    rightStackView.isHidden = isExpanded == false// Скрыть правый Stack когда он не нужен
     
     headerButton.isEnabled = isOnlyOneSection // Отключаю активацию кнопки если мы в режиме лист
     guard let rightLabelName = rightLabelName else {return}

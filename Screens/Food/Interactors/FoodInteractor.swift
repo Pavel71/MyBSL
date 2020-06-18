@@ -125,7 +125,7 @@ class FoodInteractor: FoodBusinessLogic {
           
           switch type {
           case .added,.modifided:
-            print("Добавить в реалм или Обновим старые",models)
+            print("Добавить в реалм или Обновим старые Products")
             self.realmManager.setProductsToRealm(products: productsRealm)
           case .removed:
             print("Удалить в реалме")

@@ -109,7 +109,7 @@ extension NewDayRealmManager {
   
 }
 
-// MARK: Get Day
+// MARK: Get Set Day
 
 extension NewDayRealmManager {
   
@@ -118,6 +118,10 @@ extension NewDayRealmManager {
     
     return self.currentDay
     
+  }
+  
+  func setCurrentDay(dayRealm: DayRealm) {
+    self.currentDay = dayRealm
   }
   
   // может просто стоит переписать этот метод и добавлять последний
@@ -183,31 +187,22 @@ extension NewDayRealmManager {
 
 extension NewDayRealmManager {
   
-  func addBlankDay() -> DayRealm {
-    
-    let newDay = DayRealm(date: Date())
-    self.currentDay = newDay
-    addOrUpdateNewDay(dayRealm: newDay)
-    return newDay
-  }
+//  func addBlankDay() -> DayRealm {
+//
+//    let newDay = DayRealm(date: Date())
+//    self.currentDay = newDay
+//
+//    setDayToRealm(day: newDay)
+//
+//    return newDay
+//  }
   
-  func addOrUpdateNewDay(dayRealm: DayRealm) {
-    
-    do {
-      
-      self.realm.beginWrite()
-      self.realm.add(dayRealm, update: .modified)
-      
-      try self.realm.commitWrite()
-      print(self.realm.configuration.fileURL?.absoluteURL as Any,"Day in DB")
-      
-    } catch {
-      print(error.localizedDescription)
-    }
-    
-  }
+  
+  
   
   func setDayToRealm(day: DayRealm) {
+    
+    print("Устанавливаю день в реалм",day.id)
     do {
       self.realm.beginWrite()
       self.realm.add(day, update: .all)
@@ -341,69 +336,5 @@ extension NewDayRealmManager {
  
 }
 
-// MARK: Testing
 
-
-extension NewDayRealmManager {
-  
-  
-  private func testDaysMethod(yestarday: Date) {
-
-      currentDay = DayRealm(date: yestarday)
-      addOrUpdateNewDay(dayRealm: currentDay)
-      
-//      addNewSugarId(sugarId: <#T##String#>)
-      
-      let testCompObj = getDummyCompansationObj()
-//      addCompansationObjectToRealm(compObj: testCompObj)
-
-      
-  //    for _ in 0...8 {
-  //      let dayBefore = DayRealm(date: dateBefore)
-  //      writeDayInDB(dayRealm: dayBefore)
-  //
-  //      dateBefore = dateBefore.dayBefore()
-  //    }
-      
-      
-    }
-    
-    private func getDummyCompansationObj() -> CompansationObjectRelam {
-      
-              let dinner = CompansationObjectRelam(
-                typeObject: .mealObject,
-                sugarBefore: 5.8,
-                insulinOnTotalCarbo: 2.0,
-                insulinInCorrectionSugar: 0,
-                totalCarbo: 20,
-                placeInjections: "some")
-          let product1 = ProductRealm(
-            name          : "Молоко",
-            category      : "Молочные продукты",
-            carboIn100Grm : 5,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-            isFavorits    : false, 
-            actualInsulin : 0.5
-          )
-          let product2 = ProductRealm(
-            name          : "Яблоко",
-            category      : "Фрукты",
-            carboIn100Grm : 11,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-            isFavorits    : false,
-            actualInsulin : 1
-          )
-      
-          let product3 = ProductRealm(
-            name          : "Мандарин",
-            category      : "Фрукты",
-            carboIn100Grm : 11,                     // Здесь может быть ошибка нужно внимательно проверить чтобы шла в модель именно карбо ин портино а не на 100гр
-            isFavorits    : false,
-            actualInsulin : 1
-          )
-      
-          dinner.listProduct.append(objectsIn: [product1,product2,product3])
-      
-          return dinner
-    }
-  
-}
 

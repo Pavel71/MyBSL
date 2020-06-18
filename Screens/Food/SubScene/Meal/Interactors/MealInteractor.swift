@@ -100,9 +100,9 @@ class MealInteractor : MealBusinessLogic {
       
       guard listnerService.mealListner == nil else {return}
       
-      presenter?.presentData(response: .showLoadingMessage(message: "Идет загрузка данных..."))
-      
+      self.presenter?.presentData(response: .showLoadingMessage(message: "Идет загрузка данных..."))
       listnerService.setMealListner { (result) in
+        
         
         switch result {
         case .failure(let error):
@@ -112,18 +112,19 @@ class MealInteractor : MealBusinessLogic {
           let mealRealm = self.convertWorker.convertMealNetwrokToMealRealm(mealNetworkModel: mealModel)
           
           switch type {
-          case .added,.modifided:
             
+          case .added,.modifided:
             self.realmManager.addMeal(meal: mealRealm)
+            
           case .removed:
             self.realmManager.deleteMealAfterFirestoreListnerSignal(mealRealm: mealRealm)
           
           }
         }
         
-        self.presenter?.presentData(response: .showOffLoadingMessage)
+        
       }
-      
+      self.presenter?.presentData(response: .showOffLoadingMessage)
     default:break
     }
   }

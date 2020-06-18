@@ -28,7 +28,7 @@ final class AppState {
   
   
   func toogleMinorWindow(minorWindow: UIWindow?) {
-
+    
     if let window2 = minorWindow {
 
           if window2.isKeyWindow {
@@ -57,6 +57,18 @@ final class AppState {
     }
   }
   
+  func setMainTabBarController() {
+    mainWindow?.rootViewController = BaseTabBarController()
+  }
+  func removeMainWindowController() {
+    
+    UIView.transition(with: (mainWindow?.rootViewController?.view)!, duration: 0.3, options: .curveEaseOut, animations: {
+      let dummyVC = UIViewController()
+      dummyVC.view.backgroundColor = .white
+      self.mainWindow?.rootViewController = dummyVC
+    }, completion: nil)
+    
+  }
   
 
   
@@ -68,20 +80,20 @@ extension AppState {
   
   func pushUpdateMainScreenViewControllerMethod() {
     
-    let mainScreenController = getMainScreenController()
+    guard
+      let mainScreenController = getMainScreenController()
+      else {return}
     mainScreenController.activateApplication()
   }
   
-//  func setFirstDayToFireStore() {
-//    let mainScreen = getMainScreenController()
-//    mainScreen.setFirstDayToFireStore()
-//  }
+
   
   
   
-  private func getMainScreenController() -> MainScreenViewController {
-    
-    let tabBarController = self.mainWindow?.rootViewController as! BaseTabBarController
+  private func getMainScreenController() -> MainScreenViewController? {
+    guard
+    let tabBarController = self.mainWindow?.rootViewController as? BaseTabBarController
+      else {return nil}
     
     let mainScreenController: MainScreenViewController = tabBarController.viewControllers?.filter{$0.children[0] is MainScreenViewController}[0].children[0] as! MainScreenViewController
     

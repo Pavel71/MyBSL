@@ -58,7 +58,7 @@ final class ListnerService {
 // MARK: Day
 extension ListnerService {
   
-  func setDayListner(complation: @escaping (Result<([DayNetworkModel],ServerChangeType,UserDefaultsNetworkModel),NetworkFirebaseError>) -> Void) {
+  func setDayListner(complation: @escaping (Result<([DayNetworkModel],ServerChangeType,[UserDefaultsNetworkModel]),NetworkFirebaseError>) -> Void) {
     
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
     
@@ -90,13 +90,15 @@ extension ListnerService {
           }
           
           
-          var userDefaultsModel: UserDefaultsNetworkModel!
+          var userDefaultsModel: [UserDefaultsNetworkModel] = []
           
           querry?.documents.forEach({ (doc) in
             let userData = doc.data()
            
-            userDefaultsModel = self.convertFireStoreToNetwrokModel(data: userData, type: UserDefaultsNetworkModel.self)
-          
+            guard
+              let usDefModel = self.convertFireStoreToNetwrokModel(data: userData, type: UserDefaultsNetworkModel.self)
+              else {return}
+            userDefaultsModel.append(usDefModel)
           })
           
           // Когда этот запрос будет выполнен мы можем обработать данные пришедшие с листнера!
@@ -108,9 +110,11 @@ extension ListnerService {
           var serverTypeData : ServerChangeType = .added
           snapshot.documentChanges.forEach { diff in
             
+           guard
             let dayModel = self.convertFireStoreToNetwrokModel(
               data: diff.document.data(),
               type: DayNetworkModel.self)
+            else {return}
             
             dayModels.append(dayModel)
             
@@ -161,19 +165,12 @@ extension ListnerService {
         print("Изменения пришил с сервера!")
         // задача простая внести изменения в реалм и обновить Экран!
         snapshot.documentChanges.forEach { diff in
-          
-          //           guard
-          //             let mealModel = self.convertFireStoreToNetwrokModel(
-          //             data: diff.document.data(),
-          //             type: MealNetworkModel.self),
-          //
-          //           else {
-          //             complation(.failure(.castNetworkModelError))
-          //             return}
-          
-          let mealModel = self.convertFireStoreToNetwrokModel(
+
+          guard
+            let mealModel = self.convertFireStoreToNetwrokModel(
             data: diff.document.data(),
             type: MealNetworkModel.self)
+            else {return complation(.failure(.castNetworkModelError))}
           
           var type : ServerChangeType
           
@@ -227,9 +224,11 @@ extension ListnerService {
         // задача простая внести изменения в реалм и обновить Экран!
         snapshot.documentChanges.forEach { diff in
 
-          let productModel = self.convertFireStoreToNetwrokModel(
+          guard
+            let productModel = self.convertFireStoreToNetwrokModel(
             data: diff.document.data(),
             type: ProductNetworkModel.self)
+            else {return}
           
           
           
@@ -255,7 +254,7 @@ extension ListnerService {
   func convertFireStoreToNetwrokModel <T: NetworkModelable>(
     data:[String: Any],
     type: T.Type
-  ) -> T {
+  ) -> T? {
     do {
       let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
       // Нужно декодировать!

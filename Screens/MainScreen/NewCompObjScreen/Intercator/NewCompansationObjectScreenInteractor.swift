@@ -140,7 +140,7 @@ extension NewCompansationObjectScreenInteractor {
           totalInsulin : totalInsulinNow)
         // MARK: Start Ml Learning
         // Пусть эта работа идет в Асинхронном потоке! Так как мы взаимодействуем с Реалмом то можем взять только main.async
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
           // Метод запускающий обучение по данным
           
           self.presenter?.presentData(response: .learnMlForNewData)
@@ -157,7 +157,7 @@ extension NewCompansationObjectScreenInteractor {
           
           self.writeDataToFireStoreThenAddCompObj()
           
-        }
+//        }
 
         presenter?.presentData(response: .passSignalToReloadMainScreen)
         
@@ -209,6 +209,7 @@ extension NewCompansationObjectScreenInteractor {
   private func writeAllDataToRealmThenAddCompObj(
     compObj: CompansationObjectRelam,sugarRealm : SugarRealm,totalInsulin: Float) {
     
+    print("Записываем данные в реалм")
     // Update All Data In Local DB
       // Update Prev Compobj After Add
       updatePrevCompObjFromDataInNewCompObj(timeCreate: compObj.timeCreate, sugarAfter: compObj.sugarBefore)
@@ -385,6 +386,9 @@ extension NewCompansationObjectScreenInteractor {
     let day  = self.newDayRealmManager.getCurrentDay()
     let userDefaultsData = self.getUserDefaultsDataToWriteFrieStoreThenAddCompObj()
     
+    
+    
+    
     self.butchWrittingDayAndUserDefaultsAfterAddNewCompObj(day: day, userDefaultsData: userDefaultsData)
   }
   
@@ -404,6 +408,7 @@ extension NewCompansationObjectScreenInteractor {
         userDefaultsData : userDefaultsData,
         prevDayNetwrok   : prevDayNetworkModel)
     } else {
+      print("Попали сюда")
       butchWritingService.writtingDataAfterAddNewCompObj(
       dayNetwrok       : dayNetwork,
       userDefaultsData : userDefaultsData,

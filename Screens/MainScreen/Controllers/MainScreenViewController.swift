@@ -63,6 +63,9 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
      super.init(nibName: nil, bundle: nil)
      setup()
    }
+  deinit {
+    print("DeinitMainScreenController")
+  }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -93,7 +96,8 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     
     setViews()
     print("View DId Load Main Screen")
-    interactor?.makeRequest(request: .checkLastDayInDB)
+
+    interactor?.makeRequest(request: .setFireStoreDayListner)
   }
 
   
@@ -114,7 +118,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     print("Main Screen View Will Appear")
     
     interactor?.makeRequest(request: .checkLastDayInDB)
-    interactor?.makeRequest(request: .setFireStoreDayListner)
+    
     
     navigationController?.navigationBar.isHidden = true
     setKeyboardNotification()

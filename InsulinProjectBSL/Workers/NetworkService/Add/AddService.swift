@@ -43,56 +43,61 @@ extension AddService {
 // MARK: Add Day to FireStore
 extension AddService {
   
-  
-  func addDayToFireStoreTransaction(dayNetworkModel: DayNetworkModel) {
-    
+//
+  func addDayToFireStoreTransaction(
+    dayNetworkModel: DayNetworkModel,
+    complation: @escaping (Result<Bool,NetworkFirebaseError>) -> Void) {
+
     guard let currentUserID = Auth.auth().currentUser?.uid else {return}
        let db    = Firestore.firestore()
-       
+
        let data = dayNetworkModel.dictionary
-    
-    let isRedactingRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID)
+
+    let lastDayDateRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID)
     let dayRef =  db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(dayNetworkModel.id)
     
+    
+    var isNeddSetDataToRealm = false
+
     db.runTransaction({ (transaction, error) -> Any? in
-      
-      
-      let isRedactingDocument: DocumentSnapshot
+
+
+      let lastDayDateDocument: DocumentSnapshot
       do {
-          try isRedactingDocument = transaction.getDocument(isRedactingRef)
+          try lastDayDateDocument = transaction.getDocument(lastDayDateRef)
       } catch let fetchError as NSError {
           error?.pointee = fetchError
           return nil
       }
-      
-      let cameData = isRedactingDocument.data()?["isRedacting"]
-      guard
-        let collectionState = RedactingDB(rawValue: cameData as! Int)
-      else {return nil}
-      print(collectionState,"Is Redacting")
-      
-      if collectionState == .canRedacting { // можем записывать день!
-        
-        transaction.updateData(["isRedacting": true], forDocument: isRedactingRef)
-//        transaction.setData(data, forDocument: dayRef)
-//        transaction.updateData(["isRedacting": false], forDocument: isRedactingRef)
-        transaction.updateData(["isRedacting": false], forDocument: isRedactingRef)
-      }
-      
 
-      
-      
+     guard
+      let cameData = lastDayDateDocument.data()?["lastDayDate"] as? TimeInterval
+      else {return nil}
+      // Если дата совпадает с сегодняшним днем то нужно взять день по последней дате, Если нет то добавить
+      print(cameData,"Came Data")
+
+      if cameData < dayNetworkModel.date {
+        print("Дня еще нет в FireStore - добавляем!")
+        transaction.setData(data, forDocument: dayRef)
+        transaction.updateData(["lastDayDate":dayNetworkModel.date], forDocument: lastDayDateRef)
+        
+        isNeddSetDataToRealm = true
+        
+      }
+
+
       return nil
     }) { (obj, error) in
-      
+
       if let error = error {
              print("Transaction failed: \(error)")
          } else {
-        
+        // Обновляем дату!
+        complation(.success(isNeddSetDataToRealm))
              print("Transaction successfully committed!")
          }
     }
-    
+
   }
   
   
@@ -116,7 +121,7 @@ extension AddService {
     
     
     let newDayRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(dayNetworkModel.id)
-//    newDayRef.setData(data)
+
     
     let targetDate = Date().onlyDate()!.timeIntervalSince1970
     let dayCollectionRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).whereField("date", isEqualTo: targetDate)
@@ -140,7 +145,7 @@ extension AddService {
         // Уже такой день есть в базе Нужно его достать и установить в реалм! а текущий удалить нафиг
         dayNetwork =  self.convertFireStoreToNetwrokModel(data: querry.documents.first!.data(), type: DayNetworkModel.self)
         complation(.success(dayNetwork))
-        print("День есть в FireStore значит возму его к себе")
+        
       }
 
 

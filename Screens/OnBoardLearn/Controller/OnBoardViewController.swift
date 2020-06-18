@@ -141,7 +141,7 @@ class OnBoardViewController: UIPageViewController {
           
           // тут нужно очистить все поля onboardViewModel и вернуть индекс
           self.setonBoardToDefaultState()
-
+          appStateService.setMainTabBarController()
           appStateService.toogleMinorWindow(minorWindow: appStateService.onBoardingWindow)
           
         case .failure(let error):

@@ -148,6 +148,7 @@ extension LoginController {
         let newdatRealmManger: NewDayRealmManager! = ServiceLocator.shared.getService()
         newdatRealmManger.deleteDaysRealm() // Очистим повторно
         
+        appState.setMainTabBarController()
         appState.toogleMinorWindow(minorWindow: appState.loginRegisterWindow)
         
 //        self.fetchDataHud.show(in: self.loginView, animated: true)
