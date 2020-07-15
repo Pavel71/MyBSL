@@ -72,6 +72,13 @@ class OnBoardViewController: UIPageViewController {
   }
   var didIsNextButtonValid : ((Bool) -> Void)?
   
+  
+  // MARK: Deinit
+  
+  deinit {
+    print("Deinit On Board VC")
+  }
+  
   override func viewDidLoad()
   {
     super.viewDidLoad()

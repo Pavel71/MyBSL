@@ -195,8 +195,8 @@ class NewProductView: AddNewElementView {
 //    let massa: String = isFavorit ? foodValidator.massa! : "100"
     
     guard
-      let name      = nameTextField.text,
-      let category  = categoryWithButtonTextFiled.text,
+      let name      = nameTextField.text?.capitalized,
+      let category  = categoryWithButtonTextFiled.text?.capitalized,
       let carbo     = carboTextField.text,
       let massa     = massaTextField.text
       else {return nil}

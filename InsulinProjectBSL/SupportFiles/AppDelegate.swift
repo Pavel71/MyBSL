@@ -102,6 +102,9 @@ import Firebase
     // Возможно здесь нужно есче почистить userDefault and Realm
   }
   
+  func applicationDidEnterBackground(_ application: UIApplication) {
+    print("Приложени на бэкграунде")
+  }
   
   // MARK: Root
   

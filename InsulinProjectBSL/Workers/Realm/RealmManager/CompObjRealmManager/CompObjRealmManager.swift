@@ -52,6 +52,17 @@ extension CompObjRealmManager {
 }
 
 
+// MARK: Fetch Stats Data
+
+extension CompObjRealmManager {
+  func fetchCompObjCount(typeObj: CompansationPosition) -> Double {
+   let allCompObj = fetchAllCompObj()
+    return Double(allCompObj.filter { (compObj) -> Bool in
+      compObj.compansationFaseEnum == typeObj
+      }.count)
+  }
+}
+
 // MARK: Fetch CompansationObjectRelam From Realm
 extension CompObjRealmManager {
   
@@ -397,6 +408,7 @@ extension CompObjRealmManager {
     compObj: CompansationObjectRelam,
     correctKoeficient: Float,
     isPlus: Bool) {
+
     
     
     do {
@@ -409,12 +421,14 @@ extension CompObjRealmManager {
       if isPlus {
         
         compObj.listProduct.forEach { (product) in
-          product.insulinOnCarboToML = product.userSetInsulinOnCarbo + (product.percantageCarboInMeal * correctKoeficient)
+          let insulinOnCarboToML  = product.userSetInsulinOnCarbo + (product.percantageCarboInMeal * correctKoeficient)
+          product.insulinOnCarboToML = insulinOnCarboToML
         }
         
       } else {
         compObj.listProduct.forEach { (product) in
-          product.insulinOnCarboToML = product.userSetInsulinOnCarbo - (product.percantageCarboInMeal * correctKoeficient)
+           let insulinOnCarboToML = product.userSetInsulinOnCarbo - (product.percantageCarboInMeal * correctKoeficient)
+          product.insulinOnCarboToML = insulinOnCarboToML
         }
       }
       compObj.compansationFaseEnum = .modifidedForMl
@@ -473,9 +487,11 @@ extension CompObjRealmManager {
     return insulinList
   }
   
+  // Для обучения мы отбираем только те модели которые прошли модификацию или просто хорошие!
   private func fetchCompObjToMLLearning() -> [CompansationObjectRelam] {
-    let filteredData : [CompansationObjectRelam] = fetchAllCompObj().dropLast().filter { (compObjRealm) -> Bool in
-      compObjRealm.compansationFaseEnum != .dontCalculated
+    let filteredData : [CompansationObjectRelam] = fetchAllCompObj().filter { (compObjRealm) -> Bool in
+      
+      compObjRealm.compansationFaseEnum  == .modifidedForMl || compObjRealm.compansationFaseEnum == .good
     }
     
     return filteredData

@@ -24,7 +24,7 @@ class SugarCellVMWorker {
   static private func updateCompansationLabelAndCellState(sugar: String) -> SugarCellModel {
     
     
-    guard let sugarCorrectorWorker:ShugarCorrectorWorker = locator.getService() else { fatalError()}
+  let sugarCorrectorWorker:ShugarCorrectorWorker! = locator.getService() 
     
     var sugarCellVm = SugarCellModel()
     

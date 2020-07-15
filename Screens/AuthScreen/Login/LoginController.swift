@@ -32,6 +32,12 @@ class LoginController: UIViewController {
   // Clousers
   var didFinishLogInClouser: (() -> Void)?
   
+  // MARK: Deinit
+  
+  deinit {
+    print("Deinit Login Controller")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     

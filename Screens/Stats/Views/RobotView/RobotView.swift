@@ -9,10 +9,45 @@
 import UIKit
 
 
+enum RobotLevels : Int,CaseIterable {
+  case first  = 1
+  case second = 2
+  case third  = 20
+  case four   = 300
+  case five   = 500
+  case six    = 700
+  case seven  = 1000
+  case eight  = 2000
+  case nine   = 4000
+  case ten    = 10_000
+
+  
+
+}
+
+// Будем отталкиватся от кол-ва обедов! Пришло кол-во обедов - Мы сверям на каком уровне нахзодится робот и сетим ему все соответсвующие данные!
+// Вычесляем картинку и прогресс на данный момент времени!
+
+protocol RobotViewModalable {
+  var allCompObjCount : Int {get set}
+}
+
+
+// Надо подумать как вычислять уровень робота! Контроллировать его прогресс! Если его прогресс приходит через модельку то мы просто добавляем его и все дела!
+// Но как его вычеслять!
+
+
+// Не хочет отрисовывать Stroke надо с этим разобратсяя! Шо за херня!
+
+
 // Здесь будет класс с роботом и круговым прогресс Layer
 class RobotView: UIView {
   
 //  let shapeLayer = CAShapeLayer()
+  
+  // MARK: Outlets
+  
+
   
   let robotImageView: UIImageView = {
     let iv = UIImageView(image: #imageLiteral(resourceName: "ROBOT"))
@@ -51,12 +86,13 @@ class RobotView: UIView {
     
   }()
   
-  
+  // MARK: Init
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    addSubview(robotImageView)
-    robotImageView.fillSuperview(padding: .init(top: 25, left: 25, bottom: 25, right: 25))
+    
+    setViews()
+
 //    self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
   }
   
@@ -117,4 +153,54 @@ class RobotView: UIView {
   
   
   
+}
+
+// MARK: Set View Model
+extension RobotView {
+  
+  func setViewModel(viewModel: RobotViewModalable) {
+    
+    shapeLayer.strokeEnd = 0
+
+    
+    let allCompObjCount = viewModel.allCompObjCount
+    // теперь надо вычеслить какой уровень у роболта
+    
+    var robotLevel : RobotLevels = .first
+    
+    for level in RobotLevels.allCases {
+      
+      if allCompObjCount < level.rawValue {
+        robotLevel = level
+        break
+      }
+    }
+    // Хорошо уровень робота мы вычислилил теперь нужно определить его прогресс на этом уровне!
+    
+    
+    
+    
+    
+    robotProgress = CGFloat(Double(allCompObjCount) / Double(robotLevel.rawValue))
+    // Здесь также нужно отработать изменения Картинки
+    print(robotProgress,"Robot Progress")
+//    shapeLayer.strokeEnd = robotProgress
+//    handleTap()
+    shapeLayer.strokeEnd += robotProgress
+    
+  }
+}
+
+// MARK: Set Up Views
+
+extension RobotView {
+  
+  private func setViews() {
+    
+    
+    addSubview(robotImageView)
+    robotImageView.fillSuperview(padding: .init(top: 40, left: 40, bottom: 40, right: 40))
+    
+    shapeLayer.strokeEnd = 0.8
+  }
 }

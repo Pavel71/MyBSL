@@ -15,12 +15,35 @@ protocol StatsBusinessLogic {
 class StatsInteractor: StatsBusinessLogic {
 
   var presenter: StatsPresentationLogic?
-  var service: StatsService?
+  var realmManager : RealmManager!
   
-  func makeRequest(request: Stats.Model.Request.RequestType) {
-    if service == nil {
-      service = StatsService()
-    }
+  
+  init() {
+    realmManager = ServiceLocator.shared.getService()
   }
   
+  func makeRequest(request: Stats.Model.Request.RequestType) {
+
+    modelRequests(request: request)
+  }
+  
+}
+
+
+// MARK: Get Data To Stats Model
+extension StatsInteractor {
+  
+  private func modelRequests(request: Stats.Model.Request.RequestType) {
+    
+    switch request {
+    case .getStatsModel:
+      print("get stats Model")
+      
+      let crudeStatsData = realmManager.fetchStatsData()
+      // Нужно запросить все данные из реалма чтобы сформировать сатистику!
+      presenter?.presentData(response: .passStatsModelToVC(crudeStatsData:crudeStatsData))
+      // 1. Запрошу данные по кол-ву хорошо скомпенсированных и плохо скомпенсированных
+    default:break
+    }
+  }
 }

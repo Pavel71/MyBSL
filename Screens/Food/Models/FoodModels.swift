@@ -125,7 +125,7 @@ struct NewProductViewModel: NewProductViewModelable {
   
   var carbo: String?
   
-  var category: String?
+  var category: String? 
   
   var massa: String?
   

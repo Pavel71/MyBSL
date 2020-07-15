@@ -13,19 +13,57 @@ enum Stats {
   enum Model {
     struct Request {
       enum RequestType {
-        case some
+        case getStatsModel
       }
     }
     struct Response {
       enum ResponseType {
-        case some
+        case passStatsModelToVC(crudeStatsData: CrudeStatsData)
       }
     }
     struct ViewModel {
       enum ViewModelData {
-        case some
+        case passStatsModelToVC(statsModel: StatsModel)
       }
     }
   }
+  
+}
+
+
+// MARK: Crude Models From Realm
+
+
+struct CrudeStatsData {
+  
+  var allCompObj       : [CompansationObjectRelam]
+  var sugarFor10Days   : [SugarRealm]
+  
+  var goodCompObjCount : Double
+  var badCompObjCount  : Double
+  
+}
+
+// MARK: Models TO View
+
+
+struct StatsModel {
+  
+  var meanInsulinOnCarbo : Double
+  var meanSugarFor10Days : Double
+  var pieChartModel      : PieChartModel
+  var robotViewModel     : RobotModel
+  
+}
+
+struct RobotModel : RobotViewModalable {
+  var allCompObjCount: Int
+}
+
+struct PieChartModel : PieChartModalable {
+  
+  var goodCompObjCount: Double
+  
+  var badCompObjCount: Double
   
 }

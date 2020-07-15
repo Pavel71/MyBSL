@@ -57,6 +57,42 @@ extension RealmManager {
   
 }
 
+// MARK: Fetch Stats Data
+extension RealmManager {
+  
+  // Нужно переделать это все! Реалм менеджер просто достает данные а ] уже с ними раюотаю в презентере!
+  
+  func fetchStatsData() -> CrudeStatsData {
+    
+    // Mean Insulin On The Carbo
+    
+    // Нужно взять все дни и получить все углеводы сумму потом получить весь инсулин сумму и разделить углеводы на сумму
+    
+    let allCompObj:[CompansationObjectRelam] = Array(compObjRealmManager.fetchAllCompObj())
+    
+    
+    
+    // Mean Sugar For 10 Days
+    let allDays                = dayRealmManager.fetchAllDays()
+    let las10Days :[DayRealm]  = allDays.suffix(10)
+    
+    let sugarsFor10Days = las10Days.flatMap{
+      $0.listSugarID.compactMap(self.sugarRealmManager.fetchSugarByPrimeryKey)
+    }
+    
+    // PieChart Model
+    let goodCompCount   = compObjRealmManager.fetchCompObjCount(typeObj: .good)
+    let badCompObjCount = compObjRealmManager.fetchCompObjCount(typeObj: .modifidedForMl)
+    
+    
+    return CrudeStatsData(
+      allCompObj       : allCompObj,
+      sugarFor10Days   : sugarsFor10Days,
+      goodCompObjCount : goodCompCount,
+      badCompObjCount  : badCompObjCount)
+  }
+  
+}
 
 // MARK: Set Netwrok Data To Realm
 

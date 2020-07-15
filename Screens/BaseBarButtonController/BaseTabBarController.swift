@@ -12,30 +12,24 @@ class BaseTabBarController: UITabBarController {
   
   override func viewDidLoad() {
     
-//    let mainContainerController = createNavController(MainScreenViewController(), name: "Stats", imageName: "clipboard" )
-      
-      
-//      ContainerController(mainController: MainViewController(), menuController: MainMenuViewController())
-
-    
-    let mainViewController = createNavController(MainScreenViewController(),name: "Main",imageName: "today")
+    let mainViewController = createNavController(MainScreenViewController(),name: "Главный",imageName: "today")
     
 
     
     let productViewController = FoodViewController()
     
-    let productController = createNavController(productViewController,name: "Products", imageName: "diet")
+    let productController = createNavController(productViewController,name: "Продукты", imageName: "diet")
     
-    let registerController = RegistrationController()
+    
 
-    let statsController = createNavController(registerController, name: "Register", imageName: "clipboard" )
+    let statsController = createNavController(StatsViewController(), name: "Статистика", imageName: "clipboard" )
     
-    let settingsController = createNavController(SettingsViewController(), name: "Settings", imageName: "settings")
+    let settingsController = createNavController(SettingsViewController(), name: "Настройки", imageName: "settings")
     
     viewControllers = [
+      statsController,
       mainViewController,
       productController,
-      statsController,
       settingsController
     ]
     

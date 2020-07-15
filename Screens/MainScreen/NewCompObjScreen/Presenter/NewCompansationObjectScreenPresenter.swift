@@ -602,7 +602,7 @@ extension NewCompansationObjectScreenPresenter {
   }
   
   private func preparingCompObjToLearnToML() {
-    
+    // Поидеи я его не должен брать! Если он нами не рассматриватеся в качестве корректных данных! Тоесть я должен проверить его статус! Если он будет обновленн к этому времени
     guard let compObjToLearnInMl = compObjRealmManager.fetchSecondOnTheEndCompObj() else {return}
     
     dateEnriachmentWorker.prepareCompObj(compObj: compObjToLearnInMl)
@@ -633,18 +633,22 @@ extension NewCompansationObjectScreenPresenter {
     sugarTargetData.append(contentsOf: baseSugarTarget)
     
     print(sugarTrainData,"Sugar Train Data")
+    print("Sugar Train COunt",sugarTrainData.count)
     print(sugarTargetData, "sugarTargetData")
+    print("Sugar Target Count",sugarTargetData.count)
     
     // Learn and Set New Weights
     mlWorkerByCorrection.trainModelAndSetWeights(trainData: sugarTrainData, target: sugarTargetData)
     
     // Нужно прокинуть эти данные в презентер или получить их из презентера
-    
+    // Тут мы просто берем все обеды и завтраки! Почему только приходят 0.0
     var carboTrainData  = compObjRealmManager.fetchTrainCarbo()
     print(carboTrainData,"carboTrainData")
+    print("Carbo Train Data Count",carboTrainData.count)
     carboTrainData.append(contentsOf: baseCarboTrain)
     var carboTargetData = compObjRealmManager.fetchTargetCarbo()
     print(carboTargetData,"carboTargetData")
+    print("Carbo Target Count",carboTargetData.count)
     carboTargetData.append(contentsOf: baseCarboTarget)
     
     

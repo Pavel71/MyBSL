@@ -19,6 +19,13 @@ class RegistrationController: UIViewController {
   lazy var registerButton   = registrationView.registerButton
   lazy var overallStackView = registrationView.overallStackView
   let registrationViewModel = RegistrationViewModel()
+  
+  
+  // MARK: Deinit
+  
+  deinit {
+    print("Deinit Registration Controller")
+  }
  
 
   override func viewDidLoad() {

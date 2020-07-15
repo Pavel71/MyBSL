@@ -70,29 +70,41 @@ extension AddService {
           return nil
       }
 
-     guard
-      let cameData = lastDayDateDocument.data()?["lastDayDate"] as? TimeInterval
-      else {return nil}
-      // Если дата совпадает с сегодняшним днем то нужно взять день по последней дате, Если нет то добавить
-      print(cameData,"Came Data")
+//     guard
+//      let cameData = lastDayDateDocument.data()?["lastDayDate"] as? TimeInterval
+//      else {return nil}
+      
+      if let cameData = lastDayDateDocument.data()?["lastDayDate"] as? TimeInterval {
+        // Если дата совпадает с сегодняшним днем то нужно взять день по последней дате, Если нет то добавить
+            print(cameData,"Came Data")
 
-      if cameData < dayNetworkModel.date {
-        print("Дня еще нет в FireStore - добавляем!")
+            if cameData < dayNetworkModel.date {
+              print("Дня еще нет в FireStore - добавляем!")
+              transaction.setData(data, forDocument: dayRef)
+              transaction.updateData(["lastDayDate":dayNetworkModel.date], forDocument: lastDayDateRef)
+              
+              isNeddSetDataToRealm = true
+              
+            }
+        print("День есть в FireStore Transaction, ничего не добавляем!ждем когда сам придет!")
+
+      } else { // Значит поля c проверочным днем нет нужно его создать
+        print("Создаем поле с датой и сетим день")
+        transaction.setData(["lastDayDate":dayNetworkModel.date], forDocument: lastDayDateRef)
         transaction.setData(data, forDocument: dayRef)
-        transaction.updateData(["lastDayDate":dayNetworkModel.date], forDocument: lastDayDateRef)
-        
-        isNeddSetDataToRealm = true
-        
       }
-
+      
+    
 
       return nil
     }) { (obj, error) in
 
       if let error = error {
+             // транзакция пришла с ошибкой
+        complation(.success(true)) // Всерано разрешаем установить день в реалм
              print("Transaction failed: \(error)")
          } else {
-        // Обновляем дату!
+        // NТранзактион прошел можно добавлять данные в реалм
         complation(.success(isNeddSetDataToRealm))
              print("Transaction successfully committed!")
          }

@@ -48,7 +48,11 @@ extension ConvertCompObjRealmToVMWorker {
   private static func convertToSugarCellVM(comObj:CompansationObjectRelam) -> SugarCellModel {
     
     var sugarModel = SugarCellVMWorker.getSugarVM(sugar: String(comObj.sugarBefore))
-    sugarModel.correctionSugarKoeff = Float(comObj.userSetInsulinToCorrectSugar)
+    // Здесь нужно чтобы он сетился со знаком!
+    
+    let sugarWorker: ShugarCorrectorWorker! = ServiceLocator.shared.getService()
+    let signCompansation:Float = comObj.sugarBefore < sugarWorker.optimalSugarLevel ? -1.0 : 1.0
+    sugarModel.correctionSugarKoeff = Float(comObj.userSetInsulinToCorrectSugar) * signCompansation
     return sugarModel
 
   }

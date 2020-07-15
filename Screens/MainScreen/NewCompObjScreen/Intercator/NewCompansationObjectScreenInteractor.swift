@@ -122,7 +122,9 @@ extension NewCompansationObjectScreenInteractor {
 
         self.updateCompObj    = nil
         self.updateSugarRealm = nil
-
+        
+        // в случае изменения текущего объекта нужно также переобучить модельку
+        self.presenter?.presentData(response: .learnMlForNewData)
         presenter?.presentData(response: .passSignalToReloadMainScreen)
         
         // Проще отсюда послать сигнал что все обновленно!
@@ -139,22 +141,10 @@ extension NewCompansationObjectScreenInteractor {
           sugarRealm   : sugarRealm,
           totalInsulin : totalInsulinNow)
         // MARK: Start Ml Learning
-        // Пусть эта работа идет в Асинхронном потоке! Так как мы взаимодействуем с Реалмом то можем взять только main.async
-//        DispatchQueue.main.async {
-          // Метод запускающий обучение по данным
+
           
           self.presenter?.presentData(response: .learnMlForNewData)
-          
-                // 1. Добавляем CompObj
-                 // 2. Добавляем  Sugar
-                 // 4. Обновляем предыдущий compObj
-                 // 5. Добавляем id в Day
-          
-                 // 3. Обновляем Insulin Value
-                 // 6. После расчета Машшиного обуяения сохраняем еще и веса!
-          
-          // Здесь нам нужно обнвоить день и несколько параметров из UserDefaults
-          
+
           self.writeDataToFireStoreThenAddCompObj()
           
 //        }

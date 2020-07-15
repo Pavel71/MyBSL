@@ -352,7 +352,7 @@ extension FoodViewController {
   @objc private func didCancelNewProduct() {
     
     DispatchQueue.main.async {
-
+      self.pickerView.isHidden = true
       AddNewElementViewAnimated.showOrDismissToTheUpRightCornerNewView(
         newElementView:    self.newProductView,
         blurView:          self.blurView,
@@ -364,7 +364,7 @@ extension FoodViewController {
           // Внеси эти изменения после анимации
           self.newProductView.clearAllFieldsInView()
           self.updateProductId = nil
-
+          
           self.view.endEditing(true)
       }
 
@@ -375,7 +375,7 @@ extension FoodViewController {
 
     
   }
-  
+  // MARK: Show Category List
   @objc private func didTapShowListCategory() {
     
     UIView.transition(with: pickerView, duration: 0.3, options: .transitionFlipFromBottom, animations: {

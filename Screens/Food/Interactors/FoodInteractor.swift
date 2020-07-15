@@ -128,7 +128,8 @@ class FoodInteractor: FoodBusinessLogic {
             print("Добавить в реалм или Обновим старые Products")
             self.realmManager.setProductsToRealm(products: productsRealm)
           case .removed:
-            print("Удалить в реалме")
+            print("Удалить в реалме FireStore Listner")
+            // удаление почему не считает как Локла - поэтому прежде чем повторно удалить нужно чекнуть есть ли эти продукты которые пришил!
             self.realmManager.deleteProducts(products: productsRealm)
           }
           self.didChangeProductDB()
@@ -146,7 +147,7 @@ class FoodInteractor: FoodBusinessLogic {
   
   private func convertProductsNetworkToRealm(productsNetwork: [ProductNetworkModel]) -> [ProductRealm] {
     
-    var productsRealm = productsNetwork.map(self.convertWorker.convertProductNEtwrokModelToProductRealm(productNetworkModel:))
+    let productsRealm = productsNetwork.map(self.convertWorker.convertProductNEtwrokModelToProductRealm(productNetworkModel:))
     
     
     return productsRealm

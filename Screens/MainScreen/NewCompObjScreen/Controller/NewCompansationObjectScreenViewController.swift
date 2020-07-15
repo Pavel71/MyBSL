@@ -65,6 +65,10 @@ class NewCompansationObjectScreenViewController: UIViewController, NewCompansati
     
   }
   
+  deinit {
+    print("Deinit New Screeen VC")
+  }
+  
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     setup()

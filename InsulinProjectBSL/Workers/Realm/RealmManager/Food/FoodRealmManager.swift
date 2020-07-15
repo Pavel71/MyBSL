@@ -89,9 +89,9 @@ extension FoodRealmManager {
     
     guard let id = id else {return nil}
     
-    let checkProduct = allProducts().first { (product) -> Bool in
-      return product.id == id
-    }
+    let realm = productProvider.realm
+    let checkProduct = realm.object(ofType: ProductRealm.self, forPrimaryKey: id)
+
     return checkProduct
   }
   
@@ -99,13 +99,8 @@ extension FoodRealmManager {
   
   func getCategoryList() -> [String] {
     
-    let realm = productProvider.realm
-    let items = realm.objects(ProductRealm.self)
-    var category = Set<String>()
-    items.forEach { (product) in
-      category.insert(product.category)
-    }
-    
+    let items = allProducts()
+    let category = Set(items.map{$0.category})
     return Array(category).sorted()
   }
 }
@@ -226,10 +221,11 @@ extension FoodRealmManager {
   
   func deleteProducts(products:[ProductRealm]) {
     let realm = productProvider.realm
-    
+  
+    let findProducts = products.compactMap({getProductById(id: $0.id)})
     do {
       realm.beginWrite()
-      realm.delete(products)
+      realm.delete(findProducts)
       
       try realm.commitWrite()
     } catch let error {
