@@ -95,8 +95,8 @@ extension StatsView {
     mediumSygarValue.text  = "\(viewModel.meanSugarFor10Days)"
     pieChartVC.setDataCount(pieChartModel: viewModel.pieChartModel)
     robotView.setViewModel(viewModel: viewModel.robotViewModel)
+    countDinnersLabel.text = "Кол-во обедов \(viewModel.robotViewModel.allCompObjCount)"
     
-    setNeedsDisplay()
   }
 
 }

@@ -15,6 +15,8 @@ final class SettingsView: UIView {
   
   let customNavBar = SettingCustomNavBar(frame: SettingCustomNavBar.sizeBar)
   
+  let tableView    = UITableView(frame: .zero, style: .grouped)
+  
   override init(frame: CGRect) {
     super.init(frame:frame)
     
@@ -42,7 +44,7 @@ extension SettingsView {
     let stackView = UIStackView(arrangedSubviews:[
     
       customNavBar,
-      contentView
+      tableView
     ])
     
     stackView.axis         = .vertical

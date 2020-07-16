@@ -89,20 +89,11 @@ class PieChartViewController: DemoBaseViewController {
     let goodCompansations = pieChartModel.goodCompObjCount
     let badCompansations  = pieChartModel.badCompObjCount
     
-      var goodComp : Double
-      var badComp  : Double
+    let totalCOmps = goodCompansations + badCompansations
     
-    if goodCompansations == badCompansations {
-      goodComp = 0.5
-      badComp  = 0.5
-    } else if goodCompansations.isLess(than: badCompansations) {
-        goodComp = goodCompansations / badCompansations
-        badComp  = 1 - goodComp
-      } else {
-        badComp  = badCompansations / goodCompansations
-        goodComp = 1 - badComp
-      }
-      
+      let goodComp : Double = goodCompansations / totalCOmps
+      let badComp  : Double = badCompansations / totalCOmps
+
       let goodCompansationsEntry = PieChartDataEntry(value: goodComp,label: "Хорошие обеды")
       let badCompansationsEntry  = PieChartDataEntry(value: badComp,label: "Плохие обеды")
 //        [goodCompansations,badCompansations]

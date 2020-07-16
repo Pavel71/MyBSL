@@ -160,6 +160,7 @@
 		05AAFF14238C0169002AE3D9 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AAFF13238C0169002AE3D9 /* ChartViewController.swift */; };
 		05AC356A24A238AC00EE855C /* StatsTasks.txt in Resources */ = {isa = PBXBuildFile; fileRef = 05AC356924A238AC00EE855C /* StatsTasks.txt */; };
 		05AD21532361B784008E6BB0 /* DateWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD21522361B784008E6BB0 /* DateWorker.swift */; };
+		05B0A4DB24C0781D00A968AB /* SettingsTasks.txt in Resources */ = {isa = PBXBuildFile; fileRef = 05B0A4DA24C0781D00A968AB /* SettingsTasks.txt */; };
 		05B1DEB4237ECD0B0015E4E6 /* MainScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEAD237ECD0A0015E4E6 /* MainScreenPresenter.swift */; };
 		05B1DEB6237ECD0B0015E4E6 /* MainScreenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEAF237ECD0A0015E4E6 /* MainScreenRouter.swift */; };
 		05B1DEB7237ECD0B0015E4E6 /* MainScreenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEB0237ECD0A0015E4E6 /* MainScreenModels.swift */; };
@@ -455,6 +456,7 @@
 		05AAFF13238C0169002AE3D9 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
 		05AC356924A238AC00EE855C /* StatsTasks.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = StatsTasks.txt; sourceTree = "<group>"; };
 		05AD21522361B784008E6BB0 /* DateWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateWorker.swift; sourceTree = "<group>"; };
+		05B0A4DA24C0781D00A968AB /* SettingsTasks.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = SettingsTasks.txt; sourceTree = "<group>"; };
 		05B1DEAD237ECD0A0015E4E6 /* MainScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenPresenter.swift; sourceTree = "<group>"; };
 		05B1DEAF237ECD0A0015E4E6 /* MainScreenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenRouter.swift; sourceTree = "<group>"; };
 		05B1DEB0237ECD0A0015E4E6 /* MainScreenModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenModels.swift; sourceTree = "<group>"; };
@@ -3118,9 +3120,10 @@
 		F1E78CDD230D339100592AB8 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				05B0A4DA24C0781D00A968AB /* SettingsTasks.txt */,
+				05908DAC2463F96F002DDAFC /* Controller */,
 				05908DAE2463F97F002DDAFC /* Router */,
 				05908DAD2463F977002DDAFC /* View */,
-				05908DAC2463F96F002DDAFC /* Controller */,
 				05908DAB2463F968002DDAFC /* Worker */,
 				05908DAA2463F961002DDAFC /* Interactor */,
 				05908DA92463F958002DDAFC /* Presenter */,
@@ -3431,6 +3434,7 @@
 				05D1469823979E0C00E6E6EA /* NewSugarTask in Resources */,
 				055A3A502357044F0080628C /* Readme in Resources */,
 				059D7E7A23505C3A00286E57 /* Tasks in Resources */,
+				05B0A4DB24C0781D00A968AB /* SettingsTasks.txt in Resources */,
 				05373718234B2F5500411C46 /* Tasks in Resources */,
 				05AC356A24A238AC00EE855C /* StatsTasks.txt in Resources */,
 				05B5C2CB245C7C9E001249F8 /* FoodScreenTask in Resources */,

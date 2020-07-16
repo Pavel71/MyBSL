@@ -60,9 +60,9 @@ class MainTableViewFooterCell: UITableViewCell {
       self?.changeEnablePredictaButton()
     }
 
-    self.didTapSaveButtonToRobotViewClouser = {[weak robotView] in
-      robotView?.handleTap()
-    }
+//    self.didTapSaveButtonToRobotViewClouser = {[weak robotView] in
+//      robotView?.handleTap()
+//    }
 
     let buttonStackView = UIStackView(arrangedSubviews: [
       saveButton,

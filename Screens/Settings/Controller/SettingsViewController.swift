@@ -10,6 +10,17 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
+
+// 1. Секция Измерения глюкозы в крови
+// 2. Перейти на youtube канал - использовать webScreen - не помню как это делается
+// 3. Срок действия подписки
+
+// Покачто остановлюсь на этом
+// 4. 
+
+
+
+
 protocol SettingsDisplayLogic: class {
   func displayData(viewModel: Settings.Model.ViewModel.ViewModelData)
 }
