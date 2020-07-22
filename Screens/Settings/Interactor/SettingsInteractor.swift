@@ -28,13 +28,24 @@ class SettingsInteractor: SettingsBusinessLogic {
   
   func makeRequest(request: Settings.Model.Request.RequestType) {
     
-    fireBaseRequsest(request: request)
+    fireBaseRequsest(request  : request)
     
-    
+    viewModelRequests(request : request)
 
   }
   
-
+  private func viewModelRequests(request: Settings.Model.Request.RequestType) {
+    
+    switch request {
+    case .getViewModel:
+      print("Получить данные из Хранилища")
+      
+      // Тут самое сложное как хранить эти данные! Наверно в userDefaults будет нормально!
+      
+      
+    default:break
+    }
+  }
   
   private func fireBaseRequsest(request: Settings.Model.Request.RequestType) {
     switch request {

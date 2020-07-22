@@ -11,18 +11,28 @@ import Firebase
 import JGProgressHUD
 
 
-// 1. Секция Измерения глюкозы в крови
+// 1. Теперь мне нужно продумать логику изменения измерения! Чтобы все считалось как положенно! Это будет в sugarWorkerre все будет конвертироватся всервано в ммоль просто нужно дать человеку выбирать!
+
 // 2. Перейти на youtube канал - использовать webScreen - не помню как это делается
 // 3. Срок действия подписки
 
-// Покачто остановлюсь на этом
-// 4. 
+// Для начала накину весь UI
 
 
-
+enum SugarMetric: String {
+  case mmoll = "mmol/ml (4.5-7.5)"
+  case mgdl  = "mg/dl (72 - 140)"
+}
 
 protocol SettingsDisplayLogic: class {
   func displayData(viewModel: Settings.Model.ViewModel.ViewModelData)
+}
+
+
+enum SettingSections: Int,CaseIterable {
+  case changeSugarMeuser
+  case socialLinks
+  case subscription
 }
 
 class SettingsViewController: UIViewController, SettingsDisplayLogic {
@@ -38,8 +48,12 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
   // MARK: Properties
   
   
-  let settingView = SettingsView()
+  let settingView      = SettingsView()
+  lazy var tableView   = settingView.tableView
+  
+  var viewModel : SettingsViewModel!
 
+  
   // MARK: Object lifecycle
   
   init() {
@@ -76,12 +90,13 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    interactor?.makeRequest(request: .getViewModel)
     
     setUpViews()
     
      guard let userEamil = Auth.auth().currentUser?.email else {return}
      settingView.customNavBar.configureNavBar(useEmail: userEamil)
-
+    configureTableView()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -104,7 +119,9 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
     case .logOut(let result):
       getAnswerLogOut(result: result)
       loadDataHUD.dismiss()
-    default:break
+    
+    case .displayViewModel(let viewModel):
+      self.viewModel = viewModel
     }
 
   }
@@ -129,6 +146,15 @@ extension SettingsViewController {
     
     setViewClousers()
   }
+  
+  // MARK: Configure Table View
+  private func configureTableView() {
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.estimatedRowHeight = 50
+    tableView.rowHeight = UITableView.automaticDimension
+    tableView.allowsSelection = false
+  }
 }
 
 // MARK: Set Views Clousers
@@ -140,6 +166,19 @@ extension SettingsViewController {
     
   }
   
+  // MARK: Sugar Meuser Cell Singals
+  private func setSugarMesuerclouser(sugarCell:ChancgeSugarMeuserCell ) {
+    sugarCell.didMetrticsChange = {[weak self] metric in
+      print("New MEtrics")
+    }
+  }
+  
+ 
+ // MARK: SOcial Icons Singals
+  @objc private func handleSocialButtonSignals(button: UIButton) {
+    print("Button Signals")
+  }
+  
   
   private func setNavBarClousers() {
     settingView.customNavBar.didTapLogOutButton = {[weak self] in
@@ -149,10 +188,58 @@ extension SettingsViewController {
   }
 }
 
+// MARK: TableView Delegate and DataSource
+extension SettingsViewController: UITableViewDelegate,UITableViewDataSource {
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 1
+  }
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return SettingSections.allCases.count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let section = SettingSections(rawValue: indexPath.section) else {return UITableViewCell()}
+    
+    switch section {
+    case .changeSugarMeuser:
+      let cell = ChancgeSugarMeuserCell()
+      cell.configureCell(viewModel: viewModel.sugarMetricsViewModel)
+      setSugarMesuerclouser(sugarCell: cell)
+      return cell
+    case .socialLinks:
+      let cell = SocialLinckCell()
+      cell.fbButton.addTarget(self, action: #selector(handleSocialButtonSignals), for: .touchUpInside)
+      return cell
+    case .subscription:
+      let cell = SubscriptionCell()
+      return cell
+    
+    }
+  }
+  
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    guard let section = SettingSections(rawValue: section) else {return ""}
+    switch section {
+    case .changeSugarMeuser:
+      return "Ед. измерения глюкозы в крови"
+    case .socialLinks:
+      return "Социальные сети"
+    case .subscription:
+      return "Подписка"
+    }
+  }
+  
 
+  
+}
+
+
+
+ // MARK: Log Out
 extension SettingsViewController {
   
-  // MARK: Log Out
+ 
   
   private func handlelogOutButton() {
     loadDataHUD.show(in: view)

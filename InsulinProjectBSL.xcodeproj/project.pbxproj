@@ -161,6 +161,7 @@
 		05AC356A24A238AC00EE855C /* StatsTasks.txt in Resources */ = {isa = PBXBuildFile; fileRef = 05AC356924A238AC00EE855C /* StatsTasks.txt */; };
 		05AD21532361B784008E6BB0 /* DateWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD21522361B784008E6BB0 /* DateWorker.swift */; };
 		05B0A4DB24C0781D00A968AB /* SettingsTasks.txt in Resources */ = {isa = PBXBuildFile; fileRef = 05B0A4DA24C0781D00A968AB /* SettingsTasks.txt */; };
+		05B0A4DE24C080D300A968AB /* ChancgeSugarMeuserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B0A4DD24C080D300A968AB /* ChancgeSugarMeuserCell.swift */; };
 		05B1DEB4237ECD0B0015E4E6 /* MainScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEAD237ECD0A0015E4E6 /* MainScreenPresenter.swift */; };
 		05B1DEB6237ECD0B0015E4E6 /* MainScreenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEAF237ECD0A0015E4E6 /* MainScreenRouter.swift */; };
 		05B1DEB7237ECD0B0015E4E6 /* MainScreenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B1DEB0237ECD0A0015E4E6 /* MainScreenModels.swift */; };
@@ -214,6 +215,8 @@
 		05D806142348C9CF00C19764 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D806132348C9CF00C19764 /* MainMenuViewController.swift */; };
 		05E1C3312372B77C00007463 /* SimpleRegressionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E1C3302372B77C00007463 /* SimpleRegressionModel.swift */; };
 		05E1C3342372B7FF00007463 /* RidgeRegressionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E1C3332372B7FF00007463 /* RidgeRegressionModel.swift */; };
+		05F3838124C842A6005E7C0E /* SocialLinckCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F3838024C842A6005E7C0E /* SocialLinckCell.swift */; };
+		05F3838324C84BAD005E7C0E /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F3838224C84BAD005E7C0E /* SubscriptionCell.swift */; };
 		05F7C4A423F2B579009EE9C5 /* OnBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F7C4A323F2B578009EE9C5 /* OnBoardViewController.swift */; };
 		05F7C4A923F2B6D4009EE9C5 /* OnBoardTasks in Resources */ = {isa = PBXBuildFile; fileRef = 05F7C4A823F2B6D4009EE9C5 /* OnBoardTasks */; };
 		4B5E38A731977700CFE9D4DF /* libPods-InsulinProjectBSL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5142A6246AA6686DC8CC1FB /* libPods-InsulinProjectBSL.a */; };
@@ -457,6 +460,7 @@
 		05AC356924A238AC00EE855C /* StatsTasks.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = StatsTasks.txt; sourceTree = "<group>"; };
 		05AD21522361B784008E6BB0 /* DateWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateWorker.swift; sourceTree = "<group>"; };
 		05B0A4DA24C0781D00A968AB /* SettingsTasks.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = SettingsTasks.txt; sourceTree = "<group>"; };
+		05B0A4DD24C080D300A968AB /* ChancgeSugarMeuserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChancgeSugarMeuserCell.swift; sourceTree = "<group>"; };
 		05B1DEAD237ECD0A0015E4E6 /* MainScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenPresenter.swift; sourceTree = "<group>"; };
 		05B1DEAF237ECD0A0015E4E6 /* MainScreenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenRouter.swift; sourceTree = "<group>"; };
 		05B1DEB0237ECD0A0015E4E6 /* MainScreenModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenModels.swift; sourceTree = "<group>"; };
@@ -510,6 +514,8 @@
 		05D806132348C9CF00C19764 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		05E1C3302372B77C00007463 /* SimpleRegressionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleRegressionModel.swift; sourceTree = "<group>"; };
 		05E1C3332372B7FF00007463 /* RidgeRegressionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidgeRegressionModel.swift; sourceTree = "<group>"; };
+		05F3838024C842A6005E7C0E /* SocialLinckCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLinckCell.swift; sourceTree = "<group>"; };
+		05F3838224C84BAD005E7C0E /* SubscriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCell.swift; sourceTree = "<group>"; };
 		05F7C4A323F2B578009EE9C5 /* OnBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardViewController.swift; sourceTree = "<group>"; };
 		05F7C4A823F2B6D4009EE9C5 /* OnBoardTasks */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OnBoardTasks; sourceTree = "<group>"; };
 		8A0FC66BAC35F6B18007EC60 /* Pods-InsulinProjectBSL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsulinProjectBSL.debug.xcconfig"; path = "Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1484,6 +1490,7 @@
 			isa = PBXGroup;
 			children = (
 				05BDB5842463FB3F00D60C57 /* SettingsView.swift */,
+				05B0A4DC24C0803B00A968AB /* Cells */,
 				05BDB5862463FBAF00D60C57 /* SettingsCustomNavBar */,
 			);
 			path = View;
@@ -2071,6 +2078,16 @@
 				05AD21522361B784008E6BB0 /* DateWorker.swift */,
 			);
 			path = DateWorker;
+			sourceTree = "<group>";
+		};
+		05B0A4DC24C0803B00A968AB /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				05B0A4DD24C080D300A968AB /* ChancgeSugarMeuserCell.swift */,
+				05F3838024C842A6005E7C0E /* SocialLinckCell.swift */,
+				05F3838224C84BAD005E7C0E /* SubscriptionCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		05B1DEBB237ECD2C0015E4E6 /* Controllers */ = {
@@ -3587,6 +3604,7 @@
 				05515CFF236840B300A298AA /* TotalInsulinView.swift in Sources */,
 				05A0E46B23A0FC38005476DD /* CompansationByCarboCell.swift in Sources */,
 				F1E78CC7230D336B00592AB8 /* MainPresenter.swift in Sources */,
+				05F3838124C842A6005E7C0E /* SocialLinckCell.swift in Sources */,
 				F1E78CCB230D336B00592AB8 /* MainViewController.swift in Sources */,
 				F13B35212318DED40020AD26 /* MealRealmManager.swift in Sources */,
 				05B1DEB9237ECD0B0015E4E6 /* MainScreenInteractor.swift in Sources */,
@@ -3654,6 +3672,7 @@
 				05515D0123687F2400A298AA /* SettingsWorkerForML.swift in Sources */,
 				059766972455C8F500ED7AF6 /* VerticalStackView.swift in Sources */,
 				057B9848234F6B4C002EAD68 /* PointSearcher.swift in Sources */,
+				05B0A4DE24C080D300A968AB /* ChancgeSugarMeuserCell.swift in Sources */,
 				F13C34782333676B003A618B /* SlideMenuAnimated.swift in Sources */,
 				05A4F1B8233A0CDE00DFE4D7 /* BetterSnapingLayout.swift in Sources */,
 				F150DBF32317DD2300380AE0 /* MealModels.swift in Sources */,
@@ -3721,6 +3740,7 @@
 				055A727323A8F046002CA9A7 /* NewProductListViewModel.swift in Sources */,
 				05952A5A233BB7A900EE996E /* ProductListInDinnerViewModel.swift in Sources */,
 				F150DBF42317DD2300380AE0 /* MealViewController.swift in Sources */,
+				05F3838324C84BAD005E7C0E /* SubscriptionCell.swift in Sources */,
 				F1EC859D233101BF00E14D33 /* MenuFoodListCell.swift in Sources */,
 				05460F8F2455A37D008B4ABF /* Bindable.swift in Sources */,
 				F1E78CC8230D336B00592AB8 /* MainWorker.swift in Sources */,
@@ -3912,7 +3932,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3LH58YF246;
 				INFOPLIST_FILE = "$(SRCROOT)/InsulinProjectBSL/SupportFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3934,7 +3954,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3LH58YF246;
 				INFOPLIST_FILE = "$(SRCROOT)/InsulinProjectBSL/SupportFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

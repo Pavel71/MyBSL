@@ -14,18 +14,31 @@ enum Settings {
     struct Request {
       enum RequestType {
         case logOut
+        case getViewModel
       }
     }
     struct Response {
       enum ResponseType {
         case logOut(result: Result<Bool,NetworkFirebaseError>)
+        case configureViewModel
       }
     }
     struct ViewModel {
       enum ViewModelData {
         case logOut(result: Result<Bool,NetworkFirebaseError>)
+        case displayViewModel(viewModel: SettingsViewModel)
       }
     }
   }
+  
+}
+
+
+struct SettingsViewModel {
+  var sugarMetricsViewModel: SugarMeuserViewModel
+}
+
+struct SugarMeuserViewModel : ChangeSugarMeuserCellable {
+  var metrics: SugarMetric
   
 }
