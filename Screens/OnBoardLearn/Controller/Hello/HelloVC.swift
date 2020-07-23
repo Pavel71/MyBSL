@@ -35,7 +35,7 @@ class HelloVC: UIViewController,PagesViewControllerable {
   
   
   var markTurboImage: UIImageView = {
-    let iv = UIImageView(image: #imageLiteral(resourceName: "ROBOT"))
+    let iv = UIImageView(image: #imageLiteral(resourceName: "robotlevel50"))
     iv.contentMode = .scaleAspectFit
     iv.clipsToBounds = true
     return iv

@@ -30,4 +30,6 @@ enum UserDefaultsKey: String,CaseIterable {
   
   case insulinSupplyValue
   
+  case sugarMetric
+  
 }

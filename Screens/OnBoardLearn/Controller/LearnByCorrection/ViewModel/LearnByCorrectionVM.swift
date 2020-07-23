@@ -11,6 +11,13 @@ import UIKit
 // Нам нужно также знать какой уровень сахар человек будет считать оптимальным для себя! Нужно дать ему возможность выбрать!
 
 
+// Здесь нам нужно будет добавить поле для указания метрики! Если метрика меняется то и поменять кейборды и текстовые поля!
+
+// все эти поля должны собиратся в DTO - что бы было всегда понятно что и откуда и куда идет! Тогда можно проследить дорожку!
+
+
+
+
 class LearnByCorrectionVM {
   
   
@@ -26,64 +33,85 @@ class LearnByCorrectionVM {
   var didUpdateValidForm: ((Bool) -> Void)?
   
   
-  // MARK: Sugar Insulin Models
+  // MARK:  Model
   
-  var tableData: [LearnByCorrectionModal] =
-  [
-    LearnByCorrectionModal(sugar: 9.0, correctionInsulin: nil),
-    LearnByCorrectionModal(sugar: 12.0, correctionInsulin: nil),
-    LearnByCorrectionModal(sugar: 15.0, correctionInsulin: nil),
-    LearnByCorrectionModal(sugar: 18.0, correctionInsulin: nil),
-    LearnByCorrectionModal(sugar: 21.0, correctionInsulin: nil),
-  ]
-  
-  // MARK: Sugar LEvel Models
-  
-  var sugarLevelVM = SugarLevelModel(
-    lowerSliderValue: 0.3,
-    higherSliderValue: 0.5)
-  
-  
+  private var learnByCorrectionModel = LearnByCorrectionModel(
+    metric            : .mmoll,
+    lowerSliderValue  : 0.3,
+    higherSliderValue : 0.5)
+
   
   func addInsulinInObject(insulinValue: Double, index: Int) {
     
-    tableData[index].correctionInsulin = insulinValue
+    learnByCorrectionModel.tableData[index].correctionInsulin = insulinValue
     
     checkAllCorrectionFiedls()
   }
+  
+ 
   
   
   func checkAllCorrectionFiedls() {
     
     
-    isFillAllFields = tableData.filter {$0.correctionInsulin == nil}.isEmpty
+    isFillAllFields = learnByCorrectionModel.tableData.filter {$0.correctionInsulin == nil}.isEmpty
     
   }
   
   func clearAllData() {
-    tableData = [
-      LearnByCorrectionModal(sugar: 9.0, correctionInsulin: nil),
-      LearnByCorrectionModal(sugar: 12.0, correctionInsulin: nil),
-      LearnByCorrectionModal(sugar: 15.0, correctionInsulin: nil),
-      LearnByCorrectionModal(sugar: 18.0, correctionInsulin: nil),
-      LearnByCorrectionModal(sugar: 21.0, correctionInsulin: nil),
+    learnByCorrectionModel.tableData = [
+      LearnByCorrectionCellModal(sugar: 9.0, correctionInsulin: nil),
+      LearnByCorrectionCellModal(sugar: 12.0, correctionInsulin: nil),
+      LearnByCorrectionCellModal(sugar: 15.0, correctionInsulin: nil),
+      LearnByCorrectionCellModal(sugar: 18.0, correctionInsulin: nil),
+      LearnByCorrectionCellModal(sugar: 21.0, correctionInsulin: nil),
     ]
+    learnByCorrectionModel.metrics = .mmoll
   }
   
   
   
 }
 
+// MARK: Change Metric
 
+extension LearnByCorrectionVM {
+  
+  func setMetric(metric: SugarMetric,lowerSliderValue: CGFloat,higherSliderValue: CGFloat) {
+    learnByCorrectionModel = LearnByCorrectionModel(
+      metric            : metric,
+      lowerSliderValue  : lowerSliderValue,
+      higherSliderValue : higherSliderValue)
+    
+  }
+}
+
+// MARK: Get
+
+extension LearnByCorrectionVM {
+  func getTableData() -> [LearnByCorrectionCellModal] {
+     learnByCorrectionModel.tableData
+   }
+  func getMetric() -> SugarMetric {
+    learnByCorrectionModel.metrics
+  }
+  
+  func getSugarLevelModel() -> SugarLevelModel {
+    learnByCorrectionModel.sugarLevelModel
+  }
+}
   
   
 //}
 // MARK: Work with sugarLevelVM
 
 extension LearnByCorrectionVM {
-  
-  func updateSugarLevelVM(sugarLevelModel: SugarLevelModel) {
-    sugarLevelVM.lowerSliderValue  = sugarLevelModel.lowerSliderValue
-    sugarLevelVM.higherSliderValue = sugarLevelModel.higherSliderValue
+
+  func updateSugarLevelVM(
+    lowerSliderValue  : CGFloat,
+    higherSliderValue : CGFloat) {
+    
+    learnByCorrectionModel.sugarLevelModel.lowerSliderValue  = lowerSliderValue
+    learnByCorrectionModel.sugarLevelModel.higherSliderValue = higherSliderValue
   }
 }

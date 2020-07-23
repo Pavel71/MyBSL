@@ -12,6 +12,7 @@ import UIKit
 protocol LearnByCorrectionSugarCellable {
   var sugar             : Double {get set}
   var correctionInsulin : Double? {get set}
+  
 }
 
 
@@ -97,6 +98,7 @@ extension LearnByCorrectionSugarCell {
 extension LearnByCorrectionSugarCell {
   
   func setViewModel(viewModel:LearnByCorrectionSugarCellable ) {
+    
     
     nameLabel.text = "\(viewModel.sugar)"    
     

@@ -28,8 +28,8 @@ class SugarLevelView: UIView {
   
   var titleLabel: UILabel = {
     let tv = UILabel()
-    tv.font          = UIFont.systemFont(ofSize: 16)
-    tv.text          = "Выберите пожалуйста диапозон желаемого уровеня сахара в крови в mlmol!"
+    tv.font          = UIFont.boldSystemFont(ofSize: 16)
+    tv.text          = "Выберите пожалуйста диапозон желаемого уровеня сахара в крови"
     tv.textAlignment = .center
     tv.numberOfLines = 0
     return tv
@@ -92,7 +92,7 @@ extension  SugarLevelView {
       hStack,
       rangeSliderContentView
     ])
-    
+    rangeSliderContentView.constrainHeight(constant: 50)
 
     stackView.axis         = .vertical
     stackView.spacing      = 5

@@ -34,7 +34,7 @@ class LearnByCorrectionVC: UIViewController,PagesViewControllerable {
   
   
   
-  var tableData: [LearnByCorrectionModal] = []
+  var tableData: [LearnByCorrectionCellModal] = []
   
   var viewModel: LearnByCorrectionVM!
   
@@ -59,7 +59,7 @@ class LearnByCorrectionVC: UIViewController,PagesViewControllerable {
     
     configureVM()
     setUpViews()
-    
+    updateUI()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -79,11 +79,20 @@ class LearnByCorrectionVC: UIViewController,PagesViewControllerable {
 extension  LearnByCorrectionVC {
   
   private func configureVM() {
-    tableData = viewModel.tableData
+    
     viewModel.didUpdateValidForm = {[weak self] isValid in
       self?.nextButtonIsValid = isValid
       
     }
+  }
+  
+  // MARK: Update UI
+  
+  private func updateUI() {
+    
+    mainView.sugarLevelView.setViewModel(viewModel: viewModel.getSugarLevelModel())
+    tableData = viewModel.getTableData()
+    tableView.reloadData()
   }
 }
 
@@ -95,12 +104,13 @@ extension LearnByCorrectionVC {
     
     mainView    = LearnByCorrectionView()
     tableView   = mainView.tableView
-//    mainView.sugarLevelView.rangeSliderContentView.addSubview(rangeSlider)
+
     
     
     
     configureTableView()
     setViewsClousers()
+
     
     view.addSubview(mainView)
     mainView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
@@ -110,10 +120,21 @@ extension LearnByCorrectionVC {
     
   }
   
+  
+  
+  
+  
+  
+  // MARK: Set Clousers
   private func setViewsClousers() {
     
     rangeSlider.addTarget(self, action: #selector(sliderValueChange), for: .valueChanged)
+    mainView.sugarMetricView.cell.didMetrticsChange = {[weak self] metric in
+      self?.didCnahgeMetric(metric: metric)
+    }
   }
+  
+  
   
   private func configureTableView() {
     
@@ -139,7 +160,7 @@ extension LearnByCorrectionVC {
     rangeSlider.frame = CGRect(x: 0, y: 0,
                                width: width, height: height)
     let x = mainView.sugarLevelView.rangeSliderContentView.center.x
-    let y = mainView.sugarLevelView.rangeSliderContentView.center.y + 80
+    let y = mainView.sugarLevelView.rangeSliderContentView.center.y + 140
     rangeSlider.center = CGPoint(x: x, y: y)
     
   }
@@ -150,18 +171,34 @@ extension LearnByCorrectionVC {
 
 extension LearnByCorrectionVC {
   
+  // MARK: Slider Value
+  
   @objc private  func  sliderValueChange(slider: RangeSlider) {
     
-    let lowerSliderValue = slider.lowerValue
+    let lowerSliderValue  = slider.lowerValue
     let higherSliderValue = slider.upperValue
     
-    
-    let sugarLevelModel = SugarLevelModel(lowerSliderValue: lowerSliderValue, higherSliderValue: higherSliderValue)
-    
     // Обнвои Модельку
-    viewModel.updateSugarLevelVM(sugarLevelModel: sugarLevelModel)
+    viewModel.updateSugarLevelVM(
+      lowerSliderValue: lowerSliderValue, higherSliderValue: higherSliderValue)
     // Обнови UI
-    mainView.sugarLevelView.setViewModel(viewModel: sugarLevelModel)
+    updateUI()
+    
+  }
+  
+  
+  // MARK: Change Metric
+  
+  private func didCnahgeMetric(metric: SugarMetric) {
+    
+   let lowerSliderValue  = rangeSlider.lowerValue
+   let higherSliderValue = rangeSlider.upperValue
+    viewModel.setMetric(
+      metric            : metric,
+      lowerSliderValue  : lowerSliderValue,
+      higherSliderValue : higherSliderValue)
+    
+    updateUI()
     
   }
 }

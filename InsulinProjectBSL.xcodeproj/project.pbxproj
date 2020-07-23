@@ -25,7 +25,7 @@
 		0533B98A23F40AA3008E13DE /* InsulinPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0533B98923F40AA3008E13DE /* InsulinPickerView.swift */; };
 		0533B98E23F40F78008E13DE /* PortionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0533B98D23F40F78008E13DE /* PortionPickerView.swift */; };
 		0533B99023F416E4008E13DE /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0533B98F23F416E4008E13DE /* String+Extension.swift */; };
-		0533B99623F41BA3008E13DE /* LearnByCorrectionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0533B99523F41BA3008E13DE /* LearnByCorrectionModal.swift */; };
+		0533B99623F41BA3008E13DE /* LearnByCorrectionCellModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0533B99523F41BA3008E13DE /* LearnByCorrectionCellModal.swift */; };
 		0533B99823F41DB8008E13DE /* LearnByCorrectionSugarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0533B99723F41DB8008E13DE /* LearnByCorrectionSugarCell.swift */; };
 		0537370D234B256700411C46 /* DinnerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0537370C234B256700411C46 /* DinnerData.swift */; };
 		05373713234B2B1700411C46 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05373712234B2B1700411C46 /* MenuView.swift */; };
@@ -217,6 +217,7 @@
 		05E1C3342372B7FF00007463 /* RidgeRegressionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E1C3332372B7FF00007463 /* RidgeRegressionModel.swift */; };
 		05F3838124C842A6005E7C0E /* SocialLinckCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F3838024C842A6005E7C0E /* SocialLinckCell.swift */; };
 		05F3838324C84BAD005E7C0E /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F3838224C84BAD005E7C0E /* SubscriptionCell.swift */; };
+		05F3838624C98D85005E7C0E /* SugarMetricView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F3838524C98D85005E7C0E /* SugarMetricView.swift */; };
 		05F7C4A423F2B579009EE9C5 /* OnBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F7C4A323F2B578009EE9C5 /* OnBoardViewController.swift */; };
 		05F7C4A923F2B6D4009EE9C5 /* OnBoardTasks in Resources */ = {isa = PBXBuildFile; fileRef = 05F7C4A823F2B6D4009EE9C5 /* OnBoardTasks */; };
 		4B5E38A731977700CFE9D4DF /* libPods-InsulinProjectBSL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5142A6246AA6686DC8CC1FB /* libPods-InsulinProjectBSL.a */; };
@@ -324,7 +325,7 @@
 		0533B98923F40AA3008E13DE /* InsulinPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsulinPickerView.swift; sourceTree = "<group>"; };
 		0533B98D23F40F78008E13DE /* PortionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionPickerView.swift; sourceTree = "<group>"; };
 		0533B98F23F416E4008E13DE /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		0533B99523F41BA3008E13DE /* LearnByCorrectionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnByCorrectionModal.swift; sourceTree = "<group>"; };
+		0533B99523F41BA3008E13DE /* LearnByCorrectionCellModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnByCorrectionCellModal.swift; sourceTree = "<group>"; };
 		0533B99723F41DB8008E13DE /* LearnByCorrectionSugarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnByCorrectionSugarCell.swift; sourceTree = "<group>"; };
 		0537370C234B256700411C46 /* DinnerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerData.swift; sourceTree = "<group>"; };
 		05373712234B2B1700411C46 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
@@ -516,6 +517,7 @@
 		05E1C3332372B7FF00007463 /* RidgeRegressionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidgeRegressionModel.swift; sourceTree = "<group>"; };
 		05F3838024C842A6005E7C0E /* SocialLinckCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLinckCell.swift; sourceTree = "<group>"; };
 		05F3838224C84BAD005E7C0E /* SubscriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCell.swift; sourceTree = "<group>"; };
+		05F3838524C98D85005E7C0E /* SugarMetricView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarMetricView.swift; sourceTree = "<group>"; };
 		05F7C4A323F2B578009EE9C5 /* OnBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardViewController.swift; sourceTree = "<group>"; };
 		05F7C4A823F2B6D4009EE9C5 /* OnBoardTasks */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OnBoardTasks; sourceTree = "<group>"; };
 		8A0FC66BAC35F6B18007EC60 /* Pods-InsulinProjectBSL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsulinProjectBSL.debug.xcconfig"; path = "Target Support Files/Pods-InsulinProjectBSL/Pods-InsulinProjectBSL.debug.xcconfig"; sourceTree = "<group>"; };
@@ -751,7 +753,7 @@
 		0533B99123F41AE9008E13DE /* Modal */ = {
 			isa = PBXGroup;
 			children = (
-				0533B99523F41BA3008E13DE /* LearnByCorrectionModal.swift */,
+				0533B99523F41BA3008E13DE /* LearnByCorrectionCellModal.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -760,6 +762,7 @@
 			isa = PBXGroup;
 			children = (
 				05664802244324570085F542 /* LearnByCorrectionView.swift */,
+				05F3838424C98D61005E7C0E /* SugarMetricView */,
 				056647F924431DDF0085F542 /* SugarlevelView */,
 				056647F624431DC40085F542 /* TableView */,
 			);
@@ -2682,6 +2685,14 @@
 			path = SugarRealmManager;
 			sourceTree = "<group>";
 		};
+		05F3838424C98D61005E7C0E /* SugarMetricView */ = {
+			isa = PBXGroup;
+			children = (
+				05F3838524C98D85005E7C0E /* SugarMetricView.swift */,
+			);
+			path = SugarMetricView;
+			sourceTree = "<group>";
+		};
 		05F7C4A123F2B52E009EE9C5 /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
@@ -3590,6 +3601,7 @@
 				05CBEBA523A21FD9001D9EEA /* NewCompansationObjectScreenRouter.swift in Sources */,
 				F1E78CFA230D355F00592AB8 /* UITextField+Extension.swift in Sources */,
 				F1E78CC9230D336B00592AB8 /* MainRouter.swift in Sources */,
+				05F3838624C98D85005E7C0E /* SugarMetricView.swift in Sources */,
 				057E262024372FA40081CE56 /* SugarRealmManager.swift in Sources */,
 				05AAFF07238BFFFF002AE3D9 /* BallonMarker.swift in Sources */,
 				057E2626243C767A0081CE56 /* DataEnrichmentWorker.swift in Sources */,
@@ -3746,7 +3758,7 @@
 				F1E78CC8230D336B00592AB8 /* MainWorker.swift in Sources */,
 				05733CE723FC0813004197B2 /* InjectionPlaceCell.swift in Sources */,
 				052F7A81238FF262000AB8BC /* MealProductsFooterView.swift in Sources */,
-				0533B99623F41BA3008E13DE /* LearnByCorrectionModal.swift in Sources */,
+				0533B99623F41BA3008E13DE /* LearnByCorrectionCellModal.swift in Sources */,
 				F150DBE523163E8000380AE0 /* CustomCategoryTextField.swift in Sources */,
 				05AAFF10238C00EE002AE3D9 /* ChartWorker.swift in Sources */,
 				055BE0D5234363760029D298 /* ChoosePlaceInjectionView.swift in Sources */,

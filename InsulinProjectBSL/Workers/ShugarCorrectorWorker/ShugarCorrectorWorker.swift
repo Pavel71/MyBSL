@@ -30,7 +30,7 @@ final class ShugarCorrectorWorker {
      Double(bottomShugarLevel + higherShuagrLevel) / 2
   }
   
-  
+
   
   
   var isNeedCorrectShugarByInsulin: Bool = false

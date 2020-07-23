@@ -10,10 +10,25 @@ import UIKit
 
 // View эакрана
 
+// Нужно накинуть здесь отображение Настройки выбора сахара!
+
 class LearnByCorrectionView: UIView {
   
-  var sugarLevelView = SugarLevelView()
-  var tableView      = UITableView(frame: .zero, style: .plain)
+  var sugarMetricView = SugarMetricView()
+  var sugarLevelView  = SugarLevelView()
+  
+  var tableViewTitle :UILabel = {
+    let tv = UILabel()
+    tv.font          = UIFont.boldSystemFont(ofSize: 16)
+    tv.text          = "Скорректируйте высокий сахар инсулином!"
+    tv.textAlignment = .center
+    tv.numberOfLines = 0
+    return tv
+  }()
+  var tableView       = UITableView(frame: .zero, style: .plain)
+  
+  
+  
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -33,7 +48,9 @@ extension LearnByCorrectionView {
   private func setUpViews() {
     
     let stackView = UIStackView(arrangedSubviews: [
+      sugarMetricView,
       sugarLevelView,
+      tableViewTitle,
       tableView
     ])
     

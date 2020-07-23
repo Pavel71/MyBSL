@@ -16,6 +16,8 @@ class OnBoardVM {
   
   var learnByCorrectionVM : LearnByCorrectionVM
   var learnByFoodVM       : LearnByFoodVM
+  
+  
   let userDefaults        : UserDefaultsWorker!
   let addService          : AddService!
   
@@ -90,8 +92,17 @@ extension OnBoardVM {
     
     trainModel(traing: insulinByFoodData.train, target: insulinByFoodData.target, keyWeights: .correctCarboByInsulinWeights)
 
-
-    
+    // Тут нам нужно получить впервые данные о том каким образом мы будим считать сахар!
+    let sugarMetric = learnByCorrectionVM.getMetric()
+    saveSugarMetricToUserDefaults(sugarMetric: sugarMetric)
+  }
+  
+  
+  // MARK: Save
+  
+  private func saveSugarMetricToUserDefaults(sugarMetric: SugarMetric) {
+    let bool = sugarMetric == .mmoll
+    userDefaults.setSugarMetric(sugarMetric: bool, key: .sugarMetric)
   }
   
   private func saveInsulinSupplyValue() {
@@ -101,9 +112,11 @@ extension OnBoardVM {
   
   private func saveSugarLevelInUserDefaults() {
     
-    userDefaults.setSugarLevel(sugarLevel: learnByCorrectionVM.sugarLevelVM.sugarLowerLevel, key: .lowSugarLevel)
+    let sugarLevelModel = learnByCorrectionVM.getSugarLevelModel()
     
-    userDefaults.setSugarLevel(sugarLevel: learnByCorrectionVM.sugarLevelVM.sugarHigherLevel, key: .higherSugarLevel)
+    userDefaults.setSugarLevel(sugarLevel: sugarLevelModel.sugarLowerLevel, key: .lowSugarLevel)
+    
+    userDefaults.setSugarLevel(sugarLevel: sugarLevelModel.sugarHigherLevel, key: .higherSugarLevel)
     
   }
   
@@ -138,10 +151,10 @@ extension OnBoardVM {
     // Так теперь мы видим данные нам нужно засетить Сахар в В User Defaults
     // потом добавить туда Веса!
     
-
+    let tableData = learnByCorrectionVM.getTableData()
     
-    var train :[Float] = learnByCorrectionVM.tableData.map(prepareMlData)
-    var target = learnByCorrectionVM.tableData.map{Float($0.correctionInsulin!)}
+    var train :[Float] = tableData.map(prepareMlData)
+    var target         = tableData.map{Float($0.correctionInsulin!)}
     
     // Обогатим данные идеальным сахаром и инмсулином на этот сахар
     // Траин 0 - так как нет разницы с идеальным сахаром
@@ -151,10 +164,11 @@ extension OnBoardVM {
     return (train:train,target:target)
   }
   
-  private func prepareMlData(viewModel:LearnByCorrectionModal) -> Float {
+  private func prepareMlData(viewModel:LearnByCorrectionCellModal) -> Float {
     
-    let sugar = viewModel.sugar.toFloat()
-    let oprimalSugar = learnByCorrectionVM.sugarLevelVM.optimalSugarLevel
+    let sugarLevelModel = learnByCorrectionVM.getSugarLevelModel()
+    let sugar           = viewModel.sugar.toFloat()
+    let oprimalSugar    = sugarLevelModel.optimalSugarLevel
     
     
     let mlSugarDiffData = abs(sugar - oprimalSugar)

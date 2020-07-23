@@ -16,17 +16,10 @@ protocol ChangeSugarMeuserCellable  {
 class ChancgeSugarMeuserCell : UITableViewCell {
   
   
-    var metrics: SugarMetric = .mgdl
+  var metrics: SugarMetric = .mgdl
   
   var didMetrticsChange : ((SugarMetric) -> Void)?
-  
-  let title : UILabel = {
-    let label = UILabel()
-    label.text = "Ед. измерения глюкозы"
-    label.numberOfLines = 0
-    label.sizeToFit()
-    return label
-  }()
+
   
   let metricTitle : UILabel = {
     let label = UILabel()
@@ -88,7 +81,7 @@ extension ChancgeSugarMeuserCell {
      ])
 //    
     switcher.constrainWidth(constant: 50)
-//    switcher.constrainHeight(constant: 20)
+
     
     hsStack.axis = .horizontal
     hsStack.distribution = .fill

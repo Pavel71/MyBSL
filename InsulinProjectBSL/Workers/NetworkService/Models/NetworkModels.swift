@@ -51,6 +51,7 @@ struct UserDefaultsNetworkModel:NetworkModelable {
   let insulinSupplyValue         : Int
   let sugarCorrectTargetBaseData : [Float]
   let sugarCorrectTrainBaseData  : [Float]
+  let sugarMetric                : Bool
   
   
   enum CodingKeys: String, CodingKey {
@@ -64,6 +65,7 @@ struct UserDefaultsNetworkModel:NetworkModelable {
     case insulinSupplyValue
     case sugarCorrectTargetBaseData
     case sugarCorrectTrainBaseData
+    case sugarMetric
   }
 }
 

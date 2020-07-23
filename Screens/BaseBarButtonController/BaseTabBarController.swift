@@ -23,8 +23,8 @@ class BaseTabBarController: UITabBarController {
     
 
     let statsController = createNavController(StatsViewController(), name: "Статистика", imageName: "clipboard" )
-    
-    let settingsController = createNavController(SettingsViewController(), name: "Настройки", imageName: "settings")
+    let learnByCorrectionVC = OnBoardViewController()
+    let settingsController = createNavController(learnByCorrectionVC, name: "Настройки", imageName: "settings")
     
     viewControllers = [
       settingsController,

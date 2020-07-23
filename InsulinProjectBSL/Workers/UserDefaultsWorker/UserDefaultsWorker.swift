@@ -42,6 +42,7 @@ extension UserDefaultsWorker {
     setSugarLevel(sugarLevel: userDefaultsNetwrokModel.lowSugarLevel, key: .lowSugarLevel)
     setSugarLevel(sugarLevel: userDefaultsNetwrokModel.higherSugarLevel, key: .higherSugarLevel)
     
+    setSugarMetric(sugarMetric: userDefaultsNetwrokModel.sugarMetric, key: .sugarMetric)
 
     
   }
@@ -62,6 +63,11 @@ extension UserDefaultsWorker {
   func setSugarLevel(sugarLevel: Float,key: UserDefaultsKey) {
     userDefaults.set(sugarLevel, forKey: key.rawValue)
 
+  }
+  
+  func setSugarMetric(sugarMetric : Bool,key: UserDefaultsKey) {
+    
+    userDefaults.set(sugarMetric,forKey: key.rawValue)
   }
   
 }
@@ -134,7 +140,11 @@ extension UserDefaultsWorker {
         let insulinSupplyValue = userDefaults.integer(forKey: key.rawValue)
         dataDict[key.rawValue] = insulinSupplyValue
         
-      
+        
+      case .sugarMetric :
+        
+        let sugarMetric = userDefaults.bool(forKey: key.rawValue)
+        dataDict[key.rawValue] = sugarMetric
       }
     }
     
