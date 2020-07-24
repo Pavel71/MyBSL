@@ -76,6 +76,12 @@ extension UserDefaultsWorker {
 
 extension UserDefaultsWorker {
   
+  func getMetric() -> SugarMetric {
+    let isMmol = userDefaults.bool(forKey:UserDefaultsKey.sugarMetric.rawValue)
+    
+    return isMmol ? .mmoll : .mgdl
+  }
+  
   func getSugarLevel(sugarLevelKey: UserDefaultsKey) -> Float {
     userDefaults.float(forKey: sugarLevelKey.rawValue)
   }

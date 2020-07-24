@@ -19,10 +19,12 @@ class SettingsInteractor: SettingsBusinessLogic {
   
   var userDefaultsWorker: UserDefaultsWorker!
   var realmManager      : RealmManager!
+  var updateService     : UpdateService!
   
   init() {
     userDefaultsWorker = ServiceLocator.shared.getService()
     realmManager       = ServiceLocator.shared.getService()
+    updateService      = ServiceLocator.shared.getService()
   }
   
   
@@ -41,8 +43,13 @@ class SettingsInteractor: SettingsBusinessLogic {
       print("Получить данные из Хранилища")
       
       // Тут самое сложное как хранить эти данные! Наверно в userDefaults будет нормально!
+      let metric = userDefaultsWorker.getMetric()
+      presenter?.presentData(response: .configureViewModel(metric:metric))
       
-      
+    case .changeSugarMetric(let metric):
+      // Сохранить метрику с UserDefaults и FireStore
+      updateMetric(metric: metric)
+      presenter?.presentData(response: .configureViewModel(metric: metric))
     default:break
     }
   }
@@ -78,5 +85,23 @@ extension SettingsInteractor {
     userDefaultsWorker.clearAllData()
     realmManager.deleteAllDataFromRealm()
     
+  }
+}
+
+// MARK: Update Metric
+extension SettingsInteractor {
+  
+  private func updateMetric(metric: SugarMetric) {
+    updateMetricInUserDefaults(metric : metric)
+    updateMetricInFireSotre(metric    : metric)
+  }
+  
+  private func updateMetricInUserDefaults(metric: SugarMetric) {
+    let bool = metric == .mmoll
+    userDefaultsWorker.setSugarMetric(sugarMetric: bool, key: UserDefaultsKey.sugarMetric)
+  }
+  
+  private func updateMetricInFireSotre(metric: SugarMetric) {
+    updateService.updateSugarMetricInFireBase(isMmol: metric == .mmoll)
   }
 }

@@ -15,12 +15,14 @@ enum Settings {
       enum RequestType {
         case logOut
         case getViewModel
+        case changeSugarMetric(metric: SugarMetric)
       }
     }
     struct Response {
       enum ResponseType {
         case logOut(result: Result<Bool,NetworkFirebaseError>)
-        case configureViewModel
+        case configureViewModel(metric: SugarMetric)
+        
       }
     }
     struct ViewModel {

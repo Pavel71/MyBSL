@@ -90,7 +90,7 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    interactor?.makeRequest(request: .getViewModel)
+    
     
     setUpViews()
     
@@ -103,7 +103,7 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
     super.viewWillAppear(animated)
     
     // Нужно установить логин аккаунта
-    
+    interactor?.makeRequest(request: .getViewModel)
    
     
     navigationController?.navigationBar.isHidden = true
@@ -122,6 +122,7 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
     
     case .displayViewModel(let viewModel):
       self.viewModel = viewModel
+      tableView.reloadData()
     }
 
   }
@@ -157,7 +158,8 @@ extension SettingsViewController {
   }
 }
 
-// MARK: Set Views Clousers
+// MARK: Signals
+
 extension SettingsViewController {
   
   private func setViewClousers() {
@@ -166,10 +168,12 @@ extension SettingsViewController {
     
   }
   
-  // MARK: Sugar Meuser Cell Singals
+  // MARK: Update Sugar MEtric
   private func setSugarMesuerclouser(sugarCell:ChancgeSugarMeuserCell ) {
     sugarCell.didMetrticsChange = {[weak self] metric in
       print("New MEtrics")
+      // Также нужно изменить не только View но и сохранить изменения в FireStore и UserDefaults
+      self?.interactor?.makeRequest(request: .changeSugarMetric(metric: metric))
     }
   }
   

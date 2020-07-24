@@ -47,10 +47,7 @@ class ChancgeSugarMeuserCell : UITableViewCell {
   }
   
   
-  func configureCell(viewModel: ChangeSugarMeuserCellable) {
-    self.metrics = viewModel.metrics
-    setMetricsTitle()
-  }
+
   
   @objc private func handleSwitcher(switcher:UISwitch ) {
     print("Switch Sugar Meusers")
@@ -59,10 +56,7 @@ class ChancgeSugarMeuserCell : UITableViewCell {
     didMetrticsChange!(metrics)
   }
   
-  private func setMetricsTitle() {
-    self.metricTitle.fadeTransition(0.25)
-    self.metricTitle.text = self.metrics.rawValue
-  }
+
   
  
   
@@ -92,4 +86,23 @@ extension ChancgeSugarMeuserCell {
     
    }
   
+}
+
+// MARK: Set ViewModel
+
+extension ChancgeSugarMeuserCell{
+  
+  func configureCell(viewModel: ChangeSugarMeuserCellable) {
+    
+    print("Пришли данные",viewModel.metrics)
+    
+    self.metrics = viewModel.metrics
+    switcher.isOn = metrics == .mgdl
+    setMetricsTitle()
+  }
+  
+  private func setMetricsTitle() {
+    self.metricTitle.fadeTransition(0.25)
+    self.metricTitle.text = self.metrics.rawValue
+  }
 }

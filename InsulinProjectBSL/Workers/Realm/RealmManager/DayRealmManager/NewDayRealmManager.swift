@@ -111,13 +111,16 @@ extension NewDayRealmManager {
 
 // MARK: Get Set Day
 
+// Эту логику от ебанько надо отрефакторить!
+
 extension NewDayRealmManager {
   
   // MARK: Get CurrentDay
   func getCurrentDay() -> DayRealm {
     
-    return self.currentDay
-    
+    guard let currentDay = self.currentDay else {return DayRealm()}
+    return currentDay
+
   }
   
   func setCurrentDay(dayRealm: DayRealm) {

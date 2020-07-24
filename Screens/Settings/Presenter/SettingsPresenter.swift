@@ -20,7 +20,16 @@ class SettingsPresenter: SettingsPresentationLogic {
     switch response {
     case .logOut(let result):
       viewController?.displayData(viewModel: .logOut(result: result))
-    default:break
+      
+    case .configureViewModel(let metric):
+      
+      let vm = createViewModel(metric: metric)
+      
+      viewController?.displayData(viewModel: .displayViewModel(viewModel: vm))
+      
+    
+      
+    
     }
   
   }
@@ -28,4 +37,14 @@ class SettingsPresenter: SettingsPresentationLogic {
   
   
   
+}
+// MARK: Configure ViewModel
+extension SettingsPresenter {
+  
+  
+  
+  private func createViewModel(metric: SugarMetric) -> SettingsViewModel {
+    let sugsrMetricVM = SugarMeuserViewModel(metrics: metric)
+    return SettingsViewModel(sugarMetricsViewModel: sugsrMetricVM)
+  }
 }

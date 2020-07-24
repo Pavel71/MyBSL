@@ -123,17 +123,20 @@ extension UpdateService {
 extension UpdateService {
   
   func updateInsulinSupplyDataInFireBase(supplyInsulin: Int)  {
-    
-    DispatchQueue.global(qos: .default).async {
-      
+
       let updateData = [UserDefaultsKey.insulinSupplyValue.rawValue : supplyInsulin]
       
       self.updateUserDefaultsDataFireStore(updateData: updateData)
+
+  
+  }
+  
+  func updateSugarMetricInFireBase(isMmol: Bool)  {
+ 
+      let updateData = [UserDefaultsKey.sugarMetric.rawValue : isMmol]
       
-  
-    }
-  
-  
+      self.updateUserDefaultsDataFireStore(updateData: updateData)
+
   }
   
   // MARK: Update ML Weights
