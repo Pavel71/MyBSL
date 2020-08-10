@@ -132,7 +132,7 @@ class OnBoardViewController: UIPageViewController {
 
     if numberPage == pages.count - 1 {
       
-      onBoardVM.setDataTouserDefaultsAndlearnML()
+      onBoardVM.setDataToUserDefaults()
       print("User Defaults Data were Setted")
       savingHUD.show(in: pages.last!.view)
       

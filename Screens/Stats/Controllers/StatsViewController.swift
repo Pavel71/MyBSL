@@ -29,13 +29,13 @@ class StatsViewController: UIViewController, StatsDisplayLogic {
   var interactor: StatsBusinessLogic?
   var router: (NSObjectProtocol & StatsRoutingLogic)?
   
-  // MARK: Object lifecycle
+  // MARK: - Object lifecycle
   
-  var statsView: StatsView!
+  var statsView  = StatsView()
   var scrollView = UIScrollView()
-  
-  
-  
+  var testStackView = StackTestView()
+  var testView      = TestView()
+
   var statsData : StatsModel!
   
   init() {
@@ -47,14 +47,9 @@ class StatsViewController: UIViewController, StatsDisplayLogic {
     print("Deinit Stats Controller")
   }
   
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-//    self.scrollView.frame = self.view.bounds
-  }
   
   
-  
-  // MARK: Setup
+  // MARK: - Setup
   
   private func setup() {
     let viewController        = self
@@ -109,41 +104,58 @@ class StatsViewController: UIViewController, StatsDisplayLogic {
   
 }
 
-// MARK: Set Up Views
+// MARK: - Set Up Views
 extension StatsViewController {
   
   private func setUpViews() {
-    
-    
-    self.view.addSubview(self.scrollView)
-    self.scrollView.translatesAutoresizingMaskIntoConstraints = false;
-    
-    NSLayoutConstraint.activate([
-      self.scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-      self.scrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
-      self.scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-      self.scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-    ])
-    
-    statsView = StatsView(frame: view.frame)
+
+   setUpScrollView()
+   setStatsView()
+
+
+  }
+  
+  // Stats View
+  private func setStatsView() {
     
     // Зададим Чтобы Скролл был только по вертекали!
-    
+    statsView.translatesAutoresizingMaskIntoConstraints = false
     self.scrollView.addSubview(statsView)
     
-    //    self.statsView.translatesAutoresizingMaskIntoConstraints = false
+    
+    let contentLayouGuide = scrollView.contentLayoutGuide
+    
     
     NSLayoutConstraint.activate([
-      self.statsView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor),
-      self.statsView.topAnchor.constraint(equalTo: self.scrollView.topAnchor),
-      self.statsView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor),
-      self.statsView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
-      self.statsView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+      self.statsView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+      
+      self.statsView.leadingAnchor.constraint(equalTo: contentLayouGuide.leadingAnchor),
+      self.statsView.topAnchor.constraint(equalTo: contentLayouGuide.topAnchor),
+      self.statsView.trailingAnchor.constraint(equalTo: contentLayouGuide.trailingAnchor),
+      self.statsView.bottomAnchor.constraint(equalTo: contentLayouGuide.bottomAnchor)
     ])
-    scrollView.contentInset.bottom = 100
-    //    self.scrollView.contentSize = .init(width: self.view.frame.size.width, height: self.statsView.frame.height)
-    self.scrollView.contentSize.height = statsView.frame.height
     
+    
+
   }
+  
+  // Scroll View
+  private func setUpScrollView() {
+    
+    self.scrollView.translatesAutoresizingMaskIntoConstraints = false
+    self.view.addSubview(self.scrollView)
+    
+    let frameLayoutGuide = scrollView.frameLayoutGuide
+    
+    NSLayoutConstraint.activate([
+      
+      frameLayoutGuide.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+      frameLayoutGuide.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+      frameLayoutGuide.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+      frameLayoutGuide.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+    ])
+  }
+  
+
 }
 

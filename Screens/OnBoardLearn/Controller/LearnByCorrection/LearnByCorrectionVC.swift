@@ -90,7 +90,7 @@ extension  LearnByCorrectionVC {
   
   private func updateUI() {
     
-    mainView.sugarLevelView.setViewModel(viewModel: viewModel.getSugarLevelModel())
+    mainView.sugarLevelView.setViewModel(viewModel: viewModel.getSugarLevelModelToUpdateUI())
     tableData = viewModel.getTableData()
     tableView.reloadData()
   }

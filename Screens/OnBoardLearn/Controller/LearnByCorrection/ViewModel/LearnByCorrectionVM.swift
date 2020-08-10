@@ -89,6 +89,7 @@ extension LearnByCorrectionVM {
 // MARK: Get
 
 extension LearnByCorrectionVM {
+  
   func getTableData() -> [LearnByCorrectionCellModal] {
      learnByCorrectionModel.tableData
    }
@@ -96,8 +97,28 @@ extension LearnByCorrectionVM {
     learnByCorrectionModel.metrics
   }
   
-  func getSugarLevelModel() -> SugarLevelModel {
+  func getSugarLevelModelToUpdateUI() -> SugarLevelModel {
+    // Когда этот ебучий метод вызывается мы должны сверится с метркиой! И если я решил все преобразоввывать к обычной метрике! То надо все это дерьмо конвертировать!
+    // Какое же уебищное решение! Такая адская путаница что я в ахуе!
+    // Эти конвертациии убивают мозг
+    // я думаю что мне нужно 2 модели сделать!
+    
     learnByCorrectionModel.sugarLevelModel
+  }
+  
+  func getSugarLevelToSaveData() -> SugarLevelModel{
+    
+    // Возвращаем модель обратно! Но я понимимаю что так нельзя делать! нужно это изменить!
+    if learnByCorrectionModel.metrics == .mgdl {
+      
+      return SugarLevelModel(
+        lowerSliderValue  : learnByCorrectionModel.sugarLevelModel.lowerSliderValue ,
+        higherSliderValue : learnByCorrectionModel.sugarLevelModel.higherSliderValue,
+        metric            : .mmoll)
+    }
+    
+    return learnByCorrectionModel.sugarLevelModel
+    
   }
 }
   

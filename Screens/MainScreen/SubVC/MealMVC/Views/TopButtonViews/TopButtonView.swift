@@ -60,7 +60,11 @@ class TopButtonView: UIView {
   var didTapShowTotalCarbo   : StringPassClouser?
   var didTapShowTotalInsulin : StringPassClouser?
   
+  // MARK: - Workers
   
+  let sugarMetricWorker : SugarMetricConverter! = ServiceLocator.shared.getService()
+  
+  // MARK: - Views
   
   
   func createButton(image: UIImage) -> UIButton {
@@ -146,10 +150,22 @@ extension TopButtonView {
   
   func setViewModel(viewModel:TopButtonViewModalable) {
     
-    sugarBeforeLabel.text = "\(viewModel.sugarBefore.roundToDecimal(2))"
-    sugarAfterLabel.text  = "\(viewModel.sugarAfter.roundToDecimal(2))"
+    // Можно поставить эти изменения здесь!
+    
+    var sugarBefore = "\(viewModel.sugarBefore.roundToDecimal(2))"
+    var sugarAfter  = "\(viewModel.sugarAfter.roundToDecimal(2))"
+    
+    if sugarMetricWorker.isMgdlMetric() {
+      sugarBefore = sugarMetricWorker.convertMmolSugarStringToMgdlSugarString(mmolSugarString: sugarBefore)
+      sugarAfter = sugarMetricWorker.convertMmolSugarStringToMgdlSugarString(mmolSugarString: sugarAfter)
+    }
+    
+    
+    sugarBeforeLabel.text = sugarBefore
+    sugarAfterLabel.text  = sugarAfter
     
     switch viewModel.type {
+      
     case .correctSugarByCarbo:
       
       

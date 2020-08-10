@@ -30,6 +30,7 @@ class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusiness
   var userDefaultsWorker  : UserDefaultsWorker!
   var convertWorker       : ConvertorWorker!
   
+  
   // For Work wit FireStore
   
   var addService          : AddService!
@@ -48,6 +49,7 @@ class NewCompansationObjectScreenInteractor: NewCompansationObjectScreenBusiness
     insulinSupplyWorker = locator.getService()
     userDefaultsWorker  = locator.getService()
     convertWorker       = locator.getService()
+//    sugarMetricWorker   = locator.getService()
     
     
     addService          = locator.getService()
@@ -89,6 +91,7 @@ extension NewCompansationObjectScreenInteractor {
       presenter?.presentData(response: .convertCompObjRealmToVM(compObjRealm: compObjRealm))
       
     case .passCurrentSugar(let sugar):
+
       presenter?.presentData(response: .updateCurrentSugarInVM(sugar: sugar))
       
     case .passCopmansationSugarInsulin(let compansatSugarInsulin):
@@ -189,7 +192,18 @@ extension NewCompansationObjectScreenInteractor {
   
 }
 
-  // MARK: Realm
+//// MARK: - Sugar Metric
+//extension NewCompansationObjectScreenInteractor {
+//  
+//  func prepareSugarToVM(sugar: String) -> Double {
+//    
+//    let sugarDouble = (sugar as NSString).doubleValue
+//    let sugarToVm = sugarMetricWorker.convertatingSugar(sugar: sugarDouble)
+//    return sugarToVm
+//  }
+//}
+
+  // MARK: - Realm
 extension NewCompansationObjectScreenInteractor {
   
   

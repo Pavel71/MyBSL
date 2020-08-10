@@ -17,12 +17,14 @@ class SettingsInteractor: SettingsBusinessLogic {
 
   var presenter: SettingsPresentationLogic?
   
-  var userDefaultsWorker: UserDefaultsWorker!
-  var realmManager      : RealmManager!
-  var updateService     : UpdateService!
+  var userDefaultsWorker : UserDefaultsWorker!
+  var sugarMetricWorker  : SugarMetricConverter!
+  var realmManager       : RealmManager!
+  var updateService      : UpdateService!
   
   init() {
     userDefaultsWorker = ServiceLocator.shared.getService()
+    sugarMetricWorker  = ServiceLocator.shared.getService()
     realmManager       = ServiceLocator.shared.getService()
     updateService      = ServiceLocator.shared.getService()
   }
@@ -97,8 +99,7 @@ extension SettingsInteractor {
   }
   
   private func updateMetricInUserDefaults(metric: SugarMetric) {
-    let bool = metric == .mmoll
-    userDefaultsWorker.setSugarMetric(sugarMetric: bool, key: UserDefaultsKey.sugarMetric)
+    sugarMetricWorker.setMetric(metric: metric)
   }
   
   private func updateMetricInFireSotre(metric: SugarMetric) {

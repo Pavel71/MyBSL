@@ -36,6 +36,7 @@ final class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPre
   private var dateEnriachmentWorker : DataEnrichmentWorker!
   private var userDefaultsWorker    : UserDefaultsWorker!
   private var convertWorker         : ConvertorWorker!
+  private var sugarMetricWorker     : SugarMetricConverter!
   
   init() {
     let locator = ServiceLocator.shared
@@ -44,7 +45,7 @@ final class NewCompansationObjectScreenPresenter: NewCompansationObjectScreenPre
     dateEnriachmentWorker = locator.getService()
     userDefaultsWorker    = locator.getService()
     convertWorker         = locator.getService()
-    
+    sugarMetricWorker     = locator.getService()
   }
   
   
@@ -185,16 +186,24 @@ extension NewCompansationObjectScreenPresenter {
   
   private func setSugarData(sugar: String) {
     
+    var sugarMmol : String = sugar
     
-    viewModel.sugarCellVM = SugarCellVMWorker.getSugarVM(sugar: sugar)
+    // преобразуем mgdl в mmol
+    if sugarMetricWorker.isMgdlMetric() {
+      sugarMmol = sugarMetricWorker.convertMgdlSugarStringToMmolSugarString(mgdlSugarString: sugar)
+    }
     
-    updateMeallCellSwitcherEnabled(isEnabled: !sugar.isEmpty)
+    
+    viewModel.sugarCellVM = SugarCellVMWorker.getSugarVM(sugar: sugarMmol)
+    
+    updateMeallCellSwitcherEnabled(isEnabled: !sugarMmol.isEmpty)
     
     // Все таки думаю что лучше считать корректировку по сахару для всех
     
-    if sugar.isEmpty == false,let currentSugar = viewModel.sugarCellVM.currentSugar {
-      
-      
+    if
+      sugar.isEmpty == false,
+      let currentSugar = viewModel.sugarCellVM.currentSugar {
+
       let test = sugarCorrectorWorker.getSugasrTrainData(currentSugar: currentSugar.toDouble())
       
       
@@ -217,6 +226,8 @@ extension NewCompansationObjectScreenPresenter {
       
       viewModel.sugarCellVM.correctionSugarKoeff = predInsul * signCompansation
       viewModel.addMealCellVM.dinnerProductListVM.compansationSugarInsulin = predInsul * signCompansation
+      
+    
     }
     
     checkSaveButton()
@@ -224,6 +235,9 @@ extension NewCompansationObjectScreenPresenter {
     updateResultViewModel()
     setInjectionCellState()
   }
+  
+  
+  
   
   
 }

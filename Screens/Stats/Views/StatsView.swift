@@ -24,7 +24,13 @@ class StatsView: UIView {
   
   let screenWidth = UIScreen.main.bounds.width
   
-  
+  private var vStack : UIStackView = {
+    let stack = UIStackView()
+    stack.distribution = .fill
+    stack.axis         = .vertical
+    stack.spacing      = 5
+    return stack
+  }()
   
   var countDinnersLabel: UILabel = {
     let l = UILabel()
@@ -64,11 +70,20 @@ class StatsView: UIView {
       return l
   }()
   
+  // MARK: - Workers
+  
+  var sugarMetricWorker : SugarMetricConverter! = ServiceLocator.shared.getService()
+  
+  
+  // MARK: - Views
+  
   // ROBOT View
   var robotView   = RobotView()
   // Pie Chart View
   
   var pieChartVC  = PieChartViewController()
+  
+  let padding : CGFloat = 10
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -91,8 +106,14 @@ extension StatsView {
   
   func setViewModel(viewModel: StatsModel) {
     
+    var meanSugarForWhile = "\(viewModel.meanSugarFor10Days)"
+    
+    if sugarMetricWorker.isMgdlMetric() {
+      meanSugarForWhile = sugarMetricWorker.convertMmolSugarStringToMgdlSugarString(mmolSugarString: meanSugarForWhile)
+    }
+    
     mediumInsuliValue.text = "\(viewModel.meanInsulinOnCarbo)"
-    mediumSygarValue.text  = "\(viewModel.meanSugarFor10Days)"
+    mediumSygarValue.text  = meanSugarForWhile
     pieChartVC.setDataCount(pieChartModel: viewModel.pieChartModel)
     robotView.setViewModel(viewModel: viewModel.robotViewModel)
     countDinnersLabel.text = "Кол-во обедов \(viewModel.robotViewModel.allCompObjCount)"
@@ -103,28 +124,47 @@ extension StatsView {
 // MARK: Set Up Views
 extension StatsView {
   
-  private func setUpViews() {
+  func setUpViews() {
+    
     addNavBar()
-    addVstack()
+    addRobotView()
+
+    addStatsDataView()
+    addPieChartView()
+    
+    addSubview(vStack)
+    vStack.fillSuperview()
     
   }
   
   private func addNavBar() {
-    addSubview(statsNavBar)
-    statsNavBar.anchor(top: safeAreaLayoutGuide.topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor)
+//    addSubview(statsNavBar)
+//    statsNavBar.anchor(top: safeAreaLayoutGuide.topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor)
+    
+    statsNavBar.constrainHeight(constant: StatsNavBar.sizeBar.height)
+    vStack.addArrangedSubview(statsNavBar)
   }
   
-  private func addVstack() {
-    
-    let padding : CGFloat = 10
-    
+  private func addRobotView() {
+    vStack.addArrangedSubview(countDinnersLabel)
+    vStack.addArrangedSubview(robotView)
+  }
+  
+  private func addStatsDataView() {
     let mediumSugarStack = UIStackView(arrangedSubviews: [
       mediumSugarForTenDaysTitle,mediumSygarValue
     ])
     mediumSugarStack.distribution = .fill
     mediumSugarStack.spacing      = 5
+
+    mediumSugarForTenDaysTitle.constrainWidth(constant: screenWidth - 60 - padding)
     
-    mediumSugarForTenDaysTitle.constrainWidth(constant: screenWidth - 50 - padding)
+    mediumSugarStack.isLayoutMarginsRelativeArrangement = true
+    mediumSugarStack.layoutMargins = .init(top: 0, left: padding, bottom: 0, right: padding)
+    
+    
+    vStack.addArrangedSubview(mediumSugarStack)
+    
     
     let mediumInsulinStack = UIStackView(arrangedSubviews: [
       mediumInsulinForAllInjections,mediumInsuliValue
@@ -132,27 +172,18 @@ extension StatsView {
     mediumInsulinStack.distribution = .fill
     mediumInsulinStack.spacing      = 5
     
-    mediumInsulinForAllInjections.constrainWidth(constant: screenWidth - 50 - padding)
+    mediumInsulinForAllInjections.constrainWidth(constant: screenWidth - 60 - padding)
     
-    let vStack = UIStackView(arrangedSubviews: [
-    countDinnersLabel,
-    robotView,
-    mediumSugarStack,
-    mediumInsulinStack,
-    pieChartVC.view
-    ])
-    
-    pieChartVC.view.constrainWidth(constant: screenWidth - padding)
-    pieChartVC.view.constrainHeight(constant: screenWidth - padding)
-    
-    vStack.distribution = .fill
-    vStack.spacing      = 5
-    vStack.axis         = .vertical
-    vStack.alignment    = .center
-    
-    addSubview(vStack)
-    vStack.anchor(top: statsNavBar.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor,padding: .init(top: padding * 2, left: padding, bottom: 0, right: padding))
+    mediumInsulinStack.isLayoutMarginsRelativeArrangement = true
+    mediumInsulinStack.layoutMargins = .init(top: 0, left: padding, bottom: 0, right: padding)
+    vStack.addArrangedSubview(mediumInsulinStack)
   }
   
+  private func addPieChartView() {
+       vStack.addArrangedSubview(pieChartVC.view)
+       pieChartVC.view.constrainHeight(constant: screenWidth - padding)
+  }
+  
+
 
 }

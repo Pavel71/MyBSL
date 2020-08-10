@@ -24,7 +24,8 @@ class SugarCellVMWorker {
   static private func updateCompansationLabelAndCellState(sugar: String) -> SugarCellModel {
     
     
-  let sugarCorrectorWorker:ShugarCorrectorWorker! = locator.getService() 
+  let sugarCorrectorWorker : ShugarCorrectorWorker!   = locator.getService()
+  
     
     var sugarCellVm = SugarCellModel()
     
@@ -41,7 +42,12 @@ class SugarCellVMWorker {
         
     let sugarFloat = (sugar as NSString).floatValue
     
+    
+    // Если
+    
     sugarCellVm.currentSugar = sugarFloat
+    
+    // тут нужно проверить что учесть какие данные вывести в зависимости от Сахара! Придет большой сахар! прежде чем получить
     
     let wayCorrectPosition = sugarCorrectorWorker.getWayCorrectPosition(sugar: sugarFloat)
     

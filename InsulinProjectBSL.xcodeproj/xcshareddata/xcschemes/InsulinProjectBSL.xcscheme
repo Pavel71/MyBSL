@@ -37,6 +37,16 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "052B931E24D1769F007E2F07"
+               BuildableName = "BSLTests.xctest"
+               BlueprintName = "BSLTests"
+               ReferencedContainer = "container:InsulinProjectBSL.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

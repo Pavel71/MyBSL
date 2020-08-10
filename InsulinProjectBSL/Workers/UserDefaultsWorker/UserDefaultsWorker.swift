@@ -42,7 +42,8 @@ extension UserDefaultsWorker {
     setSugarLevel(sugarLevel: userDefaultsNetwrokModel.lowSugarLevel, key: .lowSugarLevel)
     setSugarLevel(sugarLevel: userDefaultsNetwrokModel.higherSugarLevel, key: .higherSugarLevel)
     
-    setSugarMetric(sugarMetric: userDefaultsNetwrokModel.sugarMetric, key: .sugarMetric)
+    let isMmol = userDefaultsNetwrokModel.sugarMetric
+    setSugarMetric(sugarMetric: isMmol ? .mmoll : .mgdl, key: .sugarMetric)
 
     
   }
@@ -65,9 +66,9 @@ extension UserDefaultsWorker {
 
   }
   
-  func setSugarMetric(sugarMetric : Bool,key: UserDefaultsKey) {
+  func setSugarMetric(sugarMetric : SugarMetric,key: UserDefaultsKey) {
     
-    userDefaults.set(sugarMetric,forKey: key.rawValue)
+    userDefaults.set(sugarMetric == .mmoll,forKey: key.rawValue)
   }
   
 }

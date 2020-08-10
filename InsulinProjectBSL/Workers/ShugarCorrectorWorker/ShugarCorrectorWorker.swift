@@ -10,26 +10,29 @@ import Foundation
 
 // Класс отвечает за корректировку сахара инсулином! Без Продуктов питания
 
+// Нужно повнимательней поработать с этим классом! Работа будет не простая но все получится!
+
+// Надо решить какую задачу? Я хер знает! Человек вводит данные по сахару в mgdl 140 мне нужно понять какой это сахар чтобы заполнить правельно SugarViewModelCell в норме или нет! Соотвесвенно я его конвертирую в mmol
+// По большому случаю мне нужно просто менять mgdl сахар в mmol
+
 final class ShugarCorrectorWorker {
   
   
-  let userDefaultsWorker: UserDefaultsWorker!
+  let userDefaultsWorker   : UserDefaultsWorker!
   
   // Эти значения будут браться из Настроек пользователя!
   private var bottomShugarLevel: Float {
     
     userDefaultsWorker.getSugarLevel(sugarLevelKey: .lowSugarLevel)
-//    userDefaults.float(forKey: UserDefaultsKey.lowSugarLevel.rawValue)
+
   }
   private var higherShuagrLevel: Float {
     userDefaultsWorker.getSugarLevel(sugarLevelKey: .higherSugarLevel)
-//    userDefaults.float(forKey: UserDefaultsKey.higherSugarLevel.rawValue)
   }
   
   var optimalSugarLevel : Double {
      Double(bottomShugarLevel + higherShuagrLevel) / 2
   }
-  
 
   
   
@@ -44,8 +47,9 @@ final class ShugarCorrectorWorker {
   init() {
     let locator = ServiceLocator.shared
     userDefaultsWorker = locator.getService()
+
   }
-//
+
 
   
   func getCorrectInsulinBySugarPosition(sugar: Float) -> CorrectInsulinPosition {
@@ -64,6 +68,7 @@ final class ShugarCorrectorWorker {
   }
   
   func getWayCorrectPosition(sugar: Float) -> CorrectInsulinPosition {
+
     
     if sugar < bottomShugarLevel && sugar > 0 {
       return .correctUp
@@ -84,39 +89,6 @@ final class ShugarCorrectorWorker {
     return abs(optimalSugarLevel - currentSugar.roundToDecimal(2)).toFloat()
   }
 
-  
-  
-//  func getInsulinCorrectionByShugar(shugarValue: Float) -> Float? {
-//    // Если 0 то значит мы сетим первый раз с viewModel!
-////    guard shugarValue != 0 else {return}
-//    
-////    let valueFloat = (shugarValue as NSString).floatValue
-//
-//    isNeedCorrectShugarByInsulin =  isPreviosDinnerFalledCompansation(shugarValue: shugarValue)
-//    
-//    
-//    if isNeedCorrectShugarByInsulin {
-//      
-//      // Здесь должен быть еще 1 флаг ждем данные от пользователя? или считаем сами
-//      if isUserHaveToSetData {
-//        // Пользователь сам введет данные пока это флаг не измениться а измениться он после 10 обдеов например
-//        correctionInsulinByShugar = nil
-//        
-//      } else {
-//        
-//        // Здесь будет идти автоматический расчет дозировки инсулина
-//        print("Считаем Корректировку сахара с помощью Алгоритма")
-//        
-//      }
-//
-//    } else {
-//      correctionInsulinByShugar = 0
-//    }
-//    
-//    return correctionInsulinByShugar
-//    
-//    
-//    
-//  }
+
   
 }

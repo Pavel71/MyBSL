@@ -14,20 +14,22 @@ import UIKit
 
 class OnBoardVM {
   
-  var learnByCorrectionVM : LearnByCorrectionVM
-  var learnByFoodVM       : LearnByFoodVM
-  
-  
-  let userDefaults        : UserDefaultsWorker!
-  let addService          : AddService!
+  var learnByCorrectionVM  : LearnByCorrectionVM
+  var learnByFoodVM        : LearnByFoodVM
+   
+   
+  let userDefaults         : UserDefaultsWorker!
+  let sugarMetricConvertor : SugarMetricConverter!
+  let addService           : AddService!
   
   
   init() {
     
-    learnByCorrectionVM = LearnByCorrectionVM()
-    learnByFoodVM       = LearnByFoodVM()
-    addService          = ServiceLocator.shared.getService()
-    userDefaults        = ServiceLocator.shared.getService()
+    learnByCorrectionVM  = LearnByCorrectionVM()
+    learnByFoodVM        = LearnByFoodVM()
+    addService           = ServiceLocator.shared.getService()
+    userDefaults         = ServiceLocator.shared.getService()
+    sugarMetricConvertor = ServiceLocator.shared.getService()
   }
   
   func clearAllFields() {
@@ -37,15 +39,16 @@ class OnBoardVM {
 
 }
 
-// MARK:
+// MARK: FireStore
 
 extension OnBoardVM {
   
   func setDataToFireStore(complation:@escaping ((Result<Bool,NetworkFirebaseError>)) -> Void) {
     
-    print("Сохраняю данные в FireStore")
 
     let userDefDataDict = userDefaults.getAllDataFromUserDefaults()
+    
+    print("USer Defaults Data To FireStore",userDefDataDict["sugarCorrectTrainBaseData"])
     
     // здесь мы должны сохранить userDefaults and наш новый день в базу данных!
     
@@ -74,35 +77,41 @@ extension OnBoardVM {
 
 extension OnBoardVM {
   
-  func setDataTouserDefaultsAndlearnML() {
-    
-    
+  func learnMlModel(train: [Float], target: [Float],keyWeights:UserDefaultsKey ) {
+      let mlWorker = MLWorker(typeWeights: keyWeights)
+     
+      mlWorker.trainModelAndSetWeights(trainData: train, target: target)
+  }
+  
+  func setDataToUserDefaults() {
     // Save Sugar LEvel In User Defaults
     saveSugarLevelInUserDefaults()
     saveInsulinSupplyValue()
     
+    let sugarMetric = learnByCorrectionVM.getMetric()
+    saveSugarMetricToUserDefaults(sugarMetric: sugarMetric)
+    
     let correctionData    = fetchInsulinValueByCorrectionSugar()
     let insulinByFoodData = fetchInsulinValueByFoodData()
+    
+    print("Train Data",correctionData.train)
     
     saveBaseTrainAndTargetDataInUserDefaultsCorrectSugar(train: correctionData.train, target: correctionData.target)
     
     saveBaseTrainAndTargetDataInUserDefaultsCorrectCarbo(train: insulinByFoodData.train, target: insulinByFoodData.target)
-
-    trainModel(traing: correctionData.train, target: correctionData.target, keyWeights: .correctSugarByInsulinWeights)
     
-    trainModel(traing: insulinByFoodData.train, target: insulinByFoodData.target, keyWeights: .correctCarboByInsulinWeights)
-
-    // Тут нам нужно получить впервые данные о том каким образом мы будим считать сахар!
-    let sugarMetric = learnByCorrectionVM.getMetric()
-    saveSugarMetricToUserDefaults(sugarMetric: sugarMetric)
+    
+    learnMlModel(train: correctionData.train, target: correctionData.target, keyWeights: .correctSugarByInsulinWeights)
+    
+    learnMlModel(train: insulinByFoodData.train, target: insulinByFoodData.target, keyWeights: .correctCarboByInsulinWeights)
   }
+  
   
   
   // MARK: Save
   
   private func saveSugarMetricToUserDefaults(sugarMetric: SugarMetric) {
-    let bool = sugarMetric == .mmoll
-    userDefaults.setSugarMetric(sugarMetric: bool, key: .sugarMetric)
+    userDefaults.setSugarMetric(sugarMetric: sugarMetric, key: .sugarMetric)
   }
   
   private func saveInsulinSupplyValue() {
@@ -112,7 +121,7 @@ extension OnBoardVM {
   
   private func saveSugarLevelInUserDefaults() {
     
-    let sugarLevelModel = learnByCorrectionVM.getSugarLevelModel()
+    let sugarLevelModel = learnByCorrectionVM.getSugarLevelToSaveData()
     
     userDefaults.setSugarLevel(sugarLevel: sugarLevelModel.sugarLowerLevel, key: .lowSugarLevel)
     
@@ -133,14 +142,7 @@ extension OnBoardVM {
   
   // Обучим модель! Когда обучим модель мы автоматом сохраним данные в UserDefaults
   
-  private func trainModel(traing: [Float],target:[Float],keyWeights: UserDefaultsKey) {
-    
-    let mlWorker = MLWorker(typeWeights: keyWeights)
-    
-    mlWorker.trainModelAndSetWeights(trainData: traing, target: target)
-    
-    
-  }
+
   
 
   
@@ -151,7 +153,19 @@ extension OnBoardVM {
     // Так теперь мы видим данные нам нужно засетить Сахар в В User Defaults
     // потом добавить туда Веса!
     
-    let tableData = learnByCorrectionVM.getTableData()
+    // Ужасно все коряво! Просто жесть!
+    var tableData      = learnByCorrectionVM.getTableData()
+    
+    // Нужно вернуть данные в изначальное значение!
+    if learnByCorrectionVM.getMetric() == .mgdl {
+      print("mgdl")
+      tableData = tableData.map { (modal) -> LearnByCorrectionCellModal in
+        LearnByCorrectionCellModal(
+          sugar             : sugarMetricConvertor.convertMgdltoMmol(mgdlSugar:modal.sugar),
+          correctionInsulin : modal.correctionInsulin)
+      }
+    }
+    print(tableData)
     
     var train :[Float] = tableData.map(prepareMlData)
     var target         = tableData.map{Float($0.correctionInsulin!)}
@@ -166,11 +180,13 @@ extension OnBoardVM {
   
   private func prepareMlData(viewModel:LearnByCorrectionCellModal) -> Float {
     
-    let sugarLevelModel = learnByCorrectionVM.getSugarLevelModel()
-    let sugar           = viewModel.sugar.toFloat()
+    let sugarLevelModel = learnByCorrectionVM.getSugarLevelToSaveData()
+ 
     let oprimalSugar    = sugarLevelModel.optimalSugarLevel
     
     
+    let sugar           = viewModel.sugar.toFloat()
+
     let mlSugarDiffData = abs(sugar - oprimalSugar)
     
     return mlSugarDiffData

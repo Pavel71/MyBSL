@@ -165,6 +165,7 @@ extension AppDelegate {
     
     
     locator.addService(service: UserDefaultsWorker())
+    locator.addService(service: SugarMetricConverter())
     locator.addService(service: ShugarCorrectorWorker())
     
     locator.addService(service: CompObjRealmManager())
@@ -176,8 +177,7 @@ extension AppDelegate {
     locator.addService(service: InsulinSupplyWorker())
     locator.addService(service: DataEnrichmentWorker())
     locator.addService(service: ConvertorWorker())
-    
-          
+     
     }
   
   private func setNetWorkService() {

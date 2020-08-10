@@ -48,23 +48,23 @@ struct LearnByCorrectionModel {
     
     // MARK: Sugar LEvel Models
     
-    
-    let sugarLevelMaxValue : Float
     switch metric {
     case .mmoll:
       self.tableData.append(contentsOf: mmolTableData)
-      sugarLevelMaxValue = 15
+      
     case .mgdl :
       self.tableData.append(contentsOf: mgdlTableData)
-      sugarLevelMaxValue = 15 * 18
+      
     }
     
     self.sugarLevelModel = SugarLevelModel(
     lowerSliderValue  : lowerSliderValue,
     higherSliderValue : higherSliderValue,
-    maxValue          : sugarLevelMaxValue)
+    metric            : metrics)
     
   }
+  
+
   
 
 }
@@ -74,11 +74,17 @@ struct LearnByCorrectionModel {
 
 struct SugarLevelModel {
 
-  var lowerSliderValue : CGFloat = 0.3 // min = 4.5 == 0
+  var lowerSliderValue  : CGFloat = 0.3 // min = 4.5 == 0
+   
+  var higherSliderValue : CGFloat = 0.5 // max = 15.0 == 1
+   
+  var metric            : SugarMetric
+   
+  var maxValue       : Float {
+    metric == .mmoll ? 15 : (15 * 18)
+  }
   
-  var higherSliderValue: CGFloat = 0.5 // max = 15.0 == 1
   
-  var maxValue         : Float
   
   // Короче тут должна быть еще матиматика - Так как нам приходят значения от 0 до 1 мне нужно это как то поделить что такое 1 и что такое 0
   
@@ -97,5 +103,9 @@ struct SugarLevelModel {
   
   var optimalSugarLevel: Float {
      (sugarLowerLevel + sugarHigherLevel) / 2
+  }
+  
+  var optimalSugarLevelToSaveAndWork: Float {
+    metric == .mgdl ? optimalSugarLevel / 18 : optimalSugarLevel
   }
 }

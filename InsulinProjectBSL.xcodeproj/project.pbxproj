@@ -14,6 +14,8 @@
 		0516E03B242B72BB00F26FAD /* Date + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0516E03A242B72BB00F26FAD /* Date + Extension.swift */; };
 		0518C40E247D58590076F196 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0518C40D247D58590076F196 /* RealmManager.swift */; };
 		052B4E8D2355D09E00464A6C /* MenuMealListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B4E8C2355D09E00464A6C /* MenuMealListCell.swift */; };
+		052B932224D1769F007E2F07 /* BSLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B932124D1769F007E2F07 /* BSLTests.swift */; };
+		052B932D24D17A55007E2F07 /* SugarMetricWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B932C24D17A55007E2F07 /* SugarMetricWorkerTests.swift */; };
 		052BD9B624485F7E00F3AD6D /* MLTasks.txt in Resources */ = {isa = PBXBuildFile; fileRef = 052BD9B524485F7E00F3AD6D /* MLTasks.txt */; };
 		052C33E3237A8D1200B4B29A /* AlertWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052C33E2237A8D1200B4B29A /* AlertWorker.swift */; };
 		052EFB1B236185D600FDCCC4 /* HeaderCellWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052EFB1A236185D600FDCCC4 /* HeaderCellWorker.swift */; };
@@ -27,6 +29,7 @@
 		0533B99023F416E4008E13DE /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0533B98F23F416E4008E13DE /* String+Extension.swift */; };
 		0533B99623F41BA3008E13DE /* LearnByCorrectionCellModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0533B99523F41BA3008E13DE /* LearnByCorrectionCellModal.swift */; };
 		0533B99823F41DB8008E13DE /* LearnByCorrectionSugarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0533B99723F41DB8008E13DE /* LearnByCorrectionSugarCell.swift */; };
+		0536346F24D1724A00C51B29 /* SugarMetricConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0536346E24D1724A00C51B29 /* SugarMetricConverter.swift */; };
 		0537370D234B256700411C46 /* DinnerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0537370C234B256700411C46 /* DinnerData.swift */; };
 		05373713234B2B1700411C46 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05373712234B2B1700411C46 /* MenuView.swift */; };
 		05373716234B2B4800411C46 /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05373715234B2B4800411C46 /* SwipeView.swift */; };
@@ -129,6 +132,7 @@
 		05A0E46823A0F96C005476DD /* CompansationObjCollectionWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A0E46723A0F96C005476DD /* CompansationObjCollectionWorker.swift */; };
 		05A0E46B23A0FC38005476DD /* CompansationByCarboCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A0E46A23A0FC38005476DD /* CompansationByCarboCell.swift */; };
 		05A0E46D23A0FCC3005476DD /* CompansationCVBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A0E46C23A0FCC3005476DD /* CompansationCVBaseCell.swift */; };
+		05A360EC24D4574E0027A9B2 /* StackTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A360EB24D4574E0027A9B2 /* StackTestView.swift */; };
 		05A4F1942338B82B00DFE4D7 /* NewFoodViewWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1932338B82B00DFE4D7 /* NewFoodViewWorker.swift */; };
 		05A4F1962338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F1952338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift */; };
 		05A4F19F2339EF6A00DFE4D7 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A4F19E2339EF6A00DFE4D7 /* MainView.swift */; };
@@ -306,6 +310,16 @@
 		F1F358BA2321261B00E48369 /* HeaderInSectionWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F358B92321261B00E48369 /* HeaderInSectionWorker.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		052B932424D1769F007E2F07 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F1E78C90230D31E600592AB8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F1E78C97230D31E600592AB8;
+			remoteInfo = InsulinProjectBSL;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0509FCFF233F9DBC00B04B30 /* ProductListResultWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListResultWorker.swift; sourceTree = "<group>"; };
 		0509FD03233FB11A00B04B30 /* ProductListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListModel.swift; sourceTree = "<group>"; };
@@ -314,6 +328,10 @@
 		0516E03A242B72BB00F26FAD /* Date + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extension.swift"; sourceTree = "<group>"; };
 		0518C40D247D58590076F196 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		052B4E8C2355D09E00464A6C /* MenuMealListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuMealListCell.swift; sourceTree = "<group>"; };
+		052B931F24D1769F007E2F07 /* BSLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BSLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		052B932124D1769F007E2F07 /* BSLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSLTests.swift; sourceTree = "<group>"; };
+		052B932324D1769F007E2F07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		052B932C24D17A55007E2F07 /* SugarMetricWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarMetricWorkerTests.swift; sourceTree = "<group>"; };
 		052BD9B524485F7E00F3AD6D /* MLTasks.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = MLTasks.txt; sourceTree = "<group>"; };
 		052C33E2237A8D1200B4B29A /* AlertWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertWorker.swift; sourceTree = "<group>"; };
 		052EFB1A236185D600FDCCC4 /* HeaderCellWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCellWorker.swift; sourceTree = "<group>"; };
@@ -327,6 +345,7 @@
 		0533B98F23F416E4008E13DE /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		0533B99523F41BA3008E13DE /* LearnByCorrectionCellModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnByCorrectionCellModal.swift; sourceTree = "<group>"; };
 		0533B99723F41DB8008E13DE /* LearnByCorrectionSugarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnByCorrectionSugarCell.swift; sourceTree = "<group>"; };
+		0536346E24D1724A00C51B29 /* SugarMetricConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugarMetricConverter.swift; sourceTree = "<group>"; };
 		0537370C234B256700411C46 /* DinnerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerData.swift; sourceTree = "<group>"; };
 		05373712234B2B1700411C46 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		05373715234B2B4800411C46 /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
@@ -429,6 +448,7 @@
 		05A0E46723A0F96C005476DD /* CompansationObjCollectionWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompansationObjCollectionWorker.swift; sourceTree = "<group>"; };
 		05A0E46A23A0FC38005476DD /* CompansationByCarboCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompansationByCarboCell.swift; sourceTree = "<group>"; };
 		05A0E46C23A0FCC3005476DD /* CompansationCVBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompansationCVBaseCell.swift; sourceTree = "<group>"; };
+		05A360EB24D4574E0027A9B2 /* StackTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackTestView.swift; sourceTree = "<group>"; };
 		05A4F1932338B82B00DFE4D7 /* NewFoodViewWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFoodViewWorker.swift; sourceTree = "<group>"; };
 		05A4F1952338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTableViewPresenterWorker.swift; sourceTree = "<group>"; };
 		05A4F19E2339EF6A00DFE4D7 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -611,6 +631,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		052B931C24D1769F007E2F07 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F1E78C95230D31E600592AB8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -668,6 +695,40 @@
 				055BE0CC2340A69C0029D298 /* ContainerDinnerViewController.swift */,
 			);
 			path = Container;
+			sourceTree = "<group>";
+		};
+		052B932024D1769F007E2F07 /* BSLTests */ = {
+			isa = PBXGroup;
+			children = (
+				052B932924D17A25007E2F07 /* Casess */,
+				052B932124D1769F007E2F07 /* BSLTests.swift */,
+				052B932324D1769F007E2F07 /* Info.plist */,
+			);
+			path = BSLTests;
+			sourceTree = "<group>";
+		};
+		052B932924D17A25007E2F07 /* Casess */ = {
+			isa = PBXGroup;
+			children = (
+				052B932A24D17A2C007E2F07 /* Workers */,
+			);
+			path = Casess;
+			sourceTree = "<group>";
+		};
+		052B932A24D17A2C007E2F07 /* Workers */ = {
+			isa = PBXGroup;
+			children = (
+				052B932B24D17A34007E2F07 /* SugarMetrcWorker */,
+			);
+			path = Workers;
+			sourceTree = "<group>";
+		};
+		052B932B24D17A34007E2F07 /* SugarMetrcWorker */ = {
+			isa = PBXGroup;
+			children = (
+				052B932C24D17A55007E2F07 /* SugarMetricWorkerTests.swift */,
+			);
+			path = SugarMetrcWorker;
 			sourceTree = "<group>";
 		};
 		052BD9B72449E25700F3AD6D /* Depricated */ = {
@@ -767,6 +828,14 @@
 				056647F624431DC40085F542 /* TableView */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		0536346D24D1722D00C51B29 /* SugarMetricConvertor */ = {
+			isa = PBXGroup;
+			children = (
+				0536346E24D1724A00C51B29 /* SugarMetricConverter.swift */,
+			);
+			path = SugarMetricConvertor;
 			sourceTree = "<group>";
 		};
 		0537370E234B296E00411C46 /* Data */ = {
@@ -1714,6 +1783,14 @@
 			path = ByCarboCell;
 			sourceTree = "<group>";
 		};
+		05A360F624DAD66F0027A9B2 /* SaveButtonWorker */ = {
+			isa = PBXGroup;
+			children = (
+				057E26232439ED010081CE56 /* SaveButtonValidator.swift */,
+			);
+			path = SaveButtonWorker;
+			sourceTree = "<group>";
+		};
 		05A4F1972339EE4600DFE4D7 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2497,8 +2574,8 @@
 		05CBEBAF23A22309001D9EEA /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				057E26232439ED010081CE56 /* SaveButtonValidator.swift */,
 				05CBEB9C23A21FD9001D9EEA /* NewCompansationObjectScreenPresenter.swift */,
+				05A360F624DAD66F0027A9B2 /* SaveButtonWorker */,
 				055A727723A8F54A002CA9A7 /* AddMealVMWorker */,
 				055A727623A8F53E002CA9A7 /* SugarCellVMWorker */,
 				0550AEA9241BC0C500140254 /* ConvertRealmToVM */,
@@ -2779,6 +2856,7 @@
 				05BA6FDA24A5E5FC006BA07E /* PieChart */,
 				05CB71DB24A23C9100BBA7B5 /* StatsNavBar */,
 				05C16D64233F4E4B00486CAE /* RobotView */,
+				05A360EB24D4574E0027A9B2 /* StackTestView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3066,6 +3144,7 @@
 			isa = PBXGroup;
 			children = (
 				F1E78C9A230D31E600592AB8 /* InsulinProjectBSL */,
+				052B932024D1769F007E2F07 /* BSLTests */,
 				F1E78C99230D31E600592AB8 /* Products */,
 				4A80211A4DAEF2A23ED80AC7 /* Pods */,
 				C0328A0279C71533F7F7457B /* Frameworks */,
@@ -3076,6 +3155,7 @@
 			isa = PBXGroup;
 			children = (
 				F1E78C98230D31E600592AB8 /* BSL.app */,
+				052B931F24D1769F007E2F07 /* BSLTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3275,13 +3355,14 @@
 		F1E78D00230D546500592AB8 /* Workers */ = {
 			isa = PBXGroup;
 			children = (
+				05D26A3C2360721700155F31 /* ShugarCorrectorWorker */,
+				0536346D24D1722D00C51B29 /* SugarMetricConvertor */,
 				057CC86C2483E1F4000CE7F0 /* ConvertorWorker */,
 				05D177D02464319E00F6B846 /* InsulinSupplyWorker */,
 				05D177CB246418E200F6B846 /* UserDefaultsWorker */,
 				0561F37E245C206900A236E6 /* NetworkService */,
 				05733CE223FAAAB1004197B2 /* AppState */,
 				05515D0223699CF000A298AA /* ML */,
-				05D26A3C2360721700155F31 /* ShugarCorrectorWorker */,
 				052C33E1237A8CF700B4B29A /* AlertWorker */,
 				05AD21512361B772008E6BB0 /* DateWorker */,
 				057B9846234F6B3C002EAD68 /* PointSercher */,
@@ -3397,6 +3478,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		052B931E24D1769F007E2F07 /* BSLTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 052B932824D1769F007E2F07 /* Build configuration list for PBXNativeTarget "BSLTests" */;
+			buildPhases = (
+				052B931B24D1769F007E2F07 /* Sources */,
+				052B931C24D1769F007E2F07 /* Frameworks */,
+				052B931D24D1769F007E2F07 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				052B932524D1769F007E2F07 /* PBXTargetDependency */,
+			);
+			name = BSLTests;
+			productName = BSLTests;
+			productReference = 052B931F24D1769F007E2F07 /* BSLTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F1E78C97230D31E600592AB8 /* InsulinProjectBSL */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F1E78CAA230D31E900592AB8 /* Build configuration list for PBXNativeTarget "InsulinProjectBSL" */;
@@ -3422,10 +3521,15 @@
 		F1E78C90230D31E600592AB8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1020;
+				DefaultBuildSystemTypeForWorkspace = Original;
+				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = PavelM;
 				TargetAttributes = {
+					052B931E24D1769F007E2F07 = {
+						CreatedOnToolsVersion = 11.4.1;
+						TestTargetID = F1E78C97230D31E600592AB8;
+					};
 					F1E78C97230D31E600592AB8 = {
 						CreatedOnToolsVersion = 10.2;
 					};
@@ -3445,11 +3549,19 @@
 			projectRoot = "";
 			targets = (
 				F1E78C97230D31E600592AB8 /* InsulinProjectBSL */,
+				052B931E24D1769F007E2F07 /* BSLTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		052B931D24D1769F007E2F07 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F1E78C96230D31E600592AB8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3521,6 +3633,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		052B931B24D1769F007E2F07 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				052B932D24D17A55007E2F07 /* SugarMetricWorkerTests.swift in Sources */,
+				052B932224D1769F007E2F07 /* BSLTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F1E78C94230D31E600592AB8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3530,6 +3651,7 @@
 				05664803244324570085F542 /* LearnByCorrectionView.swift in Sources */,
 				05C0C62C238D40EF001B2664 /* DinnersRealm.swift in Sources */,
 				F1E78CD7230D338A00592AB8 /* SettingsWorker.swift in Sources */,
+				0536346F24D1724A00C51B29 /* SugarMetricConverter.swift in Sources */,
 				05460F922455A450008B4ABF /* Animator.swift in Sources */,
 				F1932B42231FB009003DC351 /* UITableView + Extension.swift in Sources */,
 				055A727123A8CC75002CA9A7 /* NewProductListCell.swift in Sources */,
@@ -3657,6 +3779,7 @@
 				055A726623A8C3E4002CA9A7 /* ProductListCellHeightWorker.swift in Sources */,
 				05D26A3E236093CB00155F31 /* DinnerRealmManager.swift in Sources */,
 				F1E78C9C230D31E600592AB8 /* AppDelegate.swift in Sources */,
+				05A360EC24D4574E0027A9B2 /* StackTestView.swift in Sources */,
 				05CBEB9423A12C74001D9EEA /* ResultViewWorker.swift in Sources */,
 				05733CE423FAAABF004197B2 /* AppState.swift in Sources */,
 				F1103B63232A735D009A338A /* NewMealViewWorker.swift in Sources */,
@@ -3807,6 +3930,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		052B932524D1769F007E2F07 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F1E78C97230D31E600592AB8 /* InsulinProjectBSL */;
+			targetProxy = 052B932424D1769F007E2F07 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		F1E78CA4230D31E900592AB8 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -3819,6 +3950,49 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		052B932624D1769F007E2F07 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8A0FC66BAC35F6B18007EC60 /* Pods-InsulinProjectBSL.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3LH58YF246;
+				INFOPLIST_FILE = BSLTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = PavelM.BSLTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BSL.app/BSL";
+			};
+			name = Debug;
+		};
+		052B932724D1769F007E2F07 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3LH58YF246;
+				INFOPLIST_FILE = BSLTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = PavelM.BSLTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BSL.app/BSL";
+			};
+			name = Release;
+		};
 		F1E78CA8230D31E900592AB8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3870,7 +4044,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3925,7 +4099,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -3944,7 +4118,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3LH58YF246;
 				INFOPLIST_FILE = "$(SRCROOT)/InsulinProjectBSL/SupportFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3966,7 +4140,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3LH58YF246;
 				INFOPLIST_FILE = "$(SRCROOT)/InsulinProjectBSL/SupportFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3982,6 +4156,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		052B932824D1769F007E2F07 /* Build configuration list for PBXNativeTarget "BSLTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				052B932624D1769F007E2F07 /* Debug */,
+				052B932724D1769F007E2F07 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F1E78C93230D31E600592AB8 /* Build configuration list for PBXProject "InsulinProjectBSL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

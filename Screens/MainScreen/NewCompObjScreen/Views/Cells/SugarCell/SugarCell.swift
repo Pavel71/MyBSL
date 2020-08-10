@@ -33,6 +33,7 @@ class SugarCell: UITableViewCell {
   static let cellId = "SugarCell"
   
   var cellState: SugarCellState = .currentLayer
+  let sugarMetricWorker: SugarMetricConverter! = ServiceLocator.shared.getService()
   
   // Properties
   
@@ -74,10 +75,14 @@ class SugarCell: UITableViewCell {
   }()
   let correctionTextField = CustomCategoryTextField(padding: 5, placeholder: "", cornerRaduis: 10, imageButton: #imageLiteral(resourceName: "robot32").withRenderingMode(.alwaysOriginal))
   
+  var sugarMetric : SugarMetric?
+  
   // MARK: Init
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+    setCurrentSugarTextFieldPlaceHolder()
     
     backgroundColor = .orange
     
@@ -89,6 +94,10 @@ class SugarCell: UITableViewCell {
     
     setUpViews()
     
+  }
+  
+  private func setCurrentSugarTextFieldPlaceHolder() {
+    currentSugarTextField.placeholder = sugarMetricWorker.metric == .mmoll ? "6.0" : "108"
   }
   
   private func configureSugarLayer() {
@@ -260,9 +269,18 @@ extension SugarCell {
   
   func setViewModel(viewModel: SugarCellModel) {
     
+
     
+    var currentSugar = viewModel.currentSugar != nil ? "\(viewModel.currentSugar!)": ""
     
-    let currentSugar = viewModel.currentSugar != nil ? "\(viewModel.currentSugar!)": ""
+    // Все что не должно сохранятся будет отображатся только на View!
+    if
+      currentSugar.isEmpty == false,
+    sugarMetricWorker.isMgdlMetric() {
+
+      currentSugar = sugarMetricWorker.convertMmolSugarStringToMgdlSugarString(mmolSugarString: currentSugar)
+    }
+    
     currentSugarTextField.text = currentSugar
     
     
