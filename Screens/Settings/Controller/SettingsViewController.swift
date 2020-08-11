@@ -35,6 +35,14 @@ enum SettingSections: Int,CaseIterable {
   case subscription
 }
 
+let socialNetwroksUrlString : [String] = [
+  "https://www.youtube.com",
+  "https://vk.com",
+  "https://www.facebook.com"
+]
+
+
+
 class SettingsViewController: UIViewController, SettingsDisplayLogic {
 
   var interactor: SettingsBusinessLogic?
@@ -180,7 +188,13 @@ extension SettingsViewController {
  
  // MARK: SOcial Icons Singals
   @objc private func handleSocialButtonSignals(button: UIButton) {
-    print("Button Signals")
+    
+    let socialNetwrokUrlString = socialNetwroksUrlString[button.tag]
+    
+    let webController = WebController(urlString: socialNetwrokUrlString)
+    
+    navigationController?.pushViewController(webController, animated: true)
+
   }
   
   
@@ -214,6 +228,8 @@ extension SettingsViewController: UITableViewDelegate,UITableViewDataSource {
     case .socialLinks:
       let cell = SocialLinckCell()
       cell.fbButton.addTarget(self, action: #selector(handleSocialButtonSignals), for: .touchUpInside)
+      cell.vkButton.addTarget(self, action: #selector(handleSocialButtonSignals), for: .touchUpInside)
+      cell.youtubeButton.addTarget(self, action: #selector(handleSocialButtonSignals), for: .touchUpInside)
       return cell
     case .subscription:
       let cell = SubscriptionCell()

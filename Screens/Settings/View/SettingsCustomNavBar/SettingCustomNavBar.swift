@@ -19,6 +19,7 @@ final class SettingCustomNavBar: UIView {
   var logOutButton : UIButton = {
     let b = UIButton(type: .system)
     b.setTitle("Log out", for: .normal)
+    b.titleLabel?.font = UIFont.systemFont(ofSize: 17)
     b.addTarget(self, action: #selector(handleLogOut), for: .touchUpInside)
     return b
   }()

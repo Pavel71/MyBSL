@@ -217,6 +217,9 @@
 		05D26A3923605D9200155F31 /* TotalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A3823605D9200155F31 /* TotalView.swift */; };
 		05D26A3E236093CB00155F31 /* DinnerRealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D26A3D236093CB00155F31 /* DinnerRealmManager.swift */; };
 		05D806142348C9CF00C19764 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D806132348C9CF00C19764 /* MainMenuViewController.swift */; };
+		05DE663F24E29FE7000D959E /* Tasks.txt in Resources */ = {isa = PBXBuildFile; fileRef = 05DE663E24E29FE7000D959E /* Tasks.txt */; };
+		05DE664224E2A040000D959E /* WebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DE664124E2A040000D959E /* WebController.swift */; };
+		05DE664424E2A9C5000D959E /* WKWebView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DE664324E2A9C5000D959E /* WKWebView + Extension.swift */; };
 		05E1C3312372B77C00007463 /* SimpleRegressionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E1C3302372B77C00007463 /* SimpleRegressionModel.swift */; };
 		05E1C3342372B7FF00007463 /* RidgeRegressionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E1C3332372B7FF00007463 /* RidgeRegressionModel.swift */; };
 		05F3838124C842A6005E7C0E /* SocialLinckCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F3838024C842A6005E7C0E /* SocialLinckCell.swift */; };
@@ -533,6 +536,9 @@
 		05D26A3823605D9200155F31 /* TotalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalView.swift; sourceTree = "<group>"; };
 		05D26A3D236093CB00155F31 /* DinnerRealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerRealmManager.swift; sourceTree = "<group>"; };
 		05D806132348C9CF00C19764 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
+		05DE663E24E29FE7000D959E /* Tasks.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Tasks.txt; sourceTree = "<group>"; };
+		05DE664124E2A040000D959E /* WebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebController.swift; sourceTree = "<group>"; };
+		05DE664324E2A9C5000D959E /* WKWebView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView + Extension.swift"; sourceTree = "<group>"; };
 		05E1C3302372B77C00007463 /* SimpleRegressionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleRegressionModel.swift; sourceTree = "<group>"; };
 		05E1C3332372B7FF00007463 /* RidgeRegressionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidgeRegressionModel.swift; sourceTree = "<group>"; };
 		05F3838024C842A6005E7C0E /* SocialLinckCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLinckCell.swift; sourceTree = "<group>"; };
@@ -2722,6 +2728,23 @@
 			path = ShugarCorrectorWorker;
 			sourceTree = "<group>";
 		};
+		05DE663D24E29FAF000D959E /* SubScenes */ = {
+			isa = PBXGroup;
+			children = (
+				05DE664024E2A01D000D959E /* WebController */,
+				05DE663E24E29FE7000D959E /* Tasks.txt */,
+			);
+			path = SubScenes;
+			sourceTree = "<group>";
+		};
+		05DE664024E2A01D000D959E /* WebController */ = {
+			isa = PBXGroup;
+			children = (
+				05DE664124E2A040000D959E /* WebController.swift */,
+			);
+			path = WebController;
+			sourceTree = "<group>";
+		};
 		05DE9BF824361B5500280D4F /* MLPipline */ = {
 			isa = PBXGroup;
 			children = (
@@ -3228,6 +3251,7 @@
 		F1E78CDD230D339100592AB8 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				05DE663D24E29FAF000D959E /* SubScenes */,
 				05B0A4DA24C0781D00A968AB /* SettingsTasks.txt */,
 				05908DAC2463F96F002DDAFC /* Controller */,
 				05908DAE2463F97F002DDAFC /* Router */,
@@ -3330,6 +3354,7 @@
 				0550AEA72418FADF00140254 /* Double+Extensions.swift */,
 				0516E03A242B72BB00F26FAD /* Date + Extension.swift */,
 				057CC7AA24644AF60049DFD3 /* EncodeDecode.swift */,
+				05DE664324E2A9C5000D959E /* WKWebView + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3571,6 +3596,7 @@
 				0561F37D245C1B3E00A236E6 /* GoogleService-Info.plist in Resources */,
 				05CBEBAB23A21FF2001D9EEA /* NewCompObjScreenTasks in Resources */,
 				F1E78D22230D811700592AB8 /* Tasks in Resources */,
+				05DE663F24E29FE7000D959E /* Tasks.txt in Resources */,
 				05D1469823979E0C00E6E6EA /* NewSugarTask in Resources */,
 				055A3A502357044F0080628C /* Readme in Resources */,
 				059D7E7A23505C3A00286E57 /* Tasks in Resources */,
@@ -3690,6 +3716,7 @@
 				057CC7AB24644AF60049DFD3 /* EncodeDecode.swift in Sources */,
 				F1E78D20230D68DC00592AB8 /* ProductRealm.swift in Sources */,
 				05952A52233BB22B00EE996E /* ProductListProtocol.swift in Sources */,
+				05DE664424E2A9C5000D959E /* WKWebView + Extension.swift in Sources */,
 				F1E78D16230D57FA00592AB8 /* FoodCell.swift in Sources */,
 				05952A58233BB51600EE996E /* ProductListInDinnerViewController.swift in Sources */,
 				05C0C627238D3EC7001B2664 /* DayRealm.swift in Sources */,
@@ -3838,6 +3865,7 @@
 				F1E78D0C230D55C400592AB8 /* CustomNavBar.swift in Sources */,
 				05908DA72461A4E4002DDAFC /* FetchService.swift in Sources */,
 				05A4F1962338B9C400DFE4D7 /* FoodTableViewPresenterWorker.swift in Sources */,
+				05DE664224E2A040000D959E /* WebController.swift in Sources */,
 				F1E78CB0230D325600592AB8 /* BaseTabBarController.swift in Sources */,
 				05C16D66233F4E6100486CAE /* RobotView.swift in Sources */,
 				05C0C638238FBFD9001B2664 /* MealCollectionViewModel.swift in Sources */,

@@ -17,6 +17,7 @@ class SocialLinckCell : UITableViewCell {
     let b = UIButton(type: .system)
     b.setImage(#imageLiteral(resourceName: "youtube").withRenderingMode(.alwaysOriginal), for: .normal)
     b.sizeToFit()
+    b.tag = 0
     return b
   }()
   
@@ -24,6 +25,7 @@ class SocialLinckCell : UITableViewCell {
     let b = UIButton(type: .system)
     b.setImage(#imageLiteral(resourceName: "vk").withRenderingMode(.alwaysOriginal), for: .normal)
     b.sizeToFit()
+    b.tag = 1
     return b
   }()
   
@@ -34,7 +36,7 @@ class SocialLinckCell : UITableViewCell {
     b.setImage(image, for: .normal)
     b.imageView?.contentMode = .scaleAspectFit
     b.imageEdgeInsets = .init(top: 7, left: 5, bottom: 7, right: 5)
-    
+    b.tag = 2
     return b
   }()
   
