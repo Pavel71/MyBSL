@@ -27,10 +27,11 @@ class BaseTabBarController: UITabBarController {
     let settingsController = createNavController(SettingsViewController(), name: "Настройки", imageName: "settings")
     
     viewControllers = [
-      settingsController,
+      
       mainViewController,
       productController,
-      statsController
+      statsController,
+      settingsController
       
     ]
     
