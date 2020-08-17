@@ -78,13 +78,13 @@ final class AppState {
 
 extension AppState {
   
-  func pushUpdateMainScreenViewControllerMethod() {
-    
-    guard
-      let mainScreenController = getMainScreenController()
-      else {return}
-    mainScreenController.activateApplication()
-  }
+//  func pushUpdateMainScreenViewControllerMethod() {
+//    
+//    guard
+//      let mainScreenController = getMainScreenController()
+//      else {return}
+//    mainScreenController.activateApplication()
+//  }
   
 
   

@@ -87,13 +87,13 @@ import Firebase
   }
   
   
-  func applicationDidBecomeActive(_ application: UIApplication) {
-    
-    let appStateService: AppState = AppState.shared
-    
-    appStateService.pushUpdateMainScreenViewControllerMethod()
-        
-  }
+//  func applicationDidBecomeActive(_ application: UIApplication) {
+//    
+//    let appStateService: AppState = AppState.shared
+//    
+//    appStateService.pushUpdateMainScreenViewControllerMethod()
+//        
+//  }
   
   func applicationWillTerminate(_ application: UIApplication) {
     print("Закрывают приложение")

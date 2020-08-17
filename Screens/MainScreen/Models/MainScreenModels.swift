@@ -18,7 +18,7 @@ enum MainScreen {
       enum RequestType {
         
         
-        case checkLastDayInDB
+//        case checkLastDayInDB
         
         // Set Data to Realm
         case setSugarVM(sugarViewModel: SugarViewModel)
@@ -26,7 +26,9 @@ enum MainScreen {
         case deleteCompansationObj(compObjId: String)
         case getCompansationObj(compObjId: String)
         
+        case addNewDay
         case reloadDay
+        
         
         case selectDayByCalendar(date: Date)
         
@@ -47,6 +49,7 @@ enum MainScreen {
         
         case showLoadingMessage(message: String)
         case showOffLoadingMessage
+        case showAlertMessage(title: String,message: String)
         
       }
     }
@@ -56,6 +59,7 @@ enum MainScreen {
         case throwCompansationObjectToUpdate(compObj: CompansationObjectRelam)
         case showLoadingMessage(message: String)
         case showOffLoadingMessage
+        case showAlertMessage(title: String,message: String)
       }
     }
   }

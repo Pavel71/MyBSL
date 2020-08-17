@@ -101,23 +101,23 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
   }
 
   
-  // MARK: Activate Application
-  func activateApplication() {
-    
-    print("Activate application Main Screen")
+//  // MARK: Activate Application
+//  func activateApplication() {
+//    
+//    print("Activate application Main Screen")
     
     // На старте мы просто перезапишим балнк модель и все! в остальное время будет все норм!
-    interactor?.makeRequest(request: .checkLastDayInDB)
+//    interactor?.makeRequest(request: .checkLastDayInDB)checkLastDayInDB
 
 
-  }
+//  }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
     print("Main Screen View Will Appear")
     
-    interactor?.makeRequest(request: .checkLastDayInDB)
+//    interactor?.makeRequest(request: .checkLastDayInDB)
     
     
     navigationController?.navigationBar.isHidden = true
@@ -153,6 +153,9 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
       loadDataHUD.show(in: self.view)
     case .showOffLoadingMessage:
       loadDataHUD.dismiss()
+      
+    case .showAlertMessage(let title, let message):
+      showAlert(title: title, message: message)
       
       
     }
@@ -379,9 +382,9 @@ extension MainScreenViewController {
   
  
   
-  // Catch NavBarClousers
   
-  // MARK: Show NewSugarDataView
+  
+  // MARK: - Alert Sheeft Signals
   
   private func addNewData() {
     showSheetControllerAddSugarOrMeal(title: "Добавить данные!",
@@ -397,6 +400,10 @@ extension MainScreenViewController {
       // MARK: Go to New ComObj Screen
       
       self.router!.goToNewCompansationObjectScreen(compansationObjectRealm: nil)
+    }, addNewDayCallBack: { _ in
+      
+      self.interactor?.makeRequest(request: .addNewDay)
+      
     })
     
   }
@@ -404,32 +411,11 @@ extension MainScreenViewController {
 
   
   
-  // MARK: Show Calendar
-//  
-//  private func showCalendar() {
-//    
-//    AddNewElementViewAnimated.showOrDismissToTheUpLeftCornerNewView(
-//      newElementView: self.calendarView,
-//          blurView: self.mainScreenView.blurView,
-//          customNavBar: self.navBarView,
-//          tabbarController: self.tabBarController!,
-//          isShow: true)
-//  }
-//  
-//  private func closeCalendar() {
-//    AddNewElementViewAnimated.showOrDismissToTheUpLeftCornerNewView(
-//    newElementView: self.calendarView,
-//        blurView: self.mainScreenView.blurView,
-//        customNavBar: self.navBarView,
-//        tabbarController: self.tabBarController!,
-//        isShow: false)
-//  }
-  
-  
-  
   
   
   private func showRobotMenu() {
+    print("Show Robot Menu")
+    // Пока буду использовать это в качетсве удаления сегодя из Реалма
     
   }
   
@@ -523,9 +509,10 @@ extension MainScreenViewController {
 extension MainScreenViewController {
   
   func showSheetControllerAddSugarOrMeal(
-    title         : String,
-    sugarCallBack : ((UIAlertAction) -> Void)?,
-    mealCallback  : ((UIAlertAction) -> Void)?
+    title             : String,
+    sugarCallBack     : ((UIAlertAction) -> Void)?,
+    mealCallback      : ((UIAlertAction) -> Void)?,
+    addNewDayCallBack : ((UIAlertAction) -> Void)?
   ){
     
     // Нужно подумать как бы мне сюда впихнуть CallBack
@@ -533,9 +520,11 @@ extension MainScreenViewController {
      let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
     
         let sugarAction    = UIAlertAction(title: "Передать сахар", style: .default, handler: sugarCallBack)
-        let mealDataAction = UIAlertAction(title: "Компенсация сахара", style: .default, handler: mealCallback)
+        let mealDataAction = UIAlertAction(title: "Компенсация углеводов", style: .default, handler: mealCallback)
+        let addNewDay      = UIAlertAction(title: "Новый день", style: .default, handler: addNewDayCallBack)
         let cancelAction = UIAlertAction(title: "Отмена", style: .destructive, handler: nil)
-        
+    
+        alertController.addAction(addNewDay)
         alertController.addAction(sugarAction)
         alertController.addAction(mealDataAction)
         alertController.addAction(cancelAction)
@@ -543,8 +532,6 @@ extension MainScreenViewController {
         present(alertController, animated: true, completion: nil)
   }
 }
-
-
 
 
 

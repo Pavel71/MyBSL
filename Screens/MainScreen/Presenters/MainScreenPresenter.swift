@@ -56,6 +56,8 @@ extension MainScreenPresenter {
       viewController?.displayData(viewModel: .showLoadingMessage(message: message))
     case.showOffLoadingMessage:
       viewController?.displayData(viewModel: .showOffLoadingMessage)
+    case .showAlertMessage(let title, let message):
+      viewController?.displayData(viewModel: .showAlertMessage(title: title, message: message))
     default:break
     }
   }

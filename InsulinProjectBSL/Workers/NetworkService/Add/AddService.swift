@@ -43,7 +43,63 @@ extension AddService {
 // MARK: Add Day to FireStore
 extension AddService {
   
-//
+  
+  // func add Day without day listner!
+  // Зачем нам листнер дня! Когда он не нужен! мы можем просто проверить по транзакции день! Если он есть то возми его себе и обнвои текущий день! если нет то добавь новый!
+  // И не нужен никакой литснер!
+  // Просто нужно будет протестировать эту работу без инета! когда появуится интернет! Транзакция повторится или нет?
+  
+  func addDayToFRBWithTransaction(
+    dayNetworkModel: DayNetworkModel) {
+    
+    guard let currentUserID = Auth.auth().currentUser?.uid else {return}
+          let db    = Firestore.firestore()
+
+          let data = dayNetworkModel.dictionary
+
+       let lastDayDateRef = db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID)
+       let dayRef =  db.collection(FirebaseKeyPath.Users.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.collectionName).document(currentUserID).collection(FirebaseKeyPath.Users.RealmData.Days.collectionName).document(dayNetworkModel.id)
+    
+     db.runTransaction({ (transaction, error) -> Any? in
+
+          let lastDayDateDocument: DocumentSnapshot
+          do {
+              try lastDayDateDocument = transaction.getDocument(lastDayDateRef)
+          } catch let fetchError as NSError {
+              error?.pointee = fetchError
+              return nil
+          }
+          
+          if let cameData = lastDayDateDocument.data()?["lastDayDate"] as? TimeInterval {
+
+                if cameData < dayNetworkModel.date {
+                  print("Дня еще нет в FireStore - добавляем!")
+                  transaction.setData(data, forDocument: dayRef)
+                  transaction.updateData(["lastDayDate":dayNetworkModel.date], forDocument: lastDayDateRef)
+                  
+                }
+            print("День есть в FireStore Transaction, ничего не добавляем!ждем когда сам придет!")
+            
+
+          } else {
+            // Значит поля c проверочным днем нет нужно его создать
+            print("Создаем поле с датой и сетим день")
+            transaction.setData(["lastDayDate":dayNetworkModel.date], forDocument: lastDayDateRef)
+            transaction.setData(data, forDocument: dayRef)
+          }
+          
+        
+
+          return nil
+        }) { (obj, error) in
+
+          if let error = error {
+                 // транзакция пришла с ошибкой
+            
+         }
+    }
+  }
+
   func addDayToFireStoreTransaction(
     dayNetworkModel: DayNetworkModel,
     complation: @escaping (Result<Bool,NetworkFirebaseError>) -> Void) {
@@ -87,6 +143,7 @@ extension AddService {
               
             }
         print("День есть в FireStore Transaction, ничего не добавляем!ждем когда сам придет!")
+        
 
       } else { // Значит поля c проверочным днем нет нужно его создать
         print("Создаем поле с датой и сетим день")
