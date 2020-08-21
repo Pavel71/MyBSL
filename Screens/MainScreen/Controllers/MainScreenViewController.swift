@@ -416,7 +416,7 @@ extension MainScreenViewController {
   private func showRobotMenu() {
     print("Show Robot Menu")
     // Пока буду использовать это в качетсве удаления сегодя из Реалма
-    
+    interactor?.makeRequest(request: .deletedTodayJustTesting)
   }
   
 }

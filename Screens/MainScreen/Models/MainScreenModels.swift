@@ -28,6 +28,7 @@ enum MainScreen {
         
         case addNewDay
         case reloadDay
+        case deletedTodayJustTesting
         
         
         case selectDayByCalendar(date: Date)

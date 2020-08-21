@@ -16,8 +16,6 @@ class MainScreenInteractor: MainScreenBusinessLogic {
   
   var presenter: MainScreenPresentationLogic?
   
-//    var realTimeLocker : Int = 0
-  //  var listnerLocker  : Int = 0
   
   
   // Realm and UserDefaults
@@ -76,14 +74,7 @@ class MainScreenInteractor: MainScreenBusinessLogic {
     let day = newDayRealmManager.getCurrentDay()
     presenter?.presentData(response: .prepareViewModel(realmData: day))
   }
-  
-//  private func realTimeLokerAdd() {
-//    realTimeLocker = 1
-//  }
-//
-//  private func realTimeLockerFree() {
-//    realTimeLocker = 0
-//  }
+
   
 }
 
@@ -161,13 +152,13 @@ extension MainScreenInteractor {
     daysModels        : [DayNetworkModel],
     userDefaultsModel : [UserDefaultsNetworkModel]) {
     
-    self.addDataToRealm(models: daysModels)
+    self.addDaysFromFireStoreToRealm(models: daysModels)
          
     guard let usDefModel = userDefaultsModel.first else {return}
     self.userDefaultsWorker.setDataToUserDefaults(userDefaultsNetwrokModel: usDefModel)
   }
   
-  private func addDataToRealm(models: [DayNetworkModel]) {
+  private func addDaysFromFireStoreToRealm(models: [DayNetworkModel]) {
     
     // Вообщем здесь мне нужно Когда приходит день с такойже датой как у меня нужно его заменить
     
@@ -214,7 +205,7 @@ extension MainScreenInteractor {
   }
 }
 
-// MARK: Work With Realm DB
+// MARK: - Catch Realm Requests
 
 extension MainScreenInteractor {
   
@@ -275,7 +266,7 @@ extension MainScreenInteractor {
     case .reloadDay:
       
       passDayRealmToConvertInVMInPresenter()
-      
+      // MARK: - Add New Day
     case .addNewDay:
       // Приходит запрос на добавление нового дня!
       // 1. Проверяем есть ли сегодняшний день в базе? Если есть то отправляем сообщение что сегодня уже есть дождидесь завтрашнего дня!
@@ -289,16 +280,20 @@ extension MainScreenInteractor {
         
         // Realm
         let newDayRealm = DayRealm(date: Date())
-        self.newDayRealmManager.setDayToRealm(day: newDayRealm)
-        self.newDayRealmManager.setCurrentDay(dayRealm: newDayRealm)
+        setNewDayRealm(dayRealm: newDayRealm)
         
         // Теперь надо добавить в fireStore по транзакции!чтобы в случае обьрыва соединенния потворилось добавление!
-        let newDayNetworkModel = self.getDayDataToSetFireStore(dayRealm: newDayRealm)
-        self.addService.addDayToFRBWithTransaction(dayNetworkModel: newDayNetworkModel)
+        setNewDayToFireStore(dayRealm: newDayRealm)
         
         passDayRealmToConvertInVMInPresenter()
       }
-
+    case .deletedTodayJustTesting:
+      
+      self.newDayRealmManager.deleteToday()
+      let lastDay = self.newDayRealmManager.fetchAllDays().last!
+      setNewDayRealm(dayRealm: lastDay)
+      passDayRealmToConvertInVMInPresenter()
+      
     default:break
     }
     
@@ -344,121 +339,36 @@ extension MainScreenInteractor {
     
   }
   
-  // MARK: Check Day in Realm
+  // MARK: - Create new Day Realm
   
-//  private func checkDayInRealm() {
-//
-//    guard realTimeLocker == 0 else {return} // Значит возможно к нам уже идут данные
-//
-//    realTimeLokerAdd()
-//
-//    if newDayRealmManager.isNowLastDayInDB() == false { // в Реалме нет дня
-//
-//      print("В реалме нет дня")
-//      // Запустить процесс показа сообщения
-//
-//      presenter?.presentData(response: .showLoadingMessage(message: "Добавляю новый день"))
-//      createDayAndAddToRealmAndFireStore()
-//      //        addDayTransaction(dayNetwork: newDayNetworkModel)
-//
-//
-//    } else { // В Реалме есть день!
-//      print("Сегодня есть в базе, просто сетим его")
-//      // Есть сегодняшний день то сетим его в current
-//      newDayRealmManager.setDayByDate(date: Date())
-//
-//      realTimeLockerFree()
-//      passDayRealmToConvertInVMInPresenter()
-//    }
-//
-//
-//  }
+  private func setNewDayRealm(dayRealm: DayRealm) {
+    
+    self.newDayRealmManager.setDayToRealm(day: dayRealm)
+    self.newDayRealmManager.setCurrentDay(dayRealm: dayRealm)
+  }
   
-  
-//  private func createDayAndAddToRealmAndFireStore() {
-////    let newDay = self.newDayRealmManager.addBlankDay()
-//
-//    // Вообщем нужно добавлять день в реалм в любом слуячае! Потом проверять уже есть ли дни в FireStore или нет!
-//
-//    let newDayRealm = DayRealm(date: Date())
-//    let newDayNetworkModel = self.getDayDataToSetFireStore(dayRealm: newDayRealm)
-//    print("Проверим есть ли день в FireStore")
-//
-//    addDayByTransaction(dayNetwork: newDayNetworkModel, newDayRealm: newDayRealm)
-//
-//    // Как можно избежать! Сбегать в Базу и проверить есть ли там сегодняшний день? Если его там нет то добавить в базу и в реалм! Если он там есть то ничего не делать так как он нам подгрузится с листнером!
-//
-////    self.addDayToFireStore(dayNetwork: newDayNetworkModel)
-//  }
-  
-}
+  private func setNewDayToFireStore(dayRealm: DayRealm) {
+    
+    let newDayNetworkModel = self.getDayDataToSetFireStore(dayRealm: dayRealm)
+    
+    self.addService.addDayToFRBWithTransaction(dayNetworkModel: newDayNetworkModel) { results in
+      switch results {
+      case .success(let dayNetwrokModel):
+        
+          guard let dayNetModel = dayNetwrokModel else {return}
+  // теперь надо удалить сегодняшний день если он есть! и поставить вновь прибывший!
+          self.newDayRealmManager.deleteToday()
+          self.addDaysFromFireStoreToRealm(models: [dayNetModel])
 
-// MARK: Work with FireStore
-extension MainScreenInteractor {
+      case .failure(let error):
+        print("Get Day error",error)
+      }
+
+      
+    }
+  }
   
-//  private func addDayByTransaction(dayNetwork: DayNetworkModel,newDayRealm: DayRealm) {
-//
-//    self.addService.addDayToFireStoreTransaction(dayNetworkModel: dayNetwork) {result in
-//
-//      switch result {
-//      case .success(let isNeedSettDataToRealm):
-//
-//        // Я думаю что нужно поставить день в любом слуяае! А если он придет из листнера! ТО мы просто его обновим
-//
-//        self.newDayRealmManager.setDayToRealm(day: newDayRealm)
-//        self.newDayRealmManager.setCurrentDay(dayRealm: newDayRealm)
-//
-////        if isNeedSettDataToRealm {
-////          print("Устанавливаю данные после TransAction в Реалм")
-////          self.newDayRealmManager.setDayToRealm(day: newDayRealm)
-////          self.newDayRealmManager.setCurrentDay(dayRealm: newDayRealm)
-////        }
-//
-//        // Нужно прокинуть инфу что все в порядке после установки реалм данных
-//        self.realTimeLockerFree()
-//        self.passDayRealmToConvertInVMInPresenter()
-//
-//      case .failure(_):
-//        print("Пришла ошибка в транзактион")
-//
-//      }
-//
-//      self.presenter?.presentData(response: .showOffLoadingMessage)
-//
-//    }
-//  }
-  
-//  private func addDayToFireStore(dayNetwork: DayNetworkModel) {
-//
-//    self.addService.addDayToFireStore(dayNetworkModel: dayNetwork){result in
-//
-//      switch result {
-//      case .success(let firestoreDayNetwokModel):
-//
-//        // Если модель nil то дня в базе нет!
-//        guard let networkModel = firestoreDayNetwokModel else {
-//          return self.passDayRealmToConvertInVMInPresenter()
-//        }
-//
-//        print("Пришел день из FireStore")
-//        let (realmDay,compObjs,sugarObjs) = self.convertWorker.convertDayNetworkModelsToRealm(dayNetworkModel: networkModel)
-//        // Вообщем происходит бага при создание второго такого же дня! Это из за частых повторений запростов- это надо как то решить
-//        self.newDayRealmManager.replaceCurrentDay(replaceDay: realmDay)
-//
-//
-//
-//        self.compObjRealmManager.setCompObjsToRealm(compObjs: compObjs)
-//        self.sugarRealmManger.setSugarToRealm(sugars: sugarObjs)
-//
-//      case .failure(let error):
-//        print("Some Error",error)
-//      }
-//
-//      self.realTimeLockerFree()
-//      self.passDayRealmToConvertInVMInPresenter()
-//    }
-//
-//  }
+
   
   
   
